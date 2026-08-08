@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Learning | KQuantLab</title>
   <meta name="description" content="KQuantLab 的 Freqtrade 与美股量化学习资料。">
+  <link rel="icon" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta property="og:title" content="KQuantLab Learning">
+  <meta property="og:description" content="Freqtrade 与美股量化学习资料。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://kquantlab.github.io/logo.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav class="nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><span class="mark">K</span>KQuantLab</a><button class="menu" aria-label="打开菜单" aria-expanded="false">菜单</button><div class="nav-links"><a href="index.html">首页</a><a href="projects.html">Projects</a><a href="analysis.html">Analysis</a><a class="active" href="learning.html">Learning</a></div></div></nav>
+  <nav class="nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><img class="brand-logo" src="logo.png" alt="KQuantLab logo">KQuantLab</a><button class="menu" aria-label="打开菜单" aria-expanded="false">菜单</button><div class="nav-links"><a href="index.html">首页</a><a href="projects.html">Projects</a><a href="analysis.html">Analysis</a><a class="active" href="learning.html">Learning</a><a href="about.html">About</a></div></div></nav>
   <main class="wrap">
     <section class="page-hero"><div class="eyebrow">Learning</div><h1>学习资料直接在这里开始。</h1></section>
     <section class="section">
@@ -72,7 +78,7 @@
       <div class="empty" id="learning-empty">没有找到相关学习资料。</div>
     </section>
   </main>
-  <footer class="footer"><div class="wrap footer-inner"><span>© 2026 KQuantLab</span><span>Research only · Not investment advice</span></div></footer>
+  <footer class="footer"><div class="wrap footer-inner"><span>© 2026 KQuantLab · Research only</span><div class="footer-links"><a href="about.html">About</a><a href="disclaimer.html">免责声明 / Disclaimer</a></div></div></footer>
   <script src="site.js"></script>
   <script>
     (()=>{const panels=[...document.querySelectorAll('[data-library]')],items=[...document.querySelectorAll('.learning-item')],search=document.getElementById('learning-search'),empty=document.getElementById('learning-empty');let active='all';const update=()=>{const q=search.value.trim().toLowerCase();let shown=0;panels.forEach(panel=>{const category=panel.dataset.library;let panelCount=0;panel.querySelectorAll('.learning-item').forEach(item=>{const match=(!q||item.textContent.toLowerCase().includes(q))&&(active==='all'||active===category);item.style.display=match?'flex':'none';if(match)panelCount++});panel.style.display=panelCount?'':'none';const button=panel.querySelector('.show-all');if(button)button.style.display=q?'none':'';if(q)panel.classList.add('is-expanded');panelCount&&(shown+=panelCount)});empty.style.display=shown?'none':'block'};document.querySelectorAll('[data-library-filter]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-library-filter]').forEach(x=>x.classList.remove('active'));button.classList.add('active');active=button.dataset.libraryFilter;update()}));search.addEventListener('input',update);document.querySelectorAll('.show-all').forEach(button=>button.addEventListener('click',()=>{const panel=button.closest('.learning-panel');const expanded=panel.classList.toggle('is-expanded');button.setAttribute('aria-expanded',String(expanded));button.textContent=expanded?'收起文章':'查看全部 40 篇'}))})();
