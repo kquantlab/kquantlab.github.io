@@ -1,0 +1,2437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>第 16 课：Freqtrade实时信号监控 - DEV Community</title>
+
+    <link rel="preload" href="/reactions?article_id=2962491" as="fetch" crossorigin="same-origin">
+    <link rel="canonical" href="https://dev.to/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm" />
+    <meta name="description" content="第 16 课：实时信号监控   ⏱ 课时：2 小时 🎯 学习目标：学会获取实时交易信号 📚 难度：⭐⭐ 实时信号            📖...">
+    <meta name="keywords" content="software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://dev.to/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm" />
+    <meta property="og:title" content="第 16 课：Freqtrade实时信号监控" />
+    <meta property="og:description" content="第 16 课：实时信号监控   ⏱ 课时：2 小时 🎯 学习目标：学会获取实时交易信号 📚 难度：⭐⭐ 实时信号            📖..." />
+    <meta property="og:site_name" content="DEV Community" />
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@henrylin99991">
+    <meta name="twitter:title" content="第 16 课：Freqtrade实时信号监控">
+    <meta name="twitter:description" content="第 16 课：实时信号监控   ⏱ 课时：2 小时 🎯 学习目标：学会获取实时交易信号 📚 难度：⭐⭐ 实时信号            📖...">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:image" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb5x5iyy85f0ez6rc5jsg.png" />
+    <meta name="twitter:image:src" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb5x5iyy85f0ez6rc5jsg.png">
+    <meta name="robots" content="noindex">
+    <meta name="robots" content="nofollow">
+  <link rel="stylesheet" href="../../css1.css" media="all" id="main-minimal-stylesheet">
+    <link rel="stylesheet" href="../../css2.css" media="all" id="main-views-stylesheet">
+    <link rel="stylesheet" href="../../css3.css" media="all" id="main-crayons-stylesheet">
+    <meta name="last-updated" content="2025-11-21 00:34:35 UTC">
+    <meta name="user-signed-in" content="false">
+    <meta name="head-cached-at" content="1763685275">
+    <meta name="environment" content="production">
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-50b020b1243be61f13c330cddda498844595820e6fea4776a922a0732869fdfe.css" media="all" id="main-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-5ab5484fff90044985c295f5f08e7359dda43c10871c3b39a9fa6210cdaf1648.css" media="all" id="main-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-b2af1b25a2d17e3cce00c42af745891ee5042aacb91b930a533b01e00e09ee11.css" media="all" id="main-crayons-stylesheet" />
+
+    <script src="https://assets1.dev.to/assets/base-49a8fe4e07d8957dd667d261ec816890c300d63637698ea97a4da989fa01eeef.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/application-7258612fccf5d56314a6e4ad1898b4f818f474c4bb3485e302428d489a769a17.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseInitializers-2f0777a6d67046056f9f42665560ce072de3801292674358ddbad6e135c1891d.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseTracking-b6bf73e5ee66633e151e7d5b7c6bbccedfa4c59e3615be97b98c4c0f543ddae7.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/followButtons-a29380c2c88136b97b2b5e63e94614ff7458fc72e07cffa7b6153831c28a40d2.js" defer="defer"></script>
+
+    <meta name="search-script" content="https://assets1.dev.to/assets/Search-47b78c90427318f3a0e6fb7266d267b81e2bfe6e124e47aafdb9a513670fa8bc.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" type="image/x-icon" href="https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <link rel="apple-touch-icon" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://media2.dev.to/dynamic/image/width=152,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://media2.dev.to/dynamic/image/width=167,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link href="https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="192x192" />
+    <link href="https://media2.dev.to/dynamic/image/width=128,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="128x128" />
+    <meta name="apple-mobile-web-app-title" content="dev.to">
+    <meta name="application-name" content="dev.to">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community" />
+
+    <meta property="forem:name" content="DEV Community" />
+    <meta property="forem:logo" content="https://media2.dev.to/dynamic/image/width=512,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <meta property="forem:domain" content="dev.to" />
+
+    <link rel="stylesheet" href="../../custom-font-fix.css">
+<style id="kquantlab-article-cleanup">
+.crayons-layout__sidebar-left,
+#comments,
+#hide-comments-modal,
+.crayons-layout__comments-billboard,
+.js-billboard-container,
+#footer,
+#reaction-category-resources { display: none !important; }
+.crayons-layout.crayons-layout--article { grid-template-columns: minmax(0, 1fr) !important; max-width: 980px !important; margin-inline: auto !important; }
+#main-content.crayons-layout__content { grid-column: 1 !important; width: 100% !important; max-width: 900px !important; margin-inline: auto !important; }
+body { background: #f4f7f3 !important; }
+</style></head>
+
+<body class="sans-serif-article-body default-header" data-user-status="logged-out" data-is-root-subforem="" data-subforem-id="1" data-side-nav-visible="true" data-community-name="DEV Community" data-subscription-icon="https://assets1.dev.to/assets/subscription-icon-805dfa7ac7dd660f07ed8d654877270825b07a92a03841aa99a1093bd00431b2.png"
+    data-locale="en" data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr" data-deployed-at="2025-11-20T20:19:01Z" data-latest-commit-id="21fbdc8d0dc94dd213d9d871773afefae95031f4" data-ga-tracking="UA-71991109-1" data-cookie-banner-user-context="logged_out_only"
+    data-cookie-banner-platform-context="off" data-algolia-id="PRSOBFP46H" data-algolia-search-key="9aa7d31610cba78851c9b1f63776a9dd" data-algolia-display="true" data-dynamic-url-component="bmar11" data-ga4-tracking-id="G-TYEM8Y3JN3">
+
+    <script>
+        if (navigator.userAgent === 'ForemWebView/1' || window.frameElement) {
+            document.body.classList.add("hidden-shell");
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-50b020b1243be61f13c330cddda498844595820e6fea4776a922a0732869fdfe.css" media="all" id="secondary-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-5ab5484fff90044985c295f5f08e7359dda43c10871c3b39a9fa6210cdaf1648.css" media="all" id="secondary-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-b2af1b25a2d17e3cce00c42af745891ee5042aacb91b930a533b01e00e09ee11.css" media="all" id="secondary-crayons-stylesheet" />
+
+    <div id="body-styles">
+        <style>
+            :root {
+                --accent-brand-lighter-rgb: 80, 99, 301;
+                --accent-brand-rgb: 59, 73, 223;
+                --accent-brand-darker-rgb: 47, 58, 178;
+            }
+        </style>
+    </div>
+    <div id="audiocontent" data-podcast="">
+
+    </div>
+
+    <script>
+        (function() {
+            // Utility: base64 unicode decode (for cookie payload)
+            function base64DecodeUnicode(str) {
+                try {
+                    return decodeURIComponent(
+                        atob(str)
+                        .split("")
+                        .map((c) => {
+                            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                        })
+                        .join(""),
+                    );
+                } catch (e) {
+                    console.error("base64DecodeUnicode failed:", e);
+                    return null;
+                }
+            }
+
+            function getCookie(name) {
+                const match = document.cookie.match(
+                    new RegExp("(^|; )" + name.replace(/([.*+?^${}()|[\]\\])/g, "\\$1") + "=([^;]*)"),
+                );
+                return match ? decodeURIComponent(match[2]) : null;
+            }
+
+            function getUserFromCookie() {
+                const raw = getCookie("current_user");
+                if (!raw) return null;
+                const decoded = base64DecodeUnicode(raw);
+                if (!decoded) return null;
+                try {
+                    return JSON.parse(decoded);
+                } catch (e) {
+                    console.error("Parsing user from cookie failed:", e);
+                    return null;
+                }
+            }
+
+            // --- user acquisition: prefer cookie, fallback to localStorage ---
+            const storedCurrentUser = (() => {
+                const fromCookie = getUserFromCookie();
+                if (fromCookie) return fromCookie;
+                const stored = localStorage ? .getItem("current_user");
+                if (!stored) return null;
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error("Parsing user from localStorage failed:", e);
+                    return null;
+                }
+            })();
+
+            // apply authorization/display logic and reorder if present
+            if (storedCurrentUser) {
+
+                if (storedCurrentUser ? .ordered_subforem_ids ? .length > 0) {
+                    const subforemIds = storedCurrentUser.ordered_subforem_ids;
+                    const sidebar = document.getElementById("main-side-bar");
+                    const rootLink = document.getElementById("root-subforem-link");
+                    const rootSubforemId = rootLink ? .getAttribute("data-sidebar-subforem-id");
+
+                    const subforemElements = sidebar.querySelectorAll("[data-sidebar-subforem-id]");
+                    const subforemMap = {};
+
+                    subforemElements.forEach((el) => {
+                        const id = el.getAttribute("data-sidebar-subforem-id");
+                        if (id !== rootSubforemId) {
+                            subforemMap[id] = el.closest(".crayons-side-nav__item");
+                        }
+                    });
+
+                    // remove non-root existing items
+                    Object.values(subforemMap).forEach((item) => {
+                        if (item && item.parentNode) {
+                            item.remove();
+                        }
+                    });
+
+                    // append in user's order (excluding root)
+                    const scrollableContainer = sidebar.querySelector(".crayons-side-nav__scrollable");
+                    subforemIds.forEach((id) => {
+                        if (id !== rootSubforemId && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // append leftovers not in the user's list
+                    Object.keys(subforemMap).forEach((id) => {
+                        const parsedId = parseInt(id, 10);
+                        if (!subforemIds.includes(parsedId) && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // ensure menu is last
+                    const menu = sidebar.querySelector(".crayons-side-nav__item--menu");
+                    if (menu) {
+                        sidebar.appendChild(menu);
+                    }
+                }
+            }
+
+            // active subforem highlight based on current context
+            const currentSubforemId = document.body.getAttribute("data-subforem-id");
+            if (currentSubforemId) {
+                const matching = document.querySelector(
+                    `[data-sidebar-subforem-id="${currentSubforemId}"]`,
+                );
+                if (matching) {
+                    matching.classList.add("active");
+                }
+            }
+        })();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebar = document.getElementById("main-side-bar");
+            if (!sidebar) return;
+
+            const items = sidebar.querySelectorAll(".crayons-side-nav__item");
+            let hoverTimeout;
+            let hasMoved = false;
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                hasMoved = true;
+            });
+
+            items.forEach((item) => {
+                item.addEventListener("mouseleave", function() {
+                    this.dataset.hasLeftOnce = "true";
+                    if (this.classList.contains("hovered")) {
+                        this.classList.remove("hovered");
+                        this.classList.add("not-hovered");
+                    }
+                });
+
+                item.addEventListener("mouseenter", function(e) {
+                    if (!hasMoved && !this.dataset.hasLeftOnce) {
+                        return;
+                    }
+
+                    const targetItem = this;
+                    const currentActive = sidebar.querySelector(
+                        ".crayons-side-nav__item.hovered",
+                    );
+
+                    const switchActiveState = () => {
+                        if (currentActive && currentActive !== targetItem) {
+                            currentActive.classList.remove("hovered");
+                            currentActive.classList.add("not-hovered");
+
+                            // Reset styles on the previous active item's pop-out card
+                            const previousPreviewCard = currentActive.querySelector(".profile-preview-card__content");
+                            if (previousPreviewCard) {
+                                previousPreviewCard.style.position = '';
+                                previousPreviewCard.style.left = '';
+                                previousPreviewCard.style.top = '';
+                                previousPreviewCard.style.bottom = '';
+                                previousPreviewCard.style.width = '';
+                                previousPreviewCard.style.zIndex = '';
+                            }
+                        }
+                        targetItem.classList.remove("not-hovered");
+                        targetItem.classList.add("hovered");
+                        let feedEl = document.getElementById('root-feed-card');
+                        if (feedEl) {
+                            feedEl.scrollTop = 0;
+                        }
+
+                        // --- NEW LOGIC START ---
+                        const previewCard = targetItem.querySelector(
+                            ".profile-preview-card__content",
+                        );
+                        if (previewCard) {
+                            const rect = targetItem.getBoundingClientRect();
+
+                            // Position the card relative to the viewport
+                            previewCard.style.position = 'fixed';
+                            previewCard.style.left = '48px';
+                            previewCard.style.width = '290px';
+                            previewCard.style.zIndex = '3000';
+
+                            if (window.innerHeight - rect.bottom < 280) {
+                                previewCard.classList.add("profile-preview-card__upsidedown");
+                                previewCard.style.top = 'auto';
+                                previewCard.style.bottom = `${window.innerHeight - rect.bottom - 30}px`;
+                            } else {
+                                previewCard.classList.remove("profile-preview-card__upsidedown");
+                                previewCard.style.top = `${rect.top - 30}px`;
+                                previewCard.style.bottom = 'auto';
+                            }
+                        }
+                        // --- NEW LOGIC END ---
+                    };
+
+                    clearTimeout(hoverTimeout);
+
+                    let delay = 20;
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+
+                    if (deltaX > 10 && deltaX >= Math.abs(deltaY)) {
+                        delay = 250;
+                    }
+
+                    if (currentActive && currentActive !== targetItem) {
+                        hoverTimeout = setTimeout(switchActiveState, delay);
+                    } else {
+                        switchActiveState();
+                    }
+                });
+            });
+
+            sidebar.addEventListener("mouseleave", () => {
+                clearTimeout(hoverTimeout);
+                const activeItem = sidebar.querySelector(
+                    ".crayons-side-nav__item.hovered",
+                );
+                if (activeItem) {
+                    activeItem.classList.remove("hovered");
+                    activeItem.classList.add("not-hovered");
+
+                    // Reset any inline styles on the pop-out card
+                    const previewCard = activeItem.querySelector(".profile-preview-card__content");
+                    if (previewCard) {
+                        previewCard.style.position = '';
+                        previewCard.style.left = '';
+                        previewCard.style.top = '';
+                        previewCard.style.bottom = '';
+                        previewCard.style.width = '';
+                        previewCard.style.zIndex = '';
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script src="https://assets1.dev.to/assets/mainSidebar-10996dbfced598bf8143689e86ee995945103270acd272ccf8bab9d50c74074b.js" defer="defer"></script>
+
+    <div class="navigation-progress" id="navigation-progress"></div>
+
+    <div id="active-broadcast" class="broadcast-wrapper"></div>
+    <div id="page-content" class="wrapper stories stories-show  articleuser-3446346" data-current-page="stories-show">
+        <div id="page-content-inner" data-internal-nav="false">
+            <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+
+
+            <style>
+                .html-variant-wrapper {
+                    display: none
+                }
+            </style>
+
+
+
+            <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js" integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy" crossorigin="anonymous" defer></script>
+
+            <script src="https://assets1.dev.to/assets/webShare-0686f0b9ac40589694ef6ae6a6202c44119bc781c254f6cf6d52d8a008461156.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articlePage-dce93defbf17ca8235da52777a6f00be546cfd46bf23df4486bb0461e18f7a23.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/commentDropdowns-7a28d130e5b78d38b30a9495a964003a66bd64fa455fc70b766d69cf06b9ba24.js" defer="defer"></script>
+
+            <script type="application/ld+json">
+                {
+                    "@context": "http://schema.org",
+                    "@type": "Article",
+                    "mainEntityOfPage": {
+                        "@type": "WebPage",
+                        "@id": "https://dev.to/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm"
+                    },
+                    "url": "https://dev.to/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm",
+                    "image": ["https://media2.dev.to/dynamic/image/width=1080,height=1080,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb5x5iyy85f0ez6rc5jsg.png", "https://media2.dev.to/dynamic/image/width=1280,height=720,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb5x5iyy85f0ez6rc5jsg.png", "https://media2.dev.to/dynamic/image/width=1600,height=900,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fb5x5iyy85f0ez6rc5jsg.png"],
+                    "publisher": {
+                        "@context": "http://schema.org",
+                        "@type": "Organization",
+                        "name": "DEV Community",
+                        "logo": {
+                            "@context": "http://schema.org",
+                            "@type": "ImageObject",
+                            "url": "https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png",
+                            "width": "192",
+                            "height": "192"
+                        }
+                    },
+                    "headline": "第 16 课：Freqtrade实时信号监控",
+                    "author": {
+                        "@context": "http://schema.org",
+                        "@type": "Person",
+                        "url": "https://dev.to/henry_lin_3ac6363747f45b4",
+                        "name": "Henry Lin"
+                    },
+                    "datePublished": "2025-10-26T14:45:23Z",
+                    "dateModified": "2025-11-02T07:10:49Z"
+                }
+            </script>
+
+
+            <div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+                <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+                    <div class="crayons-article-actions print-hidden">
+                        <div class="crayons-article-actions__inner">
+
+
+                            <div class="reaction-drawer__outer hoverdown" style="">
+                                <button id="reaction-drawer-trigger" aria-label="reaction-drawer-trigger" aria-pressed="false" class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clipPath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clipPath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="https://assets1.dev.to/assets/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg" />
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">
+        <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+      </span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+                                <div class="reaction-drawer" aria-expanded="false">
+                                    <div class="reaction-drawer__container">
+                                        <button id="reaction-butt-like" name="Like" aria-label="Like" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+                                        <button id="reaction-butt-unicorn" name="Unicorn" aria-label="Unicorn" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+                                        <button id="reaction-butt-exploding_head" name="Exploding Head" aria-label="Exploding Head" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+                                        <button id="reaction-butt-raised_hands" name="Raised Hands" aria-label="Raised Hands" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+                                        <button id="reaction-butt-fire" name="Fire" aria-label="Fire" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="reaction-butt-comment" aria-label="Jump to Comments" aria-pressed="false" class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative" data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="0">
+      <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+    </span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+                            <button id="reaction-butt-readinglist" aria-label="Add to reading list" aria-pressed="false" class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative" data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+                            <button id="reaction-butt-boost" aria-label="Boost" aria-pressed="false" class="crayons-reaction crayons-reaction--boost crayons-tooltip__activator relative">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-hidden="true" class="crayons-icon" width="24" height="24">
+  <path transform="translate(24,0) scale(-1,1)" d="M6 4H21C21.5523 4 22 4.44772 22 5V12H20V6H6V9L1 5L6 1V4ZM18 20H3C2.44772 20 2 19.5523 2 19V12H4V18H18V15L23 19L18 23V20Z"></path>
+</svg>
+
+    </span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Boost
+    </span>
+</button>
+
+
+                            <div class="only-sidebar-menu-item">
+                                <div id="mod-actions-menu-btn-area" class="print-hidden trusted-visible-block align-center">
+                                </div>
+                            </div>
+                            <div class="align-center m:relative">
+                                <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a8i6ah0xq84n1eaxe48jc0rt7jzryvgd" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="a8i6ah0xq84n1eaxe48jc0rt7jzryvgd">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+      </button>
+
+                                <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+                                    <div class="only-mobile-menu-item">
+                                        <button class="mod-actions-menu-btn crayons-link crayons-link--block w-100 bg-transparent border-0 fw-bold">
+            Moderate
+          </button>
+                                    </div>
+                                    <div>
+                                        <button id="copy-post-url-button" class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0" data-postUrl="https://dev.to/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm">
+            <span class="fw-bold">Copy link</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="aodsbuiib13mvgk53swwevg2818xcuz" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="aodsbuiib13mvgk53swwevg2818xcuz">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+          </button>
+                                        <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" aria-live="polite" hidden>Copied to Clipboard</div>
+                                    </div>
+
+                                    <div class="Desktop-only">
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href='https://twitter.com/intent/tweet?text=%22%E7%AC%AC%2016%20%E8%AF%BE%EF%BC%9AFreqtrade%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E7%9B%91%E6%8E%A7%22%20by%20%40henrylin99991%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm'>
+            Share to X
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm&title=%E7%AC%AC%2016%20%E8%AF%BE%EF%BC%9AFreqtrade%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E7%9B%91%E6%8E%A7&summary=%E7%AC%AC%2016%20%E8%AF%BE%EF%BC%9A%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E7%9B%91%E6%8E%A7%20%20%20%E2%8F%B1%20%E8%AF%BE%E6%97%B6%EF%BC%9A2%20%E5%B0%8F%E6%97%B6%20%F0%9F%8E%AF%20%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87%EF%BC%9A%E5%AD%A6%E4%BC%9A%E8%8E%B7%E5%8F%96%E5%AE%9E%E6%97%B6%E4%BA%A4%E6%98%93%E4%BF%A1%E5%8F%B7%20%F0%9F%93%9A%20%E9%9A%BE%E5%BA%A6%EF%BC%9A%E2%AD%90%E2%AD%90%20%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%20%20%20%20%20%20%20%20%20%20%20%20%F0%9F%93%96...&source=DEV%20Community">
+            Share to LinkedIn
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm">
+            Share to Facebook
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm">
+            Share to Mastodon
+          </a>
+                                    </div>
+
+                                    <web-share-wrapper shareurl="https://dev.to/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm" sharetitle="第 16 课：Freqtrade实时信号监控" sharetext="第 16 课：实时信号监控   ⏱ 课时：2 小时 🎯 学习目标：学会获取实时交易信号 📚 难度：⭐⭐ 实时信号            📖..." template="web-share-button">
+                                    </web-share-wrapper>
+                                    <template id="web-share-button">
+          <a href="#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+        </template>
+
+                                    <a href="/report-abuse" class="crayons-link crayons-link--block">Report Abuse</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
+
+                <main id="main-content" class="crayons-layout__content grid gap-4">
+                    <div class="article-wrapper">
+
+
+                        <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="2962491" data-article-slug="di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm" data-author-id="3446346" data-author-name="Henry Lin" data-author-username="henry_lin_3ac6363747f45b4"
+                            data-co-author-ids="" data-path="/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm" data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true" data-scheduled="false" lang=zh>
+                            <script>
+                                try {
+                                    if (localStorage) {
+                                        let currentUser = localStorage.getItem('current_user');
+
+                                        if (currentUser) {
+                                            currentUser = JSON.parse(currentUser);
+                                            if (currentUser.id === 3446346) {
+                                                document.getElementById('article-show-container').classList.add('current-user-is-article-author');
+                                            }
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            </script>
+                            <header class="crayons-article__header" id="main-title">
+
+                                <div class="crayons-article__header__meta">
+        
+                                    <h1 class=" fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 short">
+                                        第 16 课：Freqtrade实时信号监控
+                                    </h1>
+
+                                    <div class="spec__tags flex flex-wrap">
+                                    </div>
+                                </div>
+                            </header>
+
+                            <div class="crayons-article__main ">
+                                <div class="crayons-article__body text-styles spec__body" data-article-id="2962491" id="article-body">
+                                    <h1>
+                                        <a name="%E7%AC%AC-16-%E8%AF%BE%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E7%9B%91%E6%8E%A7" href="#%E7%AC%AC-16-%E8%AF%BE%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E7%9B%91%E6%8E%A7">
+  </a> 第 16 课：实时信号监控
+                                    </h1>
+
+                                    <p><strong>⏱ 课时</strong>：2 小时<br>
+                                        <strong>🎯 学习目标</strong>：学会获取实时交易信号<br>
+                                        <strong>📚 难度</strong>：⭐⭐ 实时信号</p>
+
+                                    <hr>
+                                    <h2>
+                                        <a name="%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%A7%88" href="#%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%A7%88">
+  </a> 📖 课程概览
+                                    </h2>
+
+                                    <p>回测只是第一步，真正的考验是实时交易。本课将教你如何启动 Freqtrade 的模拟交易模式（Dry-run），实时监控交易信号，为实盘交易做准备。</p>
+
+                                    <hr>
+                                    <h2>
+                                        <a name="161-dryrun-%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D" href="#161-dryrun-%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D">
+  </a> 16.1 Dry-run 模式介绍
+                                    </h2>
+                                    <h3>
+                                        <a name="%E4%BB%80%E4%B9%88%E6%98%AF-dryrun" href="#%E4%BB%80%E4%B9%88%E6%98%AF-dryrun">
+  </a> 什么是 Dry-run？
+                                    </h3>
+
+                                    <p><strong>定义</strong>：模拟交易模式，使用真实的市场数据，但不进行真实交易。</p>
+
+                                    <p><strong>与回测的区别</strong>：</p>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>特征</th>
+                                                    <th>回测（Backtesting）</th>
+                                                    <th>模拟交易（Dry-run）</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>数据</strong></td>
+                                                    <td>历史数据</td>
+                                                    <td>实时数据</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>执行</strong></td>
+                                                    <td>快速（几分钟）</td>
+                                                    <td>实时（持续运行）</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>目的</strong></td>
+                                                    <td>验证策略历史表现</td>
+                                                    <td>验证策略实时表现</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>滑点</strong></td>
+                                                    <td>无法模拟</td>
+                                                    <td>部分模拟</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>订单执行</strong></td>
+                                                    <td>假设立即成交</td>
+                                                    <td>模拟真实延迟</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>风险</strong></td>
+                                                    <td>零风险</td>
+                                                    <td>零风险</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <h3>
+                                        <a name="%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-dryrun" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-dryrun">
+  </a> 为什么需要 Dry-run？
+                                    </h3>
+
+                                    <p><strong>原因 1：验证策略实时表现</strong><br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>回测表现：+25%（历史数据）
+Dry-run 表现：+18%（实时数据）✅ 基本一致，可以实盘
+
+或者：
+回测表现：+25%
+Dry-run 表现：-5%（实时数据）❌ 差距太大，策略有问题
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>原因 2：熟悉实盘环境</strong></p>
+
+                                    <ul>
+                                        <li>理解信号生成的时机</li>
+                                        <li>熟悉订单执行流程</li>
+                                        <li>测试通知和监控系统</li>
+                                    </ul>
+
+                                    <p><strong>原因 3：发现潜在问题</strong></p>
+
+                                    <ul>
+                                        <li>策略代码错误</li>
+                                        <li>配置文件问题</li>
+                                        <li>网络连接问题</li>
+                                        <li>数据延迟问题</li>
+                                    </ul>
+
+                                    <h3>
+                                        <a name="dryrun-%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7" href="#dryrun-%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7">
+  </a> Dry-run 的局限性
+                                    </h3>
+
+                                    <p>⚠️ <strong>无法完全模拟</strong>：</p>
+
+                                    <ul>
+                                        <li>滑点（Slippage）</li>
+                                        <li>市场深度影响</li>
+                                        <li>极端行情下的流动性问题</li>
+                                        <li>交易所系统故障</li>
+                                    </ul>
+
+                                    <p>💡 <strong>建议</strong>：Dry-run 1-2周后再考虑实盘</p>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="162-%E5%90%AF%E5%8A%A8%E6%A8%A1%E6%8B%9F%E4%BA%A4%E6%98%93" href="#162-%E5%90%AF%E5%8A%A8%E6%A8%A1%E6%8B%9F%E4%BA%A4%E6%98%93">
+  </a> 16.2 启动模拟交易
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C">
+  </a> 准备工作
+                                    </h3>
+
+                                    <h4>
+                                        <a name="1-%E6%A3%80%E6%9F%A5%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" href="#1-%E6%A3%80%E6%9F%A5%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">
+  </a> 1. 检查配置文件
+                                    </h4>
+
+                                    <p>确保 <code>config.json</code> 配置正确：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"max_open_trades"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"stake_currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"stake_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"dry_run"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">⚠️</span><span class="w"> </span><span class="err">确保为</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="nl">"dry_run_wallet"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">模拟钱包金额</span><span class="w">
+
+  </span><span class="nl">"exchange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"binance"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Dry-run</span><span class="w"> </span><span class="err">不需要</span><span class="w"> </span><span class="err">API</span><span class="w"> </span><span class="err">key</span><span class="w">
+    </span><span class="nl">"secret"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ccxt_config"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+    </span><span class="nl">"ccxt_async_config"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+    </span><span class="nl">"pair_whitelist"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"BTC/USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ETH/USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"BNB/USDT"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+
+  </span><span class="nl">"strategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Strategy001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timeframe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5m"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>关键配置说明</strong>：</p>
+
+                                    <ul>
+                                        <li>
+                                            <code>dry_run: true</code>：启用模拟模式</li>
+                                        <li>
+                                            <code>dry_run_wallet</code>：模拟账户初始金额</li>
+                                        <li>不需要填写真实的 API key/secret</li>
+                                    </ul>
+
+                                    <h4>
+                                        <a name="2-%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5" href="#2-%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5">
+  </a> 2. 选择策略
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 查看可用策略</span>
+freqtrade list-strategies <span class="nt">-c</span> config.json
+
+<span class="c"># 输出示例</span>
+Strategy001
+Strategy002
+MomentumTrendStrategy
+MeanReversionStrategy
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4" href="#%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4">
+  </a> 启动命令
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E5%9F%BA%E7%A1%80%E5%90%AF%E5%8A%A8" href="#%E5%9F%BA%E7%A1%80%E5%90%AF%E5%8A%A8">
+  </a> 基础启动
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 激活环境</span>
+conda activate freqtrade
+
+<span class="c"># 启动 Dry-run</span>
+freqtrade trade <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>输出示例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>2025-09-30 10:00:00 - freqtrade - INFO - Starting freqtrade in Dry-run mode
+2025-09-30 10:00:00 - freqtrade - INFO - Using strategy: Strategy001
+2025-09-30 10:00:00 - freqtrade - INFO - Timeframe: 5m
+2025-09-30 10:00:00 - freqtrade - INFO - Dry-run mode enabled
+2025-09-30 10:00:00 - freqtrade - INFO - Starting worker threads
+2025-09-30 10:00:05 - freqtrade - INFO - Bot started. Press Ctrl+C to stop.
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C" href="#%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C">
+  </a> 后台运行
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 使用 nohup 后台运行</span>
+<span class="nb">nohup </span>freqtrade trade <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="o">&gt;</span> freqtrade.log 2&gt;&amp;1 &amp;
+
+<span class="c"># 查看日志</span>
+<span class="nb">tail</span> <span class="nt">-f</span> freqtrade.log
+
+<span class="c"># 查看进程</span>
+ps aux | <span class="nb">grep </span>freqtrade
+
+<span class="c"># 停止</span>
+pkill <span class="nt">-f</span> freqtrade
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E4%BD%BF%E7%94%A8-systemdlinux%E6%8E%A8%E8%8D%90" href="#%E4%BD%BF%E7%94%A8-systemdlinux%E6%8E%A8%E8%8D%90">
+  </a> 使用 systemd（Linux推荐）
+                                    </h4>
+
+                                    <p>创建服务文件 <code>/etc/systemd/system/freqtrade.service</code>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight ini"><code><span class="nn">[Unit]</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">Freqtrade Trading Bot</span>
+<span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
+
+<span class="nn">[Service]</span>
+<span class="py">Type</span><span class="p">=</span><span class="s">simple</span>
+<span class="py">User</span><span class="p">=</span><span class="s">your_username</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/home/your_username/freqtrade</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/home/your_username/anaconda3/envs/freqtrade/bin/freqtrade trade -c config.json --strategy Strategy001</span>
+<span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
+<span class="py">RestartSec</span><span class="p">=</span><span class="s">10</span>
+
+<span class="nn">[Install]</span>
+<span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p>启动服务：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 重载配置</span>
+<span class="nb">sudo </span>systemctl daemon-reload
+
+<span class="c"># 启动服务</span>
+<span class="nb">sudo </span>systemctl start freqtrade
+
+<span class="c"># 开机自启</span>
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>freqtrade
+
+<span class="c"># 查看状态</span>
+<span class="nb">sudo </span>systemctl status freqtrade
+
+<span class="c"># 查看日志</span>
+<span class="nb">sudo </span>journalctl <span class="nt">-u</span> freqtrade <span class="nt">-f</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="163-%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E6%9F%A5%E7%9C%8B" href="#163-%E5%AE%9E%E6%97%B6%E4%BF%A1%E5%8F%B7%E6%9F%A5%E7%9C%8B">
+  </a> 16.3 实时信号查看
+                                    </h2>
+
+                                    <h3>
+                                        <a name="1-%E7%BB%88%E7%AB%AF%E8%BE%93%E5%87%BA" href="#1-%E7%BB%88%E7%AB%AF%E8%BE%93%E5%87%BA">
+  </a> 1. 终端输出
+                                    </h3>
+
+                                    <p>Dry-run 运行时会实时输出信号：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>2025-09-30 10:05:00 - freqtrade - INFO - New candle for BTC/USDT - 5m
+2025-09-30 10:05:02 - freqtrade - INFO - Found BUY signal for BTC/USDT
+2025-09-30 10:05:03 - freqtrade - INFO - Buy signal: BTC/USDT at 43500.00 USDT
+
+2025-09-30 10:05:05 - freqtrade - INFO - Opened order #1
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ ID        ┃ Pair        ┃ Open Rate  ┃ Amount   ┃ Open Date  ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 1         │ BTC/USDT    │ 43500.00   │ 0.00230  │ 10:05:03   │
+└───────────┴─────────────┴────────────┴──────────┴────────────┘
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="2-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6" href="#2-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6">
+  </a> 2. 日志文件
+                                    </h3>
+
+                                    <p>查看详细日志：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 实时查看</span>
+<span class="nb">tail</span> <span class="nt">-f</span> user_data/logs/freqtrade.log
+
+<span class="c"># 筛选特定信息</span>
+<span class="nb">tail</span> <span class="nt">-f</span> user_data/logs/freqtrade.log | <span class="nb">grep</span> <span class="s2">"BUY</span><span class="se">\|</span><span class="s2">SELL"</span>
+
+<span class="c"># 查看最近的错误</span>
+<span class="nb">grep</span> <span class="s2">"ERROR"</span> user_data/logs/freqtrade.log | <span class="nb">tail</span> <span class="nt">-20</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="3-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%8C%81%E4%BB%93" href="#3-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%8C%81%E4%BB%93">
+  </a> 3. 查看当前持仓
+                                    </h3>
+
+                                    <p><strong>重要提示</strong>：</p>
+
+                                    <ul>
+                                        <li>数据库只有在 Bot 开始交易后才会创建表结构</li>
+                                        <li>如果数据库文件存在但为空，说明还没有产生任何交易记录</li>
+                                        <li>
+                                            <code>--db-url</code> 参数是必需的，用于指定数据库位置
+                                        </li>
+                                    </ul>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 方法 1：使用 freqtrade 命令（推荐）</span>
+freqtrade show-trades <span class="nt">-c</span> config.json <span class="nt">--db-url</span> sqlite:///user_data/tradesv3.dryrun.sqlite
+
+<span class="c"># 方法 2：查看数据库（先确认数据库文件存在且包含表）</span>
+<span class="c"># 首先检查表是否存在</span>
+sqlite3 user_data/tradesv3.dryrun.sqlite <span class="s2">".tables"</span>
+
+<span class="c"># 如果表存在，查看当前持仓</span>
+sqlite3 user_data/tradesv3.dryrun.sqlite <span class="s2">"SELECT * FROM trades WHERE is_open=1;"</span>
+
+<span class="c"># 如果没有数据，会看到 "Error: no such table: trades" 错误</span>
+<span class="c"># 这是正常的，说明还没有交易记录</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>输出示例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>Current trades:
+┏━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ ID  ┃ Pair      ┃ Open Rate  ┃ Current  ┃ Profit% ┃ Duration   ┃
+┡━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 1   │ BTC/USDT  │ 43500.00   │ 43680.00 │ +0.41%  │ 1h 25m     │
+│ 2   │ ETH/USDT  │ 2280.00    │ 2295.00  │ +0.66%  │ 45m        │
+└─────┴───────────┴────────────┴──────────┴─────────┴────────────┘
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="4-%E6%80%A7%E8%83%BD%E7%BB%9F%E8%AE%A1" href="#4-%E6%80%A7%E8%83%BD%E7%BB%9F%E8%AE%A1">
+  </a> 4. 性能统计
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 查看统计信息</span>
+freqtrade show-trades <span class="nt">-c</span> config.json <span class="nt">--db-url</span> sqlite:///user_data/tradesv3.dryrun.sqlite
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>输出示例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>Performance:
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Pair        ┃ Trades  ┃ Win Rate   ┃ Profit %   ┃ Duration ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ BTC/USDT    │ 15      │ 80.0%      │ +2.35%     │ 3h 22m   │
+│ ETH/USDT    │ 12      │ 75.0%      │ +1.85%     │ 2h 45m   │
+│ BNB/USDT    │ 8       │ 87.5%      │ +1.52%     │ 4h 10m   │
+├─────────────┼─────────┼────────────┼────────────┼──────────┤
+│ TOTAL       │ 35      │ 80.0%      │ +5.72%     │ 3h 25m   │
+└─────────────┴─────────┴────────────┴────────────┴──────────┘
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="164-%E4%BF%A1%E5%8F%B7%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%B0%E5%BD%95" href="#164-%E4%BF%A1%E5%8F%B7%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%B0%E5%BD%95">
+  </a> 16.4 信号分析与记录
+                                    </h2>
+
+                                    <h3>
+                                        <a name="1-%E8%AE%B0%E5%BD%95%E4%B9%B0%E5%8D%96%E4%BF%A1%E5%8F%B7" href="#1-%E8%AE%B0%E5%BD%95%E4%B9%B0%E5%8D%96%E4%BF%A1%E5%8F%B7">
+  </a> 1. 记录买卖信号
+                                    </h3>
+
+                                    <p>创建信号记录表格（Excel/Google Sheets）：</p>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>日期时间</th>
+                                                    <th>交易对</th>
+                                                    <th>信号类型</th>
+                                                    <th>价格</th>
+                                                    <th>指标状态</th>
+                                                    <th>市场环境</th>
+                                                    <th>备注</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>2025-09-30 10:05</td>
+                                                    <td>BTC/USDT</td>
+                                                    <td>BUY</td>
+                                                    <td>43500</td>
+                                                    <td>RSI=28, EMA金叉</td>
+                                                    <td>震荡上行</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2025-09-30 12:30</td>
+                                                    <td>BTC/USDT</td>
+                                                    <td>SELL</td>
+                                                    <td>43850</td>
+                                                    <td>RSI=68</td>
+                                                    <td>短期阻力</td>
+                                                    <td>+0.80%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2025-09-30 14:20</td>
+                                                    <td>ETH/USDT</td>
+                                                    <td>BUY</td>
+                                                    <td>2280</td>
+                                                    <td>布林带下轨</td>
+                                                    <td>超卖反弹</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h3>
+                                        <a name="2-%E6%AF%8F%E6%97%A5%E6%80%BB%E7%BB%93%E6%A8%A1%E6%9D%BF" href="#2-%E6%AF%8F%E6%97%A5%E6%80%BB%E7%BB%93%E6%A8%A1%E6%9D%BF">
+  </a> 2. 每日总结模板
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight markdown"><code><span class="gh"># Dry-run 日志 - 2025-09-30</span>
+
+<span class="gu">## 今日概况</span>
+<span class="p">-</span> 运行时长：16小时
+<span class="p">-</span> 交易信号：7次买入，5次卖出
+<span class="p">-</span> 当前持仓：2笔
+<span class="p">-</span> 今日盈亏：+1.35%
+
+<span class="gu">## 信号详情</span>
+
+<span class="gu">### 买入信号</span>
+<span class="p">1.</span> <span class="gs">**10:05 BTC/USDT @ 43500**</span>
+<span class="p">   -</span> 条件：EMA20上穿EMA50 + RSI&lt;30
+<span class="p">   -</span> 结果：持仓中（+0.80%）
+<span class="p">
+2.</span> <span class="gs">**14:20 ETH/USDT @ 2280**</span>
+<span class="p">   -</span> 条件：价格触及布林带下轨 + 成交量放大
+<span class="p">   -</span> 结果：持仓中（+0.65%）
+
+<span class="gu">### 卖出信号</span>
+<span class="p">1.</span> <span class="gs">**12:30 BTC/USDT @ 43680**</span>
+<span class="p">   -</span> 触发：ROI 2% 目标
+<span class="p">   -</span> 收益：+0.41%
+<span class="p">   -</span> 持仓时长：2h 25m
+
+<span class="gu">## 问题与观察</span>
+<span class="p">-</span> ⚠️ 发现一次假突破信号（BNB/USDT 15:30）
+<span class="p">-</span> ✅ 止损设置合理，未触发
+<span class="p">-</span> 💡 震荡市中信号较多，需要增加过滤条件
+
+<span class="gu">## 明日计划</span>
+<span class="p">-</span> 继续观察震荡市表现
+<span class="p">-</span> 考虑调整 RSI 阈值
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="3-%E4%BF%A1%E5%8F%B7%E8%B4%A8%E9%87%8F%E8%AF%84%E4%BC%B0" href="#3-%E4%BF%A1%E5%8F%B7%E8%B4%A8%E9%87%8F%E8%AF%84%E4%BC%B0">
+  </a> 3. 信号质量评估
+                                    </h3>
+
+                                    <p><strong>评估维度</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1"># 买入信号质量
+</span><span class="k">def</span> <span class="nf">evaluate_entry_signal</span><span class="p">(</span><span class="n">trade</span><span class="p">):</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># 1. 盈利率（40分）
+</span>    <span class="k">if</span> <span class="n">trade</span><span class="p">.</span><span class="n">profit</span> <span class="o">&gt;</span> <span class="mf">2.0</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">40</span>
+    <span class="k">elif</span> <span class="n">trade</span><span class="p">.</span><span class="n">profit</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">30</span>
+    <span class="k">elif</span> <span class="n">trade</span><span class="p">.</span><span class="n">profit</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">20</span>
+    <span class="k">elif</span> <span class="n">trade</span><span class="p">.</span><span class="n">profit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">10</span>
+
+    <span class="c1"># 2. 持仓时间（30分）
+</span>    <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">trade</span><span class="p">.</span><span class="n">duration_hours</span> <span class="o">&lt;=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">30</span>  <span class="c1"># 理想持仓时间
+</span>    <span class="k">elif</span> <span class="n">trade</span><span class="p">.</span><span class="n">duration_hours</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">15</span>  <span class="c1"># 太短
+</span>    <span class="k">else</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">20</span>  <span class="c1"># 太长
+</span>
+    <span class="c1"># 3. 退出方式（30分）
+</span>    <span class="k">if</span> <span class="n">trade</span><span class="p">.</span><span class="n">exit_reason</span> <span class="o">==</span> <span class="sh">'</span><span class="s">roi</span><span class="sh">'</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">30</span>  <span class="c1"># ROI退出最好
+</span>    <span class="k">elif</span> <span class="n">trade</span><span class="p">.</span><span class="n">exit_reason</span> <span class="o">==</span> <span class="sh">'</span><span class="s">exit_signal</span><span class="sh">'</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">25</span>
+    <span class="k">elif</span> <span class="n">trade</span><span class="p">.</span><span class="n">exit_reason</span> <span class="o">==</span> <span class="sh">'</span><span class="s">trailing_stop</span><span class="sh">'</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">20</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">10</span>  <span class="c1"># 止损
+</span>
+    <span class="k">return</span> <span class="n">score</span>
+
+<span class="c1"># 评级
+</span><span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">优秀信号 ⭐⭐⭐⭐⭐</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">良好信号 ⭐⭐⭐⭐</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">40</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">一般信号 ⭐⭐⭐</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">较差信号 ⭐⭐</span><span class="sh">"</span><span class="p">)</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="165-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86" href="#165-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86">
+  </a> 16.5 常见问题处理
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-1%E9%A2%91%E7%B9%81%E4%B9%B0%E5%8D%96%E8%BF%87%E5%BA%A6%E4%BA%A4%E6%98%93" href="#%E9%97%AE%E9%A2%98-1%E9%A2%91%E7%B9%81%E4%B9%B0%E5%8D%96%E8%BF%87%E5%BA%A6%E4%BA%A4%E6%98%93">
+  </a> 问题 1：频繁买卖（过度交易）
+                                    </h3>
+
+                                    <p><strong>现象</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>每小时产生多个信号
+持仓时间 &lt; 30分钟
+手续费占比 &gt; 20%
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>原因</strong>：</p>
+
+                                    <ul>
+                                        <li>策略条件过于宽松</li>
+                                        <li>市场波动导致频繁触发</li>
+                                        <li>时间框架太短</li>
+                                    </ul>
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1"># 增加信号冷却期
+</span><span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="k">class</span> <span class="nc">Strategy001</span><span class="p">(</span><span class="n">IStrategy</span><span class="p">):</span>
+    <span class="n">last_entry_time</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">cooldown_minutes</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># 60分钟冷却期
+</span>
+    <span class="k">def</span> <span class="nf">populate_entry_trend</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+        <span class="n">pair</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="sh">'</span><span class="s">pair</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># 检查冷却期
+</span>        <span class="k">if</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">last_entry_time</span><span class="p">:</span>
+            <span class="n">time_since_last</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">last_entry_time</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">time_since_last</span> <span class="o">&lt;</span> <span class="nf">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">cooldown_minutes</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">dataframe</span>  <span class="c1"># 还在冷却期，不产生信号
+</span>
+        <span class="c1"># 正常信号逻辑
+</span>        <span class="n">dataframe</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">your_conditions</span><span class="p">),</span>
+            <span class="sh">'</span><span class="s">enter_long</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># 更新最后入场时间
+</span>        <span class="k">if</span> <span class="n">dataframe</span><span class="p">[</span><span class="sh">'</span><span class="s">enter_long</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">last_entry_time</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_time</span>
+
+        <span class="k">return</span> <span class="n">dataframe</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-2%E9%95%BF%E6%97%B6%E9%97%B4%E6%97%A0%E4%BF%A1%E5%8F%B7" href="#%E9%97%AE%E9%A2%98-2%E9%95%BF%E6%97%B6%E9%97%B4%E6%97%A0%E4%BF%A1%E5%8F%B7">
+  </a> 问题 2：长时间无信号
+                                    </h3>
+
+                                    <p><strong>现象</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>运行6小时无任何买入信号
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>原因</strong>：</p>
+
+                                    <ul>
+                                        <li>策略条件过于严格</li>
+                                        <li>市场不符合策略适用环境</li>
+                                        <li>数据获取问题</li>
+                                    </ul>
+
+                                    <p><strong>检查步骤</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 检查数据更新</span>
+freqtrade list-data <span class="nt">-c</span> config.json
+
+<span class="c"># 2. 查看策略指标（开启调试模式）</span>
+freqtrade trade <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">-vvv</span>
+
+<span class="c"># 3. 降低条件严格性（临时测试）</span>
+<span class="c"># 修改策略，放宽条件</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-3%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%9B%9E%E6%B5%8B%E4%B8%8D%E4%B8%80%E8%87%B4" href="#%E9%97%AE%E9%A2%98-3%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%9B%9E%E6%B5%8B%E4%B8%8D%E4%B8%80%E8%87%B4">
+  </a> 问题 3：信号与回测不一致
+                                    </h3>
+
+                                    <p><strong>现象</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>回测：80%胜率，+20%收益
+Dry-run：50%胜率，-5%收益
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>可能原因</strong>：</p>
+
+                                    <ol>
+                                        <li>
+                                            <strong>过拟合</strong>：策略只适合历史数据</li>
+                                        <li>
+                                            <strong>数据差异</strong>：回测数据与实时数据不同</li>
+                                        <li>
+                                            <strong>执行延迟</strong>：实时信号有延迟</li>
+                                        <li>
+                                            <strong>市场环境变化</strong>：市况与回测期不同</li>
+                                    </ol>
+
+                                    <p><strong>应对方法</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 样本外验证</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--timerange</span> 20251001-20251231
+
+<span class="c"># 2. 增加实时验证时长</span>
+<span class="c"># 至少 Dry-run 2周再评估</span>
+
+<span class="c"># 3. 检查策略是否过拟合</span>
+<span class="c"># 查看参数是否过于精确（如 RSI=27.3）</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-4bot-%E5%B4%A9%E6%BA%83%E6%88%96%E5%81%9C%E6%AD%A2" href="#%E9%97%AE%E9%A2%98-4bot-%E5%B4%A9%E6%BA%83%E6%88%96%E5%81%9C%E6%AD%A2">
+  </a> 问题 4：Bot 崩溃或停止
+                                    </h3>
+
+                                    <p><strong>错误日志示例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>ERROR - Exchange binance does not support fetching OHLCV data
+ERROR - Network error: Connection timeout
+ERROR - Database locked
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 网络问题</span>
+<span class="c"># 检查网络连接</span>
+ping api.binance.com
+
+<span class="c"># 使用代理（如需要）</span>
+<span class="nb">export </span><span class="nv">HTTP_PROXY</span><span class="o">=</span>http://127.0.0.1:7890
+<span class="nb">export </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://127.0.0.1:7890
+
+<span class="c"># 数据库锁定</span>
+<span class="c"># 停止所有 freqtrade 进程</span>
+pkill <span class="nt">-f</span> freqtrade
+
+<span class="c"># 删除数据库锁文件</span>
+<span class="nb">rm </span>user_data/tradesv3.dryrun.sqlite-shm
+<span class="nb">rm </span>user_data/tradesv3.dryrun.sqlite-wal
+
+<span class="c"># 重启</span>
+freqtrade trade <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%AE%9E%E8%B7%B5%E4%BB%BB%E5%8A%A1" href="#%E5%AE%9E%E8%B7%B5%E4%BB%BB%E5%8A%A1">
+  </a> 💡 实践任务
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-1%E5%90%AF%E5%8A%A8%E7%AC%AC%E4%B8%80%E6%AC%A1-dryrun" href="#%E4%BB%BB%E5%8A%A1-1%E5%90%AF%E5%8A%A8%E7%AC%AC%E4%B8%80%E6%AC%A1-dryrun">
+  </a> 任务 1：启动第一次 Dry-run
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 检查配置</span>
+<span class="nb">cat </span>config.json | <span class="nb">grep</span> <span class="s2">"dry_run"</span>
+
+<span class="c"># 2. 启动 Dry-run</span>
+freqtrade trade <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001
+
+<span class="c"># 3. 让它运行至少 1 小时</span>
+
+<span class="c"># 4. 查看统计</span>
+freqtrade show-trades <span class="nt">-c</span> config.json <span class="nt">--db-url</span> sqlite:///user_data/tradesv3.dryrun.sqlite
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-224%E5%B0%8F%E6%97%B6%E7%9B%91%E6%8E%A7" href="#%E4%BB%BB%E5%8A%A1-224%E5%B0%8F%E6%97%B6%E7%9B%91%E6%8E%A7">
+  </a> 任务 2：24小时监控
+                                    </h3>
+
+                                    <p>运行 Dry-run 至少24小时，记录：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight markdown"><code><span class="gu">## 24小时 Dry-run 报告</span>
+
+<span class="gu">### 运行概况</span>
+<span class="p">-</span> 启动时间：_______
+<span class="p">-</span> 结束时间：_______
+<span class="p">-</span> 策略名称：_______
+<span class="p">-</span> 时间框架：_______
+
+<span class="gu">### 交易统计</span>
+<span class="p">-</span> 总信号数：_______
+<span class="p">-</span> 买入信号：_______
+<span class="p">-</span> 卖出信号：_______
+<span class="p">-</span> 当前持仓：_______
+<span class="p">-</span> 平均持仓时间：_______
+
+<span class="gu">### 盈亏统计</span>
+<span class="p">-</span> 总收益：_______%
+<span class="p">-</span> 盈利交易：_______笔
+<span class="p">-</span> 亏损交易：_______笔
+<span class="p">-</span> 胜率：_______%
+<span class="p">-</span> 最大回撤：_______%
+
+<span class="gu">### 问题记录</span>
+<span class="p">1.</span> _______
+<span class="p">2.</span> _______
+<span class="p">3.</span> _______
+
+<span class="gu">### 结论</span>
+☐ 表现符合回测预期，可以继续
+☐ 表现不佳，需要调整策略
+☐ 发现严重问题，需要重新设计
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-3%E5%AF%B9%E6%AF%94%E5%9B%9E%E6%B5%8B-vs-dryrun" href="#%E4%BB%BB%E5%8A%A1-3%E5%AF%B9%E6%AF%94%E5%9B%9E%E6%B5%8B-vs-dryrun">
+  </a> 任务 3：对比回测 vs Dry-run
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 回测（相同时间段）</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--timerange</span> 20250928-20250930
+
+<span class="c"># 记录回测结果</span>
+<span class="c"># 对比 Dry-run 实际表现</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p>对比表格：</p>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>指标</th>
+                                                    <th>回测</th>
+                                                    <th>Dry-run</th>
+                                                    <th>差异</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>交易次数</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>胜率</td>
+                                                    <td>?%</td>
+                                                    <td>?%</td>
+                                                    <td>?%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>总收益</td>
+                                                    <td>?%</td>
+                                                    <td>?%</td>
+                                                    <td>?%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>最大回撤</td>
+                                                    <td>?%</td>
+                                                    <td>?%</td>
+                                                    <td>?%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>平均持仓</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <p><strong>分析</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>如果 Dry-run 表现接近回测（±20%以内）：
+  ✅ 策略可靠，可以考虑实盘
+
+如果 Dry-run 表现远低于回测：
+  ⚠️ 可能存在过拟合或其他问题
+  需要延长观察期或调整策略
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%E6%80%BB%E7%BB%93" href="#%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%E6%80%BB%E7%BB%93">
+  </a> 📌 核心要点总结
+                                    </h2>
+
+                                    <ol>
+                                        <li>
+                                            <strong>Dry-run 是实盘前的必经之路</strong>：至少运行1-2周</li>
+                                        <li>
+                                            <strong>实时表现 ≠ 回测表现</strong>：允许20%的差异</li>
+                                        <li>
+                                            <strong>记录和分析每个信号</strong>：建立信号质量评估体系</li>
+                                        <li>
+                                            <strong>发现问题及时调整</strong>：不要盲目进入实盘</li>
+                                        <li>
+                                            <strong>关注策略适应性</strong>：不同市况下的表现</li>
+                                        <li>
+                                            <strong>保持耐心</strong>：Dry-run 是学习和调试的过程</li>
+                                    </ol>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E4%B8%8B%E4%B8%80%E8%AF%BE%E9%A2%84%E5%91%8A" href="#%E4%B8%8B%E4%B8%80%E8%AF%BE%E9%A2%84%E5%91%8A">
+  </a> ➡️ 下一课预告
+                                    </h2>
+
+                                    <p><strong>第 17 课：Telegram 通知配置</strong></p>
+
+                                    <p>在下一课中，我们将学习：</p>
+
+                                    <ul>
+                                        <li>创建 Telegram Bot</li>
+                                        <li>配置通知设置</li>
+                                        <li>接收交易信号推送</li>
+                                        <li>通过 Telegram 远程控制 Bot</li>
+                                    </ul>
+
+                                    <p><strong>准备工作</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 完成至少24小时的 Dry-run</li>
+                                        <li>✅ 注册 Telegram 账号</li>
+                                        <li>✅ 准备接收通知的设备</li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <p><strong>🎯 学习检验标准</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 能独立启动 Dry-run 模式</li>
+                                        <li>✅ 会查看和记录实时信号</li>
+                                        <li>✅ 能分析信号质量</li>
+                                        <li>✅ 会处理常见问题</li>
+                                    </ul>
+
+                                    <p>完成这些任务后，你已经迈出了实盘交易的第一步！🚀</p>
+
+
+                                </div>
+
+                                <div class="js-billboard-container body-billboard-container" data-async-url="/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm/bmar11/post_body_bottom"></div>
+                            </div>
+                            <section id="comments" data-follow-button-container="true" data-updated-at="2025-11-21 00:34:35 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+                                <header class="relative flex justify-between items-center mb-6">
+                                    <div class="flex items-center">
+                                        <h2 class="crayons-subtitle-1">
+                                            Top comments <span class="js-comments-count" data-comments-count="0">(0)</span>
+                                        </h2>
+                                    </div>
+
+
+                                    <div id="comment-subscription" class="print-hidden">
+                                        <div class="crayons-btn-group">
+                                            <span class="crayons-btn crayons-btn--outlined">Subscribe</span>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div id="billboard_delay_trigger"></div>
+                                <div id="comments-container" data-testid="comments-container" data-commentable-id="2962491" data-commentable-type="Article" data-has-recent-comment-activity="false">
+
+                                    <div id="response-templates-data" class="hidden"></div>
+
+
+                                    <form class="comment-form print-hidden" id="new_comment" action="/comments" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" />
+
+                                        <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+                                        <input value="2962491" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id" />
+                                        <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type" />
+
+
+                                        <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="https://media2.dev.to/dynamic/image/width=256,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy" />
+  </span>
+                                        <div class="comment-form__inner">
+                                            <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+                                                <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost"
+                                                    aria-label="Add a comment to the discussion" name="comment[body_markdown]">
+</textarea>
+
+                                            </div>
+
+                                            <div class="response-templates-container crayons-card crayons-card--secondary p-4 mb-4 comment-form__templates fs-base hidden">
+                                                <header class="mb-3">
+                                                    <button type="button" class="crayons-btn personal-template-button active" data-target-type="personal" data-form-id="new_comment">Personal</button>
+                                                    <button type="button" class="crayons-btn moderator-template-button hidden" data-target-type="moderator" data-form-id="new_comment">Trusted User</button>
+                                                </header>
+
+                                                <div class="personal-responses-container">
+                                                </div>
+                                                <div class="moderator-responses-container hidden">
+                                                </div>
+
+                                                <a target="_blank" rel="noopener nofollow" href="/settings/response-templates">
+        Create template
+      </a>
+                                                <p>Templates let you quickly answer FAQs or store snippets for re-use.</p>
+                                            </div>
+
+                                            <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+                                            <div class="comment-form__buttons mb-4">
+                                                <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled>Submit</button>
+                                                <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled>Preview</button>
+                                                <a href="/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+                                    </form>
+
+
+                                    <div class="comments" id="comment-trees-container">
+                                    </div>
+                                </div>
+
+                                <div class="align-center">
+
+
+                                    <nav class="fs-s align-center block" aria-label="Conduct controls">
+                                        <a href="/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+                                        <span class="opacity-25 px-2" role="presentation">&bull;</span>
+                                        <a href="/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+                                    </nav>
+
+                                </div>
+
+                            </section>
+                            <div id="hide-comments-modal" class="hidden">
+                                <form id="hide-comments-modal__form" class="hide-comments-modal__form" data-type="json" action="/comments/hide" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="PAXiVygcXWRPhFrAd0i_VOnNydgQKnTR5JQV22OBZntZuWCrRVSSc00Q1WN2V7J6cm69OLMuuQQeXnzy4r1UWw"
+                                        autocomplete="off" />
+                                    <div class="hide-comments-modal__content">
+                                        <p class="pb-2">
+                                            Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's <a id="hide-comments-modal__comment-permalink" href="#">permalink</a>.
+                                        </p>
+                                        <label class="crayons-field crayons-field--checkbox my-2">
+        <input name="hide_children" type="hidden" value="0" autocomplete="off" /><input class="hide_children crayons-checkbox" type="checkbox" value="1" name="hide_children" id="hide_children" />
+        <p class="crayons-field__label">Hide child comments as well</p>
+      </label>
+                                        <p class="pb-4 pt-2">
+                                            <button type="submit" class="crayons-btn">
+          Confirm
+        </button>
+                                        </p>
+                                    </div>
+                                </form>
+                                <p class="fs-s color-base-60">For further actions, you may consider blocking this person and/or <a id="hide-comments-modal__report-link" href="/report-abuse">reporting abuse</a></p>
+                            </div>
+
+
+
+                        </article>
+
+                        <div class="pb-4 crayons-layout__comments-billboard">
+                            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm/bmar11/post_comments"></div>
+                        </div>
+
+                        <!-- Bottom content skipped via SKIP_BOTTOM_CONTENT config -->
+                    </div>
+                </main>
+            </div>
+
+            <div class="mod-actions-menu print-hidden"></div>
+            <div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+
+            <div class="fullscreen-code js-fullscreen-code"></div>
+            <script src="https://assets1.dev.to/assets/billboard-1639de16bba3d0fb5e5f96224551087f3b5463567609f92c14b93c3e0c08ddfd.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/localizeArticleDates-70147c5c6bfe350b42e020ebb2a3dd37419d83978982b5a67b6389119bf162ac.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articleReactions-79a44d82fb34a91c3987c24cfd3bcf2b0d38a02730b69ae6da297387d185f015.js" defer="defer"></script>
+
+            <script>
+                function activateRunkitTags() {
+                    if (!areAnyRunkitTagsPresent())
+                        return
+
+                    var checkRunkit = setInterval(function() {
+                        try {
+                            dynamicallyLoadRunkitLibrary()
+
+                            if (typeof(RunKit) === 'undefined') {
+                                return
+                            }
+
+                            replaceTagContentsWithRunkitWidget()
+                            clearInterval(checkRunkit);
+                        } catch (e) {
+                            console.error(e);
+                            clearInterval(checkRunkit);
+                        }
+                    }, 200);
+                }
+
+                function isRunkitTagAlreadyActive(runkitTag) {
+                    return runkitTag.querySelector("iframe") !== null;
+                };
+
+                function areAnyRunkitTagsPresent() {
+                    var presentRunkitTags = document.getElementsByClassName("runkit-element");
+
+                    return presentRunkitTags.length > 0
+                }
+
+                function replaceTagContentsWithRunkitWidget() {
+                    var targets = document.getElementsByClassName("runkit-element");
+                    for (var i = 0; i < targets.length; i++) {
+                        if (isRunkitTagAlreadyActive(targets[i])) {
+                            continue;
+                        }
+
+                        var wrapperContent = targets[i].textContent;
+                        if (/^(<iframe src)/.test(wrapperContent) === false) {
+                            if (targets[i].children.length > 0) {
+                                var preamble = targets[i].children[0].textContent;
+                                var content = targets[i].children[1].textContent;
+                                targets[i].innerHTML = "";
+                                var notebook = RunKit.createNotebook({
+                                    element: targets[i],
+                                    source: content,
+                                    preamble: preamble
+                                });
+                            }
+                        }
+                    }
+                };
+
+                function dynamicallyLoadRunkitLibrary() {
+                    if (typeof(dynamicallyLoadScript) === "undefined")
+                        return
+
+                    dynamicallyLoadScript("//embed.runkit.com")
+                }
+
+                activateRunkitTags();
+            </script>
+            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-16-ke-kronosshi-shi-xin-hao-jian-kong-5dpm/bmar11/post_fixed_bottom"></div>
+
+
+            <div id="runtime-banner-container"></div>
+            <div id="i18n-translations" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;,&quot;search_placeholder&quot;:&quot;Search...&quot;,&quot;search_find_related_posts&quot;:&quot;Find related posts...&quot;,&quot;search_powered_by&quot;:&quot;Powered by Algolia&quot;,&quot;search_submit_search&quot;:&quot;Submit search for advanced filtering.&quot;,&quot;search_displaying_recommendations&quot;:&quot;Displaying Algolia Recommendations — Start typing to search&quot;,&quot;article_form_save_changes&quot;:&quot;Save changes&quot;,&quot;article_form_schedule&quot;:&quot;Schedule&quot;,&quot;article_form_publish&quot;:&quot;Publish&quot;,&quot;article_form_loading_preview&quot;:&quot;Loading preview&quot;,&quot;article_form_preview_loaded&quot;:&quot;Preview loaded&quot;,&quot;comments_preview&quot;:&quot;Preview&quot;,&quot;comments_continue_editing&quot;:&quot;Continue editing&quot;,&quot;survey_enter_response&quot;:&quot;Enter your response here...&quot;,&quot;survey_thank_you_response&quot;:&quot;Thank you for your response.&quot;,&quot;survey_thank_you_completing&quot;:&quot;Thank you for completing the survey!&quot;,&quot;dashboard_analytics_readers&quot;:&quot;Readers&quot;,&quot;dashboard_analytics_comments&quot;:&quot;Comments&quot;,&quot;dashboard_analytics_reactions&quot;:&quot;Reactions&quot;,&quot;stats_by&quot;:&quot;by&quot;,&quot;editor_new_title&quot;:&quot;New post title here...&quot;,&quot;editor_body_placeholder&quot;:&quot;Write your post content here...&quot;,&quot;tags_field_label&quot;:&quot;Add up to 4 tags&quot;,&quot;tags_field_placeholder&quot;:&quot;Add up to 4 tags...&quot;,&quot;counted_organization&quot;:{&quot;one&quot;:&quot;%{count} organization&quot;,&quot;other&quot;:&quot;%{count} organizations&quot;},&quot;counted_user&quot;:{&quot;one&quot;:&quot;%{count} person&quot;,&quot;other&quot;:&quot;%{count} people&quot;},&quot;not_following&quot;:&quot;You&#39;re not following anyone&quot;,&quot;following_everyone&quot;:&quot;You&#39;re following %{details} (everyone)&quot;,&quot;you_are_following&quot;:&quot;You&#39;re following&quot;,&quot;and&quot;:&quot;and&quot;}}}"></div>
+        </div>
+    </div>
+
+
+    <footer id="footer" class="crayons-footer print-hidden">
+        <div id="footer-container" class="crayons-footer__container">
+
+
+            <style>
+                .long-bb-body {
+                    max-height: calc(100vh - 200px);
+                    overflow: hidden;
+                }
+
+                .long-bb-bottom {
+                    height: 180px;
+                    background: linear-gradient(to top, var(--card-bg), transparent);
+                    margin-top: -180px;
+                    position: relative;
+                    z-index: 5;
+                }
+            </style>
+
+            <div style="" data-display-unit data-id="146443" data-category-click="click" data-category-impression="impression" data-context-type="home" data-special="nothing" data-article-id="1956352" data-type-of="in_house">
+                <div class="crayons-card crayons-card--secondary crayons-bb bb-placement js-billboard" style="display: inline-flex; flex-direction: column; align-items: center; margin: 0 auto 2rem auto; width: fit-content; padding: 2rem;">
+                    <p style="font-weight: bold; margin: 0 0 1rem 0;">
+                        💎 DEV Diamond Sponsors
+                    </p>
+                    <p style="font-size: 0.8em; margin: 0 0 2rem 0;">
+                        Thank you to our Diamond Sponsors for supporting the DEV Community
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://aistudio.google.com/?utm_source=partner&amp;utm_medium=partner&amp;utm_campaign=FY25-Global-DEVpartnership-sponsorship-AIS&amp;utm_content=-&amp;utm_term=-&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxjlyhbdqehj3akhz166w.png" alt="Google AI - Official AI Model and Platform Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 54px; padding: 10px;" loading="lazy" width="2048" height="472">
+                </a>
+                            <p style="text-align: center;">Google AI is the official AI Model and Platform Partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://neon.tech/?ref=devto&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbnl88cil6afxzmgwrgtt.png" alt="Neon - Official Database Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Neon is the official database partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://www.algolia.com/developers/?utm_source=devto&amp;utm_medium=referral&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fv30ephnolfvnlwgwm0yz.png" alt="Algolia - Official Search Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Algolia is the official search partner of DEV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p class="fs-s crayons-footer__description">
+                <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="/">DEV Community</a> — A space to discuss and keep up software development and manage your software career
+            </p>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/">
+      Home
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/about">
+      About
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/contact">
+      Contact
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/code-of-conduct">
+      Code of Conduct
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/privacy">
+      Privacy Policy
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/terms">
+      Terms of Use
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <div class="fs-s">
+                <p>Built on <a class="c-link c-link--branded" target="_blank" rel="noopener" href="https://www.forem.com">Forem</a> — the <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/opensource">open source</a>                    software that powers <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to">DEV</a> and other inclusive communities.</p>
+                <p>Made with love and <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/rails">Ruby on Rails</a>. DEV Community <span title="copyright">&copy;</span> 2016 - 2025.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="snack-zone"></div>
+
+    <div id="global-signup-modal" class="authentication-modal hidden">
+        <div class="authentication-modal__container">
+            <figure class="authentication-modal__image-container">
+                <img class="authentication-modal__image" src="https://media2.dev.to/dynamic/image/width=190,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" alt="DEV Community"
+                    loading="lazy" />
+            </figure>
+            <div class="authentication-modal__content">
+                <p class="authentication-modal__description">
+                    We&#39;re a place where coders share, stay up-to-date and grow their careers.
+                </p>
+            </div>
+            <div class="authentication-modal__actions">
+                <a href="https://dev.to/enter?signup_subforem=1" class="crayons-btn" aria-label="Log in" data-no-instant>
+        Log in
+      </a>
+                <a href="https://dev.to/enter?signup_subforem=1&amp;state=new-user" class="crayons-btn crayons-btn--ghost-brand js-global-signup-modal__create-account" aria-label="Create new account" data-no-instant>
+        Create account
+      </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://assets1.dev.to/assets/signupModalShortcuts-0b25469b985100a01e94cbd7fccaf7f0a4d776e129aac65c766aa32cb28ab29a.js" defer="defer"></script>
+
+    <div id="cookie-consent"></div>
+    <div id="reaction-category-resources" class="hidden" aria-hidden="true">
+        <img data-name="Like" data-slug="like" data-position="1" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="18" height="18" />
+        <img data-name="Unicorn" data-slug="unicorn" data-position="2" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="18" height="18" />
+        <img data-name="Exploding Head" data-slug="exploding_head" data-position="3" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="18" height="18" />
+        <img data-name="Raised Hands" data-slug="raised_hands" data-position="4" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="18" height="18" />
+        <img data-name="Fire" data-slug="fire" data-position="5" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="18" height="18" />
+    </div>
+
+    <script>
+        var userSignedIn = false;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initAuth();
+        } else {
+            document.addEventListener('DOMContentLoaded', initAuth);
+        }
+
+        function initAuth() {
+            var paramToken = new URLSearchParams(window.location.search).get('jwt');
+
+            if (paramToken && !userSignedIn) {
+                authenticateUser(paramToken);
+            } else {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'https://forem.com/auth_pass/iframe';
+
+                document.body.appendChild(iframe);
+
+                window.addEventListener('message', function(event) {
+                    if (event.origin !== 'https://forem.com' && event.origin !== window.location.origin) {
+                        return;
+                    }
+
+                    var data = event.data;
+
+                    if (data.authenticated && !userSignedIn) {
+                        authenticateUser(data.token);
+                    } else if (data.authenticated && window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({
+                            action: 'login',
+                            token: data.token,
+                        }));
+                    }
+                });
+            }
+
+            function authenticateUser(token) {
+                fetch('/auth_pass/token_login', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': getMetaContent('csrf-token'),
+                        },
+                        body: JSON.stringify({
+                            token: token
+                        }),
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.success) {
+                            if (document.head.querySelector('meta[name="user-signed-in"][content="false"]')) {
+                                // Reload the page to update the user's state
+                                location.reload();
+                            }
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error during authentication:', error);
+                    });
+            }
+
+            function getMetaContent(name) {
+                var element = document.querySelector('meta[name="' + name + '"]');
+                return element ? element.getAttribute('content') : '';
+            }
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>

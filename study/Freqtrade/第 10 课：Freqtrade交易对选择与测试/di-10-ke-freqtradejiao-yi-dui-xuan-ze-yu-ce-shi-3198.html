@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>第 10 课：Freqtrade交易对选择与测试 - DEV Community</title>
+
+    <link rel="preload" href="/reactions?article_id=2906601" as="fetch" crossorigin="same-origin">
+    <link rel="canonical" href="https://dev.to/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198" />
+    <meta name="description" content="第 10 课：Freqtrade交易对选择与测试   ⏱ 课时：1.5 小时 🎯 学习目标：学会选择合适的交易对 📚 难度：⭐⭐ 回测实战            📖... Tagged with cryptocurrency, automation, testing, tutorial.">
+    <meta name="keywords" content="cryptocurrency, automation, testing, tutorial, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://dev.to/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198" />
+    <meta property="og:title" content="第 10 课：Freqtrade交易对选择与测试" />
+    <meta property="og:description" content="第 10 课：Freqtrade交易对选择与测试   ⏱ 课时：1.5 小时 🎯 学习目标：学会选择合适的交易对 📚 难度：⭐⭐ 回测实战            📖..." />
+    <meta property="og:site_name" content="DEV Community" />
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@henrylin99991">
+    <meta name="twitter:title" content="第 10 课：Freqtrade交易对选择与测试">
+    <meta name="twitter:description" content="第 10 课：Freqtrade交易对选择与测试   ⏱ 课时：1.5 小时 🎯 学习目标：学会选择合适的交易对 📚 难度：⭐⭐ 回测实战            📖...">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:image" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpc3bsljoh3d9i0dfepsk.png" />
+    <meta name="twitter:image:src" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpc3bsljoh3d9i0dfepsk.png">
+  <link rel="stylesheet" href="../../css1.css" media="all" id="main-minimal-stylesheet">
+    <link rel="stylesheet" href="../../css2.css" media="all" id="main-views-stylesheet">
+    <link rel="stylesheet" href="../../css3.css" media="all" id="main-crayons-stylesheet">
+    <meta name="last-updated" content="2025-11-19 15:02:07 UTC">
+    <meta name="user-signed-in" content="false">
+    <meta name="head-cached-at" content="1763564527">
+    <meta name="environment" content="production">
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-50b020b1243be61f13c330cddda498844595820e6fea4776a922a0732869fdfe.css" media="all" id="main-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-cdc7a9d63644fa298366fa5bc333031d9c657e192908ce73717367ca50319edb.css" media="all" id="main-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-b2b9be014af226e6b42b727ad5aebd5972455b492a5f1d94d186956997e7aa70.css" media="all" id="main-crayons-stylesheet" />
+
+    <script src="https://assets1.dev.to/assets/base-49a8fe4e07d8957dd667d261ec816890c300d63637698ea97a4da989fa01eeef.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/application-7258612fccf5d56314a6e4ad1898b4f818f474c4bb3485e302428d489a769a17.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseInitializers-2f0777a6d67046056f9f42665560ce072de3801292674358ddbad6e135c1891d.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseTracking-b6bf73e5ee66633e151e7d5b7c6bbccedfa4c59e3615be97b98c4c0f543ddae7.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/followButtons-a29380c2c88136b97b2b5e63e94614ff7458fc72e07cffa7b6153831c28a40d2.js" defer="defer"></script>
+
+    <meta name="search-script" content="https://assets1.dev.to/assets/Search-47b78c90427318f3a0e6fb7266d267b81e2bfe6e124e47aafdb9a513670fa8bc.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" type="image/x-icon" href="https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <link rel="apple-touch-icon" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://media2.dev.to/dynamic/image/width=152,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://media2.dev.to/dynamic/image/width=167,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link href="https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="192x192" />
+    <link href="https://media2.dev.to/dynamic/image/width=128,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="128x128" />
+    <meta name="apple-mobile-web-app-title" content="dev.to">
+    <meta name="application-name" content="dev.to">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community" />
+
+    <meta property="forem:name" content="DEV Community" />
+    <meta property="forem:logo" content="https://media2.dev.to/dynamic/image/width=512,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <meta property="forem:domain" content="dev.to" />
+
+    <link rel="stylesheet" href="../../custom-font-fix.css">
+<style id="kquantlab-article-cleanup">
+.crayons-layout__sidebar-left,
+#comments,
+#hide-comments-modal,
+.crayons-layout__comments-billboard,
+.js-billboard-container,
+#footer,
+#reaction-category-resources { display: none !important; }
+.crayons-layout.crayons-layout--article { grid-template-columns: minmax(0, 1fr) !important; max-width: 980px !important; margin-inline: auto !important; }
+#main-content.crayons-layout__content { grid-column: 1 !important; width: 100% !important; max-width: 900px !important; margin-inline: auto !important; }
+body { background: #f4f7f3 !important; }
+</style></head>
+
+<body class="sans-serif-article-body default-header" data-user-status="logged-out" data-is-root-subforem="" data-subforem-id="1" data-side-nav-visible="true" data-community-name="DEV Community" data-subscription-icon="https://assets1.dev.to/assets/subscription-icon-805dfa7ac7dd660f07ed8d654877270825b07a92a03841aa99a1093bd00431b2.png"
+    data-locale="en" data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr" data-deployed-at="2025-11-18T23:37:51Z" data-latest-commit-id="9a1b924a77578f8230e3a335defb9446416e4022" data-ga-tracking="UA-71991109-1" data-cookie-banner-user-context="logged_out_only"
+    data-cookie-banner-platform-context="off" data-algolia-id="PRSOBFP46H" data-algolia-search-key="9aa7d31610cba78851c9b1f63776a9dd" data-algolia-display="true" data-dynamic-url-component="bmar11" data-ga4-tracking-id="G-TYEM8Y3JN3">
+
+    <script>
+        if (navigator.userAgent === 'ForemWebView/1' || window.frameElement) {
+            document.body.classList.add("hidden-shell");
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-50b020b1243be61f13c330cddda498844595820e6fea4776a922a0732869fdfe.css" media="all" id="secondary-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-cdc7a9d63644fa298366fa5bc333031d9c657e192908ce73717367ca50319edb.css" media="all" id="secondary-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-b2b9be014af226e6b42b727ad5aebd5972455b492a5f1d94d186956997e7aa70.css" media="all" id="secondary-crayons-stylesheet" />
+
+    <div id="body-styles">
+        <style>
+            :root {
+                --accent-brand-lighter-rgb: 80, 99, 301;
+                --accent-brand-rgb: 59, 73, 223;
+                --accent-brand-darker-rgb: 47, 58, 178;
+            }
+        </style>
+    </div>
+    <div id="audiocontent" data-podcast="">
+
+    </div>
+
+    <script>
+        (function() {
+            // Utility: base64 unicode decode (for cookie payload)
+            function base64DecodeUnicode(str) {
+                try {
+                    return decodeURIComponent(
+                        atob(str)
+                        .split("")
+                        .map((c) => {
+                            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                        })
+                        .join(""),
+                    );
+                } catch (e) {
+                    console.error("base64DecodeUnicode failed:", e);
+                    return null;
+                }
+            }
+
+            function getCookie(name) {
+                const match = document.cookie.match(
+                    new RegExp("(^|; )" + name.replace(/([.*+?^${}()|[\]\\])/g, "\\$1") + "=([^;]*)"),
+                );
+                return match ? decodeURIComponent(match[2]) : null;
+            }
+
+            function getUserFromCookie() {
+                const raw = getCookie("current_user");
+                if (!raw) return null;
+                const decoded = base64DecodeUnicode(raw);
+                if (!decoded) return null;
+                try {
+                    return JSON.parse(decoded);
+                } catch (e) {
+                    console.error("Parsing user from cookie failed:", e);
+                    return null;
+                }
+            }
+
+            // --- user acquisition: prefer cookie, fallback to localStorage ---
+            const storedCurrentUser = (() => {
+                const fromCookie = getUserFromCookie();
+                if (fromCookie) return fromCookie;
+                const stored = localStorage ? .getItem("current_user");
+                if (!stored) return null;
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error("Parsing user from localStorage failed:", e);
+                    return null;
+                }
+            })();
+
+            // apply authorization/display logic and reorder if present
+            if (storedCurrentUser) {
+
+                if (storedCurrentUser ? .ordered_subforem_ids ? .length > 0) {
+                    const subforemIds = storedCurrentUser.ordered_subforem_ids;
+                    const sidebar = document.getElementById("main-side-bar");
+                    const rootLink = document.getElementById("root-subforem-link");
+                    const rootSubforemId = rootLink ? .getAttribute("data-sidebar-subforem-id");
+
+                    const subforemElements = sidebar.querySelectorAll("[data-sidebar-subforem-id]");
+                    const subforemMap = {};
+
+                    subforemElements.forEach((el) => {
+                        const id = el.getAttribute("data-sidebar-subforem-id");
+                        if (id !== rootSubforemId) {
+                            subforemMap[id] = el.closest(".crayons-side-nav__item");
+                        }
+                    });
+
+                    // remove non-root existing items
+                    Object.values(subforemMap).forEach((item) => {
+                        if (item && item.parentNode) {
+                            item.remove();
+                        }
+                    });
+
+                    // append in user's order (excluding root)
+                    const scrollableContainer = sidebar.querySelector(".crayons-side-nav__scrollable");
+                    subforemIds.forEach((id) => {
+                        if (id !== rootSubforemId && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // append leftovers not in the user's list
+                    Object.keys(subforemMap).forEach((id) => {
+                        const parsedId = parseInt(id, 10);
+                        if (!subforemIds.includes(parsedId) && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // ensure menu is last
+                    const menu = sidebar.querySelector(".crayons-side-nav__item--menu");
+                    if (menu) {
+                        sidebar.appendChild(menu);
+                    }
+                }
+            }
+
+            // active subforem highlight based on current context
+            const currentSubforemId = document.body.getAttribute("data-subforem-id");
+            if (currentSubforemId) {
+                const matching = document.querySelector(
+                    `[data-sidebar-subforem-id="${currentSubforemId}"]`,
+                );
+                if (matching) {
+                    matching.classList.add("active");
+                }
+            }
+        })();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebar = document.getElementById("main-side-bar");
+            if (!sidebar) return;
+
+            const items = sidebar.querySelectorAll(".crayons-side-nav__item");
+            let hoverTimeout;
+            let hasMoved = false;
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                hasMoved = true;
+            });
+
+            items.forEach((item) => {
+                item.addEventListener("mouseleave", function() {
+                    this.dataset.hasLeftOnce = "true";
+                    if (this.classList.contains("hovered")) {
+                        this.classList.remove("hovered");
+                        this.classList.add("not-hovered");
+                    }
+                });
+
+                item.addEventListener("mouseenter", function(e) {
+                    if (!hasMoved && !this.dataset.hasLeftOnce) {
+                        return;
+                    }
+
+                    const targetItem = this;
+                    const currentActive = sidebar.querySelector(
+                        ".crayons-side-nav__item.hovered",
+                    );
+
+                    const switchActiveState = () => {
+                        if (currentActive && currentActive !== targetItem) {
+                            currentActive.classList.remove("hovered");
+                            currentActive.classList.add("not-hovered");
+
+                            // Reset styles on the previous active item's pop-out card
+                            const previousPreviewCard = currentActive.querySelector(".profile-preview-card__content");
+                            if (previousPreviewCard) {
+                                previousPreviewCard.style.position = '';
+                                previousPreviewCard.style.left = '';
+                                previousPreviewCard.style.top = '';
+                                previousPreviewCard.style.bottom = '';
+                                previousPreviewCard.style.width = '';
+                                previousPreviewCard.style.zIndex = '';
+                            }
+                        }
+                        targetItem.classList.remove("not-hovered");
+                        targetItem.classList.add("hovered");
+                        let feedEl = document.getElementById('root-feed-card');
+                        if (feedEl) {
+                            feedEl.scrollTop = 0;
+                        }
+
+                        // --- NEW LOGIC START ---
+                        const previewCard = targetItem.querySelector(
+                            ".profile-preview-card__content",
+                        );
+                        if (previewCard) {
+                            const rect = targetItem.getBoundingClientRect();
+
+                            // Position the card relative to the viewport
+                            previewCard.style.position = 'fixed';
+                            previewCard.style.left = '48px';
+                            previewCard.style.width = '290px';
+                            previewCard.style.zIndex = '3000';
+
+                            if (window.innerHeight - rect.bottom < 280) {
+                                previewCard.classList.add("profile-preview-card__upsidedown");
+                                previewCard.style.top = 'auto';
+                                previewCard.style.bottom = `${window.innerHeight - rect.bottom - 30}px`;
+                            } else {
+                                previewCard.classList.remove("profile-preview-card__upsidedown");
+                                previewCard.style.top = `${rect.top - 30}px`;
+                                previewCard.style.bottom = 'auto';
+                            }
+                        }
+                        // --- NEW LOGIC END ---
+                    };
+
+                    clearTimeout(hoverTimeout);
+
+                    let delay = 20;
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+
+                    if (deltaX > 10 && deltaX >= Math.abs(deltaY)) {
+                        delay = 250;
+                    }
+
+                    if (currentActive && currentActive !== targetItem) {
+                        hoverTimeout = setTimeout(switchActiveState, delay);
+                    } else {
+                        switchActiveState();
+                    }
+                });
+            });
+
+            sidebar.addEventListener("mouseleave", () => {
+                clearTimeout(hoverTimeout);
+                const activeItem = sidebar.querySelector(
+                    ".crayons-side-nav__item.hovered",
+                );
+                if (activeItem) {
+                    activeItem.classList.remove("hovered");
+                    activeItem.classList.add("not-hovered");
+
+                    // Reset any inline styles on the pop-out card
+                    const previewCard = activeItem.querySelector(".profile-preview-card__content");
+                    if (previewCard) {
+                        previewCard.style.position = '';
+                        previewCard.style.left = '';
+                        previewCard.style.top = '';
+                        previewCard.style.bottom = '';
+                        previewCard.style.width = '';
+                        previewCard.style.zIndex = '';
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script src="https://assets1.dev.to/assets/mainSidebar-10996dbfced598bf8143689e86ee995945103270acd272ccf8bab9d50c74074b.js" defer="defer"></script>
+
+    <div class="navigation-progress" id="navigation-progress"></div>
+
+    <div id="active-broadcast" class="broadcast-wrapper"></div>
+    <div id="page-content" class="wrapper stories stories-show articletag-cryptocurrency articletag-automation articletag-testing articletag-tutorial articleuser-3446346" data-current-page="stories-show">
+        <div id="page-content-inner" data-internal-nav="false">
+            <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+
+
+            <style>
+                .html-variant-wrapper {
+                    display: none
+                }
+            </style>
+
+
+
+            <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js" integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy" crossorigin="anonymous" defer></script>
+
+            <script src="https://assets1.dev.to/assets/webShare-0686f0b9ac40589694ef6ae6a6202c44119bc781c254f6cf6d52d8a008461156.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articlePage-dce93defbf17ca8235da52777a6f00be546cfd46bf23df4486bb0461e18f7a23.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/commentDropdowns-7a28d130e5b78d38b30a9495a964003a66bd64fa455fc70b766d69cf06b9ba24.js" defer="defer"></script>
+
+            <script type="application/ld+json">
+                {
+                    "@context": "http://schema.org",
+                    "@type": "Article",
+                    "mainEntityOfPage": {
+                        "@type": "WebPage",
+                        "@id": "https://dev.to/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198"
+                    },
+                    "url": "https://dev.to/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198",
+                    "image": ["https://media2.dev.to/dynamic/image/width=1080,height=1080,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpc3bsljoh3d9i0dfepsk.png", "https://media2.dev.to/dynamic/image/width=1280,height=720,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpc3bsljoh3d9i0dfepsk.png", "https://media2.dev.to/dynamic/image/width=1600,height=900,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fpc3bsljoh3d9i0dfepsk.png"],
+                    "publisher": {
+                        "@context": "http://schema.org",
+                        "@type": "Organization",
+                        "name": "DEV Community",
+                        "logo": {
+                            "@context": "http://schema.org",
+                            "@type": "ImageObject",
+                            "url": "https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png",
+                            "width": "192",
+                            "height": "192"
+                        }
+                    },
+                    "headline": "第 10 课：Freqtrade交易对选择与测试",
+                    "author": {
+                        "@context": "http://schema.org",
+                        "@type": "Person",
+                        "url": "https://dev.to/henry_lin_3ac6363747f45b4",
+                        "name": "Henry Lin"
+                    },
+                    "datePublished": "2025-10-09T00:49:41Z",
+                    "dateModified": "2025-10-09T00:49:41Z"
+                }
+            </script>
+
+
+            <div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+                <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+                    <div class="crayons-article-actions print-hidden">
+                        <div class="crayons-article-actions__inner">
+
+
+                            <div class="reaction-drawer__outer hoverdown" style="">
+                                <button id="reaction-drawer-trigger" aria-label="reaction-drawer-trigger" aria-pressed="false" class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clipPath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clipPath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="https://assets1.dev.to/assets/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg" />
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">
+        <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+      </span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+                                <div class="reaction-drawer" aria-expanded="false">
+                                    <div class="reaction-drawer__container">
+                                        <button id="reaction-butt-like" name="Like" aria-label="Like" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+                                        <button id="reaction-butt-unicorn" name="Unicorn" aria-label="Unicorn" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+                                        <button id="reaction-butt-exploding_head" name="Exploding Head" aria-label="Exploding Head" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+                                        <button id="reaction-butt-raised_hands" name="Raised Hands" aria-label="Raised Hands" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+                                        <button id="reaction-butt-fire" name="Fire" aria-label="Fire" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="reaction-butt-comment" aria-label="Jump to Comments" aria-pressed="false" class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative" data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="0">
+      <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+    </span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+                            <button id="reaction-butt-readinglist" aria-label="Add to reading list" aria-pressed="false" class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative" data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+                            <button id="reaction-butt-boost" aria-label="Boost" aria-pressed="false" class="crayons-reaction crayons-reaction--boost crayons-tooltip__activator relative">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-hidden="true" class="crayons-icon" width="24" height="24">
+  <path transform="translate(24,0) scale(-1,1)" d="M6 4H21C21.5523 4 22 4.44772 22 5V12H20V6H6V9L1 5L6 1V4ZM18 20H3C2.44772 20 2 19.5523 2 19V12H4V18H18V15L23 19L18 23V20Z"></path>
+</svg>
+
+    </span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Boost
+    </span>
+</button>
+
+
+                            <div class="only-sidebar-menu-item">
+                                <div id="mod-actions-menu-btn-area" class="print-hidden trusted-visible-block align-center">
+                                </div>
+                            </div>
+                            <div class="align-center m:relative">
+                                <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a2vw3dmodt9c4e4v3s2fwcbp0nmytkvu" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="a2vw3dmodt9c4e4v3s2fwcbp0nmytkvu">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+      </button>
+
+                                <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+                                    <div class="only-mobile-menu-item">
+                                        <button class="mod-actions-menu-btn crayons-link crayons-link--block w-100 bg-transparent border-0 fw-bold">
+            Moderate
+          </button>
+                                    </div>
+                                    <div>
+                                        <button id="copy-post-url-button" class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0" data-postUrl="https://dev.to/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198">
+            <span class="fw-bold">Copy link</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="atolme2nfahcecf417n5ohf1pk9g4wo" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="atolme2nfahcecf417n5ohf1pk9g4wo">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+          </button>
+                                        <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" aria-live="polite" hidden>Copied to Clipboard</div>
+                                    </div>
+
+                                    <div class="Desktop-only">
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href='https://twitter.com/intent/tweet?text=%22%E7%AC%AC%2010%20%E8%AF%BE%EF%BC%9AFreqtrade%E4%BA%A4%E6%98%93%E5%AF%B9%E9%80%89%E6%8B%A9%E4%B8%8E%E6%B5%8B%E8%AF%95%22%20by%20%40henrylin99991%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198'>
+            Share to X
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198&title=%E7%AC%AC%2010%20%E8%AF%BE%EF%BC%9AFreqtrade%E4%BA%A4%E6%98%93%E5%AF%B9%E9%80%89%E6%8B%A9%E4%B8%8E%E6%B5%8B%E8%AF%95&summary=%E7%AC%AC%2010%20%E8%AF%BE%EF%BC%9AFreqtrade%E4%BA%A4%E6%98%93%E5%AF%B9%E9%80%89%E6%8B%A9%E4%B8%8E%E6%B5%8B%E8%AF%95%20%20%20%E2%8F%B1%20%E8%AF%BE%E6%97%B6%EF%BC%9A1.5%20%E5%B0%8F%E6%97%B6%20%F0%9F%8E%AF%20%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87%EF%BC%9A%E5%AD%A6%E4%BC%9A%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84%E4%BA%A4%E6%98%93%E5%AF%B9%20%F0%9F%93%9A%20%E9%9A%BE%E5%BA%A6%EF%BC%9A%E2%AD%90%E2%AD%90%20%E5%9B%9E%E6%B5%8B%E5%AE%9E%E6%88%98%20%20%20%20%20%20%20%20%20%20%20%20%F0%9F%93%96...&source=DEV%20Community">
+            Share to LinkedIn
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198">
+            Share to Facebook
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198">
+            Share to Mastodon
+          </a>
+                                    </div>
+
+                                    <web-share-wrapper shareurl="https://dev.to/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198" sharetitle="第 10 课：Freqtrade交易对选择与测试" sharetext="第 10 课：Freqtrade交易对选择与测试   ⏱ 课时：1.5 小时 🎯 学习目标：学会选择合适的交易对 📚 难度：⭐⭐ 回测实战            📖..."
+                                        template="web-share-button">
+                                    </web-share-wrapper>
+                                    <template id="web-share-button">
+          <a href="#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+        </template>
+
+                                    <a href="/report-abuse" class="crayons-link crayons-link--block">Report Abuse</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
+
+                <main id="main-content" class="crayons-layout__content grid gap-4">
+                    <div class="article-wrapper">
+
+
+                        <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="2906601" data-article-slug="di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198" data-author-id="3446346" data-author-name="Henry Lin" data-author-username="henry_lin_3ac6363747f45b4"
+                            data-co-author-ids="" data-path="/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198" data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true" data-scheduled="false"
+                            lang=zh>
+                            <script>
+                                try {
+                                    if (localStorage) {
+                                        let currentUser = localStorage.getItem('current_user');
+
+                                        if (currentUser) {
+                                            currentUser = JSON.parse(currentUser);
+                                            if (currentUser.id === 3446346) {
+                                                document.getElementById('article-show-container').classList.add('current-user-is-article-author');
+                                            }
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            </script>
+                            <header class="crayons-article__header" id="main-title">
+
+                                <div class="crayons-article__header__meta">
+                                    <div class="multiple_reactions_engagement">
+                                        <span class="reaction_engagement_like hidden">
+      <img src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="24" height="24" />
+      <span id="reaction_engagement_like_count">&nbsp;</span>
+                                        </span>
+                                        <span class="reaction_engagement_unicorn hidden">
+      <img src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="24" height="24" />
+      <span id="reaction_engagement_unicorn_count">&nbsp;</span>
+                                        </span>
+                                        <span class="reaction_engagement_exploding_head hidden">
+      <img src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="24" height="24" />
+      <span id="reaction_engagement_exploding_head_count">&nbsp;</span>
+                                        </span>
+                                        <span class="reaction_engagement_raised_hands hidden">
+      <img src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="24" height="24" />
+      <span id="reaction_engagement_raised_hands_count">&nbsp;</span>
+                                        </span>
+                                        <span class="reaction_engagement_fire hidden">
+      <img src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="24" height="24" />
+      <span id="reaction_engagement_fire_count">&nbsp;</span>
+                                        </span>
+                                    </div>
+
+
+                                    <h1 class=" fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 medium">
+                                        第 10 课：Freqtrade交易对选择与测试
+                                    </h1>
+
+                                    <div class="spec__tags flex flex-wrap">
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(59, 73, 223, 0.10);
+        --tag-prefix: #3b49df;
+        --tag-bg-hover: rgba(59, 73, 223, 0.10);
+        --tag-prefix-hover: #3b49df;
+      " href="/t/cryptocurrency"><span class="crayons-tag__prefix">#</span>cryptocurrency</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(254, 255, 165, 0.10);
+        --tag-prefix: #FEFFA5;
+        --tag-bg-hover: rgba(254, 255, 165, 0.10);
+        --tag-prefix-hover: #FEFFA5;
+      " href="/t/tutorial"><span class="crayons-tag__prefix">#</span>tutorial</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(59, 73, 223, 0.10);
+        --tag-prefix: #3b49df;
+        --tag-bg-hover: rgba(59, 73, 223, 0.10);
+        --tag-prefix-hover: #3b49df;
+      " href="/t/automation"><span class="crayons-tag__prefix">#</span>automation</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(1, 155, 101, 0.10);
+        --tag-prefix: #019b65;
+        --tag-bg-hover: rgba(1, 155, 101, 0.10);
+        --tag-prefix-hover: #019b65;
+      " href="/t/testing"><span class="crayons-tag__prefix">#</span>testing</a>
+                                    </div>
+                                </div>
+                            </header>
+
+                            <div class="crayons-article__main ">
+                                <div class="crayons-article__body text-styles spec__body" data-article-id="2906601" id="article-body">
+                                    <h1>
+                                        <a name="%E7%AC%AC-10-%E8%AF%BEfreqtrade%E4%BA%A4%E6%98%93%E5%AF%B9%E9%80%89%E6%8B%A9%E4%B8%8E%E6%B5%8B%E8%AF%95" href="#%E7%AC%AC-10-%E8%AF%BEfreqtrade%E4%BA%A4%E6%98%93%E5%AF%B9%E9%80%89%E6%8B%A9%E4%B8%8E%E6%B5%8B%E8%AF%95">
+  </a> 第 10 课：Freqtrade交易对选择与测试
+                                    </h1>
+
+                                    <p><strong>⏱ 课时</strong>：1.5 小时<br>
+                                        <strong>🎯 学习目标</strong>：学会选择合适的交易对<br>
+                                        <strong>📚 难度</strong>：⭐⭐ 回测实战</p>
+
+                                    <hr>
+                                    <h2>
+                                        <a name="%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%A7%88" href="#%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%A7%88">
+  </a> 📖 课程概览
+                                    </h2>
+
+                                    <p>不同的交易对有不同的特性。选择合适的交易对对策略表现有巨大影响。本课将教你如何评估交易对的流动性、波动率，以及如何构建多交易对组合来分散风险。</p>
+
+                                    <hr>
+                                    <h2>
+                                        <a name="101-%E4%B8%BB%E6%B5%81%E5%B8%81-vs-%E5%B1%B1%E5%AF%A8%E5%B8%81" href="#101-%E4%B8%BB%E6%B5%81%E5%B8%81-vs-%E5%B1%B1%E5%AF%A8%E5%B8%81">
+  </a> 10.1 主流币 vs 山寨币
+                                    </h2>
+                                    <h3>
+                                        <a name="%E4%BA%A4%E6%98%93%E5%AF%B9%E5%88%86%E7%B1%BB" href="#%E4%BA%A4%E6%98%93%E5%AF%B9%E5%88%86%E7%B1%BB">
+  </a> 交易对分类
+                                    </h3>
+                                    <h4>
+                                        <a name="1-%E4%B8%BB%E6%B5%81%E5%B8%81blue-chips" href="#1-%E4%B8%BB%E6%B5%81%E5%B8%81blue-chips">
+  </a> 1. 主流币（Blue Chips）
+                                    </h4>
+
+                                    <p><strong>定义</strong>：市值前 10-20 的加密货币</p>
+
+                                    <p><strong>代表币种</strong>：</p>
+
+                                    <ul>
+                                        <li>
+                                            <strong>BTC/USDT</strong>（比特币）- 市值第一</li>
+                                        <li>
+                                            <strong>ETH/USDT</strong>（以太坊）- 市值第二</li>
+                                        <li>
+                                            <strong>BNB/USDT</strong>（币安币）- 交易所代币</li>
+                                        <li>
+                                            <strong>XRP/USDT</strong>（瑞波币）</li>
+                                        <li>
+                                            <strong>SOL/USDT</strong>（Solana）</li>
+                                        <li>
+                                            <strong>ADA/USDT</strong>（Cardano）</li>
+                                    </ul>
+
+                                    <p><strong>特点</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 流动性好（成交量大）</li>
+                                        <li>✅ 波动相对稳定</li>
+                                        <li>✅ 价差小（滑点低）</li>
+                                        <li>✅ 不易被操纵</li>
+                                        <li>✅ 信息透明</li>
+                                        <li>⚠️ 收益相对较低</li>
+                                    </ul>
+
+                                    <p><strong>风险评级</strong>：🟢 低风险</p>
+                                    <h4>
+                                        <a name="2-%E4%B8%AD%E7%9B%98%E5%B8%81midcaps" href="#2-%E4%B8%AD%E7%9B%98%E5%B8%81midcaps">
+  </a> 2. 中盘币（Mid-Caps）
+                                    </h4>
+
+                                    <p><strong>定义</strong>：市值排名 20-100</p>
+
+                                    <p><strong>代表币种</strong>：</p>
+
+                                    <ul>
+                                        <li>
+                                            <strong>MATIC/USDT</strong>（Polygon）</li>
+                                        <li>
+                                            <strong>LINK/USDT</strong>（Chainlink）</li>
+                                        <li>
+                                            <strong>UNI/USDT</strong>（Uniswap）</li>
+                                        <li>
+                                            <strong>AVAX/USDT</strong>（Avalanche）</li>
+                                        <li>
+                                            <strong>ATOM/USDT</strong>（Cosmos）</li>
+                                    </ul>
+
+                                    <p><strong>特点</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 流动性较好</li>
+                                        <li>⚠️ 波动性较大</li>
+                                        <li>⚠️ 收益潜力更高</li>
+                                        <li>⚠️ 风险适中</li>
+                                    </ul>
+
+                                    <p><strong>风险评级</strong>：🟡 中等风险</p>
+                                    <h4>
+                                        <a name="3-%E5%B1%B1%E5%AF%A8%E5%B8%81altcoins" href="#3-%E5%B1%B1%E5%AF%A8%E5%B8%81altcoins">
+  </a> 3. 山寨币（Altcoins）
+                                    </h4>
+
+                                    <p><strong>定义</strong>：市值排名 100+</p>
+
+                                    <p><strong>特点</strong>：</p>
+
+                                    <ul>
+                                        <li>❌ 流动性差（成交量小）</li>
+                                        <li>❌ 波动极大（日波动 20%+）</li>
+                                        <li>❌ 价差大（滑点高）</li>
+                                        <li>❌ 容易被操纵</li>
+                                        <li>❌ 信息不对称</li>
+                                        <li>⚠️ 高风险高收益</li>
+                                    </ul>
+
+                                    <p><strong>风险评级</strong>：🔴 高风险</p>
+                                    <h3>
+                                        <a name="%E4%B8%BB%E6%B5%81%E5%B8%81-vs-%E5%B1%B1%E5%AF%A8%E5%B8%81%E5%AF%B9%E6%AF%94" href="#%E4%B8%BB%E6%B5%81%E5%B8%81-vs-%E5%B1%B1%E5%AF%A8%E5%B8%81%E5%AF%B9%E6%AF%94">
+  </a> 主流币 vs 山寨币对比
+                                    </h3>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>特征</th>
+                                                    <th>主流币</th>
+                                                    <th>中盘币</th>
+                                                    <th>山寨币</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>日均成交量</strong></td>
+                                                    <td>&gt; $1B</td>
+                                                    <td>$100M-$1B</td>
+                                                    <td>&lt; $100M</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>日波动率</strong></td>
+                                                    <td>2-5%</td>
+                                                    <td>5-10%</td>
+                                                    <td>10-30%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>滑点</strong></td>
+                                                    <td>&lt; 0.1%</td>
+                                                    <td>0.1-0.3%</td>
+                                                    <td>&gt; 0.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>操纵风险</strong></td>
+                                                    <td>极低</td>
+                                                    <td>低</td>
+                                                    <td>高</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>收益潜力</strong></td>
+                                                    <td>中等</td>
+                                                    <td>较高</td>
+                                                    <td>极高</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>适合新手</strong></td>
+                                                    <td>✅ 是</td>
+                                                    <td>⚠️ 谨慎</td>
+                                                    <td>❌ 否</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <h3>
+                                        <a name="%E6%8E%A8%E8%8D%90%E9%85%8D%E7%BD%AE" href="#%E6%8E%A8%E8%8D%90%E9%85%8D%E7%BD%AE">
+  </a> 推荐配置
+                                    </h3>
+                                    <h4>
+                                        <a name="%E4%BF%9D%E5%AE%88%E5%9E%8B%E6%96%B0%E6%89%8B%E6%8E%A8%E8%8D%90" href="#%E4%BF%9D%E5%AE%88%E5%9E%8B%E6%96%B0%E6%89%8B%E6%8E%A8%E8%8D%90">
+  </a> 保守型（新手推荐）
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>100% 主流币
+- BTC/USDT: 40%
+- ETH/USDT: 40%
+- BNB/USDT: 20%
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E5%B9%B3%E8%A1%A1%E5%9E%8B" href="#%E5%B9%B3%E8%A1%A1%E5%9E%8B">
+  </a> 平衡型
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>70% 主流币 + 30% 中盘币
+- BTC/USDT: 30%
+- ETH/USDT: 30%
+- BNB/USDT: 10%
+- SOL/USDT: 15%
+- MATIC/USDT: 15%
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E6%BF%80%E8%BF%9B%E5%9E%8B%E6%9C%89%E7%BB%8F%E9%AA%8C%E8%80%85" href="#%E6%BF%80%E8%BF%9B%E5%9E%8B%E6%9C%89%E7%BB%8F%E9%AA%8C%E8%80%85">
+  </a> 激进型（有经验者）
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>50% 主流币 + 40% 中盘币 + 10% 山寨币
+- BTC/USDT: 25%
+- ETH/USDT: 25%
+- SOL/USDT: 20%
+- LINK/USDT: 20%
+- 其他小币: 10%
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <hr>
+                                    <h2>
+                                        <a name="102-%E6%B5%81%E5%8A%A8%E6%80%A7%E8%AF%84%E4%BC%B0" href="#102-%E6%B5%81%E5%8A%A8%E6%80%A7%E8%AF%84%E4%BC%B0">
+  </a> 10.2 流动性评估
+                                    </h2>
+                                    <h3>
+                                        <a name="%E4%BB%80%E4%B9%88%E6%98%AF%E6%B5%81%E5%8A%A8%E6%80%A7" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B5%81%E5%8A%A8%E6%80%A7">
+  </a> 什么是流动性？
+                                    </h3>
+
+                                    <p><strong>定义</strong>：资产能够快速买入或卖出而不显著影响价格的能力。</p>
+
+                                    <p><strong>关键指标</strong>：</p>
+
+                                    <ol>
+                                        <li><strong>24小时成交量</strong></li>
+                                        <li><strong>订单簿深度</strong></li>
+                                        <li><strong>买卖价差（Spread）</strong></li>
+                                    </ol>
+                                    <h3>
+                                        <a name="24%E5%B0%8F%E6%97%B6%E6%88%90%E4%BA%A4%E9%87%8F" href="#24%E5%B0%8F%E6%97%B6%E6%88%90%E4%BA%A4%E9%87%8F">
+  </a> 24小时成交量
+                                    </h3>
+
+                                    <p><strong>评估标准</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>优秀：&gt; $500M/天
+良好：$100M-$500M/天
+一般：$20M-$100M/天
+较差：$5M-$20M/天
+很差：&lt; $5M/天
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>查看方法</strong>：<br> 访问 <a href="https://coinmarketcap.com/" target="_blank" rel="noopener noreferrer">CoinMarketCap</a> 或 <a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer">CoinGecko</a></p>
+
+                                    <p><strong>案例对比</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>BTC/USDT: $25,000M/天 ✅ 优秀
+ETH/USDT: $10,000M/天 ✅ 优秀
+SOL/USDT: $800M/天 ✅ 优秀
+MATIC/USDT: $300M/天 ✅ 良好
+DOGE/USDT: $150M/天 ✅ 良好
+某小币/USDT: $2M/天 ❌ 很差
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E8%AE%A2%E5%8D%95%E7%B0%BF%E6%B7%B1%E5%BA%A6" href="#%E8%AE%A2%E5%8D%95%E7%B0%BF%E6%B7%B1%E5%BA%A6">
+  </a> 订单簿深度
+                                    </h3>
+
+                                    <p><strong>定义</strong>：在不同价格水平上挂单的数量。</p>
+
+                                    <p><strong>查看方法</strong>：</p>
+
+                                    <ol>
+                                        <li>登录 Binance</li>
+                                        <li>打开交易对页面</li>
+                                        <li>查看"深度图"（Depth Chart）</li>
+                                    </ol>
+
+                                    <p><strong>评估标准</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>深度好：±2% 价格范围内有大量挂单
+深度差：±2% 价格范围内挂单稀少
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>影响</strong>：</p>
+
+                                    <ul>
+                                        <li>深度好 → 大单不会显著影响价格</li>
+                                        <li>深度差 → 大单会造成价格剧烈波动</li>
+                                    </ul>
+
+                                    <h3>
+                                        <a name="%E4%B9%B0%E5%8D%96%E4%BB%B7%E5%B7%AEspread" href="#%E4%B9%B0%E5%8D%96%E4%BB%B7%E5%B7%AEspread">
+  </a> 买卖价差（Spread）
+                                    </h3>
+
+                                    <p><strong>定义</strong>：最佳买价和最佳卖价之间的差额。</p>
+
+                                    <p><strong>计算公式</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>Spread = (卖一价 - 买一价) / 买一价 × 100%
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>案例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>BTC/USDT:
+买一价：$43,500.00
+卖一价：$43,500.50
+Spread = ($43,500.50 - $43,500.00) / $43,500.00 = 0.0011%
+
+某小币/USDT:
+买一价：$0.1000
+卖一价：$0.1050
+Spread = ($0.1050 - $0.1000) / $0.1000 = 5%
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>评估标准</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>优秀：&lt; 0.01%（主流币）
+良好：0.01-0.05%
+一般：0.05-0.1%
+较差：0.1-0.5%
+很差：&gt; 0.5%（山寨币）
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E6%B5%81%E5%8A%A8%E6%80%A7%E5%AF%B9%E7%AD%96%E7%95%A5%E7%9A%84%E5%BD%B1%E5%93%8D" href="#%E6%B5%81%E5%8A%A8%E6%80%A7%E5%AF%B9%E7%AD%96%E7%95%A5%E7%9A%84%E5%BD%B1%E5%93%8D">
+  </a> 流动性对策略的影响
+                                    </h3>
+
+                                    <p><strong>高流动性交易对</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 滑点小（执行价格接近回测价格）</li>
+                                        <li>✅ 回测结果更可信</li>
+                                        <li>✅ 适合高频策略</li>
+                                        <li>✅ 大资金可以交易</li>
+                                    </ul>
+
+                                    <p><strong>低流动性交易对</strong>：</p>
+
+                                    <ul>
+                                        <li>❌ 滑点大（实盘收益远低于回测）</li>
+                                        <li>❌ 回测结果不可信</li>
+                                        <li>❌ 不适合高频策略</li>
+                                        <li>❌ 大资金会影响价格</li>
+                                    </ul>
+
+                                    <p><strong>滑点案例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>回测结果（理想情况）：
+买入价：$100.00
+卖出价：$102.00
+收益：+2%
+
+实盘结果（低流动性）：
+买入价：$100.20（滑点 +0.2%）
+卖出价：$101.60（滑点 -0.4%）
+收益：+1.4%（损失 30% 的利润！）
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="103-%E6%B3%A2%E5%8A%A8%E7%8E%87%E5%88%86%E6%9E%90" href="#103-%E6%B3%A2%E5%8A%A8%E7%8E%87%E5%88%86%E6%9E%90">
+  </a> 10.3 波动率分析
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%A2%E5%8A%A8%E7%8E%87" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%A2%E5%8A%A8%E7%8E%87">
+  </a> 什么是波动率？
+                                    </h3>
+
+                                    <p><strong>定义</strong>：价格变动的幅度和频率。</p>
+
+                                    <p><strong>计算方法</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1"># 日波动率（简化版）
+</span><span class="n">daily_volatility</span> <span class="o">=</span> <span class="p">(</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span><span class="p">)</span> <span class="o">/</span> <span class="n">low</span> <span class="err">×</span> <span class="mi">100</span><span class="o">%</span>
+
+<span class="c1"># 标准差波动率（专业版）
+</span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">returns</span> <span class="o">=</span> <span class="n">prices</span><span class="p">.</span><span class="nf">pct_change</span><span class="p">()</span>
+<span class="n">volatility</span> <span class="o">=</span> <span class="n">returns</span><span class="p">.</span><span class="nf">std</span><span class="p">()</span> <span class="err">×</span> <span class="mi">100</span><span class="o">%</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E6%B3%A2%E5%8A%A8%E7%8E%87%E5%88%86%E7%B1%BB" href="#%E6%B3%A2%E5%8A%A8%E7%8E%87%E5%88%86%E7%B1%BB">
+  </a> 波动率分类
+                                    </h3>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>波动率</th>
+                                                    <th>日振幅</th>
+                                                    <th>代表币种</th>
+                                                    <th>适合策略</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>极低</strong></td>
+                                                    <td>&lt; 2%</td>
+                                                    <td>稳定币对</td>
+                                                    <td>套利</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>低</strong></td>
+                                                    <td>2-5%</td>
+                                                    <td>BTC, ETH</td>
+                                                    <td>趋势跟踪</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>中等</strong></td>
+                                                    <td>5-10%</td>
+                                                    <td>中盘币</td>
+                                                    <td>均衡策略</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>高</strong></td>
+                                                    <td>10-20%</td>
+                                                    <td>热门山寨币</td>
+                                                    <td>短线突破</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>极高</strong></td>
+                                                    <td>&gt; 20%</td>
+                                                    <td>小市值币</td>
+                                                    <td>不建议</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h3>
+                                        <a name="%E6%B3%A2%E5%8A%A8%E7%8E%87%E5%AF%B9%E7%AD%96%E7%95%A5%E7%9A%84%E5%BD%B1%E5%93%8D" href="#%E6%B3%A2%E5%8A%A8%E7%8E%87%E5%AF%B9%E7%AD%96%E7%95%A5%E7%9A%84%E5%BD%B1%E5%93%8D">
+  </a> 波动率对策略的影响
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E9%AB%98%E6%B3%A2%E5%8A%A8-vs-%E4%BD%8E%E6%B3%A2%E5%8A%A8" href="#%E9%AB%98%E6%B3%A2%E5%8A%A8-vs-%E4%BD%8E%E6%B3%A2%E5%8A%A8">
+  </a> 高波动 vs 低波动
+                                    </h4>
+
+                                    <p><strong>高波动交易对（日振幅 &gt; 10%）</strong>：</p>
+
+                                    <p><strong>优点</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 盈利空间大</li>
+                                        <li>✅ 容易达到止盈目标</li>
+                                        <li>✅ 适合短线策略</li>
+                                    </ul>
+
+                                    <p><strong>缺点</strong>：</p>
+
+                                    <ul>
+                                        <li>❌ 容易触发止损</li>
+                                        <li>❌ 假突破多</li>
+                                        <li>❌ 回撤风险大</li>
+                                        <li>❌ 心理压力大</li>
+                                    </ul>
+
+                                    <p><strong>适合策略</strong>：</p>
+
+                                    <ul>
+                                        <li>短线突破策略</li>
+                                        <li>高频交易策略</li>
+                                        <li>需要放宽止损（-10% 以上）</li>
+                                    </ul>
+
+                                    <p><strong>低波动交易对（日振幅 &lt; 5%）</strong>：</p>
+
+                                    <p><strong>优点</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 稳定性好</li>
+                                        <li>✅ 回撤小</li>
+                                        <li>✅ 风险可控</li>
+                                        <li>✅ 适合新手</li>
+                                    </ul>
+
+                                    <p><strong>缺点</strong>：</p>
+
+                                    <ul>
+                                        <li>⚠️ 盈利空间小</li>
+                                        <li>⚠️ 难以达到高止盈目标</li>
+                                        <li>⚠️ 交易机会少</li>
+                                    </ul>
+
+                                    <p><strong>适合策略</strong>：</p>
+
+                                    <ul>
+                                        <li>趋势跟踪策略</li>
+                                        <li>长线波段策略</li>
+                                        <li>需要降低 ROI 目标（2-5%）</li>
+                                    </ul>
+
+                                    <h3>
+                                        <a name="%E6%B3%A2%E5%8A%A8%E7%8E%87%E6%B5%8B%E8%AF%95" href="#%E6%B3%A2%E5%8A%A8%E7%8E%87%E6%B5%8B%E8%AF%95">
+  </a> 波动率测试
+                                    </h3>
+
+                                    <p><strong>使用 Freqtrade 命令</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 下载数据</span>
+freqtrade download-data <span class="nt">-c</span> config.json <span class="nt">--pairs</span> BTC/USDT ETH/USDT SOL/USDT DOGE/USDT <span class="nt">--days</span> 90 <span class="nt">--timeframes</span> 1d
+
+<span class="c"># 查看价格波动</span>
+freqtrade plot-dataframe <span class="nt">-c</span> config.json <span class="nt">--pairs</span> BTC/USDT <span class="nt">--timerange</span> 20250701-20250930
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>手动计算</strong>：<br> 访问 TradingView，查看不同交易对的 ATR（Average True Range）指标。</p>
+                                    <h3>
+                                        <a name="%E7%AD%96%E7%95%A5%E9%80%82%E9%85%8D%E6%B3%A2%E5%8A%A8%E7%8E%87" href="#%E7%AD%96%E7%95%A5%E9%80%82%E9%85%8D%E6%B3%A2%E5%8A%A8%E7%8E%87">
+  </a> 策略适配波动率
+                                    </h3>
+
+                                    <p><strong>调整止损</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1"># 低波动交易对
+</span><span class="n">stoploss</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.03</span>  <span class="c1"># 3% 止损
+</span>
+<span class="c1"># 中波动交易对
+</span><span class="n">stoploss</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.05</span>  <span class="c1"># 5% 止损
+</span>
+<span class="c1"># 高波动交易对
+</span><span class="n">stoploss</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.10</span>  <span class="c1"># 10% 止损
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>调整 ROI</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1"># 低波动交易对（BTC/ETH）
+</span><span class="n">minimal_roi</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">0</span><span class="sh">"</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>   <span class="c1"># 5% 目标
+</span>    <span class="sh">"</span><span class="s">120</span><span class="sh">"</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">240</span><span class="sh">"</span><span class="p">:</span> <span class="mf">0.01</span>
+<span class="p">}</span>
+
+<span class="c1"># 高波动交易对（山寨币）
+</span><span class="n">minimal_roi</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">0</span><span class="sh">"</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>   <span class="c1"># 15% 目标
+</span>    <span class="sh">"</span><span class="s">60</span><span class="sh">"</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">120</span><span class="sh">"</span><span class="p">:</span> <span class="mf">0.03</span>
+<span class="p">}</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="104-%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E7%BB%84%E5%90%88%E6%B5%8B%E8%AF%95" href="#104-%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E7%BB%84%E5%90%88%E6%B5%8B%E8%AF%95">
+  </a> 10.4 多交易对组合测试
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9">
+  </a> 为什么需要多交易对？
+                                    </h3>
+
+                                    <p><strong>单一交易对的风险</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>只交易 BTC/USDT:
+- BTC 横盘 → 策略无信号 → 无收益
+- BTC 崩盘 → 触发止损 → 亏损
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>多交易对的优势</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 分散风险</li>
+                                        <li>✅ 增加交易机会</li>
+                                        <li>✅ 平滑收益曲线</li>
+                                        <li>✅ 降低回撤</li>
+                                    </ul>
+
+                                    <h3>
+                                        <a name="%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E5%9B%9E%E6%B5%8B" href="#%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E5%9B%9E%E6%B5%8B">
+  </a> 多交易对回测
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E6%96%B9%E6%B3%95-1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE" href="#%E6%96%B9%E6%B3%95-1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE">
+  </a> 方法 1：配置文件设置
+                                    </h4>
+
+                                    <p>编辑 <code>config.json</code>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"exchange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"pair_whitelist"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"BTC/USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ETH/USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"BNB/USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"SOL/USDT"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"XRP/USDT"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p>运行回测：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>freqtrade backtesting <span class="se">\</span>
+  <span class="nt">-c</span> config.json <span class="se">\</span>
+  <span class="nt">--strategy</span> Strategy001 <span class="se">\</span>
+  <span class="nt">--timerange</span> 20250701-20250930
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E6%96%B9%E6%B3%95-2%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8C%87%E5%AE%9A" href="#%E6%96%B9%E6%B3%95-2%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8C%87%E5%AE%9A">
+  </a> 方法 2：命令行指定
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>freqtrade backtesting <span class="se">\</span>
+  <span class="nt">-c</span> config.json <span class="se">\</span>
+  <span class="nt">--strategy</span> Strategy001 <span class="se">\</span>
+  <span class="nt">--pairs</span> BTC/USDT ETH/USDT BNB/USDT <span class="se">\</span>
+  <span class="nt">--timerange</span> 20250701-20250930
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90" href="#%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90">
+  </a> 多交易对结果分析
+                                    </h3>
+
+                                    <p><strong>回测报告示例</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>BACKTESTING REPORT
+┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Pair       ┃ Trades ┃ Avg Profit ┃ Tot Profit % ┃ Win Rate % ┃
+┡━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ BTC/USDT   │     28 │       1.52 │         8.45 │       85.7 │
+│ ETH/USDT   │     35 │       1.38 │        10.22 │       82.9 │
+│ BNB/USDT   │     22 │       1.65 │         7.15 │       86.4 │
+│ SOL/USDT   │     42 │       0.95 │         6.83 │       78.6 │
+│ XRP/USDT   │     18 │       1.12 │         4.52 │       77.8 │
+├────────────┼────────┼────────────┼──────────────┼────────────┤
+│ TOTAL      │    145 │       1.34 │        37.17 │       82.1 │
+└────────────┴────────┴────────────┴──────────────┴────────────┘
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>分析要点</strong>：</p>
+
+                                    <ol>
+                                        <li>
+                                            <strong>表现最好的交易对</strong>：ETH/USDT（总收益 10.22%）</li>
+                                        <li>
+                                            <strong>表现最差的交易对</strong>：XRP/USDT（总收益 4.52%）</li>
+                                        <li>
+                                            <strong>最稳定的交易对</strong>：BNB/USDT（胜率 86.4%）</li>
+                                        <li>
+                                            <strong>交易最多的交易对</strong>：SOL/USDT（42 次）</li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90">
+  </a> 相关性分析
+                                    </h3>
+
+                                    <p><strong>什么是相关性？</strong><br> 两个交易对价格走势的相似程度。
+                                    </p>
+
+                                    <p><strong>相关性系数</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>+1.0: 完全正相关（同涨同跌）
+0.0:  无相关
+-1.0: 完全负相关（此涨彼跌）
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>典型相关性</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>BTC/USDT vs ETH/USDT: 0.85（高度正相关）
+BTC/USDT vs DOGE/USDT: 0.65（中度正相关）
+BTC/USDT vs 稳定币对: 0.05（无相关）
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>分散风险的原则</strong>：</p>
+
+                                    <ul>
+                                        <li>❌ 选择相关性 &gt; 0.9 的交易对（无分散效果）</li>
+                                        <li>✅ 选择相关性 0.5-0.8 的交易对（最佳平衡）</li>
+                                        <li>⚠️ 选择相关性 &lt; 0.3 的交易对（过于分散）</li>
+                                    </ul>
+
+                                    <p><strong>推荐组合</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>组合 1（保守）：
+- BTC/USDT（40%）
+- ETH/USDT（40%）
+- BNB/USDT（20%）
+相关性：0.8-0.9
+
+组合 2（平衡）：
+- BTC/USDT（30%）
+- ETH/USDT（25%）
+- SOL/USDT（20%）
+- MATIC/USDT（15%）
+- LINK/USDT（10%）
+相关性：0.6-0.8
+
+组合 3（分散）：
+- BTC/USDT（20%）
+- ETH/USDT（20%）
+- BNB/USDT（15%）
+- SOL/USDT（15%）
+- XRP/USDT（10%）
+- MATIC/USDT（10%）
+- LINK/USDT（10%）
+相关性：0.5-0.7
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E6%9E%84%E5%BB%BA%E6%9C%80%E4%BC%98%E6%8A%95%E8%B5%84%E7%BB%84%E5%90%88" href="#%E6%9E%84%E5%BB%BA%E6%9C%80%E4%BC%98%E6%8A%95%E8%B5%84%E7%BB%84%E5%90%88">
+  </a> 构建最优投资组合
+                                    </h3>
+
+                                    <p><strong>步骤</strong>：</p>
+
+                                    <ol>
+                                        <li>
+                                            <p><strong>筛选交易对</strong>：</p>
+
+                                            <ul>
+                                                <li>24h 成交量 &gt; $100M</li>
+                                                <li>在 Binance 上可交易</li>
+                                                <li>排除稳定币对</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><strong>单独回测</strong>：<br>
+                                            </p>
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>   <span class="k">for </span>pair <span class="k">in </span>BTC/USDT ETH/USDT BNB/USDT SOL/USDT XRP/USDT
+   <span class="k">do
+     </span>freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--pairs</span> <span class="nv">$pair</span> <span class="nt">--timerange</span> 20250701-20250930
+   <span class="k">done</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ol>
+                                        <li>
+                                            <p><strong>选择表现优秀的交易对</strong>：</p>
+
+                                            <ul>
+                                                <li>总收益 &gt; 5%</li>
+                                                <li>胜率 &gt; 70%</li>
+                                                <li>最大回撤 &lt; 10%</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><strong>组合回测</strong>：<br>
+                                            </p>
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>   freqtrade backtesting <span class="se">\</span>
+     <span class="nt">-c</span> config.json <span class="se">\</span>
+     <span class="nt">--strategy</span> Strategy001 <span class="se">\</span>
+     <span class="nt">--pairs</span> BTC/USDT ETH/USDT BNB/USDT <span class="se">\</span>
+     <span class="nt">--timerange</span> 20250701-20250930
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ol>
+                                        <li>
+                                            <strong>对比结果</strong>：
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>   单一交易对（BTC/USDT）：
+     收益：+8.45%
+     回撤：-6.2%
+
+   三交易对组合：
+     收益：+25.82%（组合所有交易对）
+     回撤：-4.8%（更低！）
+
+   结论：组合更优 ✅
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%AE%9E%E8%B7%B5%E4%BB%BB%E5%8A%A1" href="#%E5%AE%9E%E8%B7%B5%E4%BB%BB%E5%8A%A1">
+  </a> 💡 实践任务
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-1%E4%B8%8B%E8%BD%BD%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E6%95%B0%E6%8D%AE" href="#%E4%BB%BB%E5%8A%A1-1%E4%B8%8B%E8%BD%BD%E5%A4%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E6%95%B0%E6%8D%AE">
+  </a> 任务 1：下载多交易对数据
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 下载 5 个主流交易对的数据</span>
+freqtrade download-data <span class="se">\</span>
+  <span class="nt">-c</span> config.json <span class="se">\</span>
+  <span class="nt">--pairs</span> BTC/USDT ETH/USDT BNB/USDT SOL/USDT XRP/USDT <span class="se">\</span>
+  <span class="nt">--days</span> 90 <span class="se">\</span>
+  <span class="nt">--timeframes</span> 15m
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-2%E5%8D%95%E7%8B%AC%E6%B5%8B%E8%AF%95%E6%AF%8F%E4%B8%AA%E4%BA%A4%E6%98%93%E5%AF%B9" href="#%E4%BB%BB%E5%8A%A1-2%E5%8D%95%E7%8B%AC%E6%B5%8B%E8%AF%95%E6%AF%8F%E4%B8%AA%E4%BA%A4%E6%98%93%E5%AF%B9">
+  </a> 任务 2：单独测试每个交易对
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 测试 BTC/USDT</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--pairs</span> BTC/USDT <span class="nt">--timerange</span> 20250701-20250930 <span class="nt">--timeframe</span> 15m
+
+<span class="c"># 测试 ETH/USDT</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--pairs</span> ETH/USDT <span class="nt">--timerange</span> 20250701-20250930 <span class="nt">--timeframe</span> 15m
+
+<span class="c"># 测试 BNB/USDT</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--pairs</span> BNB/USDT <span class="nt">--timerange</span> 20250701-20250930 <span class="nt">--timeframe</span> 15m
+
+<span class="c"># 测试 SOL/USDT</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--pairs</span> SOL/USDT <span class="nt">--timerange</span> 20250701-20250930 <span class="nt">--timeframe</span> 15m
+
+<span class="c"># 测试 XRP/USDT</span>
+freqtrade backtesting <span class="nt">-c</span> config.json <span class="nt">--strategy</span> Strategy001 <span class="nt">--pairs</span> XRP/USDT <span class="nt">--timerange</span> 20250701-20250930 <span class="nt">--timeframe</span> 15m
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-3%E5%88%B6%E4%BD%9C%E4%BA%A4%E6%98%93%E5%AF%B9%E5%AF%B9%E6%AF%94%E8%A1%A8" href="#%E4%BB%BB%E5%8A%A1-3%E5%88%B6%E4%BD%9C%E4%BA%A4%E6%98%93%E5%AF%B9%E5%AF%B9%E6%AF%94%E8%A1%A8">
+  </a> 任务 3：制作交易对对比表
+                                    </h3>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>交易对</th>
+                                                    <th>交易次数</th>
+                                                    <th>胜率%</th>
+                                                    <th>总收益%</th>
+                                                    <th>平均收益%</th>
+                                                    <th>最大回撤%</th>
+                                                    <th>Sharpe</th>
+                                                    <th>24h成交量</th>
+                                                    <th>推荐度</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>BTC/USDT</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>⭐?</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ETH/USDT</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>⭐?</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>BNB/USDT</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>⭐?</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>SOL/USDT</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>⭐?</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>XRP/USDT</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>⭐?</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-4%E7%BB%84%E5%90%88%E6%B5%8B%E8%AF%95" href="#%E4%BB%BB%E5%8A%A1-4%E7%BB%84%E5%90%88%E6%B5%8B%E8%AF%95">
+  </a> 任务 4：组合测试
+                                    </h3>
+
+                                    <p>选择表现最好的 3 个交易对，进行组合回测：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>freqtrade backtesting <span class="se">\</span>
+  <span class="nt">-c</span> config.json <span class="se">\</span>
+  <span class="nt">--strategy</span> Strategy001 <span class="se">\</span>
+  <span class="nt">--pairs</span> <span class="o">[</span>你选的3个交易对] <span class="se">\</span>
+  <span class="nt">--timerange</span> 20250701-20250930 <span class="se">\</span>
+  <span class="nt">--timeframe</span> 15m
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p>对比单一交易对 vs 组合：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>最佳单一交易对：
+  交易对：___________
+  总收益：___________%
+  最大回撤：___________%
+
+三交易对组合：
+  总收益：___________%
+  最大回撤：___________%
+
+结论：
+  ☐ 组合表现更好（收益更高或回撤更低）
+  ☐ 单一交易对表现更好
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-5%E6%9E%84%E5%BB%BA%E4%BD%A0%E7%9A%84%E6%8A%95%E8%B5%84%E7%BB%84%E5%90%88" href="#%E4%BB%BB%E5%8A%A1-5%E6%9E%84%E5%BB%BA%E4%BD%A0%E7%9A%84%E6%8A%95%E8%B5%84%E7%BB%84%E5%90%88">
+  </a> 任务 5：构建你的投资组合
+                                    </h3>
+
+                                    <p>根据测试结果，设计你的投资组合：</p>
+
+                                    <p><strong>我的投资组合</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>交易对 1：___________（___%）
+交易对 2：___________（___%）
+交易对 3：___________（___%）
+交易对 4（可选）：___________（___%）
+交易对 5（可选）：___________（___%）
+
+总计：100%
+
+选择理由：
+1. ___________
+2. ___________
+3. ___________
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%9F%A5%E8%AF%86%E6%A3%80%E6%9F%A5" href="#%E7%9F%A5%E8%AF%86%E6%A3%80%E6%9F%A5">
+  </a> 📚 知识检查
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E5%9F%BA%E7%A1%80%E9%97%AE%E9%A2%98" href="#%E5%9F%BA%E7%A1%80%E9%97%AE%E9%A2%98">
+  </a> 基础问题
+                                    </h3>
+
+                                    <ol>
+                                        <li>主流币和山寨币的主要区别是什么？</li>
+                                        <li>流动性好的交易对有哪些特征？</li>
+                                        <li>高波动率交易对适合什么策略？</li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E7%AD%94%E6%A1%88" href="#%E7%AD%94%E6%A1%88">
+  </a> 答案
+                                    </h3>
+
+                                    <ol>
+                                        <li>
+                                            <strong>流动性、波动性和风险</strong>：主流币流动性好、波动小、风险低；山寨币相反</li>
+                                        <li><strong>成交量大、买卖价差小、订单簿深度好</strong></li>
+                                        <li>
+                                            <strong>短线突破策略、高频交易策略</strong>，需要放宽止损</li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E8%BF%9B%E9%98%B6%E9%97%AE%E9%A2%98" href="#%E8%BF%9B%E9%98%B6%E9%97%AE%E9%A2%98">
+  </a> 进阶问题
+                                    </h3>
+
+                                    <ol>
+                                        <li>为什么低流动性交易对回测结果不可信？</li>
+                                        <li>如何判断交易对之间的相关性？</li>
+                                        <li>多交易对组合能降低风险的原理是什么？</li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E6%80%9D%E8%80%83%E9%A2%98" href="#%E6%80%9D%E8%80%83%E9%A2%98">
+  </a> 思考题
+                                    </h3>
+
+                                    <ol>
+                                        <li>如果所有交易对都是高度相关的，组合还有意义吗？</li>
+                                        <li>山寨币回测收益很高，是否应该实盘交易？</li>
+                                        <li>如何动态调整交易对组合？</li>
+                                    </ol>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">
+  </a> 🔗 参考资料
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99" href="#%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99">
+  </a> 数据查询网站
+                                    </h3>
+
+                                    <ul>
+                                        <li>
+                                            <a href="https://coinmarketcap.com/" target="_blank" rel="noopener noreferrer">CoinMarketCap</a> - 查看交易量和市值</li>
+                                        <li>
+                                            <a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer">CoinGecko</a> - 查看交易对信息</li>
+                                        <li>
+                                            <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView</a> - 查看价格波动</li>
+                                    </ul>
+
+                                    <h3>
+                                        <a name="%E9%85%8D%E5%A5%97%E6%96%87%E6%A1%A3" href="#%E9%85%8D%E5%A5%97%E6%96%87%E6%A1%A3">
+  </a> 配套文档
+                                    </h3>
+
+                                    <ul>
+                                        <li>📄 <a href="//../CONFIG_EXPLANATION.md">CONFIG_EXPLANATION.md</a> - 交易对配置</li>
+                                        <li>📄 <a href="//../STRATEGY_SELECTION_GUIDE.md">STRATEGY_SELECTION_GUIDE.md</a> - 交易对选择</li>
+                                    </ul>
+
+                                    <h3>
+                                        <a name="%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB" href="#%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB">
+  </a> 推荐阅读
+                                    </h3>
+
+                                    <ul>
+                                        <li><a href="https://www.investopedia.com/terms/m/modernportfoliotheory.asp" target="_blank" rel="noopener noreferrer">投资组合理论</a></li>
+                                        <li><a href="https://www.investopedia.com/terms/c/correlation.asp" target="_blank" rel="noopener noreferrer">相关性分析</a></li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%E6%80%BB%E7%BB%93" href="#%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%E6%80%BB%E7%BB%93">
+  </a> 📌 核心要点总结
+                                    </h2>
+
+                                    <ol>
+                                        <li>
+                                            <strong>新手推荐主流币</strong>：BTC、ETH、BNB</li>
+                                        <li>
+                                            <strong>流动性 &gt; 收益潜力</strong>：避免低流动性交易对</li>
+                                        <li>
+                                            <strong>波动率匹配策略</strong>：高波动配短线，低波动配长线</li>
+                                        <li>
+                                            <strong>多交易对分散风险</strong>：不要把鸡蛋放在一个篮子里</li>
+                                        <li>
+                                            <strong>相关性不宜过高</strong>：0.5-0.8 最佳</li>
+                                        <li>
+                                            <strong>滑点是隐形杀手</strong>：实盘收益可能远低于回测</li>
+                                    </ol>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E6%80%BB%E7%BB%93" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E6%80%BB%E7%BB%93">
+  </a> ➡️ 第二部分总结
+                                    </h2>
+
+                                    <p><strong>恭喜！你已完成第二部分：回测实战（第 5-10 课）</strong></p>
+
+                                    <p><strong>你学到了</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 第5课：运行第一次完整回测</li>
+                                        <li>✅ 第6课：解读回测报告，分析策略性能</li>
+                                        <li>✅ 第7课：测试不同时间框架</li>
+                                        <li>✅ 第8课：批量对比多个策略</li>
+                                        <li>✅ 第9课：验证策略稳定性，避免过拟合</li>
+                                        <li>✅ 第10课：选择合适的交易对</li>
+                                    </ul>
+
+                                    <p><strong>下一部分预告</strong>：<br>
+                                        <strong>第三部分：策略优化（第 11-15 课）</strong></p>
+
+                                    <p>在第三部分中，你将学习：</p>
+
+                                    <ul>
+                                        <li>第 11 课：使用 Hyperopt 优化策略参数</li>
+                                        <li>第 12 课：高级策略分析技巧</li>
+                                        <li>第 13 课：建立策略评分体系</li>
+                                        <li>第 14 课：风险管理与资金管理</li>
+                                        <li>第 15 课：构建策略组合</li>
+                                    </ul>
+
+                                    <p><strong>准备工作</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 选定 1-2 个表现稳定的策略</li>
+                                        <li>✅ 下载至少 6 个月的历史数据</li>
+                                        <li>✅ 确保有足够的计算资源（Hyperopt 需要）</li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <p><strong>🎯 学习检验标准</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ 能独立选择合适的交易对</li>
+                                        <li>✅ 会评估交易对的流动性和波动率</li>
+                                        <li>✅ 能构建多交易对组合</li>
+                                        <li>✅ 理解相关性对风险分散的影响</li>
+                                    </ul>
+
+                                    <p><strong>完成第二部分后，你已经掌握了回测的核心技能！准备进入策略优化的进阶学习吧！</strong> 🚀🎉</p>
+
+
+                                </div>
+
+                                <div class="js-billboard-container body-billboard-container" data-async-url="/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198/bmar11/post_body_bottom"></div>
+                            </div>
+                            <section id="comments" data-follow-button-container="true" data-updated-at="2025-11-19 15:02:07 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+                                <header class="relative flex justify-between items-center mb-6">
+                                    <div class="flex items-center">
+                                        <h2 class="crayons-subtitle-1">
+                                            Top comments <span class="js-comments-count" data-comments-count="0">(0)</span>
+                                        </h2>
+                                    </div>
+
+
+                                    <div id="comment-subscription" class="print-hidden">
+                                        <div class="crayons-btn-group">
+                                            <span class="crayons-btn crayons-btn--outlined">Subscribe</span>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div id="billboard_delay_trigger"></div>
+                                <div id="comments-container" data-testid="comments-container" data-commentable-id="2906601" data-commentable-type="Article" data-has-recent-comment-activity="false">
+
+                                    <div id="response-templates-data" class="hidden"></div>
+
+
+                                    <form class="comment-form print-hidden" id="new_comment" action="/comments" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" />
+
+                                        <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+                                        <input value="2906601" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id" />
+                                        <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type" />
+
+
+                                        <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="https://media2.dev.to/dynamic/image/width=256,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy" />
+  </span>
+                                        <div class="comment-form__inner">
+                                            <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+                                                <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost"
+                                                    aria-label="Add a comment to the discussion" name="comment[body_markdown]">
+</textarea>
+
+                                            </div>
+
+                                            <div class="response-templates-container crayons-card crayons-card--secondary p-4 mb-4 comment-form__templates fs-base hidden">
+                                                <header class="mb-3">
+                                                    <button type="button" class="crayons-btn personal-template-button active" data-target-type="personal" data-form-id="new_comment">Personal</button>
+                                                    <button type="button" class="crayons-btn moderator-template-button hidden" data-target-type="moderator" data-form-id="new_comment">Trusted User</button>
+                                                </header>
+
+                                                <div class="personal-responses-container">
+                                                </div>
+                                                <div class="moderator-responses-container hidden">
+                                                </div>
+
+                                                <a target="_blank" rel="noopener nofollow" href="/settings/response-templates">
+        Create template
+      </a>
+                                                <p>Templates let you quickly answer FAQs or store snippets for re-use.</p>
+                                            </div>
+
+                                            <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+                                            <div class="comment-form__buttons mb-4">
+                                                <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled>Submit</button>
+                                                <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled>Preview</button>
+                                                <a href="/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+                                    </form>
+
+
+                                    <div class="comments" id="comment-trees-container">
+                                    </div>
+                                </div>
+
+                                <div class="align-center">
+
+
+                                    <nav class="fs-s align-center block" aria-label="Conduct controls">
+                                        <a href="/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+                                        <span class="opacity-25 px-2" role="presentation">&bull;</span>
+                                        <a href="/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+                                    </nav>
+
+                                </div>
+
+                            </section>
+                            <div id="hide-comments-modal" class="hidden">
+                                <form id="hide-comments-modal__form" class="hide-comments-modal__form" data-type="json" action="/comments/hide" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="saNcEEbwRpEBSyjR_k1q1BS_xBvt1Ju50MZ2tkcTdZ9801Q-fndJRtTbh6A7J8aA_JADyuvZqWANpaFzcTyklg"
+                                        autocomplete="off" />
+                                    <div class="hide-comments-modal__content">
+                                        <p class="pb-2">
+                                            Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's <a id="hide-comments-modal__comment-permalink" href="#">permalink</a>.
+                                        </p>
+                                        <label class="crayons-field crayons-field--checkbox my-2">
+        <input name="hide_children" type="hidden" value="0" autocomplete="off" /><input class="hide_children crayons-checkbox" type="checkbox" value="1" name="hide_children" id="hide_children" />
+        <p class="crayons-field__label">Hide child comments as well</p>
+      </label>
+                                        <p class="pb-4 pt-2">
+                                            <button type="submit" class="crayons-btn">
+          Confirm
+        </button>
+                                        </p>
+                                    </div>
+                                </form>
+                                <p class="fs-s color-base-60">For further actions, you may consider blocking this person and/or <a id="hide-comments-modal__report-link" href="/report-abuse">reporting abuse</a></p>
+                            </div>
+
+
+
+                        </article>
+
+                        <div class="pb-4 crayons-layout__comments-billboard">
+                            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198/bmar11/post_comments"></div>
+                        </div>
+
+                        <!-- Bottom content skipped via SKIP_BOTTOM_CONTENT config -->
+                    </div>
+                </main>
+            </div>
+
+            <div class="mod-actions-menu print-hidden"></div>
+            <div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+
+            <div class="fullscreen-code js-fullscreen-code"></div>
+            <script src="https://assets1.dev.to/assets/billboard-1639de16bba3d0fb5e5f96224551087f3b5463567609f92c14b93c3e0c08ddfd.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/localizeArticleDates-70147c5c6bfe350b42e020ebb2a3dd37419d83978982b5a67b6389119bf162ac.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articleReactions-79a44d82fb34a91c3987c24cfd3bcf2b0d38a02730b69ae6da297387d185f015.js" defer="defer"></script>
+
+            <script>
+                function activateRunkitTags() {
+                    if (!areAnyRunkitTagsPresent())
+                        return
+
+                    var checkRunkit = setInterval(function() {
+                        try {
+                            dynamicallyLoadRunkitLibrary()
+
+                            if (typeof(RunKit) === 'undefined') {
+                                return
+                            }
+
+                            replaceTagContentsWithRunkitWidget()
+                            clearInterval(checkRunkit);
+                        } catch (e) {
+                            console.error(e);
+                            clearInterval(checkRunkit);
+                        }
+                    }, 200);
+                }
+
+                function isRunkitTagAlreadyActive(runkitTag) {
+                    return runkitTag.querySelector("iframe") !== null;
+                };
+
+                function areAnyRunkitTagsPresent() {
+                    var presentRunkitTags = document.getElementsByClassName("runkit-element");
+
+                    return presentRunkitTags.length > 0
+                }
+
+                function replaceTagContentsWithRunkitWidget() {
+                    var targets = document.getElementsByClassName("runkit-element");
+                    for (var i = 0; i < targets.length; i++) {
+                        if (isRunkitTagAlreadyActive(targets[i])) {
+                            continue;
+                        }
+
+                        var wrapperContent = targets[i].textContent;
+                        if (/^(<iframe src)/.test(wrapperContent) === false) {
+                            if (targets[i].children.length > 0) {
+                                var preamble = targets[i].children[0].textContent;
+                                var content = targets[i].children[1].textContent;
+                                targets[i].innerHTML = "";
+                                var notebook = RunKit.createNotebook({
+                                    element: targets[i],
+                                    source: content,
+                                    preamble: preamble
+                                });
+                            }
+                        }
+                    }
+                };
+
+                function dynamicallyLoadRunkitLibrary() {
+                    if (typeof(dynamicallyLoadScript) === "undefined")
+                        return
+
+                    dynamicallyLoadScript("//embed.runkit.com")
+                }
+
+                activateRunkitTags();
+            </script>
+            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-10-ke-freqtradejiao-yi-dui-xuan-ze-yu-ce-shi-3198/bmar11/post_fixed_bottom"></div>
+
+
+            <div id="runtime-banner-container"></div>
+            <div id="i18n-translations" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;,&quot;search_placeholder&quot;:&quot;Search...&quot;,&quot;search_find_related_posts&quot;:&quot;Find related posts...&quot;,&quot;search_powered_by&quot;:&quot;Powered by Algolia&quot;,&quot;search_submit_search&quot;:&quot;Submit search for advanced filtering.&quot;,&quot;search_displaying_recommendations&quot;:&quot;Displaying Algolia Recommendations — Start typing to search&quot;,&quot;article_form_save_changes&quot;:&quot;Save changes&quot;,&quot;article_form_schedule&quot;:&quot;Schedule&quot;,&quot;article_form_publish&quot;:&quot;Publish&quot;,&quot;article_form_loading_preview&quot;:&quot;Loading preview&quot;,&quot;article_form_preview_loaded&quot;:&quot;Preview loaded&quot;,&quot;comments_preview&quot;:&quot;Preview&quot;,&quot;comments_continue_editing&quot;:&quot;Continue editing&quot;,&quot;survey_enter_response&quot;:&quot;Enter your response here...&quot;,&quot;survey_thank_you_response&quot;:&quot;Thank you for your response.&quot;,&quot;survey_thank_you_completing&quot;:&quot;Thank you for completing the survey!&quot;,&quot;dashboard_analytics_readers&quot;:&quot;Readers&quot;,&quot;dashboard_analytics_comments&quot;:&quot;Comments&quot;,&quot;dashboard_analytics_reactions&quot;:&quot;Reactions&quot;,&quot;stats_by&quot;:&quot;by&quot;,&quot;editor_new_title&quot;:&quot;New post title here...&quot;,&quot;editor_body_placeholder&quot;:&quot;Write your post content here...&quot;,&quot;tags_field_label&quot;:&quot;Add up to 4 tags&quot;,&quot;tags_field_placeholder&quot;:&quot;Add up to 4 tags...&quot;,&quot;counted_organization&quot;:{&quot;one&quot;:&quot;%{count} organization&quot;,&quot;other&quot;:&quot;%{count} organizations&quot;},&quot;counted_user&quot;:{&quot;one&quot;:&quot;%{count} person&quot;,&quot;other&quot;:&quot;%{count} people&quot;},&quot;not_following&quot;:&quot;You&#39;re not following anyone&quot;,&quot;following_everyone&quot;:&quot;You&#39;re following %{details} (everyone)&quot;,&quot;you_are_following&quot;:&quot;You&#39;re following&quot;,&quot;and&quot;:&quot;and&quot;}}}"></div>
+        </div>
+    </div>
+
+
+    <footer id="footer" class="crayons-footer print-hidden">
+        <div id="footer-container" class="crayons-footer__container">
+
+
+            <style>
+                .long-bb-body {
+                    max-height: calc(100vh - 200px);
+                    overflow: hidden;
+                }
+
+                .long-bb-bottom {
+                    height: 180px;
+                    background: linear-gradient(to top, var(--card-bg), transparent);
+                    margin-top: -180px;
+                    position: relative;
+                    z-index: 5;
+                }
+            </style>
+
+            <div style="" data-display-unit data-id="146443" data-category-click="click" data-category-impression="impression" data-context-type="home" data-special="nothing" data-article-id="654867" data-type-of="in_house">
+                <div class="crayons-card crayons-card--secondary crayons-bb bb-placement js-billboard" style="display: inline-flex; flex-direction: column; align-items: center; margin: 0 auto 2rem auto; width: fit-content; padding: 2rem;">
+                    <p style="font-weight: bold; margin: 0 0 1rem 0;">
+                        💎 DEV Diamond Sponsors
+                    </p>
+                    <p style="font-size: 0.8em; margin: 0 0 2rem 0;">
+                        Thank you to our Diamond Sponsors for supporting the DEV Community
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://aistudio.google.com/?utm_source=partner&amp;utm_medium=partner&amp;utm_campaign=FY25-Global-DEVpartnership-sponsorship-AIS&amp;utm_content=-&amp;utm_term=-&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxjlyhbdqehj3akhz166w.png" alt="Google AI - Official AI Model and Platform Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 54px; padding: 10px;" loading="lazy" width="2048" height="472">
+                </a>
+                            <p style="text-align: center;">Google AI is the official AI Model and Platform Partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://neon.tech/?ref=devto&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbnl88cil6afxzmgwrgtt.png" alt="Neon - Official Database Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Neon is the official database partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://www.algolia.com/developers/?utm_source=devto&amp;utm_medium=referral&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fv30ephnolfvnlwgwm0yz.png" alt="Algolia - Official Search Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Algolia is the official search partner of DEV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p class="fs-s crayons-footer__description">
+                <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="/">DEV Community</a> — A space to discuss and keep up software development and manage your software career
+            </p>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/">
+      Home
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/++">
+      DEV++
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/pod">
+      Podcasts
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/videos">
+      Videos
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/deved">
+      DEV Education Tracks
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/challenges">
+      DEV Challenges
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/help">
+      DEV Help
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/advertise">
+      Advertise on DEV
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/showcase">
+      DEV Showcase
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/about">
+      About
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/contact">
+      Contact
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/free-postgres-database-tier">
+      Free Postgres Database
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/software-comparisons">
+      Software comparisons
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="https://shop.forem.com/">
+      Forem Shop
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/code-of-conduct">
+      Code of Conduct
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/privacy">
+      Privacy Policy
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/terms">
+      Terms of Use
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <div class="fs-s">
+                <p>Built on <a class="c-link c-link--branded" target="_blank" rel="noopener" href="https://www.forem.com">Forem</a> — the <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/opensource">open source</a>                    software that powers <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to">DEV</a> and other inclusive communities.</p>
+                <p>Made with love and <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/rails">Ruby on Rails</a>. DEV Community <span title="copyright">&copy;</span> 2016 - 2025.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="snack-zone"></div>
+
+    <div id="global-signup-modal" class="authentication-modal hidden">
+        <div class="authentication-modal__container">
+            <figure class="authentication-modal__image-container">
+                <img class="authentication-modal__image" src="https://media2.dev.to/dynamic/image/width=190,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" alt="DEV Community"
+                    loading="lazy" />
+            </figure>
+            <div class="authentication-modal__content">
+                <p class="authentication-modal__description">
+                    We&#39;re a place where coders share, stay up-to-date and grow their careers.
+                </p>
+            </div>
+            <div class="authentication-modal__actions">
+                <a href="https://dev.to/enter?signup_subforem=1" class="crayons-btn" aria-label="Log in" data-no-instant>
+        Log in
+      </a>
+                <a href="https://dev.to/enter?signup_subforem=1&amp;state=new-user" class="crayons-btn crayons-btn--ghost-brand js-global-signup-modal__create-account" aria-label="Create new account" data-no-instant>
+        Create account
+      </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://assets1.dev.to/assets/signupModalShortcuts-0b25469b985100a01e94cbd7fccaf7f0a4d776e129aac65c766aa32cb28ab29a.js" defer="defer"></script>
+
+    <div id="cookie-consent"></div>
+    <div id="reaction-category-resources" class="hidden" aria-hidden="true">
+        <img data-name="Like" data-slug="like" data-position="1" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="18" height="18" />
+        <img data-name="Unicorn" data-slug="unicorn" data-position="2" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="18" height="18" />
+        <img data-name="Exploding Head" data-slug="exploding_head" data-position="3" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="18" height="18" />
+        <img data-name="Raised Hands" data-slug="raised_hands" data-position="4" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="18" height="18" />
+        <img data-name="Fire" data-slug="fire" data-position="5" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="18" height="18" />
+    </div>
+
+    <script>
+        var userSignedIn = false;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initAuth();
+        } else {
+            document.addEventListener('DOMContentLoaded', initAuth);
+        }
+
+        function initAuth() {
+            var paramToken = new URLSearchParams(window.location.search).get('jwt');
+
+            if (paramToken && !userSignedIn) {
+                authenticateUser(paramToken);
+            } else {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'https://forem.com/auth_pass/iframe';
+
+                document.body.appendChild(iframe);
+
+                window.addEventListener('message', function(event) {
+                    if (event.origin !== 'https://forem.com' && event.origin !== window.location.origin) {
+                        return;
+                    }
+
+                    var data = event.data;
+
+                    if (data.authenticated && !userSignedIn) {
+                        authenticateUser(data.token);
+                    } else if (data.authenticated && window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({
+                            action: 'login',
+                            token: data.token,
+                        }));
+                    }
+                });
+            }
+
+            function authenticateUser(token) {
+                fetch('/auth_pass/token_login', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': getMetaContent('csrf-token'),
+                        },
+                        body: JSON.stringify({
+                            token: token
+                        }),
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.success) {
+                            if (document.head.querySelector('meta[name="user-signed-in"][content="false"]')) {
+                                // Reload the page to update the user's state
+                                location.reload();
+                            }
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error during authentication:', error);
+                    });
+            }
+
+            function getMetaContent(name) {
+                var element = document.querySelector('meta[name="' + name + '"]');
+                return element ? element.getAttribute('content') : '';
+            }
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>

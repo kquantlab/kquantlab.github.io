@@ -1,0 +1,2989 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>第 2 课：Freqtrade 环境搭建 - DEV Community</title>
+
+    <link rel="preload" href="/reactions?article_id=2886998" as="fetch" crossorigin="same-origin">
+    <link rel="canonical" href="https://dev.to/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd" />
+    <meta name="description" content="第 2 课：Freqtrade 环境搭建    📚 课程系列：Freqtrade 量化交易完整教学课程 📖 所属部分：第一部分 - 基础入门 ⏱ 课时：2 小时 🎯 难度：⭐⭐... Tagged with cryptocurrency, python, tutorial, beginners.">
+    <meta name="keywords" content="cryptocurrency, python, tutorial, beginners, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://dev.to/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd" />
+    <meta property="og:title" content="第 2 课：Freqtrade 环境搭建" />
+    <meta property="og:description" content="第 2 课：Freqtrade 环境搭建    📚 课程系列：Freqtrade 量化交易完整教学课程 📖 所属部分：第一部分 - 基础入门 ⏱ 课时：2 小时 🎯 难度：⭐⭐..." />
+    <meta property="og:site_name" content="DEV Community" />
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@henrylin99991">
+    <meta name="twitter:title" content="第 2 课：Freqtrade 环境搭建">
+    <meta name="twitter:description" content="第 2 课：Freqtrade 环境搭建    📚 课程系列：Freqtrade 量化交易完整教学课程 📖 所属部分：第一部分 - 基础入门 ⏱ 课时：2 小时 🎯 难度：⭐⭐...">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:image" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fubtpn1b36e8tvihfzmjn.png" />
+    <meta name="twitter:image:src" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fubtpn1b36e8tvihfzmjn.png">
+
+    <meta name="last-updated" content="2025-10-03 09:24:21 UTC">
+    <meta name="user-signed-in" content="false">
+    <meta name="head-cached-at" content="1759483461">
+    <meta name="environment" content="production">
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-6f871bad8495686d3015972b1c92f1872c097bd7b8add019a64ba540362be02e.css" media="all" id="main-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-29adb6cdbcf8563b76959a95af5a97e5961f8b06cdd89f4df7beb758bcc97c44.css" media="all" id="main-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-198414fda43925fd7ad1bfa9dce7b8bc80cf6fae322aca26fc86c1a4a4902569.css" media="all" id="main-crayons-stylesheet" />
+  <link rel="stylesheet" href="../../css1.css" media="all" id="main-minimal-stylesheet">
+    <link rel="stylesheet" href="../../css2.css" media="all" id="main-views-stylesheet">
+    <link rel="stylesheet" href="../../css3.css" media="all" id="main-crayons-stylesheet">
+    <script src="https://assets1.dev.to/assets/base-abedd83f2dbda5fb536138f1d18583dd067f4e5d8b5a91bf623065de675a1159.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/application-7258612fccf5d56314a6e4ad1898b4f818f474c4bb3485e302428d489a769a17.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseInitializers-2f0777a6d67046056f9f42665560ce072de3801292674358ddbad6e135c1891d.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseTracking-b6bf73e5ee66633e151e7d5b7c6bbccedfa4c59e3615be97b98c4c0f543ddae7.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/followButtons-a29380c2c88136b97b2b5e63e94614ff7458fc72e07cffa7b6153831c28a40d2.js" defer="defer"></script>
+
+    <meta name="search-script" content="https://assets1.dev.to/assets/Search-47b78c90427318f3a0e6fb7266d267b81e2bfe6e124e47aafdb9a513670fa8bc.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" type="image/x-icon" href="https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <link rel="apple-touch-icon" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://media2.dev.to/dynamic/image/width=152,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://media2.dev.to/dynamic/image/width=167,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link href="https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="192x192" />
+    <link href="https://media2.dev.to/dynamic/image/width=128,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="128x128" />
+    <meta name="apple-mobile-web-app-title" content="dev.to">
+    <meta name="application-name" content="dev.to">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community" />
+
+    <meta property="forem:name" content="DEV Community" />
+    <meta property="forem:logo" content="https://media2.dev.to/dynamic/image/width=512,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <meta property="forem:domain" content="dev.to" />
+
+    <link rel="stylesheet" href="../../custom-font-fix.css">
+<style id="kquantlab-article-cleanup">
+.crayons-layout__sidebar-left,
+#comments,
+#hide-comments-modal,
+.crayons-layout__comments-billboard,
+.js-billboard-container,
+#footer,
+#reaction-category-resources { display: none !important; }
+.crayons-layout.crayons-layout--article { grid-template-columns: minmax(0, 1fr) !important; max-width: 980px !important; margin-inline: auto !important; }
+#main-content.crayons-layout__content { grid-column: 1 !important; width: 100% !important; max-width: 900px !important; margin-inline: auto !important; }
+body { background: #f4f7f3 !important; }
+</style></head>
+
+<body class="sans-serif-article-body default-header" data-user-status="logged-out" data-is-root-subforem="" data-subforem-id="1" data-side-nav-visible="true" data-community-name="DEV Community" data-subscription-icon="https://assets1.dev.to/assets/subscription-icon-805dfa7ac7dd660f07ed8d654877270825b07a92a03841aa99a1093bd00431b2.png"
+    data-locale="en" data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr" data-deployed-at="2025-10-02T22:07:06Z" data-latest-commit-id="2bd4dd38c7d5b1f7f44178c0b80706a3ca93a8fa" data-ga-tracking="UA-71991109-1" data-cookie-banner-user-context="logged_out_only"
+    data-cookie-banner-platform-context="off" data-algolia-id="PRSOBFP46H" data-algolia-search-key="9aa7d31610cba78851c9b1f63776a9dd" data-algolia-display="true" data-dynamic-url-component="bmar11" data-ga4-tracking-id="G-TYEM8Y3JN3">
+
+    <script>
+        if (navigator.userAgent === 'ForemWebView/1' || window.frameElement) {
+            document.body.classList.add("hidden-shell");
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-6f871bad8495686d3015972b1c92f1872c097bd7b8add019a64ba540362be02e.css" media="all" id="secondary-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-29adb6cdbcf8563b76959a95af5a97e5961f8b06cdd89f4df7beb758bcc97c44.css" media="all" id="secondary-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-198414fda43925fd7ad1bfa9dce7b8bc80cf6fae322aca26fc86c1a4a4902569.css" media="all" id="secondary-crayons-stylesheet" />
+
+    <div id="body-styles">
+        <style>
+            :root {
+                --accent-brand-lighter-rgb: 80, 99, 301;
+                --accent-brand-rgb: 59, 73, 223;
+                --accent-brand-darker-rgb: 47, 58, 178;
+            }
+        </style>
+    </div>
+    <div id="audiocontent" data-podcast="">
+
+    </div>
+
+    <script>
+        (function() {
+            // Utility: base64 unicode decode (for cookie payload)
+            function base64DecodeUnicode(str) {
+                try {
+                    return decodeURIComponent(
+                        atob(str)
+                        .split("")
+                        .map((c) => {
+                            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                        })
+                        .join(""),
+                    );
+                } catch (e) {
+                    console.error("base64DecodeUnicode failed:", e);
+                    return null;
+                }
+            }
+
+            function getCookie(name) {
+                const match = document.cookie.match(
+                    new RegExp("(^|; )" + name.replace(/([.*+?^${}()|[\]\\])/g, "\\$1") + "=([^;]*)"),
+                );
+                return match ? decodeURIComponent(match[2]) : null;
+            }
+
+            function getUserFromCookie() {
+                const raw = getCookie("current_user");
+                if (!raw) return null;
+                const decoded = base64DecodeUnicode(raw);
+                if (!decoded) return null;
+                try {
+                    return JSON.parse(decoded);
+                } catch (e) {
+                    console.error("Parsing user from cookie failed:", e);
+                    return null;
+                }
+            }
+
+            // --- user acquisition: prefer cookie, fallback to localStorage ---
+            const storedCurrentUser = (() => {
+                const fromCookie = getUserFromCookie();
+                if (fromCookie) return fromCookie;
+                const stored = localStorage ? .getItem("current_user");
+                if (!stored) return null;
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error("Parsing user from localStorage failed:", e);
+                    return null;
+                }
+            })();
+
+            // apply authorization/display logic and reorder if present
+            if (storedCurrentUser) {
+
+                if (storedCurrentUser ? .ordered_subforem_ids ? .length > 0) {
+                    const subforemIds = storedCurrentUser.ordered_subforem_ids;
+                    const sidebar = document.getElementById("main-side-bar");
+                    const rootLink = document.getElementById("root-subforem-link");
+                    const rootSubforemId = rootLink ? .getAttribute("data-sidebar-subforem-id");
+
+                    const subforemElements = sidebar.querySelectorAll("[data-sidebar-subforem-id]");
+                    const subforemMap = {};
+
+                    subforemElements.forEach((el) => {
+                        const id = el.getAttribute("data-sidebar-subforem-id");
+                        if (id !== rootSubforemId) {
+                            subforemMap[id] = el.closest(".crayons-side-nav__item");
+                        }
+                    });
+
+                    // remove non-root existing items
+                    Object.values(subforemMap).forEach((item) => {
+                        if (item && item.parentNode) {
+                            item.remove();
+                        }
+                    });
+
+                    // append in user's order (excluding root)
+                    const scrollableContainer = sidebar.querySelector(".crayons-side-nav__scrollable");
+                    subforemIds.forEach((id) => {
+                        if (id !== rootSubforemId && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // append leftovers not in the user's list
+                    Object.keys(subforemMap).forEach((id) => {
+                        const parsedId = parseInt(id, 10);
+                        if (!subforemIds.includes(parsedId) && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // ensure menu is last
+                    const menu = sidebar.querySelector(".crayons-side-nav__item--menu");
+                    if (menu) {
+                        sidebar.appendChild(menu);
+                    }
+                }
+            }
+
+            // active subforem highlight based on current context
+            const currentSubforemId = document.body.getAttribute("data-subforem-id");
+            if (currentSubforemId) {
+                const matching = document.querySelector(
+                    `[data-sidebar-subforem-id="${currentSubforemId}"]`,
+                );
+                if (matching) {
+                    matching.classList.add("active");
+                }
+            }
+        })();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebar = document.getElementById("main-side-bar");
+            if (!sidebar) return;
+
+            const items = sidebar.querySelectorAll(".crayons-side-nav__item");
+            let hoverTimeout;
+            let hasMoved = false;
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                hasMoved = true;
+            });
+
+            items.forEach((item) => {
+                item.addEventListener("mouseleave", function() {
+                    this.dataset.hasLeftOnce = "true";
+                    if (this.classList.contains("hovered")) {
+                        this.classList.remove("hovered");
+                        this.classList.add("not-hovered");
+                    }
+                });
+
+                item.addEventListener("mouseenter", function(e) {
+                    if (!hasMoved && !this.dataset.hasLeftOnce) {
+                        return;
+                    }
+
+                    const targetItem = this;
+                    const currentActive = sidebar.querySelector(
+                        ".crayons-side-nav__item.hovered",
+                    );
+
+                    const switchActiveState = () => {
+                        if (currentActive && currentActive !== targetItem) {
+                            currentActive.classList.remove("hovered");
+                            currentActive.classList.add("not-hovered");
+
+                            // Reset styles on the previous active item's pop-out card
+                            const previousPreviewCard = currentActive.querySelector(".profile-preview-card__content");
+                            if (previousPreviewCard) {
+                                previousPreviewCard.style.position = '';
+                                previousPreviewCard.style.left = '';
+                                previousPreviewCard.style.top = '';
+                                previousPreviewCard.style.bottom = '';
+                                previousPreviewCard.style.width = '';
+                                previousPreviewCard.style.zIndex = '';
+                            }
+                        }
+                        targetItem.classList.remove("not-hovered");
+                        targetItem.classList.add("hovered");
+                        let feedEl = document.getElementById('root-feed-card');
+                        if (feedEl) {
+                            feedEl.scrollTop = 0;
+                        }
+
+                        // --- NEW LOGIC START ---
+                        const previewCard = targetItem.querySelector(
+                            ".profile-preview-card__content",
+                        );
+                        if (previewCard) {
+                            const rect = targetItem.getBoundingClientRect();
+
+                            // Position the card relative to the viewport
+                            previewCard.style.position = 'fixed';
+                            previewCard.style.left = '48px';
+                            previewCard.style.width = '290px';
+                            previewCard.style.zIndex = '3000';
+
+                            if (window.innerHeight - rect.bottom < 280) {
+                                previewCard.classList.add("profile-preview-card__upsidedown");
+                                previewCard.style.top = 'auto';
+                                previewCard.style.bottom = `${window.innerHeight - rect.bottom - 30}px`;
+                            } else {
+                                previewCard.classList.remove("profile-preview-card__upsidedown");
+                                previewCard.style.top = `${rect.top - 30}px`;
+                                previewCard.style.bottom = 'auto';
+                            }
+                        }
+                        // --- NEW LOGIC END ---
+                    };
+
+                    clearTimeout(hoverTimeout);
+
+                    let delay = 20;
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+
+                    if (deltaX > 10 && deltaX >= Math.abs(deltaY)) {
+                        delay = 250;
+                    }
+
+                    if (currentActive && currentActive !== targetItem) {
+                        hoverTimeout = setTimeout(switchActiveState, delay);
+                    } else {
+                        switchActiveState();
+                    }
+                });
+            });
+
+            sidebar.addEventListener("mouseleave", () => {
+                clearTimeout(hoverTimeout);
+                const activeItem = sidebar.querySelector(
+                    ".crayons-side-nav__item.hovered",
+                );
+                if (activeItem) {
+                    activeItem.classList.remove("hovered");
+                    activeItem.classList.add("not-hovered");
+
+                    // Reset any inline styles on the pop-out card
+                    const previewCard = activeItem.querySelector(".profile-preview-card__content");
+                    if (previewCard) {
+                        previewCard.style.position = '';
+                        previewCard.style.left = '';
+                        previewCard.style.top = '';
+                        previewCard.style.bottom = '';
+                        previewCard.style.width = '';
+                        previewCard.style.zIndex = '';
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script src="https://assets1.dev.to/assets/mainSidebar-731e9f1aef595725c6bd644b69d63919dfc962d586eb2f35a033ee90819871e3.js" defer="defer"></script>
+
+    <div class="navigation-progress" id="navigation-progress"></div>
+
+    <div id="active-broadcast" class="broadcast-wrapper"></div>
+    <div id="page-content" class="wrapper stories stories-show articletag-cryptocurrency articletag-python articletag-tutorial articletag-beginners articleuser-3446346" data-current-page="stories-show">
+        <div id="page-content-inner" data-internal-nav="false">
+            <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+
+
+            <style>
+                .html-variant-wrapper {
+                    display: none
+                }
+            </style>
+
+
+
+            <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js" integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy" crossorigin="anonymous" defer></script>
+
+            <script src="https://assets1.dev.to/assets/webShare-0686f0b9ac40589694ef6ae6a6202c44119bc781c254f6cf6d52d8a008461156.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articlePage-dce93defbf17ca8235da52777a6f00be546cfd46bf23df4486bb0461e18f7a23.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/commentDropdowns-7a28d130e5b78d38b30a9495a964003a66bd64fa455fc70b766d69cf06b9ba24.js" defer="defer"></script>
+
+            <script type="application/ld+json">
+                {
+                    "@context": "http://schema.org",
+                    "@type": "Article",
+                    "mainEntityOfPage": {
+                        "@type": "WebPage",
+                        "@id": "https://dev.to/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd"
+                    },
+                    "url": "https://dev.to/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd",
+                    "image": ["https://media2.dev.to/dynamic/image/width=1080,height=1080,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fubtpn1b36e8tvihfzmjn.png", "https://media2.dev.to/dynamic/image/width=1280,height=720,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fubtpn1b36e8tvihfzmjn.png", "https://media2.dev.to/dynamic/image/width=1600,height=900,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fubtpn1b36e8tvihfzmjn.png"],
+                    "publisher": {
+                        "@context": "http://schema.org",
+                        "@type": "Organization",
+                        "name": "DEV Community",
+                        "logo": {
+                            "@context": "http://schema.org",
+                            "@type": "ImageObject",
+                            "url": "https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png",
+                            "width": "192",
+                            "height": "192"
+                        }
+                    },
+                    "headline": "第 2 课：Freqtrade 环境搭建",
+                    "author": {
+                        "@context": "http://schema.org",
+                        "@type": "Person",
+                        "url": "https://dev.to/henry_lin_3ac6363747f45b4",
+                        "name": "Henry Lin"
+                    },
+                    "datePublished": "2025-10-03T00:04:23Z",
+                    "dateModified": "2025-10-03T00:04:23Z"
+                }
+            </script>
+
+
+            <div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+                <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+                    <div class="crayons-article-actions print-hidden">
+                        <div class="crayons-article-actions__inner">
+
+
+                            <div class="reaction-drawer__outer hoverdown" style="">
+                                <button id="reaction-drawer-trigger" aria-label="reaction-drawer-trigger" aria-pressed="false" class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clipPath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clipPath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="https://assets1.dev.to/assets/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg" />
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">
+        <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+      </span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+                                <div class="reaction-drawer" aria-expanded="false">
+                                    <div class="reaction-drawer__container">
+                                        <button id="reaction-butt-like" name="Like" aria-label="Like" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+                                        <button id="reaction-butt-unicorn" name="Unicorn" aria-label="Unicorn" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+                                        <button id="reaction-butt-exploding_head" name="Exploding Head" aria-label="Exploding Head" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+                                        <button id="reaction-butt-raised_hands" name="Raised Hands" aria-label="Raised Hands" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+                                        <button id="reaction-butt-fire" name="Fire" aria-label="Fire" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="reaction-butt-comment" aria-label="Jump to Comments" aria-pressed="false" class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative" data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="0">
+      <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+    </span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+                            <button id="reaction-butt-readinglist" aria-label="Add to reading list" aria-pressed="false" class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative" data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+                            <button id="reaction-butt-boost" aria-label="Boost" aria-pressed="false" class="crayons-reaction crayons-reaction--boost crayons-tooltip__activator relative">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-hidden="true" class="crayons-icon" width="24" height="24">
+  <path transform="translate(24,0) scale(-1,1)" d="M6 4H21C21.5523 4 22 4.44772 22 5V12H20V6H6V9L1 5L6 1V4ZM18 20H3C2.44772 20 2 19.5523 2 19V12H4V18H18V15L23 19L18 23V20Z"></path>
+</svg>
+
+    </span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Boost
+    </span>
+</button>
+
+
+                            <div class="only-sidebar-menu-item">
+                                <div id="mod-actions-menu-btn-area" class="print-hidden trusted-visible-block align-center">
+                                </div>
+                            </div>
+                            <div class="align-center m:relative">
+                                <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="ah0t78w14gjdp6ovdwsyhzkxlxh12r2b" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="ah0t78w14gjdp6ovdwsyhzkxlxh12r2b">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+      </button>
+
+                                <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+                                    <div class="only-mobile-menu-item">
+                                        <button class="mod-actions-menu-btn crayons-link crayons-link--block w-100 bg-transparent border-0 fw-bold">
+            Moderate
+          </button>
+                                    </div>
+                                    <div>
+                                        <button id="copy-post-url-button" class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0" data-postUrl="https://dev.to/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd">
+            <span class="fw-bold">Copy link</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="akp21h2jzznr4hu60ov5g45tazgtecoh" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="akp21h2jzznr4hu60ov5g45tazgtecoh">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+          </button>
+                                        <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" aria-live="polite" hidden>Copied to Clipboard</div>
+                                    </div>
+
+                                    <div class="Desktop-only">
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href='https://twitter.com/intent/tweet?text=%22%E7%AC%AC%202%20%E8%AF%BE%EF%BC%9AFreqtrade%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%22%20by%20%40henrylin99991%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-2-ke-freqtrade-huan-jing-da-jian-24bd'>
+            Share to X
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-2-ke-freqtrade-huan-jing-da-jian-24bd&title=%E7%AC%AC%202%20%E8%AF%BE%EF%BC%9AFreqtrade%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA&summary=%E7%AC%AC%202%20%E8%AF%BE%EF%BC%9AFreqtrade%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%20%20%20%20%F0%9F%93%9A%20%E8%AF%BE%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%9AFreqtrade%20%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%AE%8C%E6%95%B4%E6%95%99%E5%AD%A6%E8%AF%BE%E7%A8%8B%20%F0%9F%93%96%20%E6%89%80%E5%B1%9E%E9%83%A8%E5%88%86%EF%BC%9A%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%20-%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20%E2%8F%B1%20%E8%AF%BE%E6%97%B6%EF%BC%9A2%20%E5%B0%8F%E6%97%B6%20%F0%9F%8E%AF%20%E9%9A%BE%E5%BA%A6%EF%BC%9A%E2%AD%90%E2%AD%90...&source=DEV%20Community">
+            Share to LinkedIn
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-2-ke-freqtrade-huan-jing-da-jian-24bd">
+            Share to Facebook
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-2-ke-freqtrade-huan-jing-da-jian-24bd">
+            Share to Mastodon
+          </a>
+                                    </div>
+
+                                    <web-share-wrapper shareurl="https://dev.to/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd" sharetitle="第 2 课：Freqtrade 环境搭建" sharetext="第 2 课：Freqtrade 环境搭建    📚 课程系列：Freqtrade 量化交易完整教学课程 📖 所属部分：第一部分 - 基础入门 ⏱ 课时：2 小时 🎯 难度：⭐⭐..."
+                                        template="web-share-button">
+                                    </web-share-wrapper>
+                                    <template id="web-share-button">
+          <a href="#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+        </template>
+
+                                    <a href="/report-abuse" class="crayons-link crayons-link--block">Report Abuse</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
+
+                <main id="main-content" class="crayons-layout__content grid gap-4">
+                    <div class="article-wrapper">
+
+
+                        <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="2886998" data-article-slug="di-2-ke-freqtrade-huan-jing-da-jian-24bd" data-author-id="3446346" data-author-name="Henry Lin" data-author-username="henry_lin_3ac6363747f45b4"
+                            data-co-author-ids="" data-path="/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd" data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true" data-scheduled="false" lang=zh>
+                            <script>
+                                try {
+                                    if (localStorage) {
+                                        let currentUser = localStorage.getItem('current_user');
+
+                                        if (currentUser) {
+                                            currentUser = JSON.parse(currentUser);
+                                            if (currentUser.id === 3446346) {
+                                                document.getElementById('article-show-container').classList.add('current-user-is-article-author');
+                                            }
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            </script>
+                            <header class="crayons-article__header" id="main-title">
+
+                                <div class="crayons-article__header__meta">
+        
+                                    <h1 class=" fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 short">
+                                        第 2 课：Freqtrade 环境搭建
+                                    </h1>
+
+                                    <div class="spec__tags flex flex-wrap">
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(59, 73, 223, 0.10);
+        --tag-prefix: #3b49df;
+        --tag-bg-hover: rgba(59, 73, 223, 0.10);
+        --tag-prefix-hover: #3b49df;
+      " href="/t/cryptocurrency"><span class="crayons-tag__prefix">#</span>cryptocurrency</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(0, 131, 53, 0.10);
+        --tag-prefix: #008335;
+        --tag-bg-hover: rgba(0, 131, 53, 0.10);
+        --tag-prefix-hover: #008335;
+      " href="/t/beginners"><span class="crayons-tag__prefix">#</span>beginners</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(30, 56, 187, 0.10);
+        --tag-prefix: #1E38BB;
+        --tag-bg-hover: rgba(30, 56, 187, 0.10);
+        --tag-prefix-hover: #1E38BB;
+      " href="/t/python"><span class="crayons-tag__prefix">#</span>python</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(254, 255, 165, 0.10);
+        --tag-prefix: #FEFFA5;
+        --tag-bg-hover: rgba(254, 255, 165, 0.10);
+        --tag-prefix-hover: #FEFFA5;
+      " href="/t/tutorial"><span class="crayons-tag__prefix">#</span>tutorial</a>
+                                    </div>
+                                </div>
+                            </header>
+
+                            <div class="crayons-article__main ">
+                                <div class="crayons-article__body text-styles spec__body" data-article-id="2886998" id="article-body">
+                                    <h1>
+                                        <a name="%E7%AC%AC-2-%E8%AF%BEfreqtrade-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA" href="#%E7%AC%AC-2-%E8%AF%BEfreqtrade-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">
+  </a> 第 2 课：Freqtrade 环境搭建
+                                    </h1>
+
+                                    <blockquote>
+                                        <p>📚 <strong>课程系列</strong>：Freqtrade 量化交易完整教学课程<br> 📖 <strong>所属部分</strong>：第一部分 - 基础入门<br> ⏱ <strong>课时</strong>：2 小时<br> 🎯 <strong>难度</strong>：⭐⭐ 初级</p>
+                                    </blockquote>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87">
+  </a> 🎯 学习目标
+                                    </h2>
+
+                                    <p>完成本课后，你将能够：</p>
+
+                                    <ul>
+                                        <li>✅ 安装 Python 和 Conda 环境管理器</li>
+                                        <li>✅ 创建独立的 Freqtrade 虚拟环境</li>
+                                        <li>✅ 成功安装 Freqtrade 2025.9+</li>
+                                        <li>✅ 配置第一个 config.json 文件</li>
+                                        <li>✅ 运行基础 Freqtrade 命令</li>
+                                        <li>✅ 验证环境搭建是否成功</li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E8%AF%BE%E5%89%8D%E5%87%86%E5%A4%87" href="#%E8%AF%BE%E5%89%8D%E5%87%86%E5%A4%87">
+  </a> 📋 课前准备
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E7%B3%BB%E7%BB%9F%E8%A6%81%E6%B1%82" href="#%E7%B3%BB%E7%BB%9F%E8%A6%81%E6%B1%82">
+  </a> 系统要求
+                                    </h3>
+
+                                    <p><strong>操作系统</strong>：</p>
+
+                                    <ul>
+                                        <li>✅ macOS 10.15+</li>
+                                        <li>✅ Ubuntu 20.04+ / Debian 11+</li>
+                                        <li>✅ Windows 10+ (WSL2 或 原生)</li>
+                                    </ul>
+
+                                    <p><strong>硬件要求</strong>：</p>
+
+                                    <ul>
+                                        <li>CPU：双核及以上</li>
+                                        <li>内存：4GB+ (推荐 8GB)</li>
+                                        <li>硬盘：20GB 空闲空间</li>
+                                        <li>网络：稳定的互联网连接</li>
+                                    </ul>
+
+                                    <p><strong>预估时间</strong>：</p>
+
+                                    <ul>
+                                        <li>macOS/Linux：30-45 分钟</li>
+                                        <li>Windows：45-60 分钟</li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E5%AE%89%E8%A3%85-conda-%E7%8E%AF%E5%A2%83" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E5%AE%89%E8%A3%85-conda-%E7%8E%AF%E5%A2%83">
+  </a> 💻 第一部分：安装 Conda 环境
+                                    </h2>
+
+                                    <h3>
+                                        <a name="21-%E4%BB%80%E4%B9%88%E6%98%AF-conda" href="#21-%E4%BB%80%E4%B9%88%E6%98%AF-conda">
+  </a> 2.1 什么是 Conda？
+                                    </h3>
+
+                                    <p><strong>Conda</strong> 是一个环境管理工具，可以：</p>
+
+                                    <ul>
+                                        <li>管理不同版本的 Python</li>
+                                        <li>隔离项目依赖（避免冲突）</li>
+                                        <li>轻松切换环境</li>
+                                    </ul>
+
+                                    <p><strong>为什么使用 Conda？</strong><br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>❌ 不使用 Conda：
+系统 Python（3.9）→ 项目 A 需要 3.11 → 冲突
+                  → 项目 B 需要 3.9  → 正常
+                  → Freqtrade 需要 3.11 → 冲突
+
+✅ 使用 Conda：
+环境 A（Python 3.9）→ 项目 A
+环境 B（Python 3.11）→ Freqtrade
+系统 Python（3.9）→ 其他程序
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="22-%E5%AE%89%E8%A3%85-miniconda" href="#22-%E5%AE%89%E8%A3%85-miniconda">
+  </a> 2.2 安装 Miniconda
+                                    </h3>
+
+                                    <p><strong>Miniconda</strong> 是 Conda 的轻量版本，推荐使用。</p>
+
+                                    <h4>
+                                        <a name="macos-%E5%AE%89%E8%A3%85" href="#macos-%E5%AE%89%E8%A3%85">
+  </a> macOS 安装
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 下载 Miniconda 安装脚本</span>
+curl <span class="nt">-O</span> https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+
+<span class="c"># 2. 运行安装脚本</span>
+bash Miniconda3-latest-MacOSX-x86_64.sh
+
+<span class="c"># 3. 按提示操作</span>
+<span class="c"># - 按 Enter 查看许可协议</span>
+<span class="c"># - 输入 yes 接受协议</span>
+<span class="c"># - 按 Enter 使用默认安装路径</span>
+<span class="c"># - 输入 yes 初始化 Conda</span>
+
+<span class="c"># 4. 重新加载终端配置</span>
+<span class="nb">source</span> ~/.bash_profile  <span class="c"># 如果使用 bash</span>
+<span class="nb">source</span> ~/.zshrc         <span class="c"># 如果使用 zsh</span>
+
+<span class="c"># 5. 验证安装</span>
+conda <span class="nt">--version</span>
+<span class="c"># 输出：conda 24.x.x</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="linux-ubuntudebian-%E5%AE%89%E8%A3%85" href="#linux-ubuntudebian-%E5%AE%89%E8%A3%85">
+  </a> Linux (Ubuntu/Debian) 安装
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 下载 Miniconda 安装脚本</span>
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+<span class="c"># 2. 运行安装脚本</span>
+bash Miniconda3-latest-Linux-x86_64.sh
+
+<span class="c"># 3. 按提示操作（同 macOS）</span>
+
+<span class="c"># 4. 重新加载终端配置</span>
+<span class="nb">source</span> ~/.bashrc
+
+<span class="c"># 5. 验证安装</span>
+conda <span class="nt">--version</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="windows-%E5%AE%89%E8%A3%85" href="#windows-%E5%AE%89%E8%A3%85">
+  </a> Windows 安装
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight powershell"><code><span class="c"># 方法 1：使用图形化安装程序（推荐）</span><span class="w">
+</span><span class="c"># 1. 访问 https://docs.conda.io/en/latest/miniconda.html</span><span class="w">
+</span><span class="c"># 2. 下载 Miniconda3 Windows 64-bit</span><span class="w">
+</span><span class="c"># 3. 双击安装，选择"Just Me"</span><span class="w">
+</span><span class="c"># 4. 勾选"Add Conda to PATH"</span><span class="w">
+
+</span><span class="c"># 方法 2：使用 WSL2（适合开发者）</span><span class="w">
+</span><span class="c"># 1. 启用 WSL2</span><span class="w">
+</span><span class="c"># 2. 安装 Ubuntu 22.04</span><span class="w">
+</span><span class="c"># 3. 在 Ubuntu 中按 Linux 方式安装</span><span class="w">
+
+</span><span class="c"># 验证安装（打开 Anaconda Prompt）</span><span class="w">
+</span><span class="n">conda</span><span class="w"> </span><span class="nt">--version</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="23-%E9%85%8D%E7%BD%AE-conda" href="#23-%E9%85%8D%E7%BD%AE-conda">
+  </a> 2.3 配置 Conda
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 禁用自动激活 base 环境（推荐）</span>
+conda config <span class="nt">--set</span> auto_activate_base <span class="nb">false</span>
+
+<span class="c"># 2. 设置国内镜像（可选，加速下载）</span>
+<span class="c"># 清华镜像</span>
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config <span class="nt">--set</span> show_channel_urls <span class="nb">yes</span>
+
+<span class="c"># 3. 验证配置</span>
+conda config <span class="nt">--show</span> channels
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E5%88%9B%E5%BB%BA-freqtrade-%E7%8E%AF%E5%A2%83" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E5%88%9B%E5%BB%BA-freqtrade-%E7%8E%AF%E5%A2%83">
+  </a> 🐍 第二部分：创建 Freqtrade 环境
+                                    </h2>
+
+                                    <h3>
+                                        <a name="24-%E5%88%9B%E5%BB%BA%E7%8B%AC%E7%AB%8B%E7%9A%84-python-%E7%8E%AF%E5%A2%83" href="#24-%E5%88%9B%E5%BB%BA%E7%8B%AC%E7%AB%8B%E7%9A%84-python-%E7%8E%AF%E5%A2%83">
+  </a> 2.4 创建独立的 Python 环境
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>- 从 2024 年开始，Anaconda 对企业用户以及某些环境下的使用加了 TOS 限制，必须手动接受。
+- 创建虚拟环境前先执行以下命令:
+conda tos accept <span class="nt">--override-channels</span> <span class="nt">--channel</span> https://repo.anaconda.com/pkgs/main
+conda tos accept <span class="nt">--override-channels</span> <span class="nt">--channel</span> https://repo.anaconda.com/pkgs/r
+
+<span class="c"># 1. 创建名为 freqtrade 的环境，Python 3.11</span>
+conda create <span class="nt">-n</span> freqtrade <span class="nv">python</span><span class="o">=</span>3.11 <span class="nt">-y</span>
+
+<span class="c"># 输出示例：</span>
+<span class="c"># Collecting package metadata (current_repodata.json): done</span>
+<span class="c"># Solving environment: done</span>
+<span class="c"># ...</span>
+<span class="c"># Preparing transaction: done</span>
+<span class="c"># Executing transaction: done</span>
+
+<span class="c"># 2. 激活环境</span>
+conda activate freqtrade
+
+<span class="c"># 此时命令行提示符会变为：</span>
+<span class="c"># (freqtrade) user@computer:~$</span>
+
+<span class="c"># 3. 验证 Python 版本</span>
+python <span class="nt">--version</span>
+<span class="c"># 输出：Python 3.11.x</span>
+
+<span class="c"># 4. 验证 pip 版本</span>
+pip <span class="nt">--version</span>
+<span class="c"># 输出：pip 24.x.x from /path/to/conda/envs/freqtrade/...</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>重要概念</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>conda activate freqtrade  ← 激活环境（每次使用前都要运行）
+conda deactivate          ← 退出环境
+conda env list            ← 查看所有环境
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%E5%AE%89%E8%A3%85-freqtrade" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%E5%AE%89%E8%A3%85-freqtrade">
+  </a> 📦 第三部分：安装 Freqtrade
+                                    </h2>
+
+                                    <h3>
+                                        <a name="25-%E4%BD%BF%E7%94%A8-pip-%E5%AE%89%E8%A3%85-freqtrade" href="#25-%E4%BD%BF%E7%94%A8-pip-%E5%AE%89%E8%A3%85-freqtrade">
+  </a> 2.5 使用 pip 安装 Freqtrade
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 确保已激活 freqtrade 环境</span>
+conda activate freqtrade
+
+<span class="c"># 方法 1：安装稳定版（推荐新手）</span>
+pip <span class="nb">install </span>freqtrade
+
+<span class="c"># 方法 2：安装带 plot 功能的版本（推荐）</span>
+pip <span class="nb">install </span>freqtrade[plot]
+
+<span class="c"># 方法 3：安装完整版（包含所有可选功能）</span>
+pip <span class="nb">install </span>freqtrade[all]
+
+<span class="c"># 安装过程需要 5-10 分钟，请耐心等待...</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>安装过程说明</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>Collecting freqtrade
+  Downloading freqtrade-2025.9-py3-none-any.whl
+Collecting ccxt&gt;=4.0.0
+  Downloading ccxt-4.5.6-py2.py3-none-any.whl
+Collecting pandas&gt;=2.2.0
+  Downloading pandas-2.3.0-cp311-cp311-macosx_11_0_arm64.whl
+...
+Installing collected packages: ...
+Successfully installed freqtrade-2025.9 ...
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="26-%E9%AA%8C%E8%AF%81-freqtrade-%E5%AE%89%E8%A3%85" href="#26-%E9%AA%8C%E8%AF%81-freqtrade-%E5%AE%89%E8%A3%85">
+  </a> 2.6 验证 Freqtrade 安装
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 检查版本</span>
+freqtrade <span class="nt">--version</span>
+<span class="c"># 输出：freqtrade 2025.9</span>
+
+<span class="c"># 2. 查看帮助信息</span>
+freqtrade <span class="nt">--help</span>
+<span class="c"># 输出：显示所有可用命令</span>
+
+<span class="c"># 3. 测试 import</span>
+python <span class="nt">-c</span> <span class="s2">"import freqtrade; print('Freqtrade 安装成功！')"</span>
+<span class="c"># 输出：Freqtrade 安装成功！</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>如果出现错误</strong>，参见文末的<a href="#%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5">故障排查</a>章节。</p>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95" href="#%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95">
+  </a> 📁 第四部分：创建项目目录
+                                    </h2>
+
+                                    <h3>
+                                        <a name="27-%E5%88%9D%E5%A7%8B%E5%8C%96-freqtrade-%E9%A1%B9%E7%9B%AE" href="#27-%E5%88%9D%E5%A7%8B%E5%8C%96-freqtrade-%E9%A1%B9%E7%9B%AE">
+  </a> 2.7 初始化 Freqtrade 项目
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 创建项目目录</span>
+<span class="nb">mkdir</span> ~/freqtrade-bot
+<span class="nb">cd</span> ~/freqtrade-bot
+
+<span class="c"># 2. 创建必要的子目录</span>
+freqtrade create-userdir <span class="nt">--userdir</span> user_data
+
+<span class="c"># 输出：</span>
+<span class="c"># Created user-data directory: /path/to/freqtrade-bot/user_data</span>
+<span class="c"># Created strategies directory: /path/to/freqtrade-bot/user_data/strategies</span>
+<span class="c"># Created hyperopts directory: /path/to/freqtrade-bot/user_data/hyperopts</span>
+
+<span class="c"># 3. 查看目录结构</span>
+tree user_data <span class="nt">-L</span> 2
+
+<span class="c"># 输出：</span>
+<span class="c"># user_data/</span>
+<span class="c"># ├── backtest_results/</span>
+<span class="c"># ├── data/</span>
+<span class="c"># ├── hyperopts/</span>
+<span class="c"># ├── logs/</span>
+<span class="c"># ├── notebooks/</span>
+<span class="c"># ├── plot/</span>
+<span class="c"># └── strategies/</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>目录说明</strong>：</p>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>目录</th>
+                                                    <th>用途</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>strategies/</code></td>
+                                                    <td>存放交易策略文件</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>data/</code></td>
+                                                    <td>存放下载的历史数据</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>backtest_results/</code></td>
+                                                    <td>存放回测结果</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>logs/</code></td>
+                                                    <td>存放日志文件</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>hyperopts/</code></td>
+                                                    <td>存放参数优化配置</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>plot/</code></td>
+                                                    <td>存放生成的图表</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%BA%94%E9%83%A8%E5%88%86%E9%85%8D%E7%BD%AE-configjson" href="#%E7%AC%AC%E4%BA%94%E9%83%A8%E5%88%86%E9%85%8D%E7%BD%AE-configjson">
+  </a> ⚙️ 第五部分：配置 config.json
+                                    </h2>
+
+                                    <h3>
+                                        <a name="28-%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" href="#28-%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">
+  </a> 2.8 创建配置文件
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 生成示例配置文件</span>
+freqtrade new-config <span class="nt">--config</span> config.json
+
+<span class="c"># 系统会询问一系列问题，建议设置如下：</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>交互式配置（推荐设置）</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>? Do you want to use Dry-run (simulated trades)?
+  选择: Yes  ← 模拟交易模式
+
+? Please insert your stake currency:
+  输入: USDT  ← 使用 USDT 作为计价货币
+
+? Please insert your stake amount (Number or 'unlimited'):
+  输入: 100  ← 每笔交易 100 USDT
+
+? Please insert max_open_trades (Integer or 'unlimited'):
+  输入: 3  ← 最多同时持仓 3 个
+
+? Time Have your strategy define timeframe
+  输入: 5m  ← 使用 5 分钟时间框架
+
+? Please insert your display currency:
+  输入: USD  ← 显示美元
+
+? Select exchange
+  选择: binance  ← 选择币安交易所
+
+? Do you want to trade Futures?
+  选择: No  ← 暂时不做合约
+
+? Do you want to enable Telegram?
+  选择: No  ← 暂时不配置 Telegram
+
+? Do you want to enable the REST API?
+  选择: No  ← 暂时不启用 API
+
+? Do you want to enable the Plot dataframe
+  选择: Yes  ← 启用图表功能
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="29-%E7%90%86%E8%A7%A3-configjson" href="#29-%E7%90%86%E8%A7%A3-configjson">
+  </a> 2.9 理解 config.json
+                                    </h3>
+
+                                    <p>生成的配置文件内容示例：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"max_open_trades"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"stake_currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"stake_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"tradable_balance_ratio"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.99</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"fiat_display_currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timeframe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5m"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dry_run"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dry_run_wallet"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cancel_open_orders_on_exit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"unfilledtimeout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"entry"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"exit"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"exit_timeout_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"minutes"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"entry_pricing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"price_side"</span><span class="p">:</span><span class="w"> </span><span class="s2">"same"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"use_order_book"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"order_book_top"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"price_last_balance"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"check_depth_of_market"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"bids_to_ask_delta"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"exit_pricing"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"price_side"</span><span class="p">:</span><span class="w"> </span><span class="s2">"same"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"use_order_book"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"order_book_top"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"exchange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"binance"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"secret"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ccxt_config"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+        </span><span class="nl">"ccxt_async_config"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+        </span><span class="nl">"pair_whitelist"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"BTC/USDT"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ETH/USDT"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"BNB/USDT"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"pair_blacklist"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"BNB/.*"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"pairlists"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"StaticPairList"</span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"telegram"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"chat_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"api_server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"listen_ip_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"listen_port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8080</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"freqtrader"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SuperSecretPassword"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"bot_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"freqtrade"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"initial_state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"running"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"force_entry_enable"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"internals"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"process_throttle_secs"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>核心参数说明</strong>：</p>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>参数</th>
+                                                    <th>说明</th>
+                                                    <th>示例值</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>dry_run</code></td>
+                                                    <td>模拟交易模式</td>
+                                                    <td><code>true</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>stake_currency</code></td>
+                                                    <td>计价货币</td>
+                                                    <td><code>"USDT"</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>stake_amount</code></td>
+                                                    <td>每笔交易金额</td>
+                                                    <td><code>100</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>max_open_trades</code></td>
+                                                    <td>最大持仓数</td>
+                                                    <td><code>3</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>timeframe</code></td>
+                                                    <td>时间框架</td>
+                                                    <td><code>"5m"</code></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>pair_whitelist</code></td>
+                                                    <td>允许交易的币种</td>
+                                                    <td><code>["BTC/USDT"]</code></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <p>📄 <strong>详细说明请参考</strong>：<a href="//../CONFIG_EXPLANATION.md">CONFIG_EXPLANATION.md</a></p>
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="210-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%AF%E9%80%89" href="#210-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%AF%E9%80%89">
+  </a> 2.10 修改配置文件（可选）
+                                    </h3>
+
+                                    <p>如果需要修改配置，可以直接编辑 <code>config.json</code>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># macOS/Linux</span>
+nano config.json
+<span class="c"># 或</span>
+vim config.json
+
+<span class="c"># Windows</span>
+notepad config.json
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>推荐修改项</strong>：</p>
+
+                                    <ol>
+                                        <li>
+                                            <strong>增加交易对</strong>：
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight json"><code><span class="nl">"pair_whitelist"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"BTC/USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ETH/USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"BNB/USDT"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"SOL/USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">添加</span><span class="w">
+    </span><span class="s2">"XRP/USDT"</span><span class="w">   </span><span class="err">←</span><span class="w"> </span><span class="err">添加</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ol>
+                                        <li>
+                                            <strong>调整初始资金</strong>（仅 Dry-run）：
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight json"><code><span class="nl">"dry_run_wallet"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">改为</span><span class="w"> </span><span class="mi">10000</span><span class="err">（模拟</span><span class="w"> </span><span class="mi">10000</span><span class="w"> </span><span class="err">USDT）</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ol>
+                                        <li>
+                                            <strong>修改交易金额</strong>：
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight json"><code><span class="nl">"stake_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">改为</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="err">或</span><span class="w"> </span><span class="mi">200</span><span class="w">
+</span></code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E5%85%AD%E9%83%A8%E5%88%86%E9%AA%8C%E8%AF%81%E7%8E%AF%E5%A2%83" href="#%E7%AC%AC%E5%85%AD%E9%83%A8%E5%88%86%E9%AA%8C%E8%AF%81%E7%8E%AF%E5%A2%83">
+  </a> 🧪 第六部分：验证环境
+                                    </h2>
+
+                                    <h3>
+                                        <a name="211-%E8%BF%90%E8%A1%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%91%BD%E4%BB%A4" href="#211-%E8%BF%90%E8%A1%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%91%BD%E4%BB%A4">
+  </a> 2.11 运行第一个命令
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 激活环境（如果还没激活）</span>
+conda activate freqtrade
+
+<span class="c"># 2. 进入项目目录</span>
+<span class="nb">cd</span> ~/freqtrade-bot
+
+<span class="c"># 3. 列出所有可用策略</span>
+freqtrade list-strategies <span class="nt">-c</span> config.json
+
+<span class="c"># 预期输出（可能没有策略）：</span>
+<span class="c"># No strategies found. Please make sure the strategy directory exists.</span>
+<span class="c"># 这是正常的，因为我们还没有添加策略</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="212-%E4%B8%8B%E8%BD%BD%E7%A4%BA%E4%BE%8B%E7%AD%96%E7%95%A5" href="#212-%E4%B8%8B%E8%BD%BD%E7%A4%BA%E4%BE%8B%E7%AD%96%E7%95%A5">
+  </a> 2.12 下载示例策略
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 下载官方策略仓库</span>
+<span class="nb">cd </span>user_data/strategies
+wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/main/user_data/strategies/Strategy001.py
+
+<span class="c"># 或者手动下载后放到 user_data/strategies/ 目录</span>
+
+<span class="c"># 2. 返回项目根目录</span>
+<span class="nb">cd</span> ~/freqtrade-bot
+
+<span class="c"># 3. 再次列出策略</span>
+freqtrade list-strategies <span class="nt">-c</span> config.json
+
+<span class="c"># 预期输出：</span>
+<span class="c"># ┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓</span>
+<span class="c"># ┃ Strategy    ┃ Location         ┃ Status     ┃ Hyperoptable ┃</span>
+<span class="c"># ┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩</span>
+<span class="c"># │ Strategy001 │ Strategy001.py   │ OK         │ No           │</span>
+<span class="c"># └─────────────┴──────────────────┴────────────┴──────────────┘</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="213-%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E4%B8%8B%E8%BD%BD" href="#213-%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E4%B8%8B%E8%BD%BD">
+  </a> 2.13 测试数据下载
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 下载 BTC/USDT 最近 7 天的 5 分钟数据</span>
+freqtrade download-data <span class="se">\</span>
+  <span class="nt">-c</span> config.json <span class="se">\</span>
+  <span class="nt">--days</span> 7 <span class="se">\</span>
+  <span class="nt">--timeframes</span> 5m
+
+<span class="c"># 预期输出：</span>
+<span class="c"># 2025-09-30 10:00:00 - freqtrade - INFO - Using data directory: user_data/data/binance</span>
+<span class="c"># 2025-09-30 10:00:01 - freqtrade - INFO - Downloading data for BTC/USDT, 5m...</span>
+<span class="c"># 2025-09-30 10:00:05 - freqtrade - INFO - Downloaded data for BTC/USDT with length 2016</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>验证数据下载成功</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 查看下载的数据文件</span>
+<span class="nb">ls</span> <span class="nt">-lh</span> user_data/data/binance/
+
+<span class="c"># 输出示例：</span>
+<span class="c"># -rw-r--r-- 1 user group 1.2M Sep 30 10:00 BTC_USDT-5m.json</span>
+<span class="c"># -rw-r--r-- 1 user group 800K Sep 30 10:00 ETH_USDT-5m.json</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="214-%E8%BF%90%E8%A1%8C%E5%BF%AB%E9%80%9F%E5%9B%9E%E6%B5%8B" href="#214-%E8%BF%90%E8%A1%8C%E5%BF%AB%E9%80%9F%E5%9B%9E%E6%B5%8B">
+  </a> 2.14 运行快速回测
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 回测 Strategy001（最近 7 天）</span>
+freqtrade backtesting <span class="se">\</span>
+  <span class="nt">-c</span> config.json <span class="se">\</span>
+  <span class="nt">--strategy</span> Strategy001 <span class="se">\</span>
+  <span class="nt">--timerange</span> 20250924-20250930
+
+<span class="c"># 如果看到回测报告表格，说明环境搭建成功！</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%8E%AF%E5%A2%83%E9%AA%8C%E8%AF%81%E6%B8%85%E5%8D%95" href="#%E7%8E%AF%E5%A2%83%E9%AA%8C%E8%AF%81%E6%B8%85%E5%8D%95">
+  </a> ✅ 环境验证清单
+                                    </h2>
+
+                                    <p>请确保以下所有项都能成功执行：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. Conda 版本检查</span>
+conda <span class="nt">--version</span>
+<span class="c"># ✅ 应显示：conda 24.x.x</span>
+
+<span class="c"># 2. Python 版本检查</span>
+conda activate freqtrade
+python <span class="nt">--version</span>
+<span class="c"># ✅ 应显示：Python 3.11.x</span>
+
+<span class="c"># 3. Freqtrade 版本检查</span>
+freqtrade <span class="nt">--version</span>
+<span class="c"># ✅ 应显示：freqtrade 2025.9</span>
+
+<span class="c"># 4. 策略列表检查</span>
+freqtrade list-strategies <span class="nt">-c</span> config.json
+<span class="c"># ✅ 应显示至少 1 个策略</span>
+
+<span class="c"># 5. 数据目录检查</span>
+<span class="nb">ls </span>user_data/data/binance/
+<span class="c"># ✅ 应显示至少 1 个 .json 文件</span>
+
+<span class="c"># 6. 配置文件检查</span>
+<span class="nb">cat </span>config.json | <span class="nb">grep</span> <span class="s2">"dry_run"</span>
+<span class="c"># ✅ 应显示："dry_run": true</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>全部通过？恭喜你，环境搭建成功！</strong> 🎉</p>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5" href="#%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5">
+  </a> 🐛 故障排查
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-1conda-command-not-found" href="#%E9%97%AE%E9%A2%98-1conda-command-not-found">
+  </a> 问题 1：conda: command not found
+                                    </h3>
+
+                                    <p><strong>原因</strong>：Conda 未添加到 PATH 或未重新加载终端配置</p>
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 方法 1：重新加载配置</span>
+<span class="nb">source</span> ~/.bashrc  <span class="c"># Linux</span>
+<span class="nb">source</span> ~/.zshrc   <span class="c"># macOS (zsh)</span>
+<span class="nb">source</span> ~/.bash_profile  <span class="c"># macOS (bash)</span>
+
+<span class="c"># 方法 2：手动添加 PATH</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/miniconda3/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+
+<span class="c"># 方法 3：重启终端</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-2pip-install-%E9%80%9F%E5%BA%A6%E5%BE%88%E6%85%A2" href="#%E9%97%AE%E9%A2%98-2pip-install-%E9%80%9F%E5%BA%A6%E5%BE%88%E6%85%A2">
+  </a> 问题 2：pip install 速度很慢
+                                    </h3>
+
+                                    <p><strong>原因</strong>：网络连接慢或使用国外镜像</p>
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 使用清华镜像加速</span>
+pip <span class="nb">install</span> <span class="nt">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple freqtrade
+
+<span class="c"># 或永久配置镜像</span>
+pip config <span class="nb">set </span>global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-3no-module-named-talib" href="#%E9%97%AE%E9%A2%98-3no-module-named-talib">
+  </a> 问题 3：No module named 'talib'
+                                    </h3>
+
+                                    <p><strong>原因</strong>：TA-Lib 库未正确安装</p>
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># macOS</span>
+brew <span class="nb">install </span>ta-lib
+pip <span class="nb">install </span>TA-Lib
+
+<span class="c"># Ubuntu/Debian</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>libta-lib0-dev
+pip <span class="nb">install </span>TA-Lib
+
+<span class="c"># Windows</span>
+pip <span class="nb">install </span>TA-Lib-binary
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-4%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%A4%B1%E8%B4%A5" href="#%E9%97%AE%E9%A2%98-4%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%A4%B1%E8%B4%A5">
+  </a> 问题 4：下载数据失败
+                                    </h3>
+
+                                    <p><strong>错误信息</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>ERROR - ccxt.RequestTimeout: binance GET https://api.binance.com/api/v3/klines
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 检查网络连接</span>
+ping api.binance.com
+
+<span class="c"># 2. 检查是否被限流</span>
+<span class="c"># 等待 1 分钟后重试</span>
+
+<span class="c"># 3. 使用代理（如果需要）</span>
+<span class="nb">export </span><span class="nv">HTTP_PROXY</span><span class="o">=</span>http://127.0.0.1:7890
+<span class="nb">export </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://127.0.0.1:7890
+
+<span class="c"># 4. 切换交易所</span>
+<span class="c"># 编辑 config.json，改为 "name": "okx"</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E9%97%AE%E9%A2%98-5%E5%9B%9E%E6%B5%8B%E6%8A%A5%E9%94%99-no-data-found" href="#%E9%97%AE%E9%A2%98-5%E5%9B%9E%E6%B5%8B%E6%8A%A5%E9%94%99-no-data-found">
+  </a> 问题 5：回测报错 "No data found"
+                                    </h3>
+
+                                    <p><strong>原因</strong>：数据未下载或时间范围不匹配</p>
+
+                                    <p><strong>解决方案</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 检查数据是否存在</span>
+freqtrade list-data <span class="nt">-c</span> config.json
+
+<span class="c"># 2. 重新下载数据</span>
+freqtrade download-data <span class="nt">-c</span> config.json <span class="nt">--days</span> 30
+
+<span class="c"># 3. 检查时间范围</span>
+<span class="c"># 确保 --timerange 在已下载数据的范围内</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E8%AF%BE%E5%90%8E%E4%BB%BB%E5%8A%A1" href="#%E8%AF%BE%E5%90%8E%E4%BB%BB%E5%8A%A1">
+  </a> 📝 课后任务
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-1%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%BF%85%E5%81%9A" href="#%E4%BB%BB%E5%8A%A1-1%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%BF%85%E5%81%9A">
+  </a> 任务 1：环境搭建（必做）
+                                    </h3>
+
+                                    <p><strong>目标</strong>：完整搭建 Freqtrade 环境</p>
+
+                                    <p><strong>步骤</strong>：</p>
+
+                                    <ul>
+                                        <li>[ ] 安装 Miniconda</li>
+                                        <li>[ ] 创建 freqtrade 虚拟环境</li>
+                                        <li>[ ] 安装 Freqtrade 2025.9+</li>
+                                        <li>[ ] 创建项目目录</li>
+                                        <li>[ ] 配置 config.json</li>
+                                        <li>[ ] 下载示例策略</li>
+                                        <li>[ ] 下载测试数据</li>
+                                        <li>[ ] 运行测试回测</li>
+                                    </ul>
+
+                                    <p><strong>验证</strong>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 运行完整验证脚本</span>
+bash verify_setup.sh  <span class="c"># 见下方</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-2%E5%88%9B%E5%BB%BA%E9%AA%8C%E8%AF%81%E8%84%9A%E6%9C%AC%E6%8E%A8%E8%8D%90" href="#%E4%BB%BB%E5%8A%A1-2%E5%88%9B%E5%BB%BA%E9%AA%8C%E8%AF%81%E8%84%9A%E6%9C%AC%E6%8E%A8%E8%8D%90">
+  </a> 任务 2：创建验证脚本（推荐）
+                                    </h3>
+
+                                    <p>创建一个验证脚本，方便以后检查环境：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 创建验证脚本</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> verify_setup.sh <span class="o">&lt;&lt;</span> <span class="sh">'</span><span class="no">EOF</span><span class="sh">'
+#!/bin/bash
+
+echo "=== Freqtrade 环境验证 ==="
+echo ""
+
+echo "1. 检查 Conda..."
+conda --version &amp;&amp; echo "✅ Conda 正常" || echo "❌ Conda 未安装"
+
+echo ""
+echo "2. 检查 Python..."
+conda activate freqtrade
+python --version &amp;&amp; echo "✅ Python 正常" || echo "❌ Python 版本错误"
+
+echo ""
+echo "3. 检查 Freqtrade..."
+freqtrade --version &amp;&amp; echo "✅ Freqtrade 正常" || echo "❌ Freqtrade 未安装"
+
+echo ""
+echo "4. 检查配置文件..."
+test -f config.json &amp;&amp; echo "✅ 配置文件存在" || echo "❌ 配置文件不存在"
+
+echo ""
+echo "5. 检查策略..."
+freqtrade list-strategies -c config.json &gt; /dev/null 2&gt;&amp;1 &amp;&amp; </span><span class="se">\</span><span class="sh">
+  echo "✅ 策略加载正常" || echo "❌ 策略加载失败"
+
+echo ""
+echo "6. 检查数据..."
+test -d user_data/data &amp;&amp; </span><span class="se">\</span><span class="sh">
+  echo "✅ 数据目录存在" || echo "❌ 数据目录不存在"
+
+echo ""
+echo "=== 验证完成 ==="
+</span><span class="no">EOF
+
+</span><span class="c"># 添加执行权限</span>
+<span class="nb">chmod</span> +x verify_setup.sh
+
+<span class="c"># 运行验证</span>
+./verify_setup.sh
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-3%E7%86%9F%E6%82%89%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A8%E8%8D%90" href="#%E4%BB%BB%E5%8A%A1-3%E7%86%9F%E6%82%89%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A8%E8%8D%90">
+  </a> 任务 3：熟悉命令行（推荐）
+                                    </h3>
+
+                                    <p><strong>目标</strong>：熟悉 Freqtrade 基础命令<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 1. 查看所有可用命令</span>
+freqtrade <span class="nt">--help</span>
+
+<span class="c"># 2. 查看特定命令的帮助</span>
+freqtrade backtesting <span class="nt">--help</span>
+freqtrade download-data <span class="nt">--help</span>
+
+<span class="c"># 3. 列出支持的交易所</span>
+freqtrade list-exchanges
+
+<span class="c"># 4. 列出支持的时间框架</span>
+freqtrade list-timeframes <span class="nt">--exchange</span> binance
+
+<span class="c"># 5. 查看配置</span>
+freqtrade show-config <span class="nt">-c</span> config.json
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>记录</strong>：将常用命令整理到笔记中。</p>
+
+
+                                    <hr>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-4%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E9%80%89%E5%81%9A" href="#%E4%BB%BB%E5%8A%A1-4%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E9%80%89%E5%81%9A">
+  </a> 任务 4：个性化配置（选做）
+                                    </h3>
+
+                                    <p><strong>目标</strong>：根据个人需求调整配置</p>
+
+                                    <ol>
+                                        <li>
+                                            <p><strong>修改交易对列表</strong></p>
+
+                                            <ul>
+                                                <li>添加你感兴趣的币种</li>
+                                                <li>建议 3-10 个交易对</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><strong>调整资金设置</strong></p>
+
+                                            <ul>
+                                                <li>修改 <code>dry_run_wallet</code>
+                                                </li>
+                                                <li>修改 <code>stake_amount</code>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><strong>选择交易所</strong></p>
+
+                                            <ul>
+                                                <li>如果在国内，可能 OKX 更稳定</li>
+                                                <li>修改 <code>exchange.name</code>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E8%AF%BE%E5%90%8E%E5%B0%8F%E6%B5%8B%E9%AA%8C" href="#%E8%AF%BE%E5%90%8E%E5%B0%8F%E6%B5%8B%E9%AA%8C">
+  </a> 🎓 课后小测验
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E9%80%89%E6%8B%A9%E9%A2%98" href="#%E9%80%89%E6%8B%A9%E9%A2%98">
+  </a> 选择题
+                                    </h3>
+
+                                    <ol>
+                                        <li>
+                                            <p>Conda 的主要作用是？</p>
+
+                                            <ul>
+                                                <li>A. 下载数据</li>
+                                                <li>B. 管理 Python 环境</li>
+                                                <li>C. 执行交易</li>
+                                                <li>D. 生成策略</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><code>conda activate freqtrade</code> 的作用是？</p>
+
+                                            <ul>
+                                                <li>A. 安装 Freqtrade</li>
+                                                <li>B. 激活 freqtrade 环境</li>
+                                                <li>C. 运行回测</li>
+                                                <li>D. 下载数据</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><code>dry_run: true</code> 表示？</p>
+
+                                            <ul>
+                                                <li>A. 实盘交易</li>
+                                                <li>B. 模拟交易</li>
+                                                <li>C. 下载数据</li>
+                                                <li>D. 回测</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><code>stake_amount: 100</code> 表示？</p>
+
+                                            <ul>
+                                                <li>A. 总资金 100</li>
+                                                <li>B. 每笔交易 100</li>
+                                                <li>C. 最大亏损 100</li>
+                                                <li>D. 手续费 100</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p>验证环境是否正确的命令是？</p>
+
+                                            <ul>
+                                                <li>A. <code>conda install freqtrade</code>
+                                                </li>
+                                                <li>B. <code>freqtrade --version</code>
+                                                </li>
+                                                <li>C. <code>python --version</code>
+                                                </li>
+                                                <li>D. 以上都是</li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E5%AE%9E%E8%B7%B5%E9%A2%98" href="#%E5%AE%9E%E8%B7%B5%E9%A2%98">
+  </a> 实践题
+                                    </h3>
+
+                                    <ol>
+                                        <li>如何查看当前激活的 Conda 环境？
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>   命令：__________
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ol>
+                                        <li>如何列出所有可用策略？
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>   命令：__________
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ol>
+                                        <li>如何下载最近 30 天的 1 小时数据？
+                                        </li>
+                                    </ol>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code>   命令：__________
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p><strong>答案见文末</strong> ⬇️</p>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%AD%A6%E4%B9%A0%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95" href="#%E5%AD%A6%E4%B9%A0%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95">
+  </a> ✅ 学习检查清单
+                                    </h2>
+
+                                    <p>在进入第 3 课之前，确保你已经：</p>
+
+                                    <ul>
+                                        <li>[ ] 成功安装 Miniconda</li>
+                                        <li>[ ] 创建并激活 freqtrade 环境</li>
+                                        <li>[ ] 安装 Freqtrade 2025.9+</li>
+                                        <li>[ ] 创建项目目录结构</li>
+                                        <li>[ ] 配置 config.json 文件</li>
+                                        <li>[ ] 下载至少 1 个示例策略</li>
+                                        <li>[ ] 成功下载测试数据</li>
+                                        <li>[ ] 运行第一次回测</li>
+                                        <li>[ ] 所有验证项都通过</li>
+                                        <li>[ ] 理解配置文件的核心参数</li>
+                                    </ul>
+
+                                    <p>如果有任何问题，请参考<a href="#%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5">故障排查</a>章节或在社区提问。</p>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E4%B8%8B%E8%8A%82%E9%A2%84%E5%91%8A" href="#%E4%B8%8B%E8%8A%82%E9%A2%84%E5%91%8A">
+  </a> 🎯 下节预告
+                                    </h2>
+
+                                    <p><strong>第 3 课：核心概念理解</strong></p>
+
+                                    <p>在第 3 课中，我们将：</p>
+
+                                    <ul>
+                                        <li>深入理解交易策略的结构</li>
+                                        <li>学习常用技术指标（EMA、RSI、MACD）</li>
+                                        <li>阅读和理解 Strategy001 的源码</li>
+                                        <li>理解买入/卖出信号的生成逻辑</li>
+                                        <li>掌握止损和止盈的设置方法</li>
+                                    </ul>
+
+                                    <p><strong>准备工作</strong>：</p>
+
+                                    <ul>
+                                        <li>确保环境搭建完成</li>
+                                        <li>安装一个代码编辑器（VS Code 推荐）</li>
+                                        <li>准备 1-2 小时的学习时间</li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%B0%8F%E6%B5%8B%E9%AA%8C%E7%AD%94%E6%A1%88" href="#%E5%B0%8F%E6%B5%8B%E9%AA%8C%E7%AD%94%E6%A1%88">
+  </a> 📌 小测验答案
+                                    </h2>
+
+                                    <ol>
+                                        <li>B - 管理 Python 环境</li>
+                                        <li>B - 激活 freqtrade 环境</li>
+                                        <li>B - 模拟交易</li>
+                                        <li>B - 每笔交易 100</li>
+                                        <li>D - 以上都是</li>
+                                        <li>
+                                            <code>conda env list</code> 或 <code>conda info --envs</code>
+                                        </li>
+                                        <li><code>freqtrade list-strategies -c config.json</code></li>
+                                        <li><code>freqtrade download-data -c config.json --days 30 --timeframes 1h</code></li>
+                                    </ol>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E8%AF%BE%E5%90%8E%E8%AE%A8%E8%AE%BA" href="#%E8%AF%BE%E5%90%8E%E8%AE%A8%E8%AE%BA">
+  </a> 💬 课后讨论
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E8%AE%A8%E8%AE%BA%E4%B8%BB%E9%A2%98" href="#%E8%AE%A8%E8%AE%BA%E4%B8%BB%E9%A2%98">
+  </a> 讨论主题
+                                    </h3>
+
+                                    <ol>
+                                        <li>
+                                            <p><strong>你在搭建环境时遇到了什么问题？</strong></p>
+
+                                            <ul>
+                                                <li>分享你的解决方法</li>
+                                                <li>帮助其他同学</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><strong>你选择了哪些交易对？</strong></p>
+
+                                            <ul>
+                                                <li>为什么选择这些币种？</li>
+                                                <li>分享你的策略思路</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p><strong>Conda vs Docker</strong></p>
+
+                                            <ul>
+                                                <li>你更喜欢哪种方式？</li>
+                                                <li>各有什么优缺点？</li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+
+                                    <p>欢迎在社区的 #course-discussion 频道讨论！</p>
+
+
+                                    <hr>
+
+                                    <p><strong>恭喜你完成第 2 课！环境已经搭建好，准备学习策略核心概念了吗？</strong> 🚀</p>
+
+
+                                    <hr>
+
+                                    <p>📝 <strong>课程反馈</strong>：如果本课有任何不清楚的地方，欢迎提出建议！</p>
+
+
+                                </div>
+
+                                <div class="js-billboard-container body-billboard-container" data-async-url="/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd/bmar11/post_body_bottom"></div>
+                            </div>
+                            <section id="comments" data-follow-button-container="true" data-updated-at="2025-10-03 09:24:21 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+                                <header class="relative flex justify-between items-center mb-6">
+                                    <div class="flex items-center">
+                                        <h2 class="crayons-subtitle-1">
+                                            Top comments <span class="js-comments-count" data-comments-count="0">(0)</span>
+                                        </h2>
+                                    </div>
+
+
+                                    <div id="comment-subscription" class="print-hidden">
+                                        <div class="crayons-btn-group">
+                                            <span class="crayons-btn crayons-btn--outlined">Subscribe</span>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div id="billboard_delay_trigger"></div>
+                                <div id="comments-container" data-testid="comments-container" data-commentable-id="2886998" data-commentable-type="Article" data-has-recent-comment-activity="true">
+
+                                    <div id="response-templates-data" class="hidden"></div>
+
+
+                                    <form class="comment-form print-hidden" id="new_comment" action="/comments" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" />
+
+                                        <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+                                        <input value="2886998" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id" />
+                                        <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type" />
+
+
+                                        <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="https://media2.dev.to/dynamic/image/width=256,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy" />
+  </span>
+                                        <div class="comment-form__inner">
+                                            <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+                                                <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost"
+                                                    aria-label="Add a comment to the discussion" name="comment[body_markdown]">
+</textarea>
+
+                                            </div>
+
+                                            <div class="response-templates-container crayons-card crayons-card--secondary p-4 mb-4 comment-form__templates fs-base hidden">
+                                                <header class="mb-3">
+                                                    <button type="button" class="crayons-btn personal-template-button active" data-target-type="personal" data-form-id="new_comment">Personal</button>
+                                                    <button type="button" class="crayons-btn moderator-template-button hidden" data-target-type="moderator" data-form-id="new_comment">Trusted User</button>
+                                                </header>
+
+                                                <div class="personal-responses-container">
+                                                </div>
+                                                <div class="moderator-responses-container hidden">
+                                                </div>
+
+                                                <a target="_blank" rel="noopener nofollow" href="/settings/response-templates">
+        Create template
+      </a>
+                                                <p>Templates let you quickly answer FAQs or store snippets for re-use.</p>
+                                            </div>
+
+                                            <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+                                            <div class="comment-form__buttons mb-4">
+                                                <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled>Submit</button>
+                                                <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled>Preview</button>
+                                                <a href="/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+                                    </form>
+
+
+                                    <div class="comments" id="comment-trees-container">
+                                    </div>
+                                </div>
+
+                                <div class="align-center">
+
+
+                                    <nav class="fs-s align-center block" aria-label="Conduct controls">
+                                        <a href="/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+                                        <span class="opacity-25 px-2" role="presentation">&bull;</span>
+                                        <a href="/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+                                    </nav>
+
+                                </div>
+
+                            </section>
+                            <div id="hide-comments-modal" class="hidden">
+                                <form id="hide-comments-modal__form" class="hide-comments-modal__form" data-type="json" action="/comments/hide" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="xFZVV0kOG1LSetLxfquxhuZuc9cTzvtaENoTPVrGenSfvHTWpX1fvvpGvIFVwLd2OWhdvpjHD9ndfQmnOKRXdg"
+                                        autocomplete="off" />
+                                    <div class="hide-comments-modal__content">
+                                        <p class="pb-2">
+                                            Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's <a id="hide-comments-modal__comment-permalink" href="#">permalink</a>.
+                                        </p>
+                                        <label class="crayons-field crayons-field--checkbox my-2">
+        <input name="hide_children" type="hidden" value="0" autocomplete="off" /><input class="hide_children crayons-checkbox" type="checkbox" value="1" name="hide_children" id="hide_children" />
+        <p class="crayons-field__label">Hide child comments as well</p>
+      </label>
+                                        <p class="pb-4 pt-2">
+                                            <button type="submit" class="crayons-btn">
+          Confirm
+        </button>
+                                        </p>
+                                    </div>
+                                </form>
+                                <p class="fs-s color-base-60">For further actions, you may consider blocking this person and/or <a id="hide-comments-modal__report-link" href="/report-abuse">reporting abuse</a></p>
+                            </div>
+
+
+
+                        </article>
+
+                        <div class="pb-4 crayons-layout__comments-billboard">
+                            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd/bmar11/post_comments"></div>
+                        </div>
+
+                        <!-- Bottom content skipped via SKIP_BOTTOM_CONTENT config -->
+                    </div>
+                </main>
+            </div>
+
+            <div class="mod-actions-menu print-hidden"></div>
+            <div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+
+            <div class="fullscreen-code js-fullscreen-code"></div>
+            <script src="https://assets1.dev.to/assets/billboard-29bceb1ca135b13ff6f301fa06eef7b5f8dcd5931b52401ba63c59a6552d8138.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/localizeArticleDates-70147c5c6bfe350b42e020ebb2a3dd37419d83978982b5a67b6389119bf162ac.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articleReactions-79a44d82fb34a91c3987c24cfd3bcf2b0d38a02730b69ae6da297387d185f015.js" defer="defer"></script>
+
+            <script>
+                function activateRunkitTags() {
+                    if (!areAnyRunkitTagsPresent())
+                        return
+
+                    var checkRunkit = setInterval(function() {
+                        try {
+                            dynamicallyLoadRunkitLibrary()
+
+                            if (typeof(RunKit) === 'undefined') {
+                                return
+                            }
+
+                            replaceTagContentsWithRunkitWidget()
+                            clearInterval(checkRunkit);
+                        } catch (e) {
+                            console.error(e);
+                            clearInterval(checkRunkit);
+                        }
+                    }, 200);
+                }
+
+                function isRunkitTagAlreadyActive(runkitTag) {
+                    return runkitTag.querySelector("iframe") !== null;
+                };
+
+                function areAnyRunkitTagsPresent() {
+                    var presentRunkitTags = document.getElementsByClassName("runkit-element");
+
+                    return presentRunkitTags.length > 0
+                }
+
+                function replaceTagContentsWithRunkitWidget() {
+                    var targets = document.getElementsByClassName("runkit-element");
+                    for (var i = 0; i < targets.length; i++) {
+                        if (isRunkitTagAlreadyActive(targets[i])) {
+                            continue;
+                        }
+
+                        var wrapperContent = targets[i].textContent;
+                        if (/^(<iframe src)/.test(wrapperContent) === false) {
+                            if (targets[i].children.length > 0) {
+                                var preamble = targets[i].children[0].textContent;
+                                var content = targets[i].children[1].textContent;
+                                targets[i].innerHTML = "";
+                                var notebook = RunKit.createNotebook({
+                                    element: targets[i],
+                                    source: content,
+                                    preamble: preamble
+                                });
+                            }
+                        }
+                    }
+                };
+
+                function dynamicallyLoadRunkitLibrary() {
+                    if (typeof(dynamicallyLoadScript) === "undefined")
+                        return
+
+                    dynamicallyLoadScript("//embed.runkit.com")
+                }
+
+                activateRunkitTags();
+            </script>
+            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-2-ke-freqtrade-huan-jing-da-jian-24bd/bmar11/post_fixed_bottom"></div>
+
+
+            <div id="runtime-banner-container"></div>
+            <div id="i18n-translations" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;,&quot;search_placeholder&quot;:&quot;Search...&quot;,&quot;search_find_related_posts&quot;:&quot;Find related posts...&quot;,&quot;search_powered_by&quot;:&quot;Powered by Algolia&quot;,&quot;search_submit_search&quot;:&quot;Submit search for advanced filtering.&quot;,&quot;search_displaying_recommendations&quot;:&quot;Displaying Algolia Recommendations — Start typing to search&quot;,&quot;article_form_save_changes&quot;:&quot;Save changes&quot;,&quot;article_form_schedule&quot;:&quot;Schedule&quot;,&quot;article_form_publish&quot;:&quot;Publish&quot;,&quot;article_form_loading_preview&quot;:&quot;Loading preview&quot;,&quot;article_form_preview_loaded&quot;:&quot;Preview loaded&quot;,&quot;comments_preview&quot;:&quot;Preview&quot;,&quot;comments_continue_editing&quot;:&quot;Continue editing&quot;,&quot;survey_enter_response&quot;:&quot;Enter your response here...&quot;,&quot;survey_thank_you_response&quot;:&quot;Thank you for your response.&quot;,&quot;survey_thank_you_completing&quot;:&quot;Thank you for completing the survey!&quot;,&quot;dashboard_analytics_readers&quot;:&quot;Readers&quot;,&quot;dashboard_analytics_comments&quot;:&quot;Comments&quot;,&quot;dashboard_analytics_reactions&quot;:&quot;Reactions&quot;,&quot;stats_by&quot;:&quot;by&quot;,&quot;editor_new_title&quot;:&quot;New post title here...&quot;,&quot;editor_body_placeholder&quot;:&quot;Write your post content here...&quot;,&quot;tags_field_label&quot;:&quot;Add up to 4 tags&quot;,&quot;tags_field_placeholder&quot;:&quot;Add up to 4 tags...&quot;,&quot;counted_organization&quot;:{&quot;one&quot;:&quot;%{count} organization&quot;,&quot;other&quot;:&quot;%{count} organizations&quot;},&quot;counted_user&quot;:{&quot;one&quot;:&quot;%{count} person&quot;,&quot;other&quot;:&quot;%{count} people&quot;},&quot;not_following&quot;:&quot;You&#39;re not following anyone&quot;,&quot;following_everyone&quot;:&quot;You&#39;re following %{details} (everyone)&quot;,&quot;you_are_following&quot;:&quot;You&#39;re following&quot;,&quot;and&quot;:&quot;and&quot;}}}"></div>
+        </div>
+    </div>
+
+
+    <footer id="footer" class="crayons-footer print-hidden">
+        <div id="footer-container" class="crayons-footer__container">
+
+
+            <style>
+                .long-bb-body {
+                    max-height: calc(100vh - 200px);
+                    overflow: hidden;
+                }
+
+                .long-bb-bottom {
+                    height: 180px;
+                    background: linear-gradient(to top, var(--card-bg), transparent);
+                    margin-top: -180px;
+                    position: relative;
+                    z-index: 5;
+                }
+            </style>
+
+            <div style="" data-display-unit data-id="146443" data-category-click="click" data-category-impression="impression" data-context-type="home" data-special="nothing" data-article-id="" data-type-of="in_house">
+                <div class="crayons-card crayons-card--secondary crayons-bb bb-placement js-billboard" style="display: inline-flex; flex-direction: column; align-items: center; margin: 0 auto 2rem auto; width: fit-content; padding: 2rem;">
+                    <p style="font-weight: bold; margin: 0 0 1rem 0;">
+                        💎 DEV Diamond Sponsors
+                    </p>
+                    <p style="font-size: 0.8em; margin: 0 0 2rem 0;">
+                        Thank you to our Diamond Sponsors for supporting the DEV Community
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://aistudio.google.com/?utm_source=partner&amp;utm_medium=partner&amp;utm_campaign=FY25-Global-DEVpartnership-sponsorship-AIS&amp;utm_content=-&amp;utm_term=-&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxjlyhbdqehj3akhz166w.png" alt="Google AI - Official AI Model and Platform Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 54px; padding: 10px;" loading="lazy" width="2048" height="472">
+                </a>
+                            <p style="text-align: center;">Google AI is the official AI Model and Platform Partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://neon.tech/?ref=devto&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbnl88cil6afxzmgwrgtt.png" alt="Neon - Official Database Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Neon is the official database partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://www.algolia.com/developers/?utm_source=devto&amp;utm_medium=referral&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fv30ephnolfvnlwgwm0yz.png" alt="Algolia - Official Search Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Algolia is the official search partner of DEV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p class="fs-s crayons-footer__description">
+                <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="/">DEV Community</a> — A space to discuss and keep up software development and manage your software career
+            </p>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/">
+      Home
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/welcome">
+      Welcome Thread
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/tags">
+      Tags
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/about">
+      About
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/contact">
+      Contact
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/code-of-conduct">
+      Code of Conduct
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/privacy">
+      Privacy Policy
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/terms">
+      Terms of Use
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <div class="fs-s">
+                <p>Built on <a class="c-link c-link--branded" target="_blank" rel="noopener" href="https://www.forem.com">Forem</a> — the <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/opensource">open source</a>                    software that powers <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to">DEV</a> and other inclusive communities.</p>
+                <p>Made with love and <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/rails">Ruby on Rails</a>. DEV Community <span title="copyright">&copy;</span> 2016 - 2025.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="snack-zone"></div>
+
+    <div id="global-signup-modal" class="authentication-modal hidden">
+        <div class="authentication-modal__container">
+            <figure class="authentication-modal__image-container">
+                <img class="authentication-modal__image" src="https://media2.dev.to/dynamic/image/width=190,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" alt="DEV Community"
+                    loading="lazy" />
+            </figure>
+            <div class="authentication-modal__content">
+                <p class="authentication-modal__description">
+                    We&#39;re a place where coders share, stay up-to-date and grow their careers.
+                </p>
+            </div>
+            <div class="authentication-modal__actions">
+                <a href="/enter?signup_subforem=1" class="crayons-btn" aria-label="Log in" data-no-instant>
+        Log in
+      </a>
+                <a href="/enter?signup_subforem=1&amp;state=new-user" class="crayons-btn crayons-btn--ghost-brand js-global-signup-modal__create-account" aria-label="Create new account" data-no-instant>
+        Create account
+      </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://assets1.dev.to/assets/signupModalShortcuts-0b25469b985100a01e94cbd7fccaf7f0a4d776e129aac65c766aa32cb28ab29a.js" defer="defer"></script>
+
+    <div id="cookie-consent"></div>
+    <div id="reaction-category-resources" class="hidden" aria-hidden="true">
+        <img data-name="Like" data-slug="like" data-position="1" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="18" height="18" />
+        <img data-name="Unicorn" data-slug="unicorn" data-position="2" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="18" height="18" />
+        <img data-name="Exploding Head" data-slug="exploding_head" data-position="3" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="18" height="18" />
+        <img data-name="Raised Hands" data-slug="raised_hands" data-position="4" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="18" height="18" />
+        <img data-name="Fire" data-slug="fire" data-position="5" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="18" height="18" />
+    </div>
+
+    <script>
+        var userSignedIn = false;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initAuth();
+        } else {
+            document.addEventListener('DOMContentLoaded', initAuth);
+        }
+
+        function initAuth() {
+            var paramToken = new URLSearchParams(window.location.search).get('jwt');
+
+            if (paramToken && !userSignedIn) {
+                authenticateUser(paramToken);
+            } else {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'https://forem.com/auth_pass/iframe';
+
+                document.body.appendChild(iframe);
+
+                window.addEventListener('message', function(event) {
+                    if (event.origin !== 'https://forem.com' && event.origin !== window.location.origin) {
+                        return;
+                    }
+
+                    var data = event.data;
+
+                    if (data.authenticated && !userSignedIn) {
+                        authenticateUser(data.token);
+                    } else if (data.authenticated && window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({
+                            action: 'login',
+                            token: data.token,
+                        }));
+                    }
+                });
+            }
+
+            function authenticateUser(token) {
+                fetch('/auth_pass/token_login', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': getMetaContent('csrf-token'),
+                        },
+                        body: JSON.stringify({
+                            token: token
+                        }),
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.success) {
+                            if (document.head.querySelector('meta[name="user-signed-in"][content="false"]')) {
+                                // Reload the page to update the user's state
+                                location.reload();
+                            }
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error during authentication:', error);
+                    });
+            }
+
+            function getMetaContent(name) {
+                var element = document.querySelector('meta[name="' + name + '"]');
+                return element ? element.getAttribute('content') : '';
+            }
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>

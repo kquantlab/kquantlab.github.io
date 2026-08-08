@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>第 24 课：Freqtrade交易监控与调整 - DEV Community</title>
+
+    <link rel="preload" href="/reactions?article_id=3024999" as="fetch" crossorigin="same-origin">
+    <link rel="canonical" href="https://dev.to/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6" />
+    <meta name="description" content="第 24 课：交易监控与调整   ⏱ 课时：1.5 小时 🎯 学习目标：掌握日常交易监控的最佳实践，学会适时调整而非过度干预           ... Tagged with cryptocurrency, monitoring, automation, tutorial.">
+    <meta name="keywords" content="cryptocurrency, monitoring, automation, tutorial, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://dev.to/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6" />
+    <meta property="og:title" content="第 24 课：Freqtrade交易监控与调整" />
+    <meta property="og:description" content="第 24 课：交易监控与调整   ⏱ 课时：1.5 小时 🎯 学习目标：掌握日常交易监控的最佳实践，学会适时调整而非过度干预           ..." />
+    <meta property="og:site_name" content="DEV Community" />
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@henrylin99991">
+    <meta name="twitter:title" content="第 24 课：Freqtrade交易监控与调整">
+    <meta name="twitter:description" content="第 24 课：交易监控与调整   ⏱ 课时：1.5 小时 🎯 学习目标：掌握日常交易监控的最佳实践，学会适时调整而非过度干预           ...">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:image" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc169y8mx9ebqw3m9c0s8.png" />
+    <meta name="twitter:image:src" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc169y8mx9ebqw3m9c0s8.png">
+
+    <meta name="last-updated" content="2025-11-21 05:23:26 UTC">
+    <meta name="user-signed-in" content="false">
+    <meta name="head-cached-at" content="1763702606">
+    <meta name="environment" content="production">
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-50b020b1243be61f13c330cddda498844595820e6fea4776a922a0732869fdfe.css" media="all" id="main-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-5ab5484fff90044985c295f5f08e7359dda43c10871c3b39a9fa6210cdaf1648.css" media="all" id="main-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-b2af1b25a2d17e3cce00c42af745891ee5042aacb91b930a533b01e00e09ee11.css" media="all" id="main-crayons-stylesheet" />
+  <link rel="stylesheet" href="../../css1.css" media="all" id="main-minimal-stylesheet">
+    <link rel="stylesheet" href="../../css2.css" media="all" id="main-views-stylesheet">
+    <link rel="stylesheet" href="../../css3.css" media="all" id="main-crayons-stylesheet">
+    <script src="https://assets1.dev.to/assets/base-49a8fe4e07d8957dd667d261ec816890c300d63637698ea97a4da989fa01eeef.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/application-7258612fccf5d56314a6e4ad1898b4f818f474c4bb3485e302428d489a769a17.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseInitializers-2f0777a6d67046056f9f42665560ce072de3801292674358ddbad6e135c1891d.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/baseTracking-b6bf73e5ee66633e151e7d5b7c6bbccedfa4c59e3615be97b98c4c0f543ddae7.js" defer="defer"></script>
+    <script src="https://assets1.dev.to/assets/followButtons-a29380c2c88136b97b2b5e63e94614ff7458fc72e07cffa7b6153831c28a40d2.js" defer="defer"></script>
+
+    <meta name="search-script" content="https://assets1.dev.to/assets/Search-47b78c90427318f3a0e6fb7266d267b81e2bfe6e124e47aafdb9a513670fa8bc.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" type="image/x-icon" href="https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <link rel="apple-touch-icon" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://media2.dev.to/dynamic/image/width=152,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://media2.dev.to/dynamic/image/width=167,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+    <link href="https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="192x192" />
+    <link href="https://media2.dev.to/dynamic/image/width=128,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="128x128" />
+    <meta name="apple-mobile-web-app-title" content="dev.to">
+    <meta name="application-name" content="dev.to">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community" />
+
+    <meta property="forem:name" content="DEV Community" />
+    <meta property="forem:logo" content="https://media2.dev.to/dynamic/image/width=512,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" />
+    <meta property="forem:domain" content="dev.to" />
+
+    <link rel="stylesheet" href="../../custom-font-fix.css">
+<style id="kquantlab-article-cleanup">
+.crayons-layout__sidebar-left,
+#comments,
+#hide-comments-modal,
+.crayons-layout__comments-billboard,
+.js-billboard-container,
+#footer,
+#reaction-category-resources { display: none !important; }
+.crayons-layout.crayons-layout--article { grid-template-columns: minmax(0, 1fr) !important; max-width: 980px !important; margin-inline: auto !important; }
+#main-content.crayons-layout__content { grid-column: 1 !important; width: 100% !important; max-width: 900px !important; margin-inline: auto !important; }
+body { background: #f4f7f3 !important; }
+</style></head>
+
+<body class="sans-serif-article-body default-header" data-user-status="logged-out" data-is-root-subforem="" data-subforem-id="1" data-side-nav-visible="true" data-community-name="DEV Community" data-subscription-icon="https://assets1.dev.to/assets/subscription-icon-805dfa7ac7dd660f07ed8d654877270825b07a92a03841aa99a1093bd00431b2.png"
+    data-locale="en" data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr" data-deployed-at="2025-11-20T20:19:01Z" data-latest-commit-id="21fbdc8d0dc94dd213d9d871773afefae95031f4" data-ga-tracking="UA-71991109-1" data-cookie-banner-user-context="logged_out_only"
+    data-cookie-banner-platform-context="off" data-algolia-id="PRSOBFP46H" data-algolia-search-key="9aa7d31610cba78851c9b1f63776a9dd" data-algolia-display="true" data-dynamic-url-component="bmar11" data-ga4-tracking-id="G-TYEM8Y3JN3">
+
+    <script>
+        if (navigator.userAgent === 'ForemWebView/1' || window.frameElement) {
+            document.body.classList.add("hidden-shell");
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/minimal-50b020b1243be61f13c330cddda498844595820e6fea4776a922a0732869fdfe.css" media="all" id="secondary-minimal-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/views-5ab5484fff90044985c295f5f08e7359dda43c10871c3b39a9fa6210cdaf1648.css" media="all" id="secondary-views-stylesheet" />
+    <link rel="stylesheet" href="https://assets1.dev.to/assets/crayons-b2af1b25a2d17e3cce00c42af745891ee5042aacb91b930a533b01e00e09ee11.css" media="all" id="secondary-crayons-stylesheet" />
+
+    <div id="body-styles">
+        <style>
+            :root {
+                --accent-brand-lighter-rgb: 80, 99, 301;
+                --accent-brand-rgb: 59, 73, 223;
+                --accent-brand-darker-rgb: 47, 58, 178;
+            }
+        </style>
+    </div>
+    <div id="audiocontent" data-podcast="">
+
+    </div>
+
+    <script>
+        (function() {
+            // Utility: base64 unicode decode (for cookie payload)
+            function base64DecodeUnicode(str) {
+                try {
+                    return decodeURIComponent(
+                        atob(str)
+                        .split("")
+                        .map((c) => {
+                            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                        })
+                        .join(""),
+                    );
+                } catch (e) {
+                    console.error("base64DecodeUnicode failed:", e);
+                    return null;
+                }
+            }
+
+            function getCookie(name) {
+                const match = document.cookie.match(
+                    new RegExp("(^|; )" + name.replace(/([.*+?^${}()|[\]\\])/g, "\\$1") + "=([^;]*)"),
+                );
+                return match ? decodeURIComponent(match[2]) : null;
+            }
+
+            function getUserFromCookie() {
+                const raw = getCookie("current_user");
+                if (!raw) return null;
+                const decoded = base64DecodeUnicode(raw);
+                if (!decoded) return null;
+                try {
+                    return JSON.parse(decoded);
+                } catch (e) {
+                    console.error("Parsing user from cookie failed:", e);
+                    return null;
+                }
+            }
+
+            // --- user acquisition: prefer cookie, fallback to localStorage ---
+            const storedCurrentUser = (() => {
+                const fromCookie = getUserFromCookie();
+                if (fromCookie) return fromCookie;
+                const stored = localStorage ? .getItem("current_user");
+                if (!stored) return null;
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error("Parsing user from localStorage failed:", e);
+                    return null;
+                }
+            })();
+
+            // apply authorization/display logic and reorder if present
+            if (storedCurrentUser) {
+
+                if (storedCurrentUser ? .ordered_subforem_ids ? .length > 0) {
+                    const subforemIds = storedCurrentUser.ordered_subforem_ids;
+                    const sidebar = document.getElementById("main-side-bar");
+                    const rootLink = document.getElementById("root-subforem-link");
+                    const rootSubforemId = rootLink ? .getAttribute("data-sidebar-subforem-id");
+
+                    const subforemElements = sidebar.querySelectorAll("[data-sidebar-subforem-id]");
+                    const subforemMap = {};
+
+                    subforemElements.forEach((el) => {
+                        const id = el.getAttribute("data-sidebar-subforem-id");
+                        if (id !== rootSubforemId) {
+                            subforemMap[id] = el.closest(".crayons-side-nav__item");
+                        }
+                    });
+
+                    // remove non-root existing items
+                    Object.values(subforemMap).forEach((item) => {
+                        if (item && item.parentNode) {
+                            item.remove();
+                        }
+                    });
+
+                    // append in user's order (excluding root)
+                    const scrollableContainer = sidebar.querySelector(".crayons-side-nav__scrollable");
+                    subforemIds.forEach((id) => {
+                        if (id !== rootSubforemId && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // append leftovers not in the user's list
+                    Object.keys(subforemMap).forEach((id) => {
+                        const parsedId = parseInt(id, 10);
+                        if (!subforemIds.includes(parsedId) && subforemMap[id]) {
+                            scrollableContainer.appendChild(subforemMap[id]);
+                        }
+                    });
+
+                    // ensure menu is last
+                    const menu = sidebar.querySelector(".crayons-side-nav__item--menu");
+                    if (menu) {
+                        sidebar.appendChild(menu);
+                    }
+                }
+            }
+
+            // active subforem highlight based on current context
+            const currentSubforemId = document.body.getAttribute("data-subforem-id");
+            if (currentSubforemId) {
+                const matching = document.querySelector(
+                    `[data-sidebar-subforem-id="${currentSubforemId}"]`,
+                );
+                if (matching) {
+                    matching.classList.add("active");
+                }
+            }
+        })();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebar = document.getElementById("main-side-bar");
+            if (!sidebar) return;
+
+            const items = sidebar.querySelectorAll(".crayons-side-nav__item");
+            let hoverTimeout;
+            let hasMoved = false;
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                hasMoved = true;
+            });
+
+            items.forEach((item) => {
+                item.addEventListener("mouseleave", function() {
+                    this.dataset.hasLeftOnce = "true";
+                    if (this.classList.contains("hovered")) {
+                        this.classList.remove("hovered");
+                        this.classList.add("not-hovered");
+                    }
+                });
+
+                item.addEventListener("mouseenter", function(e) {
+                    if (!hasMoved && !this.dataset.hasLeftOnce) {
+                        return;
+                    }
+
+                    const targetItem = this;
+                    const currentActive = sidebar.querySelector(
+                        ".crayons-side-nav__item.hovered",
+                    );
+
+                    const switchActiveState = () => {
+                        if (currentActive && currentActive !== targetItem) {
+                            currentActive.classList.remove("hovered");
+                            currentActive.classList.add("not-hovered");
+
+                            // Reset styles on the previous active item's pop-out card
+                            const previousPreviewCard = currentActive.querySelector(".profile-preview-card__content");
+                            if (previousPreviewCard) {
+                                previousPreviewCard.style.position = '';
+                                previousPreviewCard.style.left = '';
+                                previousPreviewCard.style.top = '';
+                                previousPreviewCard.style.bottom = '';
+                                previousPreviewCard.style.width = '';
+                                previousPreviewCard.style.zIndex = '';
+                            }
+                        }
+                        targetItem.classList.remove("not-hovered");
+                        targetItem.classList.add("hovered");
+                        let feedEl = document.getElementById('root-feed-card');
+                        if (feedEl) {
+                            feedEl.scrollTop = 0;
+                        }
+
+                        // --- NEW LOGIC START ---
+                        const previewCard = targetItem.querySelector(
+                            ".profile-preview-card__content",
+                        );
+                        if (previewCard) {
+                            const rect = targetItem.getBoundingClientRect();
+
+                            // Position the card relative to the viewport
+                            previewCard.style.position = 'fixed';
+                            previewCard.style.left = '48px';
+                            previewCard.style.width = '290px';
+                            previewCard.style.zIndex = '3000';
+
+                            if (window.innerHeight - rect.bottom < 280) {
+                                previewCard.classList.add("profile-preview-card__upsidedown");
+                                previewCard.style.top = 'auto';
+                                previewCard.style.bottom = `${window.innerHeight - rect.bottom - 30}px`;
+                            } else {
+                                previewCard.classList.remove("profile-preview-card__upsidedown");
+                                previewCard.style.top = `${rect.top - 30}px`;
+                                previewCard.style.bottom = 'auto';
+                            }
+                        }
+                        // --- NEW LOGIC END ---
+                    };
+
+                    clearTimeout(hoverTimeout);
+
+                    let delay = 20;
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+
+                    if (deltaX > 10 && deltaX >= Math.abs(deltaY)) {
+                        delay = 250;
+                    }
+
+                    if (currentActive && currentActive !== targetItem) {
+                        hoverTimeout = setTimeout(switchActiveState, delay);
+                    } else {
+                        switchActiveState();
+                    }
+                });
+            });
+
+            sidebar.addEventListener("mouseleave", () => {
+                clearTimeout(hoverTimeout);
+                const activeItem = sidebar.querySelector(
+                    ".crayons-side-nav__item.hovered",
+                );
+                if (activeItem) {
+                    activeItem.classList.remove("hovered");
+                    activeItem.classList.add("not-hovered");
+
+                    // Reset any inline styles on the pop-out card
+                    const previewCard = activeItem.querySelector(".profile-preview-card__content");
+                    if (previewCard) {
+                        previewCard.style.position = '';
+                        previewCard.style.left = '';
+                        previewCard.style.top = '';
+                        previewCard.style.bottom = '';
+                        previewCard.style.width = '';
+                        previewCard.style.zIndex = '';
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script src="https://assets1.dev.to/assets/mainSidebar-10996dbfced598bf8143689e86ee995945103270acd272ccf8bab9d50c74074b.js" defer="defer"></script>
+
+    <div class="navigation-progress" id="navigation-progress"></div>
+
+    <div id="active-broadcast" class="broadcast-wrapper"></div>
+    <div id="page-content" class="wrapper stories stories-show articletag-cryptocurrency articletag-monitoring articletag-automation articletag-tutorial articleuser-3446346" data-current-page="stories-show">
+        <div id="page-content-inner" data-internal-nav="false">
+            <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+
+
+            <style>
+                .html-variant-wrapper {
+                    display: none
+                }
+            </style>
+
+
+
+            <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js" integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy" crossorigin="anonymous" defer></script>
+
+            <script src="https://assets1.dev.to/assets/webShare-0686f0b9ac40589694ef6ae6a6202c44119bc781c254f6cf6d52d8a008461156.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articlePage-dce93defbf17ca8235da52777a6f00be546cfd46bf23df4486bb0461e18f7a23.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/commentDropdowns-7a28d130e5b78d38b30a9495a964003a66bd64fa455fc70b766d69cf06b9ba24.js" defer="defer"></script>
+
+            <script type="application/ld+json">
+                {
+                    "@context": "http://schema.org",
+                    "@type": "Article",
+                    "mainEntityOfPage": {
+                        "@type": "WebPage",
+                        "@id": "https://dev.to/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6"
+                    },
+                    "url": "https://dev.to/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6",
+                    "image": ["https://media2.dev.to/dynamic/image/width=1080,height=1080,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc169y8mx9ebqw3m9c0s8.png", "https://media2.dev.to/dynamic/image/width=1280,height=720,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc169y8mx9ebqw3m9c0s8.png", "https://media2.dev.to/dynamic/image/width=1600,height=900,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fc169y8mx9ebqw3m9c0s8.png"],
+                    "publisher": {
+                        "@context": "http://schema.org",
+                        "@type": "Organization",
+                        "name": "DEV Community",
+                        "logo": {
+                            "@context": "http://schema.org",
+                            "@type": "ImageObject",
+                            "url": "https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png",
+                            "width": "192",
+                            "height": "192"
+                        }
+                    },
+                    "headline": "第 24 课：Freqtrade交易监控与调整",
+                    "author": {
+                        "@context": "http://schema.org",
+                        "@type": "Person",
+                        "url": "https://dev.to/henry_lin_3ac6363747f45b4",
+                        "name": "Henry Lin"
+                    },
+                    "datePublished": "2025-11-15T02:47:51Z",
+                    "dateModified": "2025-11-15T02:47:51Z"
+                }
+            </script>
+
+
+            <div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+                <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+                    <div class="crayons-article-actions print-hidden">
+                        <div class="crayons-article-actions__inner">
+
+
+                            <div class="reaction-drawer__outer hoverdown" style="">
+                                <button id="reaction-drawer-trigger" aria-label="reaction-drawer-trigger" aria-pressed="false" class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clipPath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clipPath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="https://assets1.dev.to/assets/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg" />
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">
+        <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+      </span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+                                <div class="reaction-drawer" aria-expanded="false">
+                                    <div class="reaction-drawer__container">
+                                        <button id="reaction-butt-like" name="Like" aria-label="Like" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+                                        <button id="reaction-butt-unicorn" name="Unicorn" aria-label="Unicorn" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+                                        <button id="reaction-butt-exploding_head" name="Exploding Head" aria-label="Exploding Head" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+                                        <button id="reaction-butt-raised_hands" name="Raised Hands" aria-label="Raised Hands" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+                                        <button id="reaction-butt-fire" name="Fire" aria-label="Fire" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" />
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="reaction-butt-comment" aria-label="Jump to Comments" aria-pressed="false" class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative" data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="0">
+      <span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span>
+    </span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+                            <button id="reaction-butt-readinglist" aria-label="Add to reading list" aria-pressed="false" class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative" data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist"><span class="bg-base-40 opacity-25 p-2 inline-block radius-default"></span></span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+                            <button id="reaction-butt-boost" aria-label="Boost" aria-pressed="false" class="crayons-reaction crayons-reaction--boost crayons-tooltip__activator relative">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-hidden="true" class="crayons-icon" width="24" height="24">
+  <path transform="translate(24,0) scale(-1,1)" d="M6 4H21C21.5523 4 22 4.44772 22 5V12H20V6H6V9L1 5L6 1V4ZM18 20H3C2.44772 20 2 19.5523 2 19V12H4V18H18V15L23 19L18 23V20Z"></path>
+</svg>
+
+    </span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Boost
+    </span>
+</button>
+
+
+                            <div class="only-sidebar-menu-item">
+                                <div id="mod-actions-menu-btn-area" class="print-hidden trusted-visible-block align-center">
+                                </div>
+                            </div>
+                            <div class="align-center m:relative">
+                                <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="am5ixh0oxvrbv3m1y3qa5xnfq2rb2rqn" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="am5ixh0oxvrbv3m1y3qa5xnfq2rb2rqn">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+      </button>
+
+                                <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+                                    <div class="only-mobile-menu-item">
+                                        <button class="mod-actions-menu-btn crayons-link crayons-link--block w-100 bg-transparent border-0 fw-bold">
+            Moderate
+          </button>
+                                    </div>
+                                    <div>
+                                        <button id="copy-post-url-button" class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0" data-postUrl="https://dev.to/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6">
+            <span class="fw-bold">Copy link</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="a5hpt24p8j7xjz0e0rw6e6dgdkk4ilxk" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="a5hpt24p8j7xjz0e0rw6e6dgdkk4ilxk">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+          </button>
+                                        <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" aria-live="polite" hidden>Copied to Clipboard</div>
+                                    </div>
+
+                                    <div class="Desktop-only">
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href='https://twitter.com/intent/tweet?text=%22%E7%AC%AC%2024%20%E8%AF%BE%EF%BC%9AFreqtrade%E4%BA%A4%E6%98%93%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E6%95%B4%22%20by%20%40henrylin99991%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6'>
+            Share to X
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6&title=%E7%AC%AC%2024%20%E8%AF%BE%EF%BC%9AFreqtrade%E4%BA%A4%E6%98%93%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E6%95%B4&summary=%E7%AC%AC%2024%20%E8%AF%BE%EF%BC%9A%E4%BA%A4%E6%98%93%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E6%95%B4%20%20%20%E2%8F%B1%20%E8%AF%BE%E6%97%B6%EF%BC%9A1.5%20%E5%B0%8F%E6%97%B6%20%F0%9F%8E%AF%20%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87%EF%BC%9A%E6%8E%8C%E6%8F%A1%E6%97%A5%E5%B8%B8%E4%BA%A4%E6%98%93%E7%9B%91%E6%8E%A7%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%AD%A6%E4%BC%9A%E9%80%82%E6%97%B6%E8%B0%83%E6%95%B4%E8%80%8C%E9%9D%9E%E8%BF%87%E5%BA%A6%E5%B9%B2%E9%A2%84%20%20%20%20%20%20%20%20%20%20%20...&source=DEV%20Community">
+            Share to LinkedIn
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6">
+            Share to Facebook
+          </a>
+                                        <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fhenry_lin_3ac6363747f45b4%2Fdi-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6">
+            Share to Mastodon
+          </a>
+                                    </div>
+
+                                    <web-share-wrapper shareurl="https://dev.to/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6" sharetitle="第 24 课：Freqtrade交易监控与调整" sharetext="第 24 课：交易监控与调整   ⏱ 课时：1.5 小时 🎯 学习目标：掌握日常交易监控的最佳实践，学会适时调整而非过度干预           ..."
+                                        template="web-share-button">
+                                    </web-share-wrapper>
+                                    <template id="web-share-button">
+          <a href="#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+        </template>
+
+                                    <a href="/report-abuse" class="crayons-link crayons-link--block">Report Abuse</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
+
+                <main id="main-content" class="crayons-layout__content grid gap-4">
+                    <div class="article-wrapper">
+
+
+                        <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="3024999" data-article-slug="di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6" data-author-id="3446346" data-author-name="Henry Lin" data-author-username="henry_lin_3ac6363747f45b4"
+                            data-co-author-ids="" data-path="/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6" data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true" data-scheduled="false"
+                            lang=zh>
+                            <script>
+                                try {
+                                    if (localStorage) {
+                                        let currentUser = localStorage.getItem('current_user');
+
+                                        if (currentUser) {
+                                            currentUser = JSON.parse(currentUser);
+                                            if (currentUser.id === 3446346) {
+                                                document.getElementById('article-show-container').classList.add('current-user-is-article-author');
+                                            }
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            </script>
+                            <header class="crayons-article__header" id="main-title">
+
+                                <div class="crayons-article__header__meta">
+                          
+                                    <h1 class=" fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 medium">
+                                        第 24 课：Freqtrade交易监控与调整
+                                    </h1>
+
+                                    <div class="spec__tags flex flex-wrap">
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(59, 73, 223, 0.10);
+        --tag-prefix: #3b49df;
+        --tag-bg-hover: rgba(59, 73, 223, 0.10);
+        --tag-prefix-hover: #3b49df;
+      " href="/t/cryptocurrency"><span class="crayons-tag__prefix">#</span>cryptocurrency</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(255, 163, 100, 0.10);
+        --tag-prefix: #ffa364;
+        --tag-bg-hover: rgba(255, 163, 100, 0.10);
+        --tag-prefix-hover: #ffa364;
+      " href="/t/monitoring"><span class="crayons-tag__prefix">#</span>monitoring</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(59, 73, 223, 0.10);
+        --tag-prefix: #3b49df;
+        --tag-bg-hover: rgba(59, 73, 223, 0.10);
+        --tag-prefix-hover: #3b49df;
+      " href="/t/automation"><span class="crayons-tag__prefix">#</span>automation</a>
+                                        <a class="crayons-tag   " style="
+        --tag-bg: rgba(254, 255, 165, 0.10);
+        --tag-prefix: #FEFFA5;
+        --tag-bg-hover: rgba(254, 255, 165, 0.10);
+        --tag-prefix-hover: #FEFFA5;
+      " href="/t/tutorial"><span class="crayons-tag__prefix">#</span>tutorial</a>
+                                    </div>
+                                </div>
+                            </header>
+
+                            <div class="crayons-article__main ">
+                                <div class="crayons-article__body text-styles spec__body" data-article-id="3024999" id="article-body">
+                                    <h1>
+                                        <a name="%E7%AC%AC-24-%E8%AF%BE%E4%BA%A4%E6%98%93%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E6%95%B4" href="#%E7%AC%AC-24-%E8%AF%BE%E4%BA%A4%E6%98%93%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E6%95%B4">
+  </a> 第 24 课：交易监控与调整
+                                    </h1>
+
+                                    <p><strong>⏱ 课时</strong>：1.5 小时<br>
+                                        <strong>🎯 学习目标</strong>：掌握日常交易监控的最佳实践，学会适时调整而非过度干预</p>
+
+                                    <hr>
+                                    <h2>
+                                        <a name="%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%BF%B0" href="#%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%BF%B0">
+  </a> 课程概述
+                                    </h2>
+
+                                    <p>实盘交易启动后，监控和调整成为日常工作。但过度监控会导致焦虑，过度调整会破坏策略的稳定性。</p>
+
+                                    <p><strong>本课核心理念</strong>：</p>
+
+                                    <blockquote>
+                                        <p><strong>监控是为了及时发现问题，而不是找借口干预策略。</strong></p>
+                                    </blockquote>
+
+                                    <p>本课将帮助你：</p>
+
+                                    <ul>
+                                        <li>建立高效的日常监控流程</li>
+                                        <li>识别真正需要调整的信号</li>
+                                        <li>区分正常波动和系统性问题</li>
+                                        <li>掌握调整的时机和方法</li>
+                                    </ul>
+
+                                    <hr>
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E6%97%A5%E5%B8%B8%E7%9B%91%E6%8E%A7%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E6%97%A5%E5%B8%B8%E7%9B%91%E6%8E%A7%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">
+  </a> 第一部分：日常监控最佳实践
+                                    </h2>
+                                    <h3>
+                                        <a name="11-%E4%B8%89%E7%BA%A7%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB" href="#11-%E4%B8%89%E7%BA%A7%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB">
+  </a> 1.1 三级监控体系
+                                    </h3>
+                                    <h4>
+                                        <a name="%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E8%87%AA%E5%8A%A8%E5%8C%96" href="#%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E8%87%AA%E5%8A%A8%E5%8C%96">
+  </a> 实时监控（自动化）
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>通过 Telegram 自动接收：
+✅ 买入通知
+✅ 卖出通知
+✅ 止损通知
+✅ 错误警报
+✅ 保护机制触发
+
+特点：
+- 无需主动查看，被动接收
+- 24/7 覆盖
+- 关键事件不遗漏
+
+建议配置：
+"notification_settings": {
+  "status": "silent",        // 状态查询不通知
+  "warning": "on",            // 警告必须通知
+  "entry": "on",              // 买入通知
+  "exit": "on",               // 卖出通知
+  "protection_trigger": "on"  // 保护触发通知
+}
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E5%AE%9A%E6%97%B6%E6%A3%80%E6%9F%A5%E4%B8%BB%E5%8A%A8" href="#%E5%AE%9A%E6%97%B6%E6%A3%80%E6%9F%A5%E4%B8%BB%E5%8A%A8">
+  </a> 定时检查（主动）
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>每日 3 次固定时间检查：
+
+早晨检查（8:00-9:00）：
+- 查看过夜持仓
+- 检查系统状态
+- 浏览 Telegram 历史消息
+时间：10-15 分钟
+
+午间检查（12:00-13:00）：
+- 查看当前持仓盈亏
+- 确认无异常交易
+- 检查新增信号
+时间：5-10 分钟
+
+晚间总结（21:00-22:00）：
+- 查看当日交易明细
+- 统计收益和胜率
+- 记录交易日志
+- 分析问题交易
+时间：15-20 分钟
+
+总时间：每日 30-45 分钟
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90%E5%91%A8%E6%9C%9F%E6%80%A7" href="#%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90%E5%91%A8%E6%9C%9F%E6%80%A7">
+  </a> 深度分析（周期性）
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>每周分析（周日晚）：
+- 生成周报告
+- 对比回测和 Dry-run
+- 分析最佳/最差交易
+- 评估是否需要调整
+时间：30-60 分钟
+
+每月复盘（月初）：
+- 生成月报告
+- 计算关键指标
+- 策略表现评估
+- 制定下月计划
+时间：1-2 小时
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3>
+                                        <a name="12-%E9%AB%98%E6%95%88%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7" href="#12-%E9%AB%98%E6%95%88%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7">
+  </a> 1.2 高效监控工具
+                                    </h3>
+                                    <h4>
+                                        <a name="%E5%B7%A5%E5%85%B7-1telegram-bot-%E5%91%BD%E4%BB%A4" href="#%E5%B7%A5%E5%85%B7-1telegram-bot-%E5%91%BD%E4%BB%A4">
+  </a> 工具 1：Telegram Bot 命令
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>常用命令：
+
+/status
+- 查看当前持仓
+- 显示盈亏情况
+- 最常用命令
+
+/profit [天数]
+- 查看盈利统计
+- 示例：/profit 7（最近 7 天）
+
+/daily [天数]
+- 查看每日收益
+- 示例：/daily 30
+
+/performance
+- 查看交易对表现
+- 找出最佳/最差交易对
+
+/count [天数]
+- 查看交易次数统计
+- 按交易对分组
+
+/balance
+- 查看账户余额
+- 确认资金状况
+
+/stopbuy
+- 暂停买入（保留持仓）
+- 应急使用
+
+/reload_config
+- 重新加载配置
+- 修改配置后使用
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E5%B7%A5%E5%85%B7-2frequi-%E9%9D%A2%E6%9D%BF" href="#%E5%B7%A5%E5%85%B7-2frequi-%E9%9D%A2%E6%9D%BF">
+  </a> 工具 2：FreqUI 面板
+                                    </h4>
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>优势：
+✅ 可视化界面
+✅ 实时图表
+✅ 历史交易查询
+✅ 一键操作
+
+访问：
+http://your-server-ip:8080
+
+主要功能：
+1. Dashboard - 总览
+2. Trades - 交易历史
+3. Performance - 性能分析
+4. Charts - K 线图
+5. Settings - 设置
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E5%B7%A5%E5%85%B7-3%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%91%E6%8E%A7%E8%84%9A%E6%9C%AC" href="#%E5%B7%A5%E5%85%B7-3%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%91%E6%8E%A7%E8%84%9A%E6%9C%AC">
+  </a> 工具 3：自定义监控脚本
+                                    </h4>
+
+                                    <p>创建 <code>daily_summary.py</code>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1">#!/usr/bin/env python3
+</span><span class="sh">"""</span><span class="s">
+每日自动总结脚本
+每天定时运行，生成总结并发送到 Telegram
+</span><span class="sh">"""</span>
+
+<span class="kn">import</span> <span class="n">sqlite3</span>
+<span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="c1"># 配置
+</span><span class="n">DB_PATH</span> <span class="o">=</span> <span class="sh">'</span><span class="s">tradesv3.sqlite</span><span class="sh">'</span>
+<span class="n">TELEGRAM_TOKEN</span> <span class="o">=</span> <span class="sh">'</span><span class="s">YOUR_BOT_TOKEN</span><span class="sh">'</span>
+<span class="n">TELEGRAM_CHAT_ID</span> <span class="o">=</span> <span class="sh">'</span><span class="s">YOUR_CHAT_ID</span><span class="sh">'</span>
+
+<span class="k">def</span> <span class="nf">send_telegram_message</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">发送 Telegram 消息</span><span class="sh">"""</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">https://api.telegram.org/bot</span><span class="si">{</span><span class="n">TELEGRAM_TOKEN</span><span class="si">}</span><span class="s">/sendMessage</span><span class="sh">"</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">chat_id</span><span class="sh">'</span><span class="p">:</span> <span class="n">TELEGRAM_CHAT_ID</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">text</span><span class="sh">'</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">parse_mode</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Markdown</span><span class="sh">'</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">发送失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_today_stats</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">获取今日统计</span><span class="sh">"""</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">DB_PATH</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span>
+
+    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">date</span><span class="p">()</span>
+    <span class="n">today_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">combine</span><span class="p">(</span><span class="n">today</span><span class="p">,</span> <span class="n">datetime</span><span class="p">.</span><span class="nb">min</span><span class="p">.</span><span class="nf">time</span><span class="p">())</span>
+
+    <span class="c1"># 今日已关闭的交易
+</span>    <span class="n">cursor</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">"""</span><span class="s">
+        SELECT
+            close_profit_abs,
+            close_profit,
+            pair
+        FROM trades
+        WHERE close_date &gt;= ?
+        AND close_date IS NOT NULL
+        ORDER BY close_date DESC
+    </span><span class="sh">"""</span><span class="p">,</span> <span class="p">(</span><span class="n">today_start</span><span class="p">,))</span>
+
+    <span class="n">trades</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="nf">fetchall</span><span class="p">()</span>
+    <span class="n">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">trades</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="c1"># 统计
+</span>    <span class="n">total_profit</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trades</span><span class="p">)</span>
+    <span class="n">win_trades</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trades</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">loss_trades</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trades</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">total_trades</span><span class="sh">'</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">trades</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">win_trades</span><span class="sh">'</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">win_trades</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">loss_trades</span><span class="sh">'</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">loss_trades</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">win_trades</span><span class="p">)</span> <span class="o">/</span> <span class="nf">len</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">trades</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">total_profit</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_profit</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">best_trade</span><span class="sh">'</span><span class="p">:</span> <span class="nf">max</span><span class="p">(</span><span class="n">trades</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">trades</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">worst_trade</span><span class="sh">'</span><span class="p">:</span> <span class="nf">min</span><span class="p">(</span><span class="n">trades</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">trades</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">stats</span>
+
+<span class="k">def</span> <span class="nf">generate_summary</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">生成每日总结</span><span class="sh">"""</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="nf">get_today_stats</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">stats</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sh">"</span><span class="s">📊 *今日交易总结*</span><span class="se">\n\n</span><span class="s">今日无已完成的交易</span><span class="sh">"</span>
+
+    <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"""</span><span class="s">📊 *今日交易总结* - </span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="s">
+
+📈 *交易概览*
+总交易：</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">total_trades</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s"> 笔
+胜率：</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">% (</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">win_trades</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">胜 / </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">loss_trades</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">负)
+
+💰 *盈亏情况*
+今日盈亏：</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">total_profit</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT
+
+🏆 *最佳交易*
+</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">best_trade</span><span class="sh">'</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s">: +</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">best_trade</span><span class="sh">'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT (</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">best_trade</span><span class="sh">'</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)
+
+📉 *最差交易*
+</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">worst_trade</span><span class="sh">'</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">worst_trade</span><span class="sh">'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT (</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="sh">'</span><span class="s">worst_trade</span><span class="sh">'</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)
+
+---
+_自动生成于 </span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="n">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%H</span><span class="si">:</span><span class="o">%</span><span class="n">M</span><span class="si">:</span><span class="o">%</span><span class="n">S</span><span class="sh">'</span><span class="s">)</span><span class="si">}</span><span class="s">_
+</span><span class="sh">"""</span>
+
+    <span class="k">return</span> <span class="n">message</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="nf">generate_summary</span><span class="p">()</span>
+    <span class="nf">send_telegram_message</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">每日总结已发送</span><span class="sh">"</span><span class="p">)</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p>设置定时任务：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 每天晚上 21:00 发送总结</span>
+crontab <span class="nt">-e</span>
+
+0 21 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="nb">cd</span> /path/to/freqtrade <span class="o">&amp;&amp;</span> python3 daily_summary.py
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="13-%E7%9B%91%E6%8E%A7%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95" href="#13-%E7%9B%91%E6%8E%A7%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95">
+  </a> 1.3 监控检查清单
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E6%AF%8F%E6%97%A5%E6%97%A9%E6%99%A8%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95510-%E5%88%86%E9%92%9F" href="#%E6%AF%8F%E6%97%A5%E6%97%A9%E6%99%A8%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95510-%E5%88%86%E9%92%9F">
+  </a> 每日早晨检查清单（5-10 分钟）
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>□ 系统状态
+  □ Freqtrade 进程运行正常
+  □ CPU/内存使用正常
+  □ 无错误日志
+
+□ 持仓状况
+  □ 当前持仓数量：____
+  □ 持仓总盈亏：____
+  □ 是否有需要关注的持仓
+
+□ 过夜交易
+  □ 过夜期间是否有交易
+  □ 是否有止损触发
+  □ 是否有异常情况
+
+□ 市场环境
+  □ BTC 走势：____ （涨/跌/震荡）
+  □ 整体市场情绪：____
+  □ 是否有重大新闻
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E6%AF%8F%E6%97%A5%E6%99%9A%E9%97%B4%E6%80%BB%E7%BB%93%E6%B8%85%E5%8D%951520-%E5%88%86%E9%92%9F" href="#%E6%AF%8F%E6%97%A5%E6%99%9A%E9%97%B4%E6%80%BB%E7%BB%93%E6%B8%85%E5%8D%951520-%E5%88%86%E9%92%9F">
+  </a> 每日晚间总结清单（15-20 分钟）
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>□ 交易统计
+  - 今日交易次数：____
+  - 胜率：____%
+  - 今日盈亏：____ USDT (____%)
+  - 累计盈亏：____ USDT (____%)
+
+□ 交易分析
+  □ 最佳交易原因分析
+  □ 最差交易原因分析
+  □ 是否有规律可循
+
+□ 问题记录
+  □ 是否有系统错误
+  □ 是否有异常交易
+  □ 是否需要调整
+
+□ 明日计划
+  □ 是否需要调整参数
+  □ 是否需要更换交易对
+  □ 是否需要暂停交易
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E8%AF%86%E5%88%AB%E8%B0%83%E6%95%B4%E4%BF%A1%E5%8F%B7" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E8%AF%86%E5%88%AB%E8%B0%83%E6%95%B4%E4%BF%A1%E5%8F%B7">
+  </a> 第二部分：识别调整信号
+                                    </h2>
+
+                                    <h3>
+                                        <a name="21-%E6%AD%A3%E5%B8%B8%E6%B3%A2%E5%8A%A8-vs-%E7%B3%BB%E7%BB%9F%E6%80%A7%E9%97%AE%E9%A2%98" href="#21-%E6%AD%A3%E5%B8%B8%E6%B3%A2%E5%8A%A8-vs-%E7%B3%BB%E7%BB%9F%E6%80%A7%E9%97%AE%E9%A2%98">
+  </a> 2.1 正常波动 vs 系统性问题
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E6%AD%A3%E5%B8%B8%E6%B3%A2%E5%8A%A8%E6%97%A0%E9%9C%80%E8%B0%83%E6%95%B4" href="#%E6%AD%A3%E5%B8%B8%E6%B3%A2%E5%8A%A8%E6%97%A0%E9%9C%80%E8%B0%83%E6%95%B4">
+  </a> 正常波动（无需调整）
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>特征：
+✅ 短期（1-3 天）表现波动
+✅ 胜率在 ±10% 范围内波动
+✅ 单日盈亏在 ±3% 范围内
+✅ 交易逻辑符合预期
+✅ 无系统错误
+
+示例：
+- 周一：+2.5%
+- 周二：-1.2%
+- 周三：+3.1%
+- 周四：-0.8%
+- 周五：+1.8%
+
+分析：虽有起伏，但整体向上，无需调整
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E7%B3%BB%E7%BB%9F%E6%80%A7%E9%97%AE%E9%A2%98%E9%9C%80%E8%A6%81%E8%B0%83%E6%95%B4" href="#%E7%B3%BB%E7%BB%9F%E6%80%A7%E9%97%AE%E9%A2%98%E9%9C%80%E8%A6%81%E8%B0%83%E6%95%B4">
+  </a> 系统性问题（需要调整）
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>特征：
+❌ 持续（&gt;7 天）表现不佳
+❌ 胜率持续低于 40%
+❌ 连续多日亏损（&gt;5 天）
+❌ 频繁触发保护机制
+❌ 与回测差异巨大（&gt;70%）
+
+示例：
+- 第1周：-2.5%
+- 第2周：-1.8%
+- 第3周：-3.2%
+- 第4周：-2.1%
+
+分析：连续 4 周亏损，明显系统性问题，需要调整
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="22-%E9%9C%80%E8%A6%81%E8%B0%83%E6%95%B4%E7%9A%84%E4%BF%A1%E5%8F%B7" href="#22-%E9%9C%80%E8%A6%81%E8%B0%83%E6%95%B4%E7%9A%84%E4%BF%A1%E5%8F%B7">
+  </a> 2.2 需要调整的信号
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E4%BF%A1%E5%8F%B7-1%E8%83%9C%E7%8E%87%E6%8C%81%E7%BB%AD%E4%BD%8E%E4%BA%8E-40" href="#%E4%BF%A1%E5%8F%B7-1%E8%83%9C%E7%8E%87%E6%8C%81%E7%BB%AD%E4%BD%8E%E4%BA%8E-40">
+  </a> 信号 1：胜率持续低于 40%
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>现象：
+- 连续 2 周胜率 &lt; 40%
+- 多数交易止损出场
+- 盈利交易很少
+
+可能原因：
+1. 市场环境变化，策略不适应
+2. 止损设置过紧
+3. 入场信号质量差
+
+调整方案：
+A. 分析亏损交易原因
+   - 是逆势交易？
+   - 是假突破？
+   - 是止损过紧？
+
+B. 根据原因调整
+   - 增加趋势过滤（ADX）
+   - 放宽止损（-3% → -4%）
+   - 提高入场标准
+
+C. 如果市场环境不适合
+   - 暂停交易，等待更好时机
+   - 或切换适合当前环境的策略
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E4%BF%A1%E5%8F%B7-2%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E8%B6%85%E8%BF%87%E9%A2%84%E6%9C%9F" href="#%E4%BF%A1%E5%8F%B7-2%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E8%B6%85%E8%BF%87%E9%A2%84%E6%9C%9F">
+  </a> 信号 2：最大回撤超过预期
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>现象：
+- 回测最大回撤：-12%
+- 实盘最大回撤：-20%+
+- 超出可承受范围
+
+可能原因：
+1. 仓位过大
+2. 止损未有效执行
+3. 连续亏损未及时止损
+
+调整方案：
+A. 立即降低风险敞口
+   - 降低单笔投入（-30%）
+   - 减少最大持仓数（-1到-2）
+   - 加强止损执行
+
+B. 启用保护机制
+   "protections": [
+     {
+       "method": "MaxDrawdown",
+       "max_allowed_drawdown": 0.15,  // 15%
+       "lookback_period_candles": 200,
+       "stop_duration_candles": 50
+     }
+   ]
+
+C. 如果已超过 -20%
+   - 考虑暂停交易
+   - 深入分析问题
+   - 小资金重新测试
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E4%BF%A1%E5%8F%B7-3%E4%BA%A4%E6%98%93%E9%A2%91%E7%8E%87%E5%BC%82%E5%B8%B8" href="#%E4%BF%A1%E5%8F%B7-3%E4%BA%A4%E6%98%93%E9%A2%91%E7%8E%87%E5%BC%82%E5%B8%B8">
+  </a> 信号 3：交易频率异常
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>现象 A：交易频率过高
+- 预期：每天 3-5 笔
+- 实际：每天 15-20 笔
+- 手续费侵蚀利润
+
+调整方案：
+- 延长持仓时间（调整卖出条件）
+- 增加入场过滤条件
+- 提高 ROI 目标
+
+现象 B：交易频率过低
+- 预期：每天 3-5 笔
+- 实际：每周 1-2 笔
+- 资金利用率低
+
+调整方案：
+- 放宽入场条件
+- 增加交易对数量
+- 降低指标阈值
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E4%BF%A1%E5%8F%B7-4%E7%89%B9%E5%AE%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E8%A1%A8%E7%8E%B0%E5%B7%AE" href="#%E4%BF%A1%E5%8F%B7-4%E7%89%B9%E5%AE%9A%E4%BA%A4%E6%98%93%E5%AF%B9%E8%A1%A8%E7%8E%B0%E5%B7%AE">
+  </a> 信号 4：特定交易对表现差
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>使用 /performance 查看各交易对表现：
+
+BTC/USDT: 15 trades, Win rate: 73%, Profit: +125.50 USDT
+ETH/USDT: 18 trades, Win rate: 61%, Profit: +82.30 USDT
+BNB/USDT: 22 trades, Win rate: 36%, Profit: -45.20 USDT  ❌
+ADA/USDT: 12 trades, Win rate: 42%, Profit: -18.50 USDT  ❌
+
+分析：
+- BNB/USDT 和 ADA/USDT 明显拖累整体表现
+- 胜率低，累计亏损
+
+调整方案：
+- 将表现差的交易对移入 blacklist
+- 或单独分析这些交易对的问题
+- 考虑增加新的优质交易对
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="23-%E4%B8%8D%E5%BA%94%E8%AF%A5%E8%B0%83%E6%95%B4%E7%9A%84%E6%83%85%E5%86%B5" href="#23-%E4%B8%8D%E5%BA%94%E8%AF%A5%E8%B0%83%E6%95%B4%E7%9A%84%E6%83%85%E5%86%B5">
+  </a> 2.3 不应该调整的情况
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>❌ 错误的调整动机：
+
+1. 因为 1-2 天亏损就调整
+   - 短期波动是正常的
+   - 频繁调整破坏策略一致性
+
+2. 因为看到新策略就切换
+   - "草总是别人的绿"
+   - 没有完美的策略
+
+3. 因为市场波动就改参数
+   - 每次市场波动都改，永远在追逐
+   - 策略应该适应多种环境
+
+4. 因为追求更高收益而冒险
+   - 提高杠杆
+   - 关闭止损
+   - 满仓操作
+
+5. 因为情绪而做决定
+   - 恐惧：连续亏损后降低仓位到极低
+   - 贪婪：连续盈利后大幅加仓
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%E8%B0%83%E6%95%B4%E7%9A%84%E6%97%B6%E6%9C%BA%E4%B8%8E%E6%96%B9%E6%B3%95" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%E8%B0%83%E6%95%B4%E7%9A%84%E6%97%B6%E6%9C%BA%E4%B8%8E%E6%96%B9%E6%B3%95">
+  </a> 第三部分：调整的时机与方法
+                                    </h2>
+
+                                    <h3>
+                                        <a name="31-%E8%B0%83%E6%95%B4%E5%86%B3%E7%AD%96%E6%B5%81%E7%A8%8B" href="#31-%E8%B0%83%E6%95%B4%E5%86%B3%E7%AD%96%E6%B5%81%E7%A8%8B">
+  </a> 3.1 调整决策流程
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>发现问题
+    ↓
+记录并观察（至少 7 天）
+    ↓
+数据分析（是正常波动还是系统问题？）
+    ↓
+┌─────────────┬─────────────┐
+│  正常波动    │  系统问题    │
+│  继续观察    │  制定方案    │
+└─────────────┴─────────────┘
+                    ↓
+          在测试环境验证（Dry-run）
+                    ↓
+          ┌──────────────┐
+          │ 验证成功？    │
+          └──────────────┘
+           ↙          ↘
+        是              否
+         ↓              ↓
+    应用到实盘      放弃或重新设计
+         ↓
+    小幅度调整（单一变量）
+         ↓
+    观察 7-14 天
+         ↓
+    评估效果
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="32-%E8%B0%83%E6%95%B4%E7%9A%84%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99" href="#32-%E8%B0%83%E6%95%B4%E7%9A%84%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99">
+  </a> 3.2 调整的黄金法则
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E6%B3%95%E5%88%99-1%E4%B8%80%E6%AC%A1%E5%8F%AA%E8%B0%83%E6%95%B4%E4%B8%80%E4%B8%AA%E5%8F%98%E9%87%8F" href="#%E6%B3%95%E5%88%99-1%E4%B8%80%E6%AC%A1%E5%8F%AA%E8%B0%83%E6%95%B4%E4%B8%80%E4%B8%AA%E5%8F%98%E9%87%8F">
+  </a> 法则 1：一次只调整一个变量
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>❌ 错误做法：
+同时修改：
+- stake_amount: 200 → 300
+- max_open_trades: 3 → 5
+- stoploss: -0.03 → -0.04
+- 添加新的交易对
+- 更换指标参数
+
+问题：无法知道哪个改动有效
+
+✅ 正确做法：
+第1周：只调整 stake_amount: 200 → 250
+观察效果
+
+第2周：如果效果好，再调整下一个参数
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E6%B3%95%E5%88%99-2%E5%B0%8F%E6%AD%A5%E5%BF%AB%E8%B5%B0%E9%80%90%E6%AD%A5%E8%B0%83%E6%95%B4" href="#%E6%B3%95%E5%88%99-2%E5%B0%8F%E6%AD%A5%E5%BF%AB%E8%B5%B0%E9%80%90%E6%AD%A5%E8%B0%83%E6%95%B4">
+  </a> 法则 2：小步快走，逐步调整
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>❌ 错误：stake_amount: 200 → 500 (激进，+150%)
+✅ 正确：stake_amount: 200 → 250 → 300 (渐进，每次 +25%)
+
+❌ 错误：stoploss: -0.03 → -0.06 (翻倍)
+✅ 正确：stoploss: -0.03 → -0.035 → -0.04 (小幅)
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E6%B3%95%E5%88%99-3%E8%B0%83%E6%95%B4%E5%89%8D%E5%85%88%E5%9C%A8-dryrun-%E9%AA%8C%E8%AF%81" href="#%E6%B3%95%E5%88%99-3%E8%B0%83%E6%95%B4%E5%89%8D%E5%85%88%E5%9C%A8-dryrun-%E9%AA%8C%E8%AF%81">
+  </a> 法则 3：调整前先在 Dry-run 验证
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>流程：
+1. 修改配置文件
+2. 启动新的 Dry-run 进程（使用不同数据库）
+3. 运行至少 3-7 天
+4. 对比新旧配置的表现
+5. 如果新配置更好，应用到实盘
+
+命令：
+# 新配置 Dry-run（独立数据库）
+freqtrade trade \
+    -c config.new.json \
+    --strategy YourStrategy \
+    --db-url sqlite:///tradesv3.dryrun.test.sqlite
+
+# 对比
+freqtrade backtesting-analysis \
+    --db-url sqlite:///tradesv3.sqlite \
+    --export-filename trades_old.json
+
+freqtrade backtesting-analysis \
+    --db-url sqlite:///tradesv3.dryrun.test.sqlite \
+    --export-filename trades_new.json
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E6%B3%95%E5%88%99-4%E8%AE%BE%E7%BD%AE%E8%B0%83%E6%95%B4%E5%86%B7%E9%9D%99%E6%9C%9F" href="#%E6%B3%95%E5%88%99-4%E8%AE%BE%E7%BD%AE%E8%B0%83%E6%95%B4%E5%86%B7%E9%9D%99%E6%9C%9F">
+  </a> 法则 4：设置调整冷静期
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>调整后必须观察至少：
+- 参数微调：7 天
+- 交易对变更：7 天
+- 策略切换：14 天
+- 资金调整：14 天
+
+期间：
+- 不再做其他调整
+- 详细记录表现
+- 客观评估效果
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="33-%E5%B8%B8%E8%A7%81%E8%B0%83%E6%95%B4%E5%9C%BA%E6%99%AF" href="#33-%E5%B8%B8%E8%A7%81%E8%B0%83%E6%95%B4%E5%9C%BA%E6%99%AF">
+  </a> 3.3 常见调整场景
+                                    </h3>
+
+                                    <h4>
+                                        <a name="%E5%9C%BA%E6%99%AF-1%E5%B8%82%E5%9C%BA%E7%8E%AF%E5%A2%83%E6%94%B9%E5%8F%98%E8%B6%8B%E5%8A%BF-%E2%86%92-%E9%9C%87%E8%8D%A1" href="#%E5%9C%BA%E6%99%AF-1%E5%B8%82%E5%9C%BA%E7%8E%AF%E5%A2%83%E6%94%B9%E5%8F%98%E8%B6%8B%E5%8A%BF-%E2%86%92-%E9%9C%87%E8%8D%A1">
+  </a> 场景 1：市场环境改变（趋势 → 震荡）
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>症状：
+- 策略突然表现不佳
+- 频繁止损
+- 胜率大幅下降
+
+分析：
+- 趋势跟随策略在震荡市中失效
+
+应对方案 A：暂停交易
+- 使用 /stopbuy 暂停买入
+- 等待市场重回趋势
+
+应对方案 B：调整策略
+- 增加 ADX 趋势过滤
+  "minimal_adx": 25  // 只在趋势明显时交易
+
+- 或切换到震荡策略
+  - 均值回归策略
+  - 网格策略
+
+应对方案 C：减少风险敞口
+- 降低仓位 50%
+- 减少持仓数
+- 维持运行但降低风险
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E5%9C%BA%E6%99%AF-2%E6%AD%A2%E6%8D%9F%E9%A2%91%E7%B9%81%E8%A7%A6%E5%8F%91" href="#%E5%9C%BA%E6%99%AF-2%E6%AD%A2%E6%8D%9F%E9%A2%91%E7%B9%81%E8%A7%A6%E5%8F%91">
+  </a> 场景 2：止损频繁触发
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>症状：
+- 胜率 &lt; 40%
+- 多数交易止损出场
+- 平均持仓时间很短（&lt; 1 小时）
+
+分析：
+可能是止损设置过紧
+
+调整方案：
+1. 计算平均波动幅度（ATR）
+   - 如果 BTC 的 5m ATR = 0.3%
+   - 当前止损 = -2%
+   - 比值 = 2% / 0.3% = 6.67 倍 ATR
+
+2. 调整到合理范围
+   - 建议：8-10 倍 ATR
+   - 新止损 = -2.5% 到 -3%
+
+3. 在 Dry-run 测试 7 天
+
+4. 对比止损触发频率
+   - 调整前：每天 5-6 次
+   - 调整后：每天 2-3 次
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E5%9C%BA%E6%99%AF-3%E5%8D%95%E4%B8%AA%E4%BA%A4%E6%98%93%E5%AF%B9%E8%A1%A8%E7%8E%B0%E5%B7%AE" href="#%E5%9C%BA%E6%99%AF-3%E5%8D%95%E4%B8%AA%E4%BA%A4%E6%98%93%E5%AF%B9%E8%A1%A8%E7%8E%B0%E5%B7%AE">
+  </a> 场景 3：单个交易对表现差
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>症状：
+BNB/USDT: 20 trades, Win rate: 35%, Profit: -50 USDT
+
+调整方案 A：移除该交易对
+"pair_blacklist": [
+  "BNB/USDT"
+]
+
+调整方案 B：单独优化该交易对
+- 分析该交易对的特点
+- 调整专属参数（如果策略支持）
+- 或该交易对使用不同策略
+
+调整方案 C：增加替代交易对
+- 移除表现差的
+- 增加流动性好、波动适中的
+- 如：SOL/USDT, AVAX/USDT
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h4>
+                                        <a name="%E5%9C%BA%E6%99%AF-4%E6%94%B6%E7%9B%8A%E7%A8%B3%E5%AE%9A%E4%BD%86%E4%BD%8E%E4%BA%8E%E9%A2%84%E6%9C%9F" href="#%E5%9C%BA%E6%99%AF-4%E6%94%B6%E7%9B%8A%E7%A8%B3%E5%AE%9A%E4%BD%86%E4%BD%8E%E4%BA%8E%E9%A2%84%E6%9C%9F">
+  </a> 场景 4：收益稳定但低于预期
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>症状：
+- 月收益 +2%（预期 5-8%）
+- 胜率正常（55%）
+- 无大问题，就是收益低
+
+分析：
+- 策略本身可能趋于保守
+- 或市场波动率降低
+
+调整方案 A：提高资金利用率
+- 增加 max_open_trades: 3 → 4
+- 适度提高 stake_amount
+
+调整方案 B：优化卖出条件
+- 放宽止盈条件，让利润奔跑
+- 使用追踪止盈
+  "trailing_stop": true,
+  "trailing_stop_positive": 0.01,
+  "trailing_stop_positive_offset": 0.02
+
+调整方案 C：增加交易频率
+- 降低入场阈值
+- 增加交易对数量
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="34-%E8%B0%83%E6%95%B4%E8%AE%B0%E5%BD%95%E6%A8%A1%E6%9D%BF" href="#34-%E8%B0%83%E6%95%B4%E8%AE%B0%E5%BD%95%E6%A8%A1%E6%9D%BF">
+  </a> 3.4 调整记录模板
+                                    </h3>
+
+                                    <p>每次调整都应详细记录：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>==========================================
+调整记录 #1
+==========================================
+
+日期：2023-05-15
+调整类型：参数优化
+
+问题描述：
+- 过去 2 周胜率持续低于 45%
+- 止损频繁触发
+- 平均持仓时间仅 1.2 小时
+
+数据支持：
+- 第1周：胜率 42%，盈亏 -12 USDT
+- 第2周：胜率 43%，盈亏 -8 USDT
+- 止损次数：28 次（占比 65%）
+
+根本原因分析：
+- ATR 分析显示止损设置过紧
+- 当前止损 -2% = 5 倍 ATR
+- 建议范围：8-10 倍 ATR
+
+调整方案：
+修改参数：
+- stoploss: -0.02 → -0.03 (+50%)
+
+验证计划：
+1. 在 Dry-run 测试 7 天
+2. 对比止损触发频率
+3. 评估胜率变化
+
+预期结果：
+- 止损触发减少 30-40%
+- 胜率提升到 50% 以上
+- 平均持仓时间增加到 2-3 小时
+
+------------------------------------------
+
+跟踪更新（7 天后）：
+
+实际结果：
+- Dry-run 表现：胜率 52%，盈亏 +15 USDT
+- 止损触发：12 次（减少 57%）
+- 平均持仓时间：2.5 小时
+
+评估：✅ 效果符合预期
+
+决策：应用到实盘
+
+应用日期：2023-05-22
+
+------------------------------------------
+
+最终评估（实盘运行 14 天后）：
+
+实盘结果：
+- 胜率：54%（达标）
+- 盈亏：+28 USDT（显著改善）
+- 止损触发：20 次（大幅减少）
+
+结论：✅ 调整成功
+
+经验总结：
+- 止损设置应该基于 ATR 动态调整
+- 小幅调整（-2% → -3%）即可显著改善
+- 必须先在 Dry-run 验证
+==========================================
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%E9%95%BF%E6%9C%9F%E7%9B%91%E6%8E%A7%E7%AD%96%E7%95%A5" href="#%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%E9%95%BF%E6%9C%9F%E7%9B%91%E6%8E%A7%E7%AD%96%E7%95%A5">
+  </a> 第四部分：长期监控策略
+                                    </h2>
+
+                                    <h3>
+                                        <a name="41-%E5%BB%BA%E7%AB%8B%E7%9B%91%E6%8E%A7%E4%BB%AA%E8%A1%A8%E6%9D%BF" href="#41-%E5%BB%BA%E7%AB%8B%E7%9B%91%E6%8E%A7%E4%BB%AA%E8%A1%A8%E6%9D%BF">
+  </a> 4.1 建立监控仪表板
+                                    </h3>
+
+                                    <p>使用 Excel 或 Google Sheets 创建监控仪表板：</p>
+
+                                    <h4>
+                                        <a name="%E8%A1%A8%E6%A0%BC-1%E6%AF%8F%E6%97%A5%E5%BF%AB%E7%85%A7" href="#%E8%A1%A8%E6%A0%BC-1%E6%AF%8F%E6%97%A5%E5%BF%AB%E7%85%A7">
+  </a> 表格 1：每日快照
+                                    </h4>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>日期</th>
+                                                    <th>交易数</th>
+                                                    <th>胜率</th>
+                                                    <th>日盈亏</th>
+                                                    <th>累计盈亏</th>
+                                                    <th>持仓数</th>
+                                                    <th>最大回撤</th>
+                                                    <th>备注</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>05/15</td>
+                                                    <td>4</td>
+                                                    <td>75%</td>
+                                                    <td>+8.5</td>
+                                                    <td>+125.5</td>
+                                                    <td>2</td>
+                                                    <td>-1.2%</td>
+                                                    <td>正常</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>05/16</td>
+                                                    <td>5</td>
+                                                    <td>60%</td>
+                                                    <td>+3.2</td>
+                                                    <td>+128.7</td>
+                                                    <td>3</td>
+                                                    <td>-1.5%</td>
+                                                    <td>正常</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>05/17</td>
+                                                    <td>3</td>
+                                                    <td>33%</td>
+                                                    <td>-5.1</td>
+                                                    <td>+123.6</td>
+                                                    <td>1</td>
+                                                    <td>-2.8%</td>
+                                                    <td>连续止损 ⚠️</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E8%A1%A8%E6%A0%BC-2%E5%91%A8%E5%BA%A6%E5%AF%B9%E6%AF%94" href="#%E8%A1%A8%E6%A0%BC-2%E5%91%A8%E5%BA%A6%E5%AF%B9%E6%AF%94">
+  </a> 表格 2：周度对比
+                                    </h4>
+
+                                    <div class="table-wrapper-paragraph">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>周次</th>
+                                                    <th>交易数</th>
+                                                    <th>胜率</th>
+                                                    <th>周盈亏</th>
+                                                    <th>对比Dry-run</th>
+                                                    <th>对比回测</th>
+                                                    <th>评级</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>第1周</td>
+                                                    <td>28</td>
+                                                    <td>57%</td>
+                                                    <td>+4.6%</td>
+                                                    <td>25%</td>
+                                                    <td>18%</td>
+                                                    <td>A-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>第2周</td>
+                                                    <td>32</td>
+                                                    <td>53%</td>
+                                                    <td>+3.2%</td>
+                                                    <td>18%</td>
+                                                    <td>13%</td>
+                                                    <td>B+</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>第3周</td>
+                                                    <td>25</td>
+                                                    <td>60%</td>
+                                                    <td>+5.8%</td>
+                                                    <td>32%</td>
+                                                    <td>23%</td>
+                                                    <td>A</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>第4周</td>
+                                                    <td>30</td>
+                                                    <td>55%</td>
+                                                    <td>+4.1%</td>
+                                                    <td>23%</td>
+                                                    <td>16%</td>
+                                                    <td>A-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h4>
+                                        <a name="%E8%A1%A8%E6%A0%BC-3%E5%85%B3%E9%94%AE%E6%8C%87%E6%A0%87%E8%B6%8B%E5%8A%BF" href="#%E8%A1%A8%E6%A0%BC-3%E5%85%B3%E9%94%AE%E6%8C%87%E6%A0%87%E8%B6%8B%E5%8A%BF">
+  </a> 表格 3：关键指标趋势
+                                    </h4>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>图表展示：
+- 累计收益曲线（应平稳上升）
+- 胜率趋势线（应稳定在 50% 以上）
+- 回撤曲线（应控制在安全范围）
+- 每周交易次数（应相对稳定）
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="42-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8A%A5%E5%91%8A" href="#42-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8A%A5%E5%91%8A">
+  </a> 4.2 自动化报告
+                                    </h3>
+
+                                    <p>创建自动化周报脚本 <code>weekly_report.py</code>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1">#!/usr/bin/env python3
+</span><span class="sh">"""</span><span class="s">
+自动化周报生成脚本
+每周日晚上运行，生成详细报告
+</span><span class="sh">"""</span>
+
+<span class="kn">import</span> <span class="n">sqlite3</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="n">DB_PATH</span> <span class="o">=</span> <span class="sh">'</span><span class="s">tradesv3.sqlite</span><span class="sh">'</span>
+
+<span class="k">def</span> <span class="nf">generate_weekly_report</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">生成周报</span><span class="sh">"""</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">DB_PATH</span><span class="p">)</span>
+
+    <span class="c1"># 获取最近 7 天的交易
+</span>    <span class="n">week_ago</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">-</span> <span class="nf">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+        SELECT
+            pair,
+            open_date,
+            close_date,
+            profit_abs,
+            profit_ratio,
+            sell_reason
+        FROM trades
+        WHERE close_date &gt;= ?
+        AND close_date IS NOT NULL
+        ORDER BY close_date DESC
+    </span><span class="sh">"""</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">(</span><span class="n">week_ago</span><span class="p">,))</span>
+    <span class="n">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sh">"</span><span class="s">本周无交易</span><span class="sh">"</span>
+
+    <span class="c1"># 统计
+</span>    <span class="n">total_trades</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">win_trades</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">loss_trades</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">win_rate</span> <span class="o">=</span> <span class="n">win_trades</span> <span class="o">/</span> <span class="n">total_trades</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="n">total_profit</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">].</span><span class="nf">sum</span><span class="p">()</span>
+    <span class="n">avg_profit</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">].</span><span class="nf">mean</span><span class="p">()</span>
+
+    <span class="n">best_trade</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">].</span><span class="nf">idxmax</span><span class="p">()]</span>
+    <span class="n">worst_trade</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">].</span><span class="nf">idxmin</span><span class="p">()]</span>
+
+    <span class="c1"># 按交易对分组
+</span>    <span class="n">pair_stats</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">'</span><span class="s">pair</span><span class="sh">'</span><span class="p">).</span><span class="nf">agg</span><span class="p">({</span>
+        <span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">sum</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">count</span><span class="sh">'</span><span class="p">],</span>
+        <span class="sh">'</span><span class="s">profit_ratio</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">mean</span><span class="sh">'</span>
+    <span class="p">}).</span><span class="nf">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># 按卖出原因分组
+</span>    <span class="n">sell_reason_stats</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">'</span><span class="s">sell_reason</span><span class="sh">'</span><span class="p">).</span><span class="nf">size</span><span class="p">()</span>
+
+    <span class="c1"># 生成报告
+</span>    <span class="n">report</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"""</span><span class="s">
+╔══════════════════════════════════════╗
+║        周度交易报告                    ║
+║  </span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="s">                    ║
+╚══════════════════════════════════════╝
+
+📊 整体表现
+─────────────────────────────────────
+总交易次数: </span><span class="si">{</span><span class="n">total_trades</span><span class="si">}</span><span class="s">
+胜率: </span><span class="si">{</span><span class="n">win_rate</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">% (</span><span class="si">{</span><span class="n">win_trades</span><span class="si">}</span><span class="s">胜/</span><span class="si">{</span><span class="n">loss_trades</span><span class="si">}</span><span class="s">负)
+总盈亏: </span><span class="si">{</span><span class="n">total_profit</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT
+平均盈亏: </span><span class="si">{</span><span class="n">avg_profit</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT
+
+🏆 最佳交易
+</span><span class="si">{</span><span class="n">best_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">pair</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">: +</span><span class="si">{</span><span class="n">best_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT (</span><span class="si">{</span><span class="n">best_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_ratio</span><span class="sh">'</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)
+时间: </span><span class="si">{</span><span class="n">best_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">close_date</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">
+
+📉 最差交易
+</span><span class="si">{</span><span class="n">worst_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">pair</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">worst_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_abs</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT (</span><span class="si">{</span><span class="n">worst_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">profit_ratio</span><span class="sh">'</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)
+时间: </span><span class="si">{</span><span class="n">worst_trade</span><span class="p">[</span><span class="sh">'</span><span class="s">close_date</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">
+
+💹 交易对表现
+─────────────────────────────────────
+</span><span class="si">{</span><span class="n">pair_stats</span><span class="p">.</span><span class="nf">to_string</span><span class="p">()</span><span class="si">}</span><span class="s">
+
+📋 退出原因分布
+─────────────────────────────────────
+</span><span class="si">{</span><span class="n">sell_reason_stats</span><span class="p">.</span><span class="nf">to_string</span><span class="p">()</span><span class="si">}</span><span class="s">
+
+═══════════════════════════════════════
+报告生成时间: </span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="n">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d %H</span><span class="si">:</span><span class="o">%</span><span class="n">M</span><span class="si">:</span><span class="o">%</span><span class="n">S</span><span class="sh">'</span><span class="s">)</span><span class="si">}</span><span class="s">
+═══════════════════════════════════════
+</span><span class="sh">"""</span>
+
+    <span class="k">return</span> <span class="n">report</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="nf">generate_weekly_report</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+
+    <span class="c1"># 保存到文件
+</span>    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">weekly_report_</span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y%m%d</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="s">.txt</span><span class="sh">"</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">报告已保存到: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="43-%E6%80%A7%E8%83%BD%E9%80%80%E5%8C%96%E6%A3%80%E6%B5%8B" href="#43-%E6%80%A7%E8%83%BD%E9%80%80%E5%8C%96%E6%A3%80%E6%B5%8B">
+  </a> 4.3 性能退化检测
+                                    </h3>
+
+                                    <p>创建检测脚本 <code>performance_check.py</code>：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight python"><code><span class="c1">#!/usr/bin/env python3
+</span><span class="sh">"""</span><span class="s">
+性能退化检测
+对比实盘与历史基准，检测策略是否退化
+</span><span class="sh">"""</span>
+
+<span class="kn">import</span> <span class="n">sqlite3</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="n">DB_PATH</span> <span class="o">=</span> <span class="sh">'</span><span class="s">tradesv3.sqlite</span><span class="sh">'</span>
+
+<span class="c1"># 基准数据（来自回测或早期实盘）
+</span><span class="n">BENCHMARK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">:</span> <span class="mf">55.0</span><span class="p">,</span>       <span class="c1"># 基准胜率
+</span>    <span class="sh">'</span><span class="s">avg_profit</span><span class="sh">'</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>      <span class="c1"># 基准平均盈利（USDT）
+</span>    <span class="sh">'</span><span class="s">profit_ratio</span><span class="sh">'</span><span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>  <span class="c1"># 基准盈利率
+</span><span class="p">}</span>
+
+<span class="c1"># 警戒阈值
+</span><span class="n">THRESHOLD</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span>       <span class="c1"># 胜率低于基准的 85% 警报
+</span>    <span class="sh">'</span><span class="s">avg_profit</span><span class="sh">'</span><span class="p">:</span> <span class="mf">0.70</span><span class="p">,</span>     <span class="c1"># 平均盈利低于基准的 70% 警报
+</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">check_performance</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">检查最近表现是否退化</span><span class="sh">"""</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">DB_PATH</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span>
+
+    <span class="c1"># 最近 14 天的交易
+</span>    <span class="n">days_ago</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">-</span> <span class="nf">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="n">cursor</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">"""</span><span class="s">
+        SELECT
+            profit_abs,
+            profit_ratio
+        FROM trades
+        WHERE close_date &gt;= ?
+        AND close_date IS NOT NULL
+    </span><span class="sh">"""</span><span class="p">,</span> <span class="p">(</span><span class="n">days_ago</span><span class="p">,))</span>
+
+    <span class="n">trades</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="nf">fetchall</span><span class="p">()</span>
+    <span class="n">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">⚠️ 交易样本不足（&lt; 10），无法评估</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># 计算当前指标
+</span>    <span class="n">win_trades</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trades</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">current_win_rate</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">win_trades</span><span class="p">)</span> <span class="o">/</span> <span class="nf">len</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">current_avg_profit</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trades</span><span class="p">)</span> <span class="o">/</span> <span class="nf">len</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span>
+
+    <span class="c1"># 对比基准
+</span>    <span class="n">win_rate_ratio</span> <span class="o">=</span> <span class="n">current_win_rate</span> <span class="o">/</span> <span class="n">BENCHMARK</span><span class="p">[</span><span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">]</span>
+    <span class="n">avg_profit_ratio</span> <span class="o">=</span> <span class="n">current_avg_profit</span> <span class="o">/</span> <span class="n">BENCHMARK</span><span class="p">[</span><span class="sh">'</span><span class="s">avg_profit</span><span class="sh">'</span><span class="p">]</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">=</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">性能退化检测报告</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">=</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">指标对比（最近 14 天 vs 基准）：</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">胜率:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  当前: </span><span class="si">{</span><span class="n">current_win_rate</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  基准: </span><span class="si">{</span><span class="n">BENCHMARK</span><span class="p">[</span><span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  比值: </span><span class="si">{</span><span class="n">win_rate_ratio</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> </span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">""</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">win_rate_ratio</span> <span class="o">&lt;</span> <span class="n">THRESHOLD</span><span class="p">[</span><span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">]:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">❌ 警报：低于阈值</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">平均盈利:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  当前: </span><span class="si">{</span><span class="n">current_avg_profit</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  基准: </span><span class="si">{</span><span class="n">BENCHMARK</span><span class="p">[</span><span class="sh">'</span><span class="s">avg_profit</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> USDT</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  比值: </span><span class="si">{</span><span class="n">avg_profit_ratio</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> </span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">""</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">avg_profit_ratio</span> <span class="o">&lt;</span> <span class="n">THRESHOLD</span><span class="p">[</span><span class="sh">'</span><span class="s">avg_profit</span><span class="sh">'</span><span class="p">]:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">❌ 警报：低于阈值</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 总体评估
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">总体评估:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">win_rate_ratio</span> <span class="o">&lt;</span> <span class="n">THRESHOLD</span><span class="p">[</span><span class="sh">'</span><span class="s">win_rate</span><span class="sh">'</span><span class="p">]</span> <span class="ow">or</span> <span class="n">avg_profit_ratio</span> <span class="o">&lt;</span> <span class="n">THRESHOLD</span><span class="p">[</span><span class="sh">'</span><span class="s">avg_profit</span><span class="sh">'</span><span class="p">]:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">❌ 检测到性能退化，建议：</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">   1. 检查市场环境是否改变</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">   2. 分析近期亏损交易</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">   3. 考虑调整策略或暂停交易</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 性能正常，继续运行</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">=</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="nf">check_performance</span><span class="p">()</span>
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <p>设置每周自动检测：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight shell"><code><span class="c"># 每周日晚上 22:00 运行</span>
+0 22 <span class="k">*</span> <span class="k">*</span> 0 <span class="nb">cd</span> /path/to/freqtrade <span class="o">&amp;&amp;</span> python3 performance_check.py | mail <span class="nt">-s</span> <span class="s2">"Performance Check"</span> your@email.com
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E5%AE%9E%E8%B7%B5%E4%BB%BB%E5%8A%A1" href="#%E5%AE%9E%E8%B7%B5%E4%BB%BB%E5%8A%A1">
+  </a> 📝 实践任务
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-1%E5%BB%BA%E7%AB%8B%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB" href="#%E4%BB%BB%E5%8A%A1-1%E5%BB%BA%E7%AB%8B%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB">
+  </a> 任务 1：建立监控体系
+                                    </h3>
+
+                                    <ol>
+                                        <li>配置 Telegram Bot 所有通知</li>
+                                        <li>设置每日3次固定检查时间（手机日历提醒）</li>
+                                        <li>创建监控表格（Excel/Google Sheets）</li>
+                                        <li>部署自动化总结脚本</li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-2%E5%88%B6%E5%AE%9A%E8%B0%83%E6%95%B4%E5%87%86%E5%88%99" href="#%E4%BB%BB%E5%8A%A1-2%E5%88%B6%E5%AE%9A%E8%B0%83%E6%95%B4%E5%87%86%E5%88%99">
+  </a> 任务 2：制定调整准则
+                                    </h3>
+
+                                    <p>创建你的调整决策文档：<br>
+                                    </p>
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>何时观察：
+- ________
+
+何时警惕：
+- ________
+
+何时调整：
+- ________
+
+何时停止：
+- ________
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-3%E6%A8%A1%E6%8B%9F%E8%B0%83%E6%95%B4%E6%B5%81%E7%A8%8B" href="#%E4%BB%BB%E5%8A%A1-3%E6%A8%A1%E6%8B%9F%E8%B0%83%E6%95%B4%E6%B5%81%E7%A8%8B">
+  </a> 任务 3：模拟调整流程
+                                    </h3>
+
+                                    <p>选择一个假设的问题场景，完整走一遍调整流程：</p>
+
+                                    <ol>
+                                        <li>问题描述</li>
+                                        <li>数据分析</li>
+                                        <li>制定方案</li>
+                                        <li>Dry-run 验证</li>
+                                        <li>应用到实盘</li>
+                                        <li>效果评估</li>
+                                    </ol>
+
+                                    <h3>
+                                        <a name="%E4%BB%BB%E5%8A%A1-4%E5%BB%BA%E7%AB%8B%E6%9C%88%E5%BA%A6%E5%A4%8D%E7%9B%98%E4%B9%A0%E6%83%AF" href="#%E4%BB%BB%E5%8A%A1-4%E5%BB%BA%E7%AB%8B%E6%9C%88%E5%BA%A6%E5%A4%8D%E7%9B%98%E4%B9%A0%E6%83%AF">
+  </a> 任务 4：建立月度复盘习惯
+                                    </h3>
+
+                                    <p>设置每月1号的日历提醒，进行月度复盘：</p>
+
+                                    <ul>
+                                        <li>回顾上月所有交易</li>
+                                        <li>统计关键指标</li>
+                                        <li>找出问题和亮点</li>
+                                        <li>制定下月计划</li>
+                                    </ul>
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9" href="#%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9">
+  </a> 📌 核心要点
+                                    </h2>
+
+                                    <h3>
+                                        <a name="%E7%9B%91%E6%8E%A7%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B1%82%E6%AC%A1" href="#%E7%9B%91%E6%8E%A7%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B1%82%E6%AC%A1">
+  </a> 监控的三个层次
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>1. 实时监控（自动化）
+   - Telegram 通知
+   - 被动接收
+   - 24/7 覆盖
+
+2. 定时检查（主动）
+   - 每日 3 次
+   - 固定时间
+   - 30-45 分钟
+
+3. 深度分析（周期）
+   - 每周 + 每月
+   - 数据驱动
+   - 1-2 小时
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E8%B0%83%E6%95%B4%E7%9A%84%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99" href="#%E8%B0%83%E6%95%B4%E7%9A%84%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99">
+  </a> 调整的黄金法则
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>1. 一次一个变量
+2. 小步快走
+3. 先 Dry-run 验证
+4. 设置冷静期
+5. 详细记录
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h3>
+                                        <a name="%E4%BD%95%E6%97%B6%E8%AF%A5%E8%B0%83%E6%95%B4%E4%BD%95%E6%97%B6%E4%B8%8D%E8%AF%A5" href="#%E4%BD%95%E6%97%B6%E8%AF%A5%E8%B0%83%E6%95%B4%E4%BD%95%E6%97%B6%E4%B8%8D%E8%AF%A5">
+  </a> 何时该调整，何时不该
+                                    </h3>
+
+
+
+                                    <div class="highlight js-code-highlight">
+                                        <pre class="highlight plaintext"><code>✅ 应该调整：
+- 连续 7 天表现不佳
+- 胜率持续 &lt; 40%
+- 与基准差异 &gt; 70%
+- 出现系统性问题
+
+❌ 不应调整：
+- 1-2 天波动
+- 单笔交易亏损
+- 看到新策略就想换
+- 基于情绪做决定
+</code></pre>
+                                        <div class="highlight__panel js-actions-panel">
+                                            <div class="highlight__panel-action js-fullscreen-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewbox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <hr>
+
+                                    <h2>
+                                        <a name="%E4%B8%8B%E8%8A%82%E9%A2%84%E5%91%8A" href="#%E4%B8%8B%E8%8A%82%E9%A2%84%E5%91%8A">
+  </a> 🎯 下节预告
+                                    </h2>
+
+                                    <p><strong>第 25 课：风险控制与心态管理</strong></p>
+
+                                    <p>在下一课中，我们将学习：</p>
+
+                                    <ul>
+                                        <li>高级风险控制技术</li>
+                                        <li>心态管理的重要性</li>
+                                        <li>如何应对连续亏损</li>
+                                        <li>长期稳定盈利的关键</li>
+                                    </ul>
+
+                                    <p>监控和调整是技术层面，但真正决定长期成败的是风险控制和心态管理。</p>
+
+
+                                    <hr>
+
+                                    <p><strong>🎓 学习建议</strong>：</p>
+
+                                    <ol>
+                                        <li>
+                                            <strong>定时监控</strong>：建立固定的监控习惯</li>
+                                        <li>
+                                            <strong>数据驱动</strong>：用数据而非情绪做决策</li>
+                                        <li>
+                                            <strong>小心调整</strong>：宁可慢一些，也要稳一些</li>
+                                        <li>
+                                            <strong>详细记录</strong>：每次调整都要记录和跟踪</li>
+                                        <li>
+                                            <strong>长期视角</strong>：关注趋势而非单日波动</li>
+                                    </ol>
+
+                                    <p>记住：<strong>好的监控是发现问题，好的调整是解决问题，但最好的策略是不需要频繁调整的策略。</strong></p>
+
+
+                                </div>
+
+                                <div class="js-billboard-container body-billboard-container" data-async-url="/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6/bmar11/post_body_bottom"></div>
+                            </div>
+                            <section id="comments" data-follow-button-container="true" data-updated-at="2025-11-21 05:23:26 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+                                <header class="relative flex justify-between items-center mb-6">
+                                    <div class="flex items-center">
+                                        <h2 class="crayons-subtitle-1">
+                                            Top comments <span class="js-comments-count" data-comments-count="0">(0)</span>
+                                        </h2>
+                                    </div>
+
+
+                                    <div id="comment-subscription" class="print-hidden">
+                                        <div class="crayons-btn-group">
+                                            <span class="crayons-btn crayons-btn--outlined">Subscribe</span>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div id="billboard_delay_trigger"></div>
+                                <div id="comments-container" data-testid="comments-container" data-commentable-id="3024999" data-commentable-type="Article" data-has-recent-comment-activity="true">
+
+                                    <div id="response-templates-data" class="hidden"></div>
+
+
+                                    <form class="comment-form print-hidden" id="new_comment" action="/comments" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" />
+
+                                        <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+                                        <input value="3024999" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id" />
+                                        <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type" />
+
+
+                                        <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="https://media2.dev.to/dynamic/image/width=256,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy" />
+  </span>
+                                        <div class="comment-form__inner">
+                                            <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+                                                <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost"
+                                                    aria-label="Add a comment to the discussion" name="comment[body_markdown]">
+</textarea>
+
+                                            </div>
+
+                                            <div class="response-templates-container crayons-card crayons-card--secondary p-4 mb-4 comment-form__templates fs-base hidden">
+                                                <header class="mb-3">
+                                                    <button type="button" class="crayons-btn personal-template-button active" data-target-type="personal" data-form-id="new_comment">Personal</button>
+                                                    <button type="button" class="crayons-btn moderator-template-button hidden" data-target-type="moderator" data-form-id="new_comment">Trusted User</button>
+                                                </header>
+
+                                                <div class="personal-responses-container">
+                                                </div>
+                                                <div class="moderator-responses-container hidden">
+                                                </div>
+
+                                                <a target="_blank" rel="noopener nofollow" href="/settings/response-templates">
+        Create template
+      </a>
+                                                <p>Templates let you quickly answer FAQs or store snippets for re-use.</p>
+                                            </div>
+
+                                            <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+                                            <div class="comment-form__buttons mb-4">
+                                                <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled>Submit</button>
+                                                <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled>Preview</button>
+                                                <a href="/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+                                    </form>
+
+
+                                    <div class="comments" id="comment-trees-container">
+                                    </div>
+                                </div>
+
+                                <div class="align-center">
+
+
+                                    <nav class="fs-s align-center block" aria-label="Conduct controls">
+                                        <a href="/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+                                        <span class="opacity-25 px-2" role="presentation">&bull;</span>
+                                        <a href="/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+                                    </nav>
+
+                                </div>
+
+                            </section>
+                            <div id="hide-comments-modal" class="hidden">
+                                <form id="hide-comments-modal__form" class="hide-comments-modal__form" data-type="json" action="/comments/hide" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="BDFcWdMGELK4RRZ39tpWQ-oJezmdMUecssqVFUf1bdOR_hg2_tL2XIKu4I-8HrV6pLRhAtC-uWcMpHCFgtVyzQ"
+                                        autocomplete="off" />
+                                    <div class="hide-comments-modal__content">
+                                        <p class="pb-2">
+                                            Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's <a id="hide-comments-modal__comment-permalink" href="#">permalink</a>.
+                                        </p>
+                                        <label class="crayons-field crayons-field--checkbox my-2">
+        <input name="hide_children" type="hidden" value="0" autocomplete="off" /><input class="hide_children crayons-checkbox" type="checkbox" value="1" name="hide_children" id="hide_children" />
+        <p class="crayons-field__label">Hide child comments as well</p>
+      </label>
+                                        <p class="pb-4 pt-2">
+                                            <button type="submit" class="crayons-btn">
+          Confirm
+        </button>
+                                        </p>
+                                    </div>
+                                </form>
+                                <p class="fs-s color-base-60">For further actions, you may consider blocking this person and/or <a id="hide-comments-modal__report-link" href="/report-abuse">reporting abuse</a></p>
+                            </div>
+
+
+
+                        </article>
+
+                        <div class="pb-4 crayons-layout__comments-billboard">
+                            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6/bmar11/post_comments"></div>
+                        </div>
+
+                        <!-- Bottom content skipped via SKIP_BOTTOM_CONTENT config -->
+                    </div>
+                </main>
+            </div>
+
+            <div class="mod-actions-menu print-hidden"></div>
+            <div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+
+            <div class="fullscreen-code js-fullscreen-code"></div>
+            <script src="https://assets1.dev.to/assets/billboard-1639de16bba3d0fb5e5f96224551087f3b5463567609f92c14b93c3e0c08ddfd.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/localizeArticleDates-70147c5c6bfe350b42e020ebb2a3dd37419d83978982b5a67b6389119bf162ac.js" defer="defer"></script>
+            <script src="https://assets1.dev.to/assets/articleReactions-79a44d82fb34a91c3987c24cfd3bcf2b0d38a02730b69ae6da297387d185f015.js" defer="defer"></script>
+
+            <script>
+                function activateRunkitTags() {
+                    if (!areAnyRunkitTagsPresent())
+                        return
+
+                    var checkRunkit = setInterval(function() {
+                        try {
+                            dynamicallyLoadRunkitLibrary()
+
+                            if (typeof(RunKit) === 'undefined') {
+                                return
+                            }
+
+                            replaceTagContentsWithRunkitWidget()
+                            clearInterval(checkRunkit);
+                        } catch (e) {
+                            console.error(e);
+                            clearInterval(checkRunkit);
+                        }
+                    }, 200);
+                }
+
+                function isRunkitTagAlreadyActive(runkitTag) {
+                    return runkitTag.querySelector("iframe") !== null;
+                };
+
+                function areAnyRunkitTagsPresent() {
+                    var presentRunkitTags = document.getElementsByClassName("runkit-element");
+
+                    return presentRunkitTags.length > 0
+                }
+
+                function replaceTagContentsWithRunkitWidget() {
+                    var targets = document.getElementsByClassName("runkit-element");
+                    for (var i = 0; i < targets.length; i++) {
+                        if (isRunkitTagAlreadyActive(targets[i])) {
+                            continue;
+                        }
+
+                        var wrapperContent = targets[i].textContent;
+                        if (/^(<iframe src)/.test(wrapperContent) === false) {
+                            if (targets[i].children.length > 0) {
+                                var preamble = targets[i].children[0].textContent;
+                                var content = targets[i].children[1].textContent;
+                                targets[i].innerHTML = "";
+                                var notebook = RunKit.createNotebook({
+                                    element: targets[i],
+                                    source: content,
+                                    preamble: preamble
+                                });
+                            }
+                        }
+                    }
+                };
+
+                function dynamicallyLoadRunkitLibrary() {
+                    if (typeof(dynamicallyLoadScript) === "undefined")
+                        return
+
+                    dynamicallyLoadScript("//embed.runkit.com")
+                }
+
+                activateRunkitTags();
+            </script>
+            <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/henry_lin_3ac6363747f45b4/di-24-ke-freqtradejiao-yi-jian-kong-yu-diao-zheng-23c6/bmar11/post_fixed_bottom"></div>
+
+
+            <div id="runtime-banner-container"></div>
+            <div id="i18n-translations" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;,&quot;search_placeholder&quot;:&quot;Search...&quot;,&quot;search_find_related_posts&quot;:&quot;Find related posts...&quot;,&quot;search_powered_by&quot;:&quot;Powered by Algolia&quot;,&quot;search_submit_search&quot;:&quot;Submit search for advanced filtering.&quot;,&quot;search_displaying_recommendations&quot;:&quot;Displaying Algolia Recommendations — Start typing to search&quot;,&quot;article_form_save_changes&quot;:&quot;Save changes&quot;,&quot;article_form_schedule&quot;:&quot;Schedule&quot;,&quot;article_form_publish&quot;:&quot;Publish&quot;,&quot;article_form_loading_preview&quot;:&quot;Loading preview&quot;,&quot;article_form_preview_loaded&quot;:&quot;Preview loaded&quot;,&quot;comments_preview&quot;:&quot;Preview&quot;,&quot;comments_continue_editing&quot;:&quot;Continue editing&quot;,&quot;survey_enter_response&quot;:&quot;Enter your response here...&quot;,&quot;survey_thank_you_response&quot;:&quot;Thank you for your response.&quot;,&quot;survey_thank_you_completing&quot;:&quot;Thank you for completing the survey!&quot;,&quot;dashboard_analytics_readers&quot;:&quot;Readers&quot;,&quot;dashboard_analytics_comments&quot;:&quot;Comments&quot;,&quot;dashboard_analytics_reactions&quot;:&quot;Reactions&quot;,&quot;stats_by&quot;:&quot;by&quot;,&quot;editor_new_title&quot;:&quot;New post title here...&quot;,&quot;editor_body_placeholder&quot;:&quot;Write your post content here...&quot;,&quot;tags_field_label&quot;:&quot;Add up to 4 tags&quot;,&quot;tags_field_placeholder&quot;:&quot;Add up to 4 tags...&quot;,&quot;counted_organization&quot;:{&quot;one&quot;:&quot;%{count} organization&quot;,&quot;other&quot;:&quot;%{count} organizations&quot;},&quot;counted_user&quot;:{&quot;one&quot;:&quot;%{count} person&quot;,&quot;other&quot;:&quot;%{count} people&quot;},&quot;not_following&quot;:&quot;You&#39;re not following anyone&quot;,&quot;following_everyone&quot;:&quot;You&#39;re following %{details} (everyone)&quot;,&quot;you_are_following&quot;:&quot;You&#39;re following&quot;,&quot;and&quot;:&quot;and&quot;}}}"></div>
+        </div>
+    </div>
+
+
+    <footer id="footer" class="crayons-footer print-hidden">
+        <div id="footer-container" class="crayons-footer__container">
+
+
+            <style>
+                .long-bb-body {
+                    max-height: calc(100vh - 200px);
+                    overflow: hidden;
+                }
+
+                .long-bb-bottom {
+                    height: 180px;
+                    background: linear-gradient(to top, var(--card-bg), transparent);
+                    margin-top: -180px;
+                    position: relative;
+                    z-index: 5;
+                }
+            </style>
+
+            <div style="" data-display-unit data-id="146443" data-category-click="click" data-category-impression="impression" data-context-type="home" data-special="nothing" data-article-id="1956352" data-type-of="in_house">
+                <div class="crayons-card crayons-card--secondary crayons-bb bb-placement js-billboard" style="display: inline-flex; flex-direction: column; align-items: center; margin: 0 auto 2rem auto; width: fit-content; padding: 2rem;">
+                    <p style="font-weight: bold; margin: 0 0 1rem 0;">
+                        💎 DEV Diamond Sponsors
+                    </p>
+                    <p style="font-size: 0.8em; margin: 0 0 2rem 0;">
+                        Thank you to our Diamond Sponsors for supporting the DEV Community
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://aistudio.google.com/?utm_source=partner&amp;utm_medium=partner&amp;utm_campaign=FY25-Global-DEVpartnership-sponsorship-AIS&amp;utm_content=-&amp;utm_term=-&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fxjlyhbdqehj3akhz166w.png" alt="Google AI - Official AI Model and Platform Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 54px; padding: 10px;" loading="lazy" width="2048" height="472">
+                </a>
+                            <p style="text-align: center;">Google AI is the official AI Model and Platform Partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://neon.tech/?ref=devto&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbnl88cil6afxzmgwrgtt.png" alt="Neon - Official Database Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Neon is the official database partner of DEV</p>
+                        </div>
+
+                        <div style="display: inline-block; max-width: 240px; font-size: 0.8em; font-style: italic; text-align: center; padding: 10px; background: #ffffff; border-radius: 5px; color: #404040;">
+                            <a href="https://www.algolia.com/developers/?utm_source=devto&amp;utm_medium=referral&bb=146443" target="_blank" rel="noopener noreferrer" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="https://media2.dev.to/dynamic/image/width=880%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fv30ephnolfvnlwgwm0yz.png" alt="Algolia - Official Search Partner" style="display: block; background: #ffffff; margin: 0 auto; width: auto; height: 60px; padding: 10px;" loading="lazy" width="2286" height="596">
+                </a>
+                            <p style="text-align: center;">Algolia is the official search partner of DEV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p class="fs-s crayons-footer__description">
+                <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="/">DEV Community</a> — A space to discuss and keep up software development and manage your software career
+            </p>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/">
+      Home
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/about">
+      About
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/contact">
+      Contact
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="" />
+            <li class="footer__nav-link flex items-center">
+                <a href="/code-of-conduct">
+      Code of Conduct
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/privacy">
+      Privacy Policy
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+            <li class="footer__nav-link flex items-center">
+                <a href="/terms">
+      Terms of Use
+    </a>
+                <span class="dot ml-2"></span>
+            </li>
+
+            </ul>
+
+            <div class="fs-s">
+                <p>Built on <a class="c-link c-link--branded" target="_blank" rel="noopener" href="https://www.forem.com">Forem</a> — the <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/opensource">open source</a>                    software that powers <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to">DEV</a> and other inclusive communities.</p>
+                <p>Made with love and <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/rails">Ruby on Rails</a>. DEV Community <span title="copyright">&copy;</span> 2016 - 2025.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="snack-zone"></div>
+
+    <div id="global-signup-modal" class="authentication-modal hidden">
+        <div class="authentication-modal__container">
+            <figure class="authentication-modal__image-container">
+                <img class="authentication-modal__image" src="https://media2.dev.to/dynamic/image/width=190,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" alt="DEV Community"
+                    loading="lazy" />
+            </figure>
+            <div class="authentication-modal__content">
+                <p class="authentication-modal__description">
+                    We&#39;re a place where coders share, stay up-to-date and grow their careers.
+                </p>
+            </div>
+            <div class="authentication-modal__actions">
+                <a href="https://dev.to/enter?signup_subforem=1" class="crayons-btn" aria-label="Log in" data-no-instant>
+        Log in
+      </a>
+                <a href="https://dev.to/enter?signup_subforem=1&amp;state=new-user" class="crayons-btn crayons-btn--ghost-brand js-global-signup-modal__create-account" aria-label="Create new account" data-no-instant>
+        Create account
+      </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://assets1.dev.to/assets/signupModalShortcuts-0b25469b985100a01e94cbd7fccaf7f0a4d776e129aac65c766aa32cb28ab29a.js" defer="defer"></script>
+
+    <div id="cookie-consent"></div>
+    <div id="reaction-category-resources" class="hidden" aria-hidden="true">
+        <img data-name="Like" data-slug="like" data-position="1" src="https://assets1.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg" width="18" height="18" />
+        <img data-name="Unicorn" data-slug="unicorn" data-position="2" src="https://assets1.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg" width="18" height="18" />
+        <img data-name="Exploding Head" data-slug="exploding_head" data-position="3" src="https://assets1.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg" width="18" height="18" />
+        <img data-name="Raised Hands" data-slug="raised_hands" data-position="4" src="https://assets1.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg" width="18" height="18" />
+        <img data-name="Fire" data-slug="fire" data-position="5" src="https://assets1.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg" width="18" height="18" />
+    </div>
+
+    <script>
+        var userSignedIn = false;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initAuth();
+        } else {
+            document.addEventListener('DOMContentLoaded', initAuth);
+        }
+
+        function initAuth() {
+            var paramToken = new URLSearchParams(window.location.search).get('jwt');
+
+            if (paramToken && !userSignedIn) {
+                authenticateUser(paramToken);
+            } else {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'https://forem.com/auth_pass/iframe';
+
+                document.body.appendChild(iframe);
+
+                window.addEventListener('message', function(event) {
+                    if (event.origin !== 'https://forem.com' && event.origin !== window.location.origin) {
+                        return;
+                    }
+
+                    var data = event.data;
+
+                    if (data.authenticated && !userSignedIn) {
+                        authenticateUser(data.token);
+                    } else if (data.authenticated && window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({
+                            action: 'login',
+                            token: data.token,
+                        }));
+                    }
+                });
+            }
+
+            function authenticateUser(token) {
+                fetch('/auth_pass/token_login', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': getMetaContent('csrf-token'),
+                        },
+                        body: JSON.stringify({
+                            token: token
+                        }),
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.success) {
+                            if (document.head.querySelector('meta[name="user-signed-in"][content="false"]')) {
+                                // Reload the page to update the user's state
+                                location.reload();
+                            }
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error during authentication:', error);
+                    });
+            }
+
+            function getMetaContent(name) {
+                var element = document.querySelector('meta[name="' + name + '"]');
+                return element ? element.getAttribute('content') : '';
+            }
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>
