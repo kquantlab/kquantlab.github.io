@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C21 市场价格的违约风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C21 市场价格的违约风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C21 市场价格的违约风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>公司债券</span>价格</h2>
+<p>要评估与交易对手的交易的<span>信用风险</span>，考虑同一交易对手发行的<b>信用敏感债券</b>(credit sensitive bonds)。假设违约是一种平等影响所有债务的状态。</p>
+<h3>1、价差和违约风险</h3>
+<p>假设该债券在一个时期内只支付一次100。可以从价格 <span>P^*</span> 计算市场决定的<span>收益率</span> <span>y^*</span> ：</p>
+<blockquote><span>\displaystyle P^* = \frac{100}{1+y^*}</span> </blockquote>
+<p>这可以与同期的<span>无风险收益率</span>进行比较。债券的收益可以用简化的违约过程来描述。到期时，债券可以违约也可以不违约。如果没有违约，它的值是100，如果发生违约，它的值是 <span>f</span> × 100，其中 <span>f</span> 是部分恢复(fractional recovery)。</p>
+<p>将 <span>\pi</span> 定义为这段时间内的<span>违约率</span>。使用<span>风险中性定价</span>，当前价格必为两种状态下价值的数学期望，以无风险率贴现支付。因此可得：</p>
+<blockquote><span>\displaystyle P^* = \frac{100}{1+y^*}= \frac{100}{1+y}(1-\pi)+ \frac{f\times100}{1+y}\pi</span> </blockquote>
+<p>注意，贴现使用<span>无风险利率</span>y，因为风险中性估值没有<span>风险溢价</span>。化简得：</p>
+<blockquote><span>(1 + y) = (1 + y^∗)[1 − \pi(1 − f )]</span> </blockquote>
+<p>得到隐含的<span>违约概率</span>为：</p>
+<blockquote><span>\displaystyle \pi = \frac{1}{1-f} \left(1-\frac{1+y}{1+y^*} \right) </span> </blockquote>
+<p>假设收益率和违约概率很小，去掉二阶项，简化为：</p>
+<blockquote><span>y^∗ ≈ y + \pi(1 − f ) </span> </blockquote>
+<p>这个方程表明，<span>信用价差</span> <span>y ^*−y</span> 度量信用风险。包括违约概率(PD) <span>\pi</span> ，乘以给定违约的损失(LGD)(
+                                        <span>1−f</span> )。无论是违约概率为零，还是违约造成的损失为零，都不存在潜在的信用损失。</p>
+<p>现在考虑 <span>T</span> 期。将每个时期的利率和违约率复合。设年平均违约率为 <span>\pi^a</span> 。假设只有一次支付，现值是：</p>
+<blockquote><span>\displaystyle P^* = \frac{100}{(1+y^*)^T}= \frac{100}{(1+y)^T}(1-\pi^a)^T+ \frac{f\times100}{(1+y)^T}[1-(1-\pi^a)^T]</span> </blockquote>
+<p>化简得：</p>
+<blockquote><span>(1 + y)^T = (1 + y^∗)^T{(1 −  \pi^a)^T + f [1 − (1 − \pi^a )^T]}</span> </blockquote>
+<p>使用累积违约概率：</p>
+<blockquote><span>\displaystyle  \frac{1}{(1+y^*)^T}= \frac{1}{(1+y)^T}(1-\pi)+ \frac{f\times1}{1+y}[1-(1-\pi)]</span> </blockquote>
+<p>得到：</p>
+<blockquote><span>\displaystyle  \frac{1}{(1+y^*)^T}= \frac{1}{(1+y)^T}[1-\pi(1-f)]</span> </blockquote>
+<p>得到一个非常粗略的近似：</p>
+<blockquote><span>y^∗ ≈ y + (\pi/T)(1 − f )</span> </blockquote>
+<p>当我们拥有不同期限的高风险债券时，它们可以用来计算不同期限的违约概率。例如，如果有两个时期，可以：</p>
+<ul>
+<li>用 <span>y^∗ ≈ y + \pi(1 − f ) </span> 求出第1期的违约概率 <span>\pi_1</span> </li>
+<li>用 <span>(1 + y)^T = (1 + y^∗)^T{(1 −  \pi^a)^T + f [1 − (1 − \pi^a )^T]}</span> 求出前两个时期的<span>年化</span>或平均违约概率
+                                            <span>\pi_2</span> </li>
+</ul>
+<p>第2期的边际违约概率 <span>d_2</span> 为：</p>
+<blockquote><span>(1 − \pi_2)^2 = (1 − \pi_1)(1 − d_2)</span> </blockquote>
+<p>这能够从一系列零息债券中恢复远期违约概率的期限结构。在实践中，如果只能使用<span>息票债券</span>，计算就会变得更加复杂，因为需要考虑每个时期的支付情况，无论违约与否。</p>
+<h3>2、风险溢价</h3>
+<p>值得强调的是，前面的方法假定了风险中性。在<span>期权定价</span>方法中，假设任何资产的价值都以无风险率增长，并且可以以相同的无风险率贴现。因此，<span>概率度量</span> <span>\pi</span> 是一个风险中性的度量，它不一定等于客观的违约概率。</p>
+<p>将该客观概率定义为 <span>\pi'</span> ，<span>贴现率</span>定义为 <span>y'</span> ，则当前价格也可以用风险利率
+                                        <span>y'</span> 折现的真实期望值表示：</p>
+<blockquote><span>\displaystyle P^* = \frac{100}{1+y^*}= \frac{100}{1+y'}(1-\pi')+ \frac{f\times100}{1+y'}\pi'</span> </blockquote>
+<p><span>\displaystyle \pi = \frac{1}{1-f} \left(1-\frac{1+y}{1+y^*} \right) </span> 只能得到风险中性的违约概率。更一般地说，如果投资者承担信用风险需要一些补偿，信用价差将包括风险溢价
+                                            <span>rp</span> ：</p>
+<blockquote><span>y^∗ ≈ y + \pi'(1 − f ) + rp</span> </blockquote>
+<p>这种风险溢价要有意义，就必须与债券风险程度以及投资者的<span>风险厌恶</span>程度挂钩。此外，这一溢价可能包括<b><span>流动性溢价</span></b>(liquidity premium)和税收影响。</p>
+<p>注意：<b>公司债券与其他方面相同且无信用风险的债券之间的收益率差，反映了预期精算损失，即年度违约率乘以违约情况下的损失，再加上风险溢价</b>。</p>
+<p>例：推导违约概率。希望比较一下10年期<span>美国国债</span>和IBM公司发行的10年期零债，后者被标普和穆迪评为A级。按半年<span>复利计算</span>，收益率分别为6%和7%。假设<span>回收率</span>为面值的45%，根据 </p>
+<blockquote><span>\displaystyle  \frac{1}{(1+y^*)^T}= \frac{1}{(1+y)^T}[1-\pi(1-f)]</span> </blockquote>
+<p>可得：π(1 − f) = 1 − (1 + y/200)^20/(1 + y∗/200)^20 = 0.0923，因此π = 9.23%/(1 − 45%) = 16.8%。因此，未来10年的累积(风险中性)违约概率为16.8%。与这一风险类别的历史记录相比，这一数字相当高。表20.3显示，<span>穆迪</span>报告的10年期A级信用违约率仅为3%左右。如果用这些历史违约率作为未来违约概率，就意味着很大一部分
+                                                <span>信用利差</span>反映了风险溢价。例如，假设100个基点的信用利差中有80个基点反映了风险溢价。我们将7%的收益率改为6.2%，发现违约概率为3.5%。这更符合此类<span>发行人</span>的实际违约经验。</p>
+<p>⭐ <b>例21.1</b> The <span>risk-free rate</span> is 5% per year and a corporate bond yields 6% per year. Assuming a recovery rate of 75% on the corporate bond, what is the approximate market-implied
+                                                one-year probability of default of the corporate bond?</p>
+<ul>
+<li>a. 1.33%</li>
+<li>b. 4.00%</li>
+<li>c. 8.00%</li>
+<li>d. 1.60%</li>
+</ul>
+<p>解析：选 b 。<span>息差</span> = 7 − 6 = 1%。默认情况下的损失(1 - f) = 0.25，得到 π = (y∗ − y)/(1 − f) = 4%。</p>
+<p>⭐ <b>例21.2</b> The spread on a one-year BBB-rated bond relative to the risk-free Treasury of similar maturity is 2%. It is estimated that the contribution to this spread by all noncredit factors (e.g.,
+                                                <span>liquidity risk</span>, taxes) is 0.8%. Assuming the loss given default rate for the underlying credit is 60%, what is, approximately, the implied default probability for this bond?</p>
+<ul>
+<li>a. 3.33%</li>
+<li>b. 5.00%</li>
+<li>c. 3.00%</li>
+<li>d. 2.00%</li>
+</ul>
+<p>解析：选 d 。预期<span>信用损失</span>的部分为2.00 - 0.80 = 1.20%。除以LGD(1−f) = 0.65，得到2%。</p>
+<p>⭐ <b>例21.3</b> A risk analyst seeks to find out the credit-linked yield spread on a BB-rated one-year coupon bond issued by a multinational petroleum company. If the prevailing annual risk-free rate is 3%, the
+                                                default rate for BB-rated bonds is 7%, and the loss given default is 60%, then the yield to maturity of the bond is</p>
+<ul>
+<li>a. 2.57%</li>
+<li>b. 5.90%</li>
+<li>c. 7.45%</li>
+<li>d. 7.52%</li>
+</ul>
+<p>解析：选 d 。(1 + y) = (1 + y∗)[1 − π × LGD]，<span>移项</span>得到 (1 + y∗) = (1 + y)/[1 − π × LGD] = 1.03/[1 − 0.07 × 60%] = 1.0752，因此y∗ = 7.52%。</p>
+<h3>3、收益率息差的<span>横截面</span></h3>
+<p>不同信贷的收益率曲线按照信用评级进行排序，评级越低的截距和高度越高，随着期限的延长和信贷质量的降低而增加。可以使用公司债券收益率的信息来推断信用风险。事实上，债券价格代表了对<span>交易员</span>的最佳评估，或者说对信用风险的真正押注。因此预计债券价格将是信用风险的最佳预测指标，其表现将优于信用评级。在某种程度上，机构使用公共信息来形成他们的信用评级，这些信息应该被纳入市场价格。债券价格的调整也比
+                                                <span>信用评级</span>更频繁。因此，公司债券价格的变动往往会导致信用评级的变化。</p>
+<p>⭐ <b>例21.4</b> Which of the following is true?</p>
+<ul>
+<li>a. Changes in bond spreads tend to lead changes in credit ratings.</li>
+<li>b. Changes in bond spreads tend to lag changes in credit ratings.</li>
+<li>c. Changes in bond spreads tend to occur at the exact same time as changes in credit ratings.</li>
+<li>d. There is absolutely no perceived general relationship in the timing of changes in bond spreads and changes in credit ratings.</li>
+</ul>
+<p>解析：选 a 。市场价格的变化，包括债券息差，往往会导致信用评级的变化。这是因为市场价格反映了有关一家公司的所有公开信息。</p>
+<p>⭐ <b>例21.5</b> Suppose XYZ Corp. has two bonds paying semiannually according to the following table:</p>
+<div>
+<pre><code>Remaining      Coupon                    T-Bill Rate
+Maturity      (sa 30/360)     Price     (Bank Discount)
+Six months     8.0%           99         5.5%
+One year       9.0%           100        6.0%</code></pre>
+</div>
+<p>The recovery rate for each in the event of default is 50%. For simplicity, assume that each bond will default only at the end of a coupon period. The market-implied risk-neutral probability of default for XYZ
+                                                Corp. is</p>
+<ul>
+<li>a. Greater in the first six-month period than in the second</li>
+<li>b. Equal between the two coupon periods</li>
+<li>c. Greater in the second six-month period than in the first</li>
+<li>d. Cannot be determined from the information provided</li>
+</ul>
+<p>解析：选 a 。首先计算以折扣价出售的6个月期债券的<span>当前收益率</span>。列式为99 = 104/(1 + y∗/200)，并求出y∗= 10.10%。因此，第一种债券的收益率差为10.1 - 5.5 = 4.6%。第二种债券按票面价值计算，因此收益率为y * = 9%。第二个债券的价差为9 − 6 = 3%。第一个周期的违约率必然更大。</p>
+<h3>4、信用价差的时间变化</h3>
+<p>信用价差反映了违约风险造成的潜在损失，或许还有风险溢价。其中一些违约风险是发行人特有的，需要对其未来财务状况进行详细分析。然而，这种风险的一部分可以归因于常见的信用风险因素。这些共同因素尤其重要，因为它们无法在一个由信贷敏感型债券组成的大型投资组合中分散开来。在这些因素中，首先是总体经济状况。经济增长与信贷息差呈负相关。当经济放缓时，更多的公司可能会出现现金流问题，并出现<span>债券违约</span>。</p>
+<p>在<span>经济衰退</span>期间，违约率和信贷息差都趋于上升。然而，由于利差是前瞻性的，它们往往领先于违约率，而违约率在衰退后达到峰值。此外，2007-2008年信贷危机的影响从空前扩大的信贷息差中可见一斑。这反映了更高的<span>风险厌恶情绪</span>和对非常高的违约率的预期。</p>
+<p><span>波动性</span>也是一个因素。在更不稳定的环境中，投资者可能需要更高的风险溢价，从而扩大信贷息差。当这种情况发生时，流动性可能也会枯竭。为了持有流动性越来越差的证券，投资者可能需要更大的信用利差。波动性还可以通过期权通道产生另一种影响。与美国<span>国债指数</span>不同，公司债券指数包括许多
+                                                        <span>可赎回债券</span>。可赎回债券的买方要求获得更高的收益率，以换取授予<span>看涨期权</span>。在其他条件相同的情况下，更高的波动性应该会增加期权的价值，从而增加收益率。因此，信贷息差直接随着波动性而增加。</p>
+<hr/>
+<h2>二、权益价格</h2>
+<p>信用价差方法只有在债券市场数据良好的情况下才有用。这种情况很少发生，原因有很多：</p>
+<ol>
+<li>许多国家没有发达的<span>公司债券市场</span></li>
+<li>交易对手可能没有<span>公开交易</span>的债券，或者如果有，债券可能包含其他特征，如赎回，使其更难解释收益率</li>
+<li>债券可能交易不活跃，而报告的价格可能只是<b>矩阵价格</b>，即从其他发行人的收益率中插值出来的价格</li>
+</ol>
+<p>另一种选择是转向基于股价的违约风险模型，因为<span>股票价格</span>可用于更多的公司，而且股票的交易比公司债券更活跃。<b>默顿模型</b>(Merton Model)将股权视为类似于公司资产的看涨期权，行使价格由债务的面值决定。</p>
+<h3>1、默顿模型</h3>
+<p>考虑一个总价值为V的公司，在一个时期内有一张面值为K的债券到期，如果公司的价值超过承诺的付款，债券将全额偿还，股东将获得剩余部分。然而，如果V小于K，公司违约，<span>债券持有人</span>只得到V。权益的价值变为零。假设不存在<span>交易成本</span>，并且遵循绝对优先规则。因此，股票到期时的价值为：</p>
+<blockquote><span>S_T = Max(V_T − K, 0)</span> </blockquote>
+<p>因为债券和权益加起来等于公司价值，所以债券的价值等于：</p>
+<blockquote><span>B_T = V_T − S_T = V_T − Max(V_T − K, 0) = Min(V_T, K)</span> </blockquote>
+<p>因此，当前的股票价格体现了对违约概率的预测，就像期权体现了对被执行的预测一样。下图描述了公司的价值如何被分割成债券和股票价值：</p>
+<figure><img src="https://picx.zhimg.com/v2-9db6b033165786abc6da5f3120a3a883_1440w.jpg" width="1888"/>
+<figcaption>股权作为企业价值的期权</figcaption>
+</figure>
+<p>债券价值也可以描述为：</p>
+<blockquote><span>B_T = K − Max(K − V_T, 0)</span> </blockquote>
+<p>换句话说，风险债券的多头头寸相当于无风险债券的多头头寸加上看跌期权的空头头寸，后者实际上是一种信用<span>衍生品</span>。</p>
+<p>注意，<b>股权可以看作是公司价值的看涨期权，其<span>执行价格</span>等于债务的面值。<span>公司债务</span>可以看作是无风险债务减去公司价值的看跌期权</b>。</p>
+<p>这种方法表明，<span>企业债务</span>的回报类似于期权的空头头寸，这解释了信贷损失的特征：左偏。相反，由于<b>有限责任特点</b>(limited-liability feature)，股权相当于期权的多头头寸。投资者的损失不能超过他们的股权投资。</p>
+<h3>2、定价公式</h3>
+<p>根据布莱克-斯科尔斯(BS)框架，假设公司值遵循<span>几何布朗运动</span>过程：</p>
+<blockquote><span>dV = \mu V dt + \sigma V dz</span> </blockquote>
+<p>假设市场无摩擦且没有破产成本，那么企业的价值就是企业权益(S)和债务(B)的总和：V = B + S。为了根据公司的价值给索赔权定价，需要解一个带有适当边界条件的<span>偏微分方程</span>。公司债券价格为：</p>
+<blockquote><span>B = F (V, t), \ \ \ F (V, T) = Min[V, B_F ]</span> </blockquote>
+<p>其中 <span>B_F = K</span> 是到期时要偿还的债券的面值，或<span>行权价格</span>。同样，权益价值为：</p>
+<blockquote><span>S = f (V, t),\ \ \  f (V, T) = Max[V − B_F , 0]</span> </blockquote>
+<p><b>股票价值</b>。在没有股息的情况下，股票价值由BS公式给出：</p>
+<blockquote><span>S = Call = VN(d_1) − Ke^{−r\tau}N(d_2)</span> </blockquote>
+<p>其中N(d)是标准正态分布的<span>累积分布函数</span>，且：</p>
+<blockquote><span>\displaystyle d_1 = \frac{ln(V/Ke^{−r\tau} )}{\sigma\sqrt{\tau}}  + \frac{\sigma\sqrt{\tau}}{2}</span>                                                            ， <span>d_2 = d_1-\sigma \sqrt{\tau}</span> </blockquote>
+<p>其中 <span>\tau = T-t</span> 为到期时间， <span>r</span> 为无风险利率， <span>\sigma</span> 为资产价值波动率。期权值取决于两个因素： <span>x = Ke^{−r\tau} /V</span> 和 <span>\sigma \sqrt{\tau}</span> 。第一个因素是债务价值比，它与<span>杠杆率</span>呈负相关，可以写成 <span>l = V/(V - Ke^{−r\tau} )</span>                                                            。股票的价值随着波动性的增加和 <span>x</span> 的减少或杠杆的增加而增加。</p>
+<p><b>公司波动率</b>。这里与BS模型不同，在BS模型中插入 <span>V</span> 的值及其波动率 <span>\sigma = \sigma_V</span>                                                            ，并求解看涨期权的值。在这里，我们观察公司的市值 <span>S</span> 和股票的波动率 <span>\sigma_S</span> ，并且必须推断出 <span>V</span> 的值及其波动率，从而满足式 <span>S = Call = VN(d_1) − Ke^{−r\tau}N(d_2)</span> 。这只能通过迭代来实现。定义
+                                                            <span>\Delta = N(d_1)</span> 作为对冲比率，有</p>
+<blockquote><span>\displaystyle dS =  \frac{∂ S}{∂ V}  dV = \Delta dV</span> </blockquote>
+<p>将 <span>\sigma_S</span> 定义为 <span>dS /S</span> 的波动率，有 <span>(\sigma _S S) = \Delta(\sigma _VV)</span> 及：</p>
+<blockquote><span>\sigma _V = (1/\Delta) \sigma _S(S/V)</span> </blockquote>
+<p><b>债券估值</b>。接下来，债券的价值由 <span>B = V - S</span> 给出：</p>
+<blockquote><span>B = Ke^{−r\tau} N(d_2) + V[1 − N(d_1)]</span> <br/> <span>B/Ke^{−r\tau}  = [N(d_2) + (V/Ke^{−r\tau}  )N(−d_1)]</span> </blockquote>
+<p>因此，债券的价值与公司的关系为：</p>
+<blockquote><span>\displaystyle dB =  \frac{∂ B}{∂ V}  dV =N(−d_1)dV</span> </blockquote>
+<p><span>\displaystyle dS =  \frac{∂ S}{∂ V}  dV = \Delta dV</span> 和 <span>\displaystyle dB =  \frac{∂ B}{∂ V}  dV =N(−d_1)dV</span> 有时用于<b>资本套利交易</b>(capital arbitrage trades)，涉及买卖对公司的不同类型的债权，使用这些对冲比率来尽量减少风险，即假设模型是正确的。</p>
+<p>债券价格可以用年化信贷价差 <span>s</span> 来表示：</p>
+<blockquote><span>B = Ke^{−(r+s)\tau}</span> </blockquote>
+<p>解得：</p>
+<blockquote><span>s = −(1/\tau)[N(d_2) + (1/x)N(−d_1)]</span> </blockquote>
+<p>当波动性增加和杠杆增加时，债券的价值就会下降。价差则相反。以上公式可以在信用利差的期限结构中创建丰富的模式。对于杠杆率和波动性较低的公司，利差在临近到期时较低，并随着到期而增加。高杠杆的公司有高息差，期限结构可能有负斜率。</p>
+<p><b>违约的风险中性动态</b>。在BS模型中， <span>N(d_2)</span> 也是执行看涨期权的概率，即债券不会违约的概率。反之，1−N(d_2) = N(−d_2 <span>N(d_2)</span>                                                                )为风险中性的违约概率。定义 <span>z = - d_2</span> ，用</p>
+<blockquote><span>\displaystyle  z = \frac{ln(K/V) − r\tau + 0.5\sigma^2 \tau}{\sigma \sqrt\tau}</span> </blockquote>
+<p>为了得到实际的违约概率，可以将方程中的无风险率用 <span>\delta</span> 代替， <span>\delta</span> 是企业资产的预期增长率。</p>
+<blockquote><span>\displaystyle PD = N[z] = N\left[ \frac{ln(K/V) − r\tau + 0.5\sigma^2 \tau}{\sigma \sqrt\tau} \right] </span> </blockquote>
+<p><b>信用风险定价</b>。到期时，信用损失为无风险债券减去公司债券的价值 <span>CL = B_F - B_T</span> ，初始时，预期信用损失ECL为</p>
+<ul>
+<li><span>BF e^{−r\tau }− B</span> </li>
+<ul>
+<li><span>= Ke^{−r\tau} − {Ke^{−r\tau} N(d_2) + V[1 − N(d_1)]}</span> </li>
+<li><span>= Ke^{−r\tau } [1 − N(d_2)] − V[1 − N(d_1)]</span> </li>
+<li><span>= Ke^{−r\tau }N(−d_2) − VN(−d_1)</span> </li>
+<li><span>= N(−d_2)[Ke^{−r\tau }− VN(−d_1)/N(−d_2)]</span> </li>
+</ul>
+</ul>
+<p>这个分解是非常有用。乘以<span>未来价值</span>因子 <span>e^{−r\tau }</span> 表明，到期时的ECL为</p>
+<blockquote><span>ECL_T = N(−d_2)[K − Ve^{r\tau }N(−d_1)/N(−d_2)] = p × [Exposure × LGD]</span> </blockquote>
+<p>这涉及到两项。第一个是违约概率 <span>N(- d_2)</span> ，括号内的第二项是出现违约时的损失。这是债券K的面值减去违约时贷款的回收价值， <span>Ve^{−r\tau }N(- d_1)/N(- d_2)</span>                                                                    ，这也是公司在违约状态下的期望值。注意这里的回收率是内生的，因为它取决于公司的价值、时间和负债率。</p>
+<p><b>信用期权估值</b>。</p>
+<p>这种方法也可用于对信用敏感型债券的看跌期权进行估值。此选项在违约情况下支付 <span>K−B_T</span> 。债券加看跌期权的投资组合相当于无风险债券 <span>Ke^{−r\tau } = B +Put</span>                                                                    。因此，使用以下公式，信用看跌的价值可以得到：</p>
+<blockquote><span>Put = Ke^{−r\tau } − {Ke^{−r\tau }N(d_2) + V[1 − N(d_1)]} = −V[N(−d_1)] + Ke^{−r\tau }[N(−d_2)]</span> </blockquote>
+<p>⭐ <b>例21.6</b> To what sort of option on the counterparty’s assets can the current exposure of a credit-risky position better be compared?</p>
+<ul>
+<li>a. A short call</li>
+<li>b. A short put</li>
+<li>c. A short knock-in call</li>
+<li>d. A binary option</li>
+</ul>
+<p>解析：选 b 。<span>贷款人</span>做空看跌期权，因为只有在资产价值低于借出金额时才存在风险敞口。</p>
+<h3>3、模型应用</h3>
+<p>这些估值公式可以用来计算，给定当前的股权和名义负债的价值，公司的价值和违约的可能性。下图说明了公司价值的演变。如果这个值低于负债线，公司就违约。用 <span>N(- d_2)</span> 来衡量这种风险中性的概率。</p>
+<figure><img src="https://pic3.zhimg.com/v2-4b1b012ef78ceb1d8975febb2e10ff3e_1440w.jpg" width="1688"/>
+<figcaption>默顿模型中的违约</figcaption>
+</figure>
+<p>实际上，违约情况比这里描述的要复杂得多。必须收集公司所有负债的信息，以及它们的到期日。息票支付也可能出现违约。因此，可以用相对于代表负债的移动地板的距离的函数来衡量违约概率，而不是在目标日期违约。这基本上是<b>KMV公司</b>采取的方法，现在是穆迪的一部分，为全球公司销售<b>预期违约频率</b>(EDF)。</p>
+<p>默顿方法的优缺点：</p>
+<ul>
+<li><b>优点</b></li>
+<ul>
+<li>它依赖于股票的价格，而股票的交易比债券更为活跃</li>
+<li>股价之间的相关性可以产生违约之间的相关性，否则这种相关性将难以衡量。也许这种模式最重要的优势在于，它产生的EDF变动似乎会导致信用评级的变化</li>
+</ul>
+<li><b>缺点</b></li>
+<ul>
+<li>不能用于为主权信用风险定价，因为各国显然没有股票价格。这是信用衍生品的一个问题，该市场的很大一部分由主权风险构成</li>
+<li>依赖于公司资本和风险结构的<span>静态模型</span>。假设债务水平在未来一段时间内保持不变。同样，该模式也无法处理新的股本注入，而股本注入是为了保护现有的<span>债权人</span>。此外，该模型需要扩展到一个更现实的设置，即债务在不同的时间点到期，这不是一个明显的扩展。</li>
+<li>管理层可能承担的新项目不仅会增加股本价值，还会增加其波动性，从而扩大信贷利差。这与默顿模型的基本直觉背道而驰。默顿模型认为，在其他条件相同的情况下，股价上涨反映出违约概率较低，因此应该与较小的信用利差相关联</li>
+<li>无法解释在信贷敏感型债券上观察到的信贷息差的大小。最近的研究试图增加其他风险来源，如利率风险，但仍然无法解释这些价差。因此，这些模型在跟踪EDF随时间的变化时非常有用。实际上，KMV将风险中性的违约概率校准为实际违约数据。</li>
+</ul>
+</ul>
+<p><b>4、例子</b></p>
+<p>考虑一家资产价值<span>V </span> = 100，波动性 <span>σ_V </span> = 20%的公司。在实践中，必须从观察到的股票价格和波动性开始，然后迭代找到σV。期限是
+                                                                    <span>\tau</span> = 1年。使用连续复利，无风险利率为<span>r </span> = 10%。债务面值为 <span>K</span> = 99.46，这意味着无风险现值为 <span>Ke^{ - r\tau}</span> = 90，杠杆系数为 <span>x</span> = 0.9。通过默顿分析，发现当前的股价应该是 <span>S</span> = 13.59。因此当前债券价格为：</p>
+<blockquote><span>B = V − S</span> = 100 − 13.59 = 86.41</blockquote>
+<p>这意味着收益率 <span>ln(K/B)/\tau</span> = ln(99.46/86.41) = 14.07%，即收益率差为4.07%。此时，信用看跌期权的现值为</p>
+<blockquote><span>P = Ke^{−r\tau} − B</span> = 90 − 86.41 = 3.59</blockquote>
+<p>分析还得到 <span>N(d_2) </span> = 0.6653和 <span>N(d_1)</span> = 0.7347的值。因此，违约风险中性概率为
+                                                                    <span>EDF = N(- d_2) = 1 - N(d_2) </span> = 33.47%。注意，这可能与实际的或客观的违约概率不同，因为股票很可能以高于10%的无风险利率的速度增长。</p>
+<p>最后，从式中分解到期时的<span>预期损失</span>， <span> N(−d_2)[K− Ve^{r\tau }N(−d_1)/N(−d_2)]</span>                                                                    = 0.3347 × [99.46 − 110.56 × 0.2653/0.3347] = 3.96，这结合了违约概率和违约时的预期损失，即11.85。这个未来预期信用损失3.96也一定是信用看跌期权的未来价值，或者3.59 <span>e^{r\tau}</span>                                                                    = 3.96。</p>
+<p>注意，该模型需要非常高的杠杆，这里 <span>x</span> = 90%，以产生4.07%的合理信用利差。这意味着债务权益比率为0.9/0.1 = 900%，这对于这种利差来说是不切实际的高。当杠杆率较低时，比如 <span>x </span> = 0.7，信贷息差迅速缩小至0.36%。当 <span>x </span> = 50%或更低时，预测价差归零。由于这种杠杆被认为是正常的，该模型无法再现观察到的信贷息差的规模。也许它对于跟踪估计默认频率的时间变化最有用。</p>
+<p>⭐ <b>例21.7</b> Among the following variables, which one is the main driver of the probability of default in the KMV model?</p>
+<ul>
+<li>a. Stock prices</li>
+<li>b. Bond prices</li>
+<li>c. Bond yield</li>
+<li>d. Loan prices</li>
+</ul>
+<p>解析：选 a 。股票价格是KMV估计违约频率(EDF)的主要驱动因素，因为它们驱动着股权的价值。这些模型还使用了资产价值和负债价值的波动性。</p>
+<p>⭐ <b>例21.8</b> The capital structure of HighGear Corporation consists of two parts: one fiveyear zero-coupon bond with a face value of $100 million and the rest is equity.The current
+                                                                        market value of the firm’s assets is $130 million and the expected rate of change of the firm’s value is 25%. The firm’s assets have an annual volatility of 30%. Assume that firm
+                                                                        value is lognormally distributed, with constant volatility. The firm’s risk management division estimates the distance to default using the Merton model, or [ln(K/V) − δτ + 0.5(σ^2)τ]/σ(τ^0.5).
+                                                                        Given the distance to default, the estimated default probability is</p>
+<ul>
+<li>a. 2.74%</li>
+<li>b. 12.78%</li>
+<li>c. 12.79%</li>
+<li>d. 30.56%</li>
+</ul>
+<p>解析：选 a 。z = [ln(K/V) − δτ + 0.5(σ^2)τ]/σ(τ^0.5) = [ln(100/130) − (25%)5 + 0.5(30%^2)5]/[30%(5^0.5)]= −1.919，得到违约概率为N(z) = N(−1.919) = 2.749%。</p>
+<p>⭐ <b>例21.9</b> The KMV model produces a measure called expected default frequency.Which of the following statements about this variable is correct?</p>
+<ul>
+<li>a. It decreases when the leverage of the firm falls.</li>
+<li>b. It increases when the stock price of the firm has been rising.</li>
+<li>c. It is the risk-neutral probability of default from Merton’s model.</li>
+<li>d. It tells investors how the default risk of a bond is correlated with the default risk of other bonds in the portfolio.</li>
+</ul>
+<p>解析：选 a 。与风险中性违约概率类似，EDF在股价上涨、杠杆率下降或波动性下降时下降。它是违约概率从默顿型模型的转换。KMV框架可以扩展到寻找相关性，但EDF是不够的。</p>
+<p>⭐ <b>例21.10</b> Using the Merton model, the value of the debt increases if all other parameters are fixed and</p>
+<ol>
+<li>I. The value of the firm decreases.</li>
+<li>II. The riskless interest rate decreases.</li>
+<li>III. Time to maturity increases.</li>
+<li>IV. The volatility of the firm value decreases.</li>
+</ol>
+<ul>
+<li>a. I and II only</li>
+<li>b. I and IV only</li>
+<li>c. II and III only</li>
+<li>d. II and IV only</li>
+</ul>
+<p>解析：选 d 。信用敏感型债务的价值为 <span>B = Ke^{−(r+s)\tau}</span> 。(1)如果无风险利率下降，或者(2)如果信用利差下降，或者(3)如果到期日缩短，这一利率就会增加。如果公司价值上升，或者杠杆下降，或者波动性下降，信用利差就会减小。因此，如果无风险利率下降或波动性下降，债务的价值就会增加。</p>
+<p>⭐ <b>例21.11</b> You have a large position of bonds of firm XYZ. You hedge these bonds with equity using Merton’s debt valuation model. The value of the debt falls unexpectedly, but the
+                                                                        value of equity does not fall, so you make a loss.Consider the following statements:</p>
+<ol>
+<li>I. Interest rates increased.</li>
+<li>II. Volatility fell.</li>
+<li>III. Volatility increased.</li>
+<li>IV. A liquidity crisis increased the liquidity component of the credit spreads.</li>
+</ol>
+<p>Which statements are possible explanations for why your hedge did not work out?</p>
+<ul>
+<li>a. I and II only</li>
+<li>b. I and III only</li>
+<li>c. I, III, and IV only</li>
+<li>d. III and IV only</li>
+</ul>
+<p>解析：选 b 。需要识别那些会降低债务价值、但不会降低股本价值的冲击。无风险利率的上升会降低债务的价值，但不会降低权益的价值(因为这会降低杠杆)。波动性的增加将对债务和股票产生相反的影响。最后，流动性危机无法解释这种分歧行为，因为正如在2008年看到的那样，它会对公司债券和股票产生不利影响。</p>
+<p>⭐ <b>例21.12</b> The Merton model is used to predict default. It builds on several very strong assumptions and its applicability is hampered by practical difficulties. Which of the
+                                                                            following statements does not correctly identify limiting assumptions or practical difficulties of using the model?</p>
+<ul>
+<li>a. The model relies on a simplistic capital structure with only one debt issue.</li>
+<li>b. The asset value volatility cannot be estimated because firm value does not trade.</li>
+<li>c. The model assumes that debt does not pay a coupon while most publicly traded debt is coupon debt.</li>
+<li>d. The model assumes a constant riskless interest rate.</li>
+</ul>
+<p>解析：选 b 。这种说法是不正确的，因为资产波动率可以从股票波动率和模型价格中迭代地恢复。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

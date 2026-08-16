@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C02 概率基础 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C02 概率基础">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C02 概率基础</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、描述随机变量</h2>
+<h3><b>1、单变量分布函数</b></h3>
+<p>随机变量 <span>X</span> 的<b><span>累积分布函数</span></b>(cumulative distribution function)为：</p>
+<blockquote><span>F (x) = P(X ≤ x)</span> </blockquote>
+<p>当变量 <span>X</span> 取<span>离散值</span>时：</p>
+<blockquote><span>F(x) = \sum_{x_j \leq x}^{}{f(x_j)}</span> </blockquote>
+<p>其中， <span>f(x)</span> 称为<b><span>频率函数</span></b>(frequency function)或<b><span>概率密度函数</span></b>(probability density function)。当变量
+                                    <span>X</span> 为连续时，其分布为：</p>
+<blockquote><span>F (x) = \int_{-\infty}^{x}f(u)du</span> </blockquote>
+<p>二者的关系为：</p>
+<blockquote><span>f (x) = \frac{dF(x)}{dx}</span> </blockquote>
+<p>对于所有 <span>u</span> ，概率密度函数 <span>f (u)</span> 必须是正的。当 <span>x</span> 趋于无穷时，分布趋于1，表示为：</p>
+<blockquote><span> \int_{-\infty}^{\infty}f(u)du = 1</span> </blockquote>
+<p><span>F (x)</span> 测量的是 <span>x</span> 左边 <span>F (x)</span> 曲线下的面积。</p>
+<h3><b>2、矩</b></h3>
+<p>第一矩是<b><span>均值</span></b>，衡量样本的集中趋势或重心，由积分给出：</p>
+<blockquote><span>\mu = E(X) =  \int_{-\infty}^{+\infty}xf(x)dx</span> </blockquote>
+<p>该分布也可以用<span>分位数</span>来描述，分位数是截断点 <span>x</span> ，对应的概率为 <span>c</span> ：</p>
+<blockquote><span>F (x) = \int_{-\infty}^{x}f(u)du = c</span> </blockquote>
+<p>因此，有 <span>c</span> 的概率这个随机变量会落在 <span>x</span> 以下，因为总概率加起来是1，所以有 <span>p = 1 - c</span>                                            的概率这个随机变量会落在 <span>x</span> 以上。将这个分位数定义为 <span>Q(X, c)</span> 。50%分位数称为<b>中位数</b>。</p>
+<p>风险价值(VAR)可以被解释为一个截断点，例如，损失发生的概率不会大于p = 95%。如果 <span>f (u)</span> 为投资组合的损益分配，则定义VAR为：</p>
+<blockquote><span>F (x) = \int_{-\infty}^{x}f(u)du = 1-p</span></blockquote>
+<p>其中 <span>p</span> 是右尾概率， <span>c</span> 是通常的左尾概率。VAR可以定义为减去分位数本身，也可以定义为期望值与分位数之间的偏差，通常被报告为损失：</p>
+<blockquote><span>VAR(c) = E(X) − Q(X, c)</span> </blockquote>
+<p>第二矩是<b>方差</b>：</p>
+<blockquote><span>\sigma^2 = V(X) =   \int_{-\infty}^{+\infty}[x-E(X)]^2f(x)dx</span> </blockquote>
+<p><b>标准差</b>使用起来更方便，因为它与原始变量X有相同的单位：</p>
+<blockquote><span>SD(X) = \sigma = \sqrt{V(X)}</span> </blockquote>
+<p>第三矩是<b>偏度</b>(skewness)，它描述了对对称性的偏离，定义为：</p>
+<blockquote><span>\gamma = \frac{1}{\sigma^3}  \int_{-\infty}^{+\infty}[x-E(X)]^3f(x)dx</span> </blockquote>
+<p>负偏度表示该分布具有较长的左尾，这表明观测到较大负值的概率较高。如果这代表一个投资组合的利润和损失的分配，这很危险。</p>
+<p>第四矩是<b><span>峰度</span></b>(<span>kurtosis</span>)，它描述了一个分布的<span>平坦度</span>，或尾巴的宽度，定义为：</p>
+<blockquote><span>\delta =  \frac{1}{\sigma^4}  \int_{-\infty}^{+\infty}[x-E(X)]^4f(x)dx</span> </blockquote>
+<p>尾部的大的观测值会有大的权重、产生大的峰度，被称为<b>尖峰厚尾</b>(leptokurtic, fat-tailed)。峰度为3表示<span>正态分布</span>。高峰度表明<span>极端运动</span>的可能性更高。峰度小于3的分布称为<b>低峰</b>(platykurtic)分布。</p>
+<p>⭐ <b>例2.1 </b>An analyst gathered the following information about the return distributions for two portfolios during the same time period:</p>
+<table>
+<tbody>
+<tr>
+<th>Portfolio</th>
+<th>Skewness</th>
+<th>Kurtosis</th>
+</tr>
+<tr>
+<td>A</td>
+<td>−1.6</td>
+<td>1.9</td>
+</tr>
+<tr>
+<td>B</td>
+<td>0.8</td>
+<td>3.2</td>
+</tr>
+</tbody>
+</table>
+<p>The analyst states that the distribution for Portfolio A is more peaked than a normal distribution and that the distribution for Portfolio B has a long tail on the left side of the distribution. Which of
+                                                    the following is correct?</p>
+<ul>
+<li>a. The analyst's assessment is correct.</li>
+<li>b. The analyst's assessment is correct for Portfolio A and incorrect for Portfolio B.</li>
+<li>c. The analyst's assessment is not correct for Portfolio A but is correct for Portfolio B.</li>
+<li>d. The analyst's assessment is incorrect for both portfolios.</li>
+</ul>
+<p>解析：选 d 。组合A的峰度小于3，因此比正态分布平坦。投资组合A为负偏态，左尾较长。故两句话均错误。</p>
+<hr/>
+<h2>二、多元分布函数</h2>
+<h3><b>1、<span>联合分布</span></b></h3>
+<p>联合二元累积分布函数为：</p>
+<blockquote><span>F _{12}(x_1,x_2) = P(X_1 ≤ x_1,X_2 ≤ x_2)</span> </blockquote>
+<p>若变量连续，则可以写做：</p>
+<blockquote><span>F _{12}(x_1,x_2) =  \int_{-\infty}^{x_1}  \int_{-\infty}^{x_2} f_{12}(u_1,u_2)du_1du_2</span> </blockquote>
+<p>其中 <span> f(u_1,u_2)</span> 为<b><span>联合密度</span></b>(joint density)。联合分布和联合密度可以表示为乘积形式：</p>
+<blockquote><span>f _{12}(u_1,u_2) = f _{1}(u_1)×f _2(u_2)</span> <br/> <span>F_{12}(x_1,x_2) = F _{1}(x_1)×F_2(x_2)</span> </blockquote>
+<p><b>边际密度</b>(marginal density)可以表示为：</p>
+<blockquote><span>f _{1}(x_1) =  \int_{-\infty}^{+\infty} f_{12}(x_1,u_2)du_2</span> </blockquote>
+<p>换做 <span>x_2</span> 也是类似的。<b><span>条件密度</span></b>(conditional density)可以表示为：</p>
+<blockquote><span>f_{12}(x_1|x_2) = \frac{f_{12}(x_1,x_2)}{f_2(x_2)}</span> </blockquote>
+<p>这种关系也称为<b><span>贝叶斯</span>规则</b>(Bayes' rule)。</p>
+<h3><b>2、协方差和<span>相关性</span></b></h3>
+<p><b>协方差</b>(covariance)的表达式为：</p>
+<blockquote><span>Cov(X_1, X_2) = \sigma_{12} = \int_{1}^{}\int_{2}^{}[x_1 - E(X_1)][x_2 - E(X_2)]f_{12}(x_1,x_2)dx_1dx_2</span> </blockquote>
+<p><b><span>相关系数</span></b>(correlation coefficient)介于-1至1之间，表达式为：</p>
+<blockquote><span>\rho (X_1, X_2) = \frac{Cov(X_1, X_2)}{\sigma_1 \sigma_2}</span> </blockquote>
+<p>这个表达式也称为<b><span>皮尔逊相关</span></b>(Pearson correlation)。另一种度量方法是<b>斯皮尔曼相关性</b>(Spearman correlation)，它用变量的秩(Rank)代替变量的值。这种非参数测量对异常值不太敏感，因此当数据中可能存在错误时，它比通常的相关性更可靠。</p>
+<p>如果变量是独立的，联合密度可以分解成：</p>
+<blockquote><span>Cov(X_1, X_2) =  \{   \int_{1}[x_1 - E(X_1)]f_{1}(x_1)dx_1  \}   \{   \int_{2}[x_2 - E(X_2)]f_{2}(x_2)dx_2   \}  =0</span> </blockquote>
+<p>在这种情况下，这两个变量是不相关的。因此，独立意味着零相关性。</p>
+<p>⭐ <b>例2.2  </b>Which one of the following statements about the correlation <span>coefficient</span> is false?</p>
+<ul>
+<li>a. It always ranges from −1 to +1.</li>
+<li>b. A correlation coefficient of zero means that two random variables are independent.</li>
+<li>c. It is a measure of linear relationship between two random variables.</li>
+<li>d. It can be calculated by scaling the covariance between two random variables.</li>
+</ul>
+<p>解析：选 b 。相关性是<span>线性关联</span>的一种度量。独立意味着零相关性，但反过来不总是正确。</p>
+<p>⭐ <b>例2.3  </b>The joint probability distribution of random variables <span>X</span> and <span>Y</span> is given
+                                                    by <span>f (x, y) = k× x × y</span> for <span>x = 1, 2, 3</span>， <span>y = 1, 2, 3</span> , and <span>k</span> is a positive constant. What is the probability that <span>X+ Y</span> will exceed 5?</p>
+<ul>
+<li>a. 1/9</li>
+<li>b. 1/4</li>
+<li>c. 1/36</li>
+<li>d. Cannot be determined</li>
+</ul>
+<p>解析：选 b 。函数 <span>x × y</span> 的<span>取值分布</span>如下表所示：</p>
+<table>
+<tbody>
+<tr>
+<th>x × y</th>
+<th>x = 1</th>
+<th>x = 2</th>
+<th>x = 3</th>
+</tr>
+<tr>
+<td>y = 1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>y = 2</td>
+<td>2</td>
+<td>4</td>
+<td>6</td>
+</tr>
+<tr>
+<td>y = 3</td>
+<td>3</td>
+<td>6</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>所有项的和是36。比例因子 <span>k</span> 必须使总概率为1。要使得 <span>X+ Y &gt;5</span>，只能取 <span>x=3,y=3</span> 。因此概率为 <span>p = 9/36 = 1/4</span> 。</p>
+<hr/>
+<h2>三、随机变量的函数</h2>
+<h3><b>1、随机变量的<span>线性变换</span></b></h3>
+<p>将原始随机变量乘以一个常数，并添加一个固定的量， <span>Y = a + bX</span> 。 <span>Y</span> 的期望是：</p>
+<blockquote><span>E(a + bX) = a + bE(X)</span> </blockquote>
+<p>其方差为：</p>
+<blockquote><span>V(a + bX) = b^2V(X)</span> </blockquote>
+<p>添加一个常数不会影响方差，因为计算涉及到变量与其均值之间的差。标准差为：</p>
+<blockquote><span>SD(a + bX) = b×SD(X)</span> </blockquote>
+<h3><b>2、随机变量的和</b></h3>
+<p><span>Y = X_1 + X_2</span> 的期望为：</p>
+<blockquote><span>E(X_1 + X_2) = E(X_1) + E(X_2)</span> </blockquote>
+<p><span>Y = X_1 + X_2</span> 的方差为：</p>
+<blockquote><span>V(X_1 + X_2) = V(X_1) + V(X_2) + 2Cov(X_1, X_2)</span> </blockquote>
+<p>求和的期望就是期望的总和。然而，和的方差只有在变量不相关的情况下才是方差的和。</p>
+<h3><b>3、随机变量的组合</b></h3>
+<p>考虑一些随机变量的线性组合。这可以是一个固定权重的投资组合，回报率是：</p>
+<blockquote><span>Y = \sum_{i=1}^{N}{w_iX_i}</span> </blockquote>
+<p>其中 <span>N</span> 是资产的数量， <span>X_i</span> 是资产 <span>i</span>                                                    的收益率， <span>w_i</span> 是权重。可以写成矩阵的形式：</p>
+<blockquote><span>Y = [w_1 \cdots w_N] \begin{bmatrix} X_{1} \\ \vdots \\ X_{N} \end{bmatrix} = w'X</span> </blockquote>
+<p>其中， <span>w'</span> 表示转置后的权重向量（水平方向）， <span>X</span> 是包含单个资产回报的垂直向量。</p>
+<p>投资组合的预期回报是：</p>
+<blockquote><span>E(Y) = \mu_p = \sum_{i=1}^{N}{w_i \mu_i}</span> </blockquote>
+<p>其中，预期收益的加权平均值 <span>\mu_i = E(X_i)</span> 。方差为：</p>
+<blockquote><span>V(Y) = \sigma_p^2 = \sum_{i=1}^{N}{w_i^2 \sigma_i^2} + \sum_{i=1}^{N} \sum_{j=1, j \ne i}^{N} w_i w_j \sigma_{ij} </span> <br/><span>V(Y) =  \sum_{i=1}^{N}{w_i^2 \sigma_i^2} +2 \sum_{i=1}^{N} \sum_{j=1, j &lt; i}^{N} w_i w_j \sigma_{ij} </span> </blockquote>
+<p>用矩阵表示法，方差可以写成：</p>
+<blockquote><span>\sigma_p^2 = [w_1 \cdots w_N] \begin{bmatrix} \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \cdots &amp; \sigma_{1N}  \\ \vdots &amp;&amp;&amp;&amp;\vdots \\  \sigma_{N1} &amp; \sigma_{N2} &amp; \sigma_{N3} &amp; \cdots &amp; \sigma_{N}\end{bmatrix} \begin{bmatrix} w_{1} \\ \vdots \\ w_{N} \end{bmatrix}</span> </blockquote>
+<p>将 <span>\Sigma</span> 定义为<span>协方差矩阵</span>，则投资组合收益率的方差可以更简洁地写成：</p>
+<blockquote><span>\sigma_p^2 = w' \Sigma w</span> </blockquote>
+<p>以描述整个投资组合风险。</p>
+<h3><b>4、随机变量的乘积</b></h3>
+<p><span>Y = X_1 X_2</span> 的期望为：</p>
+<blockquote><span>E(X_1 X_2) = E(X_1)E(X_2) + Cov(X_1, X_2)</span> </blockquote>
+<p>当变量相互独立时，这就可以归结为两个均值的乘积。方差的计算比较复杂。有了独立性，它可以归结为：</p>
+<blockquote><span>V(X_1 X_2) = E(X_1)^2V(X_2) + V(X_1)E(X_2)^2 + V(X_1)V(X_2)</span> </blockquote>
+<h3><b>5、随机变量变换的分布</b></h3>
+<p>对于给定的 <span>y</span> ，可以找到 <span>x</span> 使 <span>x = g^{-1} (y)</span>                                                    。可以写成：</p>
+<blockquote><span>P[Y ≤ y] = P[g(X) ≤ y] = P[X ≤ g^{−1}(y)] = F_X(g^{−1}(y))</span> </blockquote>
+<p>其中， <span>F(·)</span> 为 <span>x</span> 的累积分布函数。假设关系为正。否则右边的项变成 <span>1- F_X(g^{−1}(y))</span>                                                    。</p>
+<p>这种方法不容易扩展。对于一般的密度函数和变换，风险管理人员转向数值方法，特别是当随机变量的数量很大时。这就是为什么<span>信用风险模型</span>都是通过模拟来描述信用损失的分布的。</p>
+<p>⭐ <b>例2.4  </b>Suppose that A and B are random variables, each follows a standard normal distribution, and the covariance between A and B is 0.35. What is the variance of (3A+ 2B)?</p>
+<ul>
+<li>a. 14.47</li>
+<li>b. 17.20</li>
+<li>c. 9.20</li>
+<li>d. 15.10</li>
+</ul>
+<p>解析：选 b 。9×1 + 4×1 + 2×0.35×3×2 = 17.2。</p>
+<p>⭐ <b>例2.5  </b>Given that x and y are random variables and a, b, c, and d are constants, which one of the following definitions is wrong?</p>
+<ul>
+<li>a. E(ax + by + c) = aE(x) + bE(y) + c, if x and y are correlated.</li>
+<li>b. V(ax + by + c) = V(ax + by) + c, if x and y are correlated.</li>
+<li>c. Cov(ax + by, cx + dy) = acV(x) + bdV(y) + (ad + bc)Cov(x, y), if x and y are correlated.</li>
+<li>d. V(x − y) = V(x + y) = V(x) + V(y), if x and y are uncorrelated.</li>
+</ul>
+<p>解析：选 b 。向变量中添加常数c不能改变变量的方差。</p>
+<hr/>
+<h2>四、重要的分布函数</h2>
+<h3><b>1、均匀分布</b></h3>
+<p>最简单的连续分布函数是均匀分布 <span>U(a, b)</span> ，密度函数为：</p>
+<blockquote><span>f(x) = \frac{1}{b-a}</span> ， <span>a ≤ x ≤ b</span> </blockquote>
+<p>均匀分布的均值和方差为：</p>
+<blockquote><span>E(X) = \frac{a+b}{2}</span> ， <span>V(X) = \frac{(b-a)^2}{12}</span> </blockquote>
+<p>均匀分布 <span>U(0,1)</span> 被广泛用作从任意分布 <span>F (Y)</span> 生成随机变量的起始分布。由于任何累积分布函数的范围都是从0到1，我们首先从 <span>U(0,1)</span> 画出 <span>X</span> ，然后计算 <span>y = F^{-1} (x)</span>                                                    。随机变量 <span>Y</span> 将得到期望分布 <span>f (Y)</span> 。</p>
+<p>⭐ <b>例2.6  </b>The random variable Xwith density function f (x) = 1/(b− a) for a &lt; x &lt; b, and 0 otherwise, is said to have a uniform distribution over (a, b). Calculate its mean.</p>
+<ul>
+<li>a. (a + b)/2</li>
+<li>b. a − b/2</li>
+<li>c. a + b/4</li>
+<li>d. a − b/4</li>
+</ul>
+<p>解析：选 a 。均匀分布的均值是分布的中心，也就是a和b的平均值。</p>
+<h3><b>2、正态分布</b></h3>
+<p>最重要的连续分布是正态分布，它充分地代表了许多<span>随机过程</span>。正态分布有一个钟形的形状，中心重量更大，尾部逐渐减小到零。股票价格的日回报率的分布与正态累计密度函数相似。正态分布只能由前两个矩来表征，密度函数的表达式如下：</p>
+<blockquote><span>f(x) = \frac{1}{\sqrt{2\pi \sigma^2}}exp[-\frac{1}{2\sigma^2}(x-\mu)^2]</span> </blockquote>
+<p>其均值为 <span>E[X] = \mu</span> ，方差为 <span>V[X] = \sigma^2</span> 。正态分布可以表示为 <span>N(\mu, \sigma^2)</span>，因为函数可以由这两个参数完全指定，所以称为<b>参数函数</b>(parametric function)。使用<b>标准正态变量</b>(standard normal variable) <span>\epsilon</span> 通常更方便，其均值为 <span>E(\epsilon ) = 0</span> ，方差为 <span>V(\epsilon ) = \sigma(\epsilon ) = 1</span>                                                    。</p>
+<p>正态分布函数是围绕均值对称。正态分布的偏度为0，峰度是3。尾部较粗的分布具有较大的峰度系数。右尾概率对应的值可以表示为：</p>
+<blockquote><span>\int_{-\alpha}^{\infty} f(\epsilon)d \epsilon = c</span> </blockquote>
+<p>正态分布在金融中起着核心作用，它充分反映了许多金融变量的行为。例如，在Black-Scholes<span>期权定价</span>公式中，其中函数 <span>N(·)</span> 表示累积标准化正态分布函数。任何正态变量的分布都可以通过定义从标准正态变量的分布中重写：</p>
+<blockquote><span>X = \mu + \epsilon \sigma</span> </blockquote>
+<p>可以得到其均值为 <span>E[X] = \mu</span> ，方差为 <span>V[X] = \sigma^2</span> 。</p>
+<p>定义 <span>X</span> 在指定置信度 <span>c</span> 下的分位数为 <span>Q(X, c) = \mu - \alpha \sigma</span>                                                            ，可以计算VAR为：</p>
+<blockquote><span>VAR = E(X) − Q(X, c) =\mu - (\mu - \alpha \sigma) = \alpha \sigma</span> </blockquote>
+<p><u>对于正态分布，投资组合的VAR是由投资组合标准差与一个反映置信度水平的标准正态偏差因子的乘积得到的，例如在95%水平上的1.645</u>。</p>
+<p>正态分布的一个重要性质是，它是少数几个在加法条件下稳定的分布之一。一个共同正态分布的随机变量的线性组合具有正态分布。<u>联合正态变量的线性组合具有正态分布</u>。</p>
+<p>当有 <span>N</span> 个随机变量时，联合正态密度可以写成向量 <span>x</span> 、均值 <span>\mu</span> 和协方差矩阵 <span>\Sigma</span> 的函数：</p>
+<blockquote><span>f (x_1, . . . , x_N) = \frac{1}{(2\pi)^{N/2} |\Sigma|^{1/2}}exp[-\frac{1}{2}(x-\mu)'\Sigma^{-1}(x-\mu)]</span> </blockquote>
+<p>⭐ <b>例2.7  </b>Assume that a random variable follows a normal distribution with a mean of 80 and a standard deviation of 24. What percentage of this distribution is not between 32 and 116?</p>
+<ul>
+<li>a. 4.56%</li>
+<li>b. 8.96%</li>
+<li>c. 13.36%</li>
+<li>d. 18.15%</li>
+</ul>
+<p>解析：选 b 。首先将32和116的截断点标准<span>正态化</span>。z1 = (32 − 80)/24 = −48/24 = −2，z2 = (116 − 80)/24 = 36/24 = 1.5。查表可得 P(Z &gt; +1.5) = N(−1.5) = 0.0668 and P(Z &lt; −2.0) = N(−2.0)
+                                                                = 0.0228。0.0668 + 0.0228 = 8.96%。</p>
+<p>⭐ <b>例2.8  </b>Which of the following statements about the normal distribution is not accurate?</p>
+<ul>
+<li>a. Kurtosis equals 3.</li>
+<li>b. Skewness equals 1.</li>
+<li>c. The entire distribution can be characterized by two moments, mean and variance.</li>
+<li>d. The normal density function has the following expression: <span>f(x) = \frac{1}{\sqrt{2\pi \sigma^2}}exp[-\frac{1}{2\sigma^2}(x-\mu)^2]</span> </li>
+</ul>
+<p>解析：选 b 。正态分布的偏度是0。</p>
+<p>⭐ <b>例2.9  </b>Which type of distribution produces the lowest probability for a variable to exceed a specified extreme value that is greater than the mean, assuming the distributions all have
+                                                                the same mean and variance?</p>
+<ul>
+<li>a. A leptokurtic distribution with a kurtosis of 4</li>
+<li>b. A leptokurtic distribution with a kurtosis of 8</li>
+<li>c. A normal distribution</li>
+<li>d. A platykurtic distribution</li>
+</ul>
+<p>解析：选 d 。一个平峰型分布的峰度小于3，小于正态分布的峰度。其他选项都有更高的峰度，因此平峰产生了最低的极值。</p>
+<h3><b>3、<span>对数正态分布</span></b></h3>
+<p>如果随机变量 <span>X</span> 的对数 <span>Y = ln(X)</span> 是正态分布，则称其为<b>对数正态分布</b>(lognormal distribution)。这里定义
+                                                                <span>X = (P_1/P_0)</span> 。因为对数函数中的参数 <span>X</span> 必须是正的，所以价格 <span>P_1</span> 不可能低于零。对数正态密度函数有如下表达式：</p>
+<blockquote><span>f(x) = \frac{1}{x\sqrt{2\pi \sigma^2}}exp[-\frac{1}{2\sigma^2}(ln(x)-\mu)^2]</span>                                                                ， <span>x &gt; 0</span> </blockquote>
+<p>其均值为：</p>
+<blockquote><span>E[X] = exp [ \mu + \frac{\sigma^2}{2}]</span> </blockquote>
+<p>其方差为：</p>
+<blockquote><span>V[X] = exp[2\mu+ 2\sigma^2] − exp[2\mu+ \sigma^2]</span> </blockquote>
+<p>选取的参数与正态变量的参数相对应：</p>
+<blockquote><span>E[Y] = E[ln(X)] = \mu</span> ， <span>V[Y] = V[ln(X)] = \sigma^2</span> </blockquote>
+<p>反之，如果设 <span>E[X] = exp[r]</span> ，则相关正态变量的均值为 <span>E[Y] = E[ln(X)] = r − \sigma^2/2</span>                                                                。</p>
+<p>⭐ <b>例2.10  </b>Which of the following statements best characterizes the relationship between the normal and lognormal distributions?</p>
+<ul>
+<li>a. The lognormal distribution is the logarithm of the normal distribution.</li>
+<li>b. If the natural log of the random variable X is lognormally distributed, then X is normally distributed.</li>
+<li>c. If X is lognormally distributed, then the natural log of X is normally distributed.</li>
+<li>d. The two distributions have nothing to do with one another.</li>
+</ul>
+<p>解析：选 c 。如果X的对数Y = ln(X)是正态分布，则X是对数正态分布。不能简单理解为“对数正态分布是正态分布的对数”。</p>
+<p>⭐ <b>例2.11  </b>The skew of a lognormal distribution is always</p>
+<ul>
+<li>a. Positive</li>
+<li>b. Negative</li>
+<li>c. 0</li>
+<li>d. 3</li>
+</ul>
+<p>解析：选 a 。对数正态分布是右偏的。</p>
+<p>⭐ <b>例2.12  </b>Consider a stock with an initial price of $100. Its price one year from now is given by S = 100 × exp(r), where the rate of return r is normally distributed with a mean of 0.1
+                                                                and a standard deviation of 0.2. With 95% confidence, after rounding, S will be between</p>
+<ul>
+<li>a. $67.57 and $147.99</li>
+<li>b. $70.80 and $149.20</li>
+<li>c. $74.68 and $163.56</li>
+<li>d. $102.18 and $119.53</li>
+</ul>
+<p>解析：选 c 。对于双尾<span>置信区间</span>，取 α = 1.96，区间为 100 × exp(μ ± ασ)。以上限为例，100 × exp(0.1 + 1.96×0.2) = 163.56。</p>
+<p>⭐ <b>例2.13  </b>For a lognormal variable X, we know that ln(X) has a normal distribution with a mean of zero and a standard deviation of 0.5. What are the expected value and the variance of X?</p>
+<ul>
+<li>a. 1.025 and 0.187</li>
+<li>b. 1.126 and 0.217</li>
+<li>c. 1.133 and 0.365</li>
+<li>d. 1.203 and 0.399</li>
+</ul>
+<p>解析：选 c 。根据下面的式子，exp[μ + 0.5×σ^2] = exp[0+0.5 ∗ 0.5^2] = 1.1331</p>
+<blockquote><span>E[X] = exp [ \mu + \frac{\sigma^2}{2}]</span> </blockquote>
+<p><b>4、学生 t 分布</b></p>
+<p>学生 t 分布描述了估计系数与<span>标准误差</span>的比率的分布，其密度函数为：</p>
+<blockquote><span>f(x) = \frac{\Gamma[(k+1)/2]}{\Gamma(k/2)} \frac{1}{\sqrt{k\pi}}\frac{1}{(1 + x^2/k)^{(k+1)/2}}</span> </blockquote>
+<p>其中 <span>\Gamma</span> 函数定义为：</p>
+<blockquote><span>\Gamma(k) = \int_{0}^{\infty} x^{k-1} e^{-x} dx</span> </blockquote>
+<p>随着 <span>k</span> 增加，这个函数收敛于正态概率密度函数。学生 t 分布是对称的，均值为零，方差为：</p>
+<blockquote><span>V[X] = \frac{k}{k-2}</span> ， <span>k &gt;2</span> </blockquote>
+<p>其峰度为：</p>
+<blockquote><span>\delta = 3 +\frac{6}{k-4}</span> ， <span>k &gt;4</span></blockquote>
+<p>其尾部比正态分布更宽，这更好地代表典型的金融变量。对于股票收益来说， <span>k</span> 的典型估价值大约是4到6。也可以使用学生 t 来计算 VAR：</p>
+<blockquote><span>VAR = \alpha_k \sigma</span> </blockquote>
+<p>乘数现在取决于自由度 <span>k</span> 。</p>
+<p>另一种由正态分布导出的分布是<b>卡方分布</b>(chi-square distribution)，它可以看作是标准正态变量的独立平方之和：</p>
+<blockquote><span>x = \sum_{j=1}^{k}{z_j^2}</span> </blockquote>
+<p><span>k</span> 也称为自由度。其均值为 <span>E[X] = k</span> ，方差为 <span>V[X] = 2k</span> 。对于 <span>k</span> 足够大的值， <span>\chi^2(k)</span>                                                                        收敛于 <span>N(k, 2k)</span> 的正态分布。这个分布描述了<span>样本方差</span>。</p>
+<p>最后，另一个相关的分布是<b>F分布</b>，它可以看作是独立的卡方变量除以它们的自由度的比率：</p>
+<blockquote><span>F (a, b) = \frac{\chi^2(a) / a}{\chi^2(b) / b}</span> </blockquote>
+<p>这种分布出现在<span>回归系数</span>的联合检验中。</p>
+<p>⭐ <b>例2.14  </b>Which of the following statements is the most accurate about the relationship between a normal distribution and a Student's t distribution that have the same mean
+                                                                        and standard deviation?</p>
+<ul>
+<li>a. They have the same skewness and the same kurtosis.</li>
+<li>b. The Student's t distribution has larger skewness and larger kurtosis.</li>
+<li>c. The kurtosis of a Student's t distribution converges to that of the normal distribution as the number of degrees of freedom increases.</li>
+<li>d. The normal distribution is a good approximation for the Student's t distribution when the number of degrees of freedom is small.</li>
+</ul>
+<p>解析：选 c 。这两个分布具有相同的偏度为零，但学生 t 具有更高的峰度。随着自由度的增加，学生 t 分布收敛于正态分布。</p>
+<h3><b>5、<span>二项分布</span></b></h3>
+<p>考虑一个随机变量可以取0到 <span>n</span> 之间的离散值。例如，去年超过VAR的次数，也称为<b>异常</b>(exceptions)的数量。因此，二项分布对于VAR模型的回溯检验起着重要的作用。</p>
+<p>一个二项式变量可以被看作是 <span>n</span> 个独立的<b><span>伯努利试验</span></b>(Bernoulli trials)的结果，每个试验的结果是 <span>y = 0</span> 或 <span>y = 1</span> 。每个伯努利变量都有期望值 <span>E[Y] = p</span>                                                                        和方差 <span>V[Y] = p(1- p)</span> 。当离散密度函数为 <span>f</span> 时，定义随机变量为<b>二项分布</b>(binomial
+                                                                        distribution)：</p>
+<blockquote><span>f(x) =  \begin{pmatrix} n\\ x \end{pmatrix} p^x (1-p)^{n-x}</span> ，
+                                                                        <span>x = 0, 1, . . . , n</span>
+</blockquote>
+<p>其中，组合的表达式为：</p>
+<blockquote><span>\begin{pmatrix} n\\ x \end{pmatrix} = \frac{n!}{x!(n-x)!}</span> </blockquote>
+<p>参数 <span>p</span> 在0和1之间。这个分布也表示 <span>n</span> 次重复实验中成功的总数，每次成功的概率为 <span>p</span> 。二项式变量的均值和方差为：</p>
+<blockquote><span>E[X] = pn</span> ， <span>V[X] = p(1 − p)n</span> </blockquote>
+<p>一个相关的分布是<b><span>负二项分布</span></b>(negative binomial distribution)。这不是固定次数的试验，而是重复试验，直到出现固定次数的失败。其密度是：</p>
+<blockquote><span>f(x) =  \begin{pmatrix} x+r-1\\ r-1 \end{pmatrix} p^x (1-p)^{r}</span>                                                                                ， <span>x = 0, 1, . . . </span></blockquote>
+<p>这是<span>伯努利过程</span>第 <span>r</span> 次失败前成功次数的分布。其均值为：</p>
+<blockquote><span>E[X] = r \frac{p}{1-p}</span> </blockquote>
+<p>其中， <span>x</span> 没有上限，和二项密度中的变量不同。</p>
+<p>⭐ <b>例2.15  </b>On a multiple-choice exam with four choices for each of six questions, what is the probability that a student gets fewer than two questions correct simply by guessing?</p>
+<ul>
+<li>a. 0.46%</li>
+<li>b. 23.73%</li>
+<li>c. 35.60%</li>
+<li>d. 53.39%</li>
+</ul>
+<p>解析：选 d 。答对少于两个问题包括两种情况，计算如下：</p>
+<ul>
+<li>答对0题的概率 = 0.75^6 = 0.17798</li>
+<li>答对1题的概率 = 0.25×(0.75^5)×6 = 0.35596</li>
+<li>加起来得到 0.17798 + 0.35596 ≈ 0.5339</li>
+</ul>
+<h3><b>6、<span>泊松分布</span></b></h3>
+<p>泊松分布是一种离散分布，通常用于描述在固定时间内发生的事件的数量，假设事件彼此独立。它被定义为：</p>
+<blockquote><span>f(x) = \frac{e^{-\lambda} \lambda^x}{x!}</span> ，<span>x = 0, 1, . . . </span></blockquote>
+<p>其中，<span>\lambda</span> 表示该期间平均到达率为正的数量。这种分布被广泛用于表示一年中业务损失发生的频率或次数。泊松分布的均值和方差相同：</p>
+<blockquote><span>E[X] = V[X] =\lambda</span> </blockquote>
+<p>泊松分布是二项分布的极限情况，当 <span>n</span> 趋于无穷时， <span>p</span> 趋于0，但 <span>np = \lambda</span> 不变。当 <span>\lambda</span> 较大时，通过<span>中心极限定理</span>，泊松分布可以很好地用
+                                                                                <span>\lambda</span> 的均值和方差的正态分布来近似。如果到达的次数服从泊松分布，那么到达之间的时间周期服从以 <span>1/\lambda</span>                                                                                为均值的<span>指数分布</span>。后者的密度形式为 <span>f (x) = \lambda e^{-\lambda x}</span>                                                                                ， <span>x&gt; 0</span> 。例如，如果我们预计每年损失 <span>\lambda= 12</span>                                                                                ，则损失之间的平均时间间隔应该是一个月。</p>
+<p>⭐ <b>例2.16  </b>When can you use the normal distribution to approximate the Poisson distribution, assuming you have n independent trials, each with a probability of success of
+                                                                                p?</p>
+<ul>
+<li>a. When the mean of the Poisson distribution is very small</li>
+<li>b. When the variance of the Poisson distribution is very small</li>
+<li>c. When the number of observations is very large and the success rate is close to 1</li>
+<li>d. When the number of observations is very large and the success rate is close to 0 </li>
+</ul>
+<p>解析：选 c 。当成功率 <span>\lambda</span> 非常高时，<span>泊松方程</span>的正态逼近会得到改进。因为这也是均值和方差，因此排除a和b是。当 <span>np = \lambda</span> 较大时，二项式密度可以很好地近似于泊松密度。</p>
+<hr/>
+<h2>五、均值的分布</h2>
+<p><b>中心极限定理</b>(central limit theorem, CLT)指出，随着观察数 <span>n</span> 的增加， <span>n</span>                                                                                个<span>独立同分布</span>(i.i.d)变量的均值收敛到一个正态分布。例如，假设违约总是相互独立的，当贷款数量增加到一个很大的值时，总信贷损失的分布收敛于一个正态分布。</p>
+<p>定义 <span>\bar{X} = \frac{1}{n}\sum_{i=1}^{n}{X_i}</span> ，每个变量的均值为 <span>\mu</span> ，标准差为 <span>\sigma</span> ，可得：</p>
+<blockquote><span>\bar{X} \rightarrow N(\mu, \frac{\sigma^2}{n})</span> </blockquote>
+<p>标准化后可得：</p>
+<blockquote><span>\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \rightarrow N(0,1)</span> </blockquote>
+<p>正态分布是平均值的<span>极限分布</span>。考虑二项式变量，它是独立伯努利试验的和。当 <span>n</span> 很大时，可以使用CLT，用正态分布近似二项分布，可得：</p>
+<blockquote><span>z = \frac{x-pn}{\sqrt{p(1-p)n}} \rightarrow N(0,1)</span> </blockquote>
+<p>这比二项分布更容易计算。</p>
+<p>如果统计量落在95%的双尾置信区间之外，我们决定拒绝VAR正确的假设。对于标准化正态分布，这个区间是(−1.96，+1.96)。因此拒绝<span>零假设</span>，即观察到异常的真实概率仅为1%。换句话说，有太多的例外不能用坏运气来解释。VAR模型更有可能低估了风险。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

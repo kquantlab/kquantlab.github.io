@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C22 信用敞口 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C22 信用敞口">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C22 信用敞口</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>引言</h2>
+<p><span>信用风险敞口</span>是指在金融工具的生命周期内处于风险中的金额。在违约情况下，它被称为<b><span>违约敞口</span></b>(EAD, exposure at default)。当<span>银行业务</span>仅仅包括发放贷款时，风险敞口基本上是贷款的面值。在这种情况下，敞口量是名义上的，是固定的。自
+                                    <span>互换市场</span>发展以来，<span>信贷风险敞口</span>的衡量变得更加复杂。这是因为，与大多数衍生品一样，互换的前期价值远低于名义金额。实际上，互换的初始价值通常为零，这意味着一开始不存在信用风险，因为没有什么可损失的。然而，随着互换合约的到期，它可以变为正值或负值。破产处理的不对称是这样的，只有当工具具有正价值，或者是对违约交易对手的索赔时，信用损失才会发生。因此，信用风险敞口是资产的价值，如果它是正的，就像一个
+                                        <span>期权</span>。</p>
+<h2>一、不同工具的信用敞口</h2>
+<p>信用风险敞口是资产在其生命周期的不同时刻价值的正部分。<b>当前敞口</b>(current exposure)是资产在当前时间 <span>V_t</span> 的正价值：</p>
+<blockquote><span>CE_t = Max(V_t, 0)</span> </blockquote>
+<p><b>潜在敞口</b>(potential exposure)表示未来某个日期或一组日期的风险敞口，可以描述各种金融工具的风险敞口。对当前和潜在风险敞口的衡量，也促使监管部门对信贷风险收取资本金。</p>
+<h3>1、贷款或债券</h3>
+<p><b>贷款</b>(Loans)或<b>债券</b>(Bonds)是资产负债表上的资产，其当前和潜在的风险敞口基本上是名义上的，或贷款或投资的金额。更准确地说，这应该是给定当前利率的资产的<span>市场价值</span>，但是，正如我们将展示的，这与名义价值相差不远。对于<b><span>应收款</span></b>(receivables)和<b><span>贸易信贷</span></b>(trade
+                                    credits)，风险敞口也是名义上的，因为潜在损失是到期金额。</p>
+<h3>2、担保</h3>
+<p><b>担保</b>(Guarantees)是指银行承保或同意承担第三方债务的表外合同。风险敞口是名义上的，因为当违约发生时，它将被全部提取。从本质上讲，担保<b><span>不可撤销</span></b>(irrevocable)，无论发生什么情况都是无条件和有约束力的。例子：</p>
+<ul>
+<li>A银行只有在B银行担保的情况下才向客户C提供贷款的合同。如果C银行违约，B银行将获得全额贷款</li>
+<li><b><span>承兑汇票</span></b>(acceptance)，银行同意在到期时支付票据的面值</li>
+<li><b>备用便利</b>(standby facilities)，或<b>金融<span>信用证</span></b>(financial letters of credit)，在债务人违约时向第三方提供付款担保</li>
+</ul>
+<h3>3、<span>承诺</span></h3>
+<p><b>承诺</b>(Commitments)是资产负债表外的合同，银行对未来的交易作出承诺，这可能导致在未来某一天产生信用风险敞口。例如，银行可以提供<b>票据发行便利</b>(note issuance facility)，对借款人定期发行的票据承诺最低价格。如果票据不能在市场上以最低价格出售，银行承诺以固定价格购买票据。这类承诺的风险低于担保，因为它不确定银行是否必须提供后援。区分不可撤销承诺和可撤销承诺：</p>
+<ul>
+<li>不可撤销承诺：无条件的，对银行具有约束力</li>
+<li>可撤销承诺：如果交易对手的信用质量恶化，银行可以选择撤销合同。这一选择大大减少了信贷风险敞口</li>
+</ul>
+<h3>4、互换或远期</h3>
+<p><b>互换</b>或<b>远期</b>合约是资产负债表外的项目，可以被视为按照预先安排的条款购买或出售某些资产的不可撤销承诺。根据驱动风险因素的变化，当前和潜在的暴露量从零到很大。类似的安排还有出售后再回购协议(sale-repurchase agreements, repos)，即一家机构将一项资产出售给另一家机构，以换取日后回购的承诺。</p>
+<h3>5、<span>做多期权</span></h3>
+<p><b>期权</b>是可能产生信贷风险的表外项目。目前和潜在的暴露也取决于驱动风险因素的变动。这里不存在负值的可能性，因为选项总是有正值，或者最坏的情况是零值： <span>V_t ≥ 0</span> 。</p>
+<h3>6、<span>做空期权</span></h3>
+<p>与<span>多头期权</span>不同，<span>空头期权</span>的当前和潜在风险敞口为零，因为假设<span>期权溢价</span>已全部支付，开具期权的银行只会招致<span>负现金流</span>。敞口也取决于<span>嵌入式期权</span>的特性。以
+                                    <span>美式期权</span>为例，如果交易对手的<span>信用评级</span>开始恶化，货币互换的持有者可能希望尽早行使期权。这减少了相对于同等<span>欧式期权</span>的风险敞口。</p>
+<p>⭐ <b>例22.1</b> A credit loss on market-driven instruments such as swaps and forwards arises if</p>
+<ul>
+<li>a. Market rates move in your favor.</li>
+<li>b. Market rates move against you.</li>
+<li>c. Market rates move against you and the counterparty defaults.</li>
+<li>d. Market rates move in your favor and the counterparty defaults.</li>
+</ul>
+<p>解析：选 d 。要发生亏损，风险敞口必须是正的，这意味着利率向对你有利的方向移动，交易对手必须违约。</p>
+<p>⭐ <b>例22.2</b> Capital Bank is concerned about its counterparty credit exposure to City Bank. Which of the following trades by Capital Bank would increase its credit exposure to City Bank?</p>
+<ol>
+<li>I. Buying a put option from City Bank</li>
+<li>II. Selling a call option to City Bank</li>
+<li>III. Selling a forward contract to City Bank</li>
+<li>IV. Buying a secondary loan granted to Sunny Inc. from City Bank</li>
+</ol>
+<ul>
+<li>a. I and II only</li>
+<li>b. I and III only</li>
+<li>c. II and III only</li>
+<li>d. I, III, and IV only</li>
+</ul>
+<p>解析：选 b 。购买期权或签订<span>远期合约</span>都会产生信用风险，因为这两种合约都可能出现现价波动。相反，卖出期权不会产生风险敞口。购买贷款会增加对Capital Bank的敞口，而不是City Bank。</p>
+<p>⭐ <b>例22.3</b> Which of the following will have the greatest potential credit exposure?</p>
+<ul>
+<li>a. Long 3,000 ounces of gold for delivery in one year</li>
+<li>b. Long 3,000 ounces of gold for delivery in two years</li>
+<li>c. Short 3,000 ounces of gold for delivery in two years</li>
+<li>d. Selling an at-the-money call option on 10,000 ounces of gold for delivery in two years</li>
+</ul>
+<p>解析：选 b 。卖出期权不会产生风险敞口，因此答案d是错误的。较长的<span>投资周期</span>可能导致更大的价格波动，因此答案a是错误的。做多的潜在收益大于做空。对于多头头寸，价格可以从初始价格上涨几倍。对于空头头寸，最大的收益是在价格跌至零的时候。</p>
+<p>⭐ <b>例22.4</b> Your company has reached its credit limit to Ford but Ford is insisting that your firm provide some increased protection in the event a major project Ford is undertaking results in some unforeseen liability.
+                                    Ignoring settlement risk and assuming option premiums are paid immediately at the time of the transaction, which of these strategies will not give rise to increased credit exposure to Ford?</p>
+<ul>
+<li>a. Selling a costless collar to Ford</li>
+<li>b. Buying an option from Ford</li>
+<li>c. Selling an option to Ford</li>
+<li>d. None of the above</li>
+</ul>
+<p>解析：选 c 。这是唯一涉及真正出售期权的答案，而期权没有信贷风险敞口。collar涉及期权的买卖。</p>
+<p>⭐ <b>例22.5</b> If a counterparty defaults before maturity, which of the following situations will cause a credit loss?</p>
+<ul>
+<li>a. You are short euros in a one-year euro/USD forward foreign exchange (FX) contract, and the euro has appreciated.</li>
+<li>b. You are short euros in a one-year euro/USD forward FX contract, and the euro has depreciated.</li>
+<li>c. You sold a one-year OTC euro call option, and the euro has appreciated.</li>
+<li>d. You sold a one-year OTC euro call option, and the euro has depreciated.</li>
+</ul>
+<p>解析：选 b 。做空期权不会产生信用风险，因此答案c和d是错误的。在短期远期合约中，如果欧元贬值，将实现收益。</p>
+<p><br/></p>
+<hr/>
+<h2>二、信用敞口的分布</h2>
+<p>信用敞口包括<b>当前敞口</b>，这是很容易观察到的，以及<b>潜在敞口</b>，或未来风险，这是随机的。定义 <span>x</span> 为资产在目标日期的<span>潜在价值</span>。用它的<span>概率密度函数</span>
+<span>f (x)</span> 来描述这个变量。这是<span>市场风险</span>与信用风险掺杂的地方。</p>
+<h3>1、预期和最坏敞口</h3>
+<p><b>预期信用敞口</b>(ECE, expected credit exposure)是资产重置价值 <span>x</span> (如果为正)在目标日期的期望值：</p>
+<blockquote><span>\displaystyle ECE = \int_{−∞}^{+∞} Max(x, 0) f (x)dx</span> </blockquote>
+<p><b>最坏信用敞口</b>(WCE, worst credit exposure)是在某种信心水平上最大(最坏)的信贷敞口，被隐式地定义为在给定的<span>置信水平</span> <span>p</span> 上不超过的值：</p>
+<blockquote><span>\displaystyle1 − p = \int_{WCE}^{∞} f (x)dx</span> </blockquote>
+<p>为了对潜在的信用风险进行建模，需要对风险因素的分布进行建模，并根据这些风险因素对工具进行评估。这个过程与市场风险价值(VAR)计算相同，不同之处在于，如果合约可以净赚，则聚合发生在交易对手层面。假设支付 <span>x</span> ，或对特定交易对手的净索赔(net claim)，是均值为零，波动率为 <span>\sigma</span> 的正态分布：</p>
+<blockquote><span>\displaystyle ECE = \frac{1}{2} E(x | x &gt; 0) = \frac{1}{2}  \sigma \sqrt{\frac{2}{\pi}} = \frac{\sigma}{2\pi}</span> </blockquote>
+<p>注意，除以2是因为值为正的概率是50%。在95%的水平上，最坏为 <span>WCE = 1.645\sigma</span> 。下图显示了正态分布下ECE和WCE的测量结果。注意，不考虑x的负值。</p>
+<figure><img src="https://pic2.zhimg.com/v2-1144b0e7c291aa75a720229fc6527541_1440w.jpg" width="1842"/>
+<figcaption>正态分布下的预期信用敞口和最坏信用敞口</figcaption>
+</figure>
+<h3>2、时间</h3>
+<p>该分布可以由每个时间点的预期信贷风险和最差信贷风险来总结。可以通过在工具的生命周期内取一个简单的算术平均值来表示平均信用风险。<b>平均预期信用敞口</b>(AECE, average expected credit exposure)是从现在到到期日 <span>T</span> 的一段时间内预期信用风险敞口的平均值：</p>
+<blockquote><span>\displaystyle AECE = (1/T)\int_{t=0}^{T} ECE_t dt</span> </blockquote>
+<p><b>平均最差信用敞口</b>(AWCE, average worst credit exposure)的定义与此类似：</p>
+<blockquote><span>\displaystyle AWCE = (1/T)\int_{t=0}^{T} WCE_t dt</span> </blockquote>
+<h3>3、利率互换的风险敞口</h3>
+<p>现在考虑计算利率互换的风险敞口。一般来说，需要定义市场风险因素、联合<span>随机过程</span>的函数和参数和互换的定价模型。从利率的单因素随机过程开始，定义 <span>t</span> 时刻利率 <span>r_t</span>                                        的运动为：</p>
+<blockquote><span>dr_t = \kappa(\theta − r_t)dt + \sigma r_t^\gamma dz_t</span> </blockquote>
+<ul>
+<li>第一项是<b><span>均值回归</span></b>(mean reversion)。当 <span>r_t</span> 的当前值高于长期值时，括号内的项为负，这产生了下降趋势。更一般地说，平均期限可以反映远期利率隐含的路径。</li>
+<li>第二项是<b>创新</b>(innovation)，可以给出正态分布。一个重要的问题是，创新的波动性应该是恒定的，还是与利率 <span>r_t</span> 当前值的某个幂 <span>\gamma</span> 成正比。如果区间很短，这个问题就不那么重要了，因为当前的利率将接近初始利率。</li>
+</ul>
+<p>当 <span>\gamma = 0</span> 时，收益率的变化服从正态分布，即Vasicek模型。收益率绝对变化的典型波动率为每年1%。这样做的一个潜在问题是，无论收益率从20%还是1%开始，波动性都是一样的。因此，收益率可能转为负值，这取决于初始起点和均值回归的强度。</p>
+<p>另一类模型是对数正态模型，它取 <span>\gamma  = 1</span> 。然后可以用 <span>dr_t/r_t = d\ln(r_t)</span> 的形式重写模型。该规范确保波动性在
+                                        <span>r</span> 接近于零时减小，从而避免负值。收益率相对变化的典型波动率为每年15%，这也是利率水平变化的1%除以初始利率6.7%的值。</p>
+<p>设正态过程 <span>\gamma   = 0</span> ，平均回归 <span>\kappa = 0.02</span> ，每月波动率 <span>\sigma =0.25\%</span> ，这是基于最近美国数据的现实参数。 <span>r</span> 的初始值和长期值都是6%。典型模拟值如下图。利率偏离其初始值，但被拉回6%的长期值。</p>
+<figure><img src="https://pic1.zhimg.com/v2-cc301070dfd1f454c6f81c5175374592_1440w.jpg" width="1716"/>
+<figcaption>利率的模拟路径</figcaption>
+</figure>
+<p>这个模型可以得到封闭解。 <span>r</span> 未来值的分布由其均值和双尾90%<span>置信带</span>（称为最大值和最小值）总结于下图。图表显示平均值为6%，这也是长期值。置信带最初由于地平线的增大而变宽，然后由于均值回归效应而收敛到一个固定值。</p>
+<figure><img src="https://pic2.zhimg.com/v2-092e0474a36c213a44755a33c9cad85d_1440w.jpg" width="1732"/>
+<figcaption>利率的分布</figcaption>
+</figure>
+<p>下一步是评估互换价值。在每个时间点，固定收益互换的当前市场价值是固定息票债券和浮动利率票据的价值之差：</p>
+<blockquote><span>V_t = B(F, t, T, c, r_t) − B(F, FRN)</span> </blockquote>
+<ul>
+<li><span>F</span> 是名义金额或面值</li>
+<li><span>c</span> 是年化固定票面利率</li>
+<li><span>T</span> 是到期日</li>
+</ul>
+<p>互换的风险来自于，固定分支的票面利率 <span>c</span> 可能与现行<span>市场利率</span>不同。不交换主体。</p>
+<p>下图显示了五年后利率从6%降至4%可能引起的现金流变化。假设互换的名义金额为N = $100 million，每半年支付一次。每六个月，固定收益方将获得$100 × (6 − 4)% × 0.5 = $1 million，直至互换到期。由于还剩下10笔付款，这笔款项加起来大约有$10 million的正面信贷风险。更准确地说，在剩余付款的整个期限内贴现后，截至<span>估值日</span>的价值为$8.1
+                                            million。</p>
+<figure><img src="https://pic3.zhimg.com/v2-3151a38921387d232504964b05dcbd98_1440w.jpg" width="1778"/>
+<figcaption>五年后利率降至4%时的净现金流量</figcaption>
+</figure>
+<p>下文假设互换获得固定的支付，并以连续的利率支付，而不是每半年支付一次，这简化了示例。否则，现金流模式将出现不连续，也将不得不考虑浮动分支的风险。使用连续复利。定义N为剩余年数，息票债券价值为：</p>
+<blockquote><span>B($100, N, c, r ) = $100 (c / r) [1 − e^{−rN}] + $100e^{−rN}</span> </blockquote>
+<ul>
+<li>第一项是按当前利率r折现的固定息票现金流的现值</li>
+<li>第二项是偿还本金</li>
+</ul>
+<p>对于票面利率等于当前市场利率(c = r)的特殊情况，该票面债券的市场价值确实是100美元。浮动利率票据可以用同样的方式定价，但票面利率总是等于当前利率。因此，它的价值总是相等的。为了理解息票债券的风险敞口情况，需要考虑随着时间推移的两种相反的影响：</p>
+<ol>
+<li><b>扩散效应</b>(diffusion effect)：增加了利率的不确定性</li>
+<li><b>摊销效应</b>(amortization effect)：使债券的久期趋近于零。见下图。这解释了为什么无论当前利率发生什么变化，债券的市场价值都会在到期时收敛于面值。</li>
+</ol>
+<figure><img src="https://pic4.zhimg.com/v2-1e76453978e2293a561f19e1564b719b_1440w.jpg" width="1756"/>
+<figcaption>摊销效应：10年期债券的期限</figcaption>
+</figure>
+<p>由于债券是当前收益率的<span>严格单调函数</span>，我们可以通过使用每个时间点的极端利率范围对债券进行估值来计算90%的<span>置信区间</span>。在利率的分布图中的每个时间点使用息票债券价值公式，此敞口如下所示：</p>
+<figure><img src="https://picx.zhimg.com/v2-717b4a160bbe4c63088f4ed1bb37cfd9_1440w.jpg" width="1766"/></figure>
+<p>最初，债券的市场价值是100美元。两三年后，价值范围最大，从87美元到115美元不等。此后，范围收敛到面值100美元。但总体而言，波动占面值的比例相对较小。考虑到信用风险测量中的其他<span>近似值</span>，例如<span>违约概率</span>和回收率的不精确性，假设债券的恒定敞口并不是一个糟糕的近似值。</p>
+<p>然而，对于利率互换而言，情况并非如此。它的价值可以通过从息票债券的价值中减去100美元(浮动利率票据的价值)得到。最初，它的值为零。此后，它可以取正值或负值。信贷敞口仅为正值。下图显示了预期暴露和单侧95%水平下最大(最坏)敞口。数字是按100美元的名义比例计算的。图表还显示了互换整个生命周期的平均最大风险敞口。</p>
+<figure><img src="https://pic1.zhimg.com/v2-12f3eddb994f678f0a1b74ff3575841c_1440w.jpg" width="1746"/>
+<figcaption>10年期利率互换的风险敞口概况</figcaption>
+</figure>
+<p>直观地说，互换的价值来源于固定现金流和浮动现金流之间的差额。考虑一个有两个剩余付款和名义金额为100美元的互换。它的值是：</p>
+<blockquote><span>\displaystyle V_t = $100 \left[ \frac{c}{1+r}+\frac{c}{(1+r)^2}+ \frac{1}{(1+r)^2} \right] - $100 \left[ \frac{r}{1+r}+\frac{r}{(1+r)^2}+ \frac{1}{(1+r)^2} \right] =$100 \left[ \frac{c-r}{1+r}+\frac{c-r}{(1+r)^2} \right]</span> </blockquote>
+<p>本金支付相互抵消，剩下的是固定息票和现行利率(c - r)之间的贴现净差。</p>
+<p>这些信息可用于评估目标日期的预期暴露和最坏暴露。风险敞口的峰值出现在互换的第二年左右，也就是互换周期的四分之一左右。届时，预期敞口约为名义敞口的3%至4%，远低于债券敞口。最严重的风险敞口峰值约为名义敞口的10%至15%。实际上，这些值取决于所使用的特定随机过程，但敞口剖面在质量上是相似的。</p>
+<p>为了评估互换价值的潜在变化，可以根据久期做一些近似。首先考虑非常短期的风险敞口，对其而言，均值回归和久期的变化并不重要。因此，<span>利率变化</span>的波动性只是随着时间的<span>平方根</span>而增加。假设每月波动率为0.25%，初始久期为7.5年，可以将下一年互换价值的波动率近似为：</p>
+<ul>
+<li>σ(V) = $100 × 7.5 × 0.25% (12)^0.5 = $6.5 million</li>
+</ul>
+<p>乘以1.645，得到$10.7 million，这接近于一年中95%最坏风险的实际$9.4 million。</p>
+<p>久期减少和风险增加之间的权衡可以用一个简单的例子来形式化。假设债券的修正久期与任意日期T的剩余期限成正比， <span>D= k(T - t)</span> 。从0到 <span>T</span> 时刻的波动率可以写成
+                                                <span>\sigma(r_t-r_0) = \sigma \sqrt t</span> 。因此，互换波动率为</p>
+<blockquote><span>\sigma (V) = [k(T − t)] × \sigma \sqrt t</span> </blockquote>
+<p>为了看它在哪里达到最大值，对t求导：</p>
+<blockquote><span>\displaystyle \frac{d\sigma(V)}{dt} = [k(−1)]\sigma \sqrt t + [k(T − t)] \sigma \frac{1}{2\sqrt t}</span> </blockquote>
+<p>令为0，有</p>
+<blockquote><span>\displaystyle  \sqrt t  = (T − t) \frac{1}{2\sqrt t}</span> </blockquote>
+<p>解得 <span>t_{MAX} = (1/3)T</span> 。最大敞口发生在交换寿命的三分之一。这发生在之前报告的四分之一点之后，因为假设没有均值回归。此外，可以检查它是如何随着合同的到期而发展的。到那时，最坏信用敞口为：</p>
+<blockquote><span>\displaystyle   1.645 \sigma (V_{MAX}) = 1.645 [k(2/3) T\sigma \sqrt{T/3}]=[1.645k(2/3)\sigma \sqrt{1/3} ] T^{3/2}</span> </blockquote>
+<p>WCE随T^(3/2)的增加而增加，其增长速度快于成熟度。下图显示了五年期互换的敞口。同样，敞口的峰值出现在互换周期的三分之一。正如预期的那样，规模(magnitude)较低，预期的峰值敞口仅为名义敞口的1%左右。</p>
+<figure><img src="https://pic1.zhimg.com/v2-1eb3e2684364c36a75fe335d364ad16c_1440w.jpg" width="1730"/>
+<figcaption>五年期利率互换的敞口</figcaption>
+</figure>
+<p>下图显示了初始利率为5%，票面利率为6%时的敞口概况。<span>互换交易</span>从现金开始，当前价值为790万美元。<span>长期利率</span>为6%时，总敞口曲线从一个正值开始，大约两年后达到最大值，然后收敛为零。</p>
+<figure><img src="https://pic2.zhimg.com/v2-634b50a6604fe2800924ab51d65ef4df_1440w.jpg" width="1752"/>
+<figcaption>10年期价内互换的敞口</figcaption>
+</figure>
+<p>⭐ <b>例22.6</b> In determining the amount of credit risk in a derivatives transaction, which of the following factors are used?</p>
+<ol>
+<li>I. Notional principal amount of the underlying transaction</li>
+<li>II. Current exposure</li>
+<li>III. Potential exposure</li>
+<li>IV. Peak exposure—the replacement cost in a worst-case scenario</li>
+</ol>
+<ul>
+<li>a. I and II</li>
+<li>b. I, III, and IV</li>
+<li>c. III and IV</li>
+<li>d. II, III, and IV</li>
+</ul>
+<p>解析：选 d 。所有的敞口测量都很重要：current, potential, peak。然而，名义金额没有风险，因为它包含在敞口中。</p>
+<p>⭐ <b>例22.7</b> Assume that a bank enters into a USD 100 million, four-year annual-pay interest rate swap, where the bank receives 6% fixed against 12-month LIBOR. Which of the following numbers best approximates
+                                                the current exposure at the end of year 1 if the swap rate declines 125 basis points over the year?</p>
+<ul>
+<li>a. USD 3,420,069</li>
+<li>b. USD 4,458,300</li>
+<li>c. USD 3,341,265</li>
+<li>d. USD 4,331,382</li>
+</ul>
+<p>解析：选 a 。<span>固定利率债券</span>的价值为6/(1 + 4.75%)^1 + 6/(1 + 4.75%)^2 + 106/(1 + 4.75%)^3 = 103.420。减去100美元的浮动腿，风险敞口为$3.4 million。更直观地说，息票差的总和是3倍(6% - 4.75%)$100 = $1.25，不折现约为$3.75 million。</p>
+<p>⭐ <b>例22.8</b> Assume that the DV01 of an interest rate swap is proportional to its time to maturity (which at the initiation is equal to T). Assume that interest rate curve moves are parallel, stochastic with
+                                                constant volatility, normally distributed,and independent. At what time will the maximum potential exposure be reached?</p>
+<ul>
+<li>a. T/4</li>
+<li>b. T/3</li>
+<li>c. T/2</li>
+<li>d. 3T/4</li>
+</ul>
+<p>解析：选 b 。可以根据上文的推导得到。</p>
+<p>⭐ <b>例22.9</b> Assume that you have entered into a fixed-for-floating interest rate swap that starts today and ends in six years. Assume that the duration of your position is proportional to the time to
+                                                    maturity. Also assume that all changes in the yield curve are parallel shifts, and that the volatility of interest rates is proportional to the square root of time. When would the maximum potential exposure
+                                                    be reached?</p>
+<ul>
+<li>a. In two months</li>
+<li>b. In two years</li>
+<li>c. In six years</li>
+<li>d. In four years and five months</li>
+</ul>
+<p>解析：选 b 。敞口是久期的函数，随着时间的推移而减少，<span>利率波动</span>率随着时间的平方根而增加。定义T为原始期限，k为常数。得到σ(Vt) = k(T - t)(t)^0.5。对t求导得到t = (T /3)处的最大值。得到t =(6/3) = 2年。</p>
+<h3>4、货币互换的风险敞口</h3>
+<p>其他互换的敞口<span>配置文件</span>有很大不同。例如，考虑一项货币互换，其中名义金额为100 million兑50 million，初始汇率为S($/GBP) = 2。接受外币的货币互换的市场价值为：</p>
+<blockquote><span>V_t = S_t($/GBP)B^∗(GBP50, t, T, c^∗, r^∗) − B($100, t, T, c, r )</span> </blockquote>
+<p>按照惯例，星号表示外币值。总的来说，这种互换既面临国内利率风险，也面临国外利率风险。当只剩下两个息票时，互换的价值为：</p>
+<blockquote><span>\displaystyle V_t = S \times 50 \left[ \frac{c^*}{1+r^*}+\frac{c^*}{(1+r^*)^2}+ \frac{1}{(1+r^*)^2} \right] -100 \left[ \frac{c}{1+r}+\frac{c}{(1+r)^2}+ \frac{1}{(1+r)^2} \right] </span> </blockquote>
+<p>注意，本金不相互取消，不像利率互换。相反，它们在到期时以不同的货币支付，这是信贷风险敞口的一个主要来源。</p>
+<p>接下来，为了简单起见，假设不存在利率风险，或者互换的价值主要由货币风险决定。进一步假设两种货币的息票是相同的，否则就会出现不对称的支付积累。如前所述，必须为即期汇率选择一个随机过程。假设这是一个对数正态过程，方差恒定，没有趋势：</p>
+<blockquote><span>dS_t =\sigma S_t dz_t</span> </blockquote>
+<p>我们选择每年σ = 12%，这是现实的，正如在市场风险因素一章中看到的那样。这个过程确保了速率永远不会变为负值。下图展示了10年期货币互换的风险敞口概况。这里没有摊销效应，敞口随时间不断增加。敞口的峰值出现在交换的生命周期结束时。届时，预期敞口约为名义敞口的10%，远高于利率互换。最糟糕的敞口相对较高，约占名义敞口的45%。尽管这些值取决于所使用的特定随机过程和参数，但这个例子表明，货币互换的信用风险远远大于利率互换，即使期限相同。</p>
+<figure><img src="https://pic4.zhimg.com/v2-4a98723edcd0a30947ddae64d67a0b8d_1440w.jpg" width="1714"/>
+<figcaption>10年期货币互换的敞口</figcaption>
+</figure>
+<h3>5、不同息票的敞口</h3>
+<p>目前已经假设了一个平坦的期限结构和不同货币的等额息票支付，这为多头和空头的风险敞口创造了一个对称的情况。在现实中，这些条件将不成立，敞口模式将是不对称的。</p>
+<p>例如，考虑利率互换。如果期限结构向上倾斜，票面利率大于浮动利率c r，在这种情况下，获得固定利率的一方的净支付最初为正。两期掉期的价值可以通过预测远期利率的浮动支付来分析</p>
+<blockquote><span>\displaystyle V_t = \frac{c - s_1}{1+s_1} + \frac{c - f_{12}}{(1+s_2)^2} </span> </blockquote>
+<p>其中 <span>s_1</span> 和 <span>s_2</span> 是一年期和两年期的即期利率， <span>f_{12}</span>                                                            是one- to two-year的远期利率。</p>
+<p>例如，考虑一个$100 million的利率互换，还有两笔剩余的付款。s1 = 5%，s2 = 6.03%。因此，使用(1+s2)^2 = (1+s1)(1+ f12)，得到f12 = 7.07%。券息收益率c = 6%使得互换的初始值为零。下表显示了第一次付款的现值(对固定接收方)是正的，等于0.9524。第二次支付必须是负的，并且等于-0.9524。这两种支付恰好相互抵消，因为互换的价值为零。</p>
+<div>
+<pre><code>Time     Expected Spot    Expected Payment       Discounted
+1        5%               6.00 - 5.00 = +1.00    +0.9524
+2        7.07%            6.00 - 7.07 = -1.07    -0.9524
+Total                                             0.0000</code></pre>
+</div>
+<p>然而，这种付款方式对固定付款人造成了更多的信用风险，因为它涉及到第一个期间的付款被第二个期间的收据抵消。如果交易对手在第一次付款后不久违约，即使利率没有变化，也可能出现信用损失。</p>
+<p>注意，<b>在向上倾斜的期限结构下，浮动利率的接受方（固定利率的支付方）比交易对手有更大的信用风险敞口</b>。</p>
+<p>当两种票面利率不同时，货币掉期也会出现类似的问题。低名义利率意味着较高的远期汇率。收到低息货币付款的一方在以后的本金交换期间预计会收到更多的付款。如果交易对手违约，即使利率没有变化，也可能出现信贷损失。</p>
+<p>注意，<b>低息货币的接受者比交易对手有更大的信用风险敞口</b>。</p>
+<p>⭐ <b>例22.10</b> Which one of the following deals would have the greatest credit exposure for a $1,000,000 deal size (assume the counterparty in each deal is an AAA-rated bank and has no settlement risk)?</p>
+<ul>
+<li>a. Pay fixed in an Australian dollar (AUD) interest rate swap for one year.</li>
+<li>b. Sell USD against AUD in a one-year forward foreign exchange contract.</li>
+<li>c. Sell a one-year AUD cap.</li>
+<li>d. Purchase a one-year certificate of deposit (CD).</li>
+</ul>
+<p>解析：选 d 。CD的整个概念都处于风险之中。否则，接下来最大的风险敞口是远期货币合约和利率掉期。如果溢价已被收取，空头帽头寸就没有风险敞口。请注意，这个问题消除了远期合约的<span>结算风险</span>。</p>
+<p>⭐ <b>例22.11</b> Which of the following 10-year swaps has the highest potential credit exposure?</p>
+<ul>
+<li>a. A cross-currency swap after two years</li>
+<li>b. A cross-currency swap after nine years</li>
+<li>c. An interest rate swap after two years</li>
+<li>d. An interest rate swap after nine years</li>
+</ul>
+<p>解析：选 a 。这个问题问的是他们一生中各种互换交易的潜在风险。利率互换的敞口通常低于货币互换，因为本金没有市场风险。剩余期限较长的货币互换风险敞口更大。10年期货币互换就是这样，两年之后还有8年到期。</p>
+<p>⭐ <b>例22.12</b> BNP Paribas has just entered into a plain-vanilla interest-rate swap as a pay-fixed counterparty. Credit Agricole is the receive-fixed counterparty in the same swap. The forward spot curve is upward-sloping. If
+                            LIBOR starts trending down and the forward spot curve flattens, the credit risk from the swap will:</p>
+<ul>
+<li>a. Increase only for BNP Paribas</li>
+<li>b. Increase only for Credit Agricole</li>
+<li>c. Decrease for both BNP Paribas and Credit Agricole</li>
+<li>d. Increase for both BNP Paribas and Credit Agricole</li>
+</ul>
+<p>解析：选 b 。在向上倾斜的期限结构下，固定付款人有更大的信用敞口。它最初收到的少，但后来收到的多。这种回款增加了信贷风险。相反，如果远期曲线变平，固定支付方(即<span>法国巴黎银行</span>)的信贷敞口就会减少。<span>法国农业信贷银行</span>必须加大信贷敞口。或者，如果伦敦银行间拆放款利率下降，法国巴黎银行将不得不支付更多，而其交易对手将面临更大的信贷风险。</p>
+<hr/>
+<h2>三、敞口调整</h2>
+<p>为了继续减少信贷风险敞口，行业已经开发了许多方法来限制风险敞口。</p>
+<h3>1、盯市</h3>
+<p>减少信贷敞口的最终形式是<b>盯市</b>(MTM)（<span>按市值计价</span>）。盯市包括定期(如每日)结算合同价值的变动。对于场外交易(OTC)合约，交易双方可以同意更长的期限(例如，每月或每季度)。如果交易双方的<span>交易方式</span>是对称的，就称为<b>双向盯市</b>(two-way marking to market)。否则，如果一方只结算损失，则称为<b>单向盯市</b>(one-way
+                            marking to market)。</p>
+<p>长期以来，有组织的交易所一直使用盯市制来应对信用风险。原因在于，各种各样的投资者都可以进入交易所，包括散户投机者，他们比其他人更有可能违约。相比之下，在场外交易市场，机构之间的互动通常是一种持续的关系。正如一位<span>观察家</span>所说，期货市场的设计允许陌生人之间进行交易，而其他市场只允许朋友之间进行交易。</p>
+<p>随着每日盯市，目前的风险敞口减少到零。不过，由于合约价值可能在下一次结算前发生变化，因此仍存在潜在风险。潜在的风险来自：(1)盯市期间之间的时间间隔、(2)交易对手违约时清算合同所需的时间。</p>
+<p>在零售客户的情况下，<span>经纪人</span>通常可以在一天内相当快地平仓。然而，当头寸非常大时，就像与<span>长期资本管理公司</span>(LTCM)打交道的经纪人一样，清算期可能会更长。事实上，长期资本管理公司在1998年接受救助的动机是，如果经纪商试图在同一时间清算与长期资本管理公司签订的合同，可能会对<span>金融市场</span>造成破坏。</p>
+<p>然而，盯市会带来其他类型的风险：</p>
+<ol>
+<li><b>操作风险</b>，这是由于需要跟踪合同价值和每天付款或收款</li>
+<li><b>流动性风险</b>，因为机构现在需要保留足够的现金来吸收合同价值的变化</li>
+</ol>
+<h3>2、保证金</h3>
+<p>潜在的风险敞口由保证金要求涵盖。<b>保证金</b>(Margins)是指为了开仓而必须垫付的现金或证券。这些基金的目的是为潜在的风险提供缓冲。例如，交易所要求客户在建立新头寸时提交<b>初始保证金</b>(initial margin)。这笔保证金用作履约保证金，以抵消客户违约可能造成的未来损失。然后，合同的收益和损失被加到<b>权益账户</b>(equity account)的保证金中。每当这个权益账户的价值低于设定为<b><span>维持保证金</span></b>(maintenance
+                                margin)的阈值时，就必须提供新的资金。</p>
+<p>保证金是根据价格波动和头寸类型(投机或对冲)设定的。波动性更大的合约的利润率会增加。对冲者的保证金通常较低，因为<span>期货头寸</span>的损失可以被现货头寸的收益抵消，假设没有基差风险。一些交易所将保证金设定在覆盖每日最糟糕价格变化的第99个<span>百分位数</span>的水平，这是一种用于信用风险的每日VAR系统。</p>
+<h3>3、<span>抵押物</span></h3>
+<p>场外交易市场可能允许以证券代替现金作为<b>抵押品</b>(collateral)。这种抵押品可以防止当前和潜在的风险。通常情况下，抵押品的金额将超过所欠资金的数额，即所谓的<b><span>估值折扣</span></b>(haircut)。抵押品通常在国际掉期和衍生品协会(ISDA)的<b>信用支持附件</b>(CSA, credit support annex)中管理。</p>
+<p>估值折扣反映了违约风险和市场风险。安全的交易对手通常会有较低的估值折扣。然而，这也取决于资产的下行风险。例如，现金的估值折扣可以为零，这意味着对当前风险敞口有充分的保护。政府债券的短期、中期和长期期限分别需要减记1%、3%和8%。由于价格波动更大，如果交易对手违约，抵押品贬值，损失的可能性就会增加，这就是估值折扣增加的原因。</p>
+<p>例如，假设<span>对冲基金</span>A与银行B进行<span>掉期交易</span>。为了降低A的信用风险，双方签订了一份抵押品协议，其中规定了B要求抵押品的条件。现在，假设B的合同发生了变动，B要求A提供100万美元的抵押品，这些资金在法律上仍然是A的财产，但在B的管理之下。如果A违约，B有权出售抵押品并终止合同。任何正的超额价值都将返还给A。相反，如果抵押品不充分，B将对A提出索赔。</p>
+<h3>4、敞口限制</h3>
+<p>信用敞口也可以通过对交易对手的敞口设置<span>头寸限制</span>来管理。理想情况下，这些应该在投资组合环境中进行评估，考虑到机构和交易对手之间的所有合同。</p>
+<p>为了加强限制，有关事务的信息必须集中在中台系统中。这将为每个交易方生成一个公开配置文件，该配置文件可用于管理多个期限桶的信用额度使用情况。然后，应检查与同一对手方拟议的新交易是否会产生增量效应。</p>
+<p>这些限制也可以在工具级别设置。例如，在互换交易中，<b>敞口上限</b>(exposure cap)要求在合约价值超过一定金额时进行支付。下图显示了500万美元上限对10年期互换的影响。如果两年后，合约突然变为1100万美元的正值，交易对手将需要支付600万美元，以使互换的未偿价值回到500万美元。这将最坏的风险敞口限制在500万美元，同时也降低了平均敞口。</p>
+<figure><img src="https://pica.zhimg.com/v2-f6beff99070bd549954a9b0b240fc50e_1440w.jpg" width="1712"/>
+<figcaption>敞口上限的效应</figcaption>
+</figure>
+<p><br/></p>
+<h3>5、重息票</h3>
+<p>在工具水平上控制敞口的另一种方法是<b>重息票</b>(Recouponing)。重息票是指合同中的一项条款，要求合同在某一固定日期按市价计价。这包括(1)交换现金使盯市值为零、(2)将息票或汇率重置为现行市场价值。以10年期互换债券为例，5年后敞口将降至零。此后，敞口是剩余5年期的互换。</p>
+<h3>6、净额协议</h3>
+<p>控制风险敞口的最有力机制或许是<b>净额协议</b>(Netting Arrangements)（轧差安排）。现在，这些都是标准化互换总协议的常见特征，比如1992年由国际互换和衍生品协会(ISDA)制定的协议。这些协定的目的是规定在一系列合同中付款的<b>净额</b>(netting)。在违约的情况下，交易对手不能停止对负价值合同的支付，而要求对正价值合同的支付。因此，该系统减少了对净额协议所涵盖的所有合同的净额的敞口。这就防止了违约交易对手的管理员进行挑选(cherry-picking)。</p>
+<p>净额可分为三种类型：</p>
+<ol>
+<li><b>付款净额</b>(Payment netting)：每天用同一种货币抵销几项索赔。一个例子是利率互换，其中只交换净支付，浮动对固定。</li>
+<li><b>更替净额</b>(Novation netting)：涉及取消双方之间的若干合同，从而产生一个新的、净额支付的替代合同。举个例子，考虑一项远期交易，A必须支付1000万欧元以换取从B那里得到1500万美元。在另一项交易中，A必须从B那里得到500万欧元并支付700万美元作为交换。根据改革，这两份合同减少为A支付500万欧元，以换取B收到800万美元。</li>
+<li><b>结清净额</b>(Close-out netting)：在破产或任何其他指定违约事件发生时取消主协议项下的所有交易。然后这些交易按市场价值净赚。在发生违约事件时<b>终止</b>(terminate)金融合同的能力对于有效管理<span>金融风险</span>至关重要。如果没有关闭或终止条款，交易对手将无助地看着他们的合同在破产过程中价值波动，这可能需要数年时间。</li>
+</ol>
+<p>下表给出了一个包含四个契约的例子。</p>
+<figure><img src="https://pic3.zhimg.com/v2-4fe52adcacb0fe879bb0f52bff317012_1440w.jpg" width="1370"/>
+<figcaption>有无净额协议的比较</figcaption>
+</figure>
+<p>如果没有净额协议，前两份合同的风险敞口是每份合同正面部分的总和，即1亿美元。相比之下，如果前两者属于净额协议，它们的价值将相互抵消，导致净风险敞口为$100 − $60 = $40 million。如果合同3和合同4不属于净额协议，则风险敞口将增加到$40 + $25 = $65 million。</p>
+<p>综上所述，净额的净敞口是：</p>
+<blockquote><span>\displaystyle Max(V, 0) = Max (\sum_{i=1}^{N}{V_i},0)</span> </blockquote>
+<p>如果没有净值协议，总风险敞口就是所有正值合同的总和：</p>
+<blockquote><span>\displaystyle \sum_{i=1}^{N}{Max(V_i},0)</span> </blockquote>
+<p>这总是大于等于净值协议下的风险敞口。<span>净额结算</span>的收益取决于合约的数量N和合约价值协变的程度。N值越大，相关性越低，净额收益越大。如果所有合约同时变为正值，或者具有高相关性，则不会从净额计算中获益。</p>
+<p>下图说明了净额结算对同一交易对手的两个互换交易组合的影响。在每种情况下，利率都可能以相同的概率上升或下降。</p>
+<figure><img src="https://pic2.zhimg.com/v2-649bf7116d308fb9897b662ffdd70bdf_1440w.jpg" width="2052"/></figure>
+<p>左边两幅图中，银行同时做多固定收益的10年期互换和固定收益的5年期互换，左上图描述了利率下降时最坏敞口。在这种情况下，两个合约都有正的敞口，将其相加以获得总投资组合风险敞口。是否有净值并不重要，因为两个头寸同时是正的。左下图描述了利率上升时最糟糕的风险敞口。这两个头寸以及投资组合的风险敞口均为零。</p>
+<p>右边两幅图中，银行做多10年期互换，做空5年期互换。当利率下降时，第一次掉期为正值，第二次为负值。有了网，最差的曝光情况就会减少。相比之下，没有净敞口的是10年期互换。相反，当利率上升时，互换值在第一种情况下为负，在第二种情况下为正。如果有净额抵扣，风险敞口为零，而如果没有净额抵扣，风险敞口与五年期掉期相同。这表明，多元化头寸的净额结算更有效。</p>
+<p>银行在其年度报告中提供了一些信息，说明对当前风险敞口进行净额处理的好处。在没有净额协议或抵押品的情况下，<b>总重置价值</b>(GRV, gross replacement value)被报告为所有交易对手K同时违约的最坏情况敞口的总和：</p>
+<blockquote><span>\displaystyle GRV = \sum_{k=1}^{K} (Gross \ exposure)_k =   \sum_{k=1}^{K}  \left[  \sum_{k=1}^{N_k} Max(V_i,0)  \right]</span> </blockquote>
+<p>对于净额协议和抵押品，由此产生的风险敞口被定义为<b>净重置价值</b>(NRV, net replacement value)。这是所有交易对手的净正敞口之和：</p>
+<blockquote><span>\displaystyle NRV = \sum_{k=1}^{K} (Net \ exposure)_k =   \sum_{k=1}^{K}  \left[  Max  \left(\sum_{k=1}^{N_k} V_i,0 \right)  \right]</span> </blockquote>
+<p>如果持有抵押品，则应从净敞口中扣除。净额结算的有效性可以从国际清算银行(BIS)对<span>场外衍生品</span>市场的统计数据中进行评估。</p>
+<p>⭐ <b>例22.13</b> If we assume that the value at risk (VAR) for the portfolio of trades with a given counterparty can be viewed as a measure of potential credit exposure,which of the following could not be used to decrease
+                                        this credit exposure?</p>
+<ul>
+<li>a. A netting agreement</li>
+<li>b. Collateral</li>
+<li>c. A credit derivative that pays out if the counterparty defaults</li>
+<li>d. An offsetting trade with a different counterparty</li>
+</ul>
+<p>解析：选 d 。与另一方进行抵消性交易将无法提供信用保护。如果第一方在合同生效期间违约，就会造成信用损失。</p>
+<p>⭐ <b>例22.14</b> Which of the following statements correctly describes the impact of signing a netting agreement with a counterparty?</p>
+<ul>
+<li>a. It will increase or have no effect on the total credit exposure.</li>
+<li>b. It will decrease or have no effect on the total credit exposure.</li>
+<li>c. It will increase exposure if exposure is net long and decrease exposure if it is net short.</li>
+<li>d. Its impact is impossible to determine based on the available information.</li>
+</ul>
+<p>解析：选 b 。如果与同一交易对手签订的合同具有正负价值，则净额应减少信用风险敞口。在最坏的情况下，即一个正价值的合同，没有效果。</p>
+<p>⭐ <b>例22.15</b> What are the benefits of novation?</p>
+<ul>
+<li>a. Both parties are allowed to walk away from the contract in the event of default.</li>
+<li>b. In a bilateral contract, it is specified that on default, the nondefaulting party nets gains and losses with the defaulting counterparty to a single payment for all covered transactions.</li>
+<li>c. Financial market contracts can be terminated upon an event of default prior to the bankruptcy process.</li>
+<li>d. Obligations are amalgamated with others.</li>
+</ul>
+<p>解析：选 d 。答案a是不正确的，因为这是一个免责条款。答案b是不正确的，因为这是关闭净额。答案c是不正确的，因为这是一个终止条款。</p>
+<p>⭐ <b>例22.16</b> Bank A, which is AAA rated, trades a 10-year interest rate swap (semiannual payments) with Bank B, rated A−. Because of Bank B’s poor credit rating, Bank A is concerned about its 10-year exposure. Which
+                                        of the following measures would help mitigate Bank A’s credit exposure to Bank B?</p>
+<ol>
+<li>I. Negotiate a CSA with Bank B and efficiently manage the collateral management system.</li>
+<li>II. Execute the swap deal as a reset swap wherein the swap will be marked to market every six months.</li>
+<li>III. Execute the swap deal with a break clause in the fifth year.</li>
+<li>IV. Decrease the frequency of coupon payments from semiannual to annual.</li>
+</ol>
+<ul>
+<li>a. I only</li>
+<li>b. IV only</li>
+<li>c. I, II, III, and IV</li>
+<li>d. I, II, and III</li>
+</ul>
+<p>解析：选 d 。抵押品管理将降低信用风险，因此答案i是正确的。重置或补偿掉期也会降低风险。五年后的中断条款将允许按市值计价，这也降低了风险敞口。相反，减少息票发行频率不会对曝光率造成太大影响。事实上，延长期限将增加风险敞口，因为等待下一笔付款的时间更长，从而增加了市场向有利于交易对手一方的方向发展的可能性。</p>
+<p>⭐ <b>例22.17</b> Consider the following information. You have purchased 10,000 barrels of oil for delivery in one year at a price of $25/barrel. The rate of change of the price of oil is assumed to be normally distributed
+                                        with zero mean and annual volatility of 30%. Margin is to be paid within two days if the credit exposure becomes greater than $50,000. There are 252 business days in the year.Assuming enforceability of the margin
+                                        agreement, which of the following is the closest number to the 95% one-year credit risk of this deal governed under the margining agreement?</p>
+<ul>
+<li>a. $50,000</li>
+<li>b. $58,000</li>
+<li>c. $61,000</li>
+<li>d. $123,000</li>
+</ul>
+<p>解析：选 c 。最坏信贷敞口是5万美元加上两天内95%水平的最糟糕变动，即ασ(T)^0.5 = 1.645 × 30% × (2/252)^0.5 = 4.40%。适用于价值25万美元的头寸，这给出了10,991美元的最差变动。加上5万美元，总共是60,991美元。</p>
+<p>⭐ <b>例22.18</b> Suppose BSM, a large derivative market maker, has six contracts with a counterparty, all transacted in New York (i.e., the same legal jurisdiction).The current market values (PV) for these contracts
+                                        are: 125, 75, 25, −10,−65, and −140. Suppose BSM does not currently have a legally enforceable netting agreement with the counterparty. By how much would BSM’s current credit exposure to this counterparty improve
+                                        if it did have a legally enforceable netting agreement with the counterparty?</p>
+<ul>
+<li>a. 0</li>
+<li>b. 10</li>
+<li>c. 215</li>
+<li>d. 225</li>
+</ul>
+<p>解析：选 c 。正面敞口的总和是225。这是不计净额的信贷敞口。负敞口的总和是215。有了净值，风险敞口就变成了10，或者下降了215。</p>
+<hr/>
+<h2>四、信用风险调整</h2>
+<h3>1、信用触发机制</h3>
+<p><b>信用触发机制</b>(Credit triggers)规定，如果任何一方的信用评级低于指定水平，另一方有权结算掉期现金。这并不是敞口调整，而是试图降低该合约违约的可能性。例如，如果所有未偿掉期都可以在交易对手评级低于A时终止，那么违约的概率就会降低到交易对手评级为A或更高时违约的概率。</p>
+<p>当一家公司的信用评级缓慢恶化时，这些触发因素是有用的，因为很少有公司直接从投资级跳到破产。增加的保护可以通过分析<span>转移概率</span>来估计。例如，假设与AA级借款人的交易在10年内违约的累积概率为0.81%。如果在评级降至BB或以下时可以终止合同，则该概率降至0.23%。</p>
+<h3>2、时间看跌期权</h3>
+<p><b>时间看跌期权</b>(Time puts)，或<b>相互终止期权</b>(mutual termination options)，允许交易对手中的任何一方在合同中的一个或多个日期无条件终止交易。此功能降低了默认风险和暴露。如果风险敞口很大，而另一方的评级开始下滑，它允许交易对手一方终止合约。</p>
+<p>然而，触发和放权是<b>或然要求</b>(contingent requirements)的类型，可能会导致严重的麻烦。它们恰恰在公司经营状况不佳的国家发出了对流动性的要求，给公司的流动性带来了额外的压力。事实上，安然的一些证券的触发因素迫使该公司支付大笔现金，并将其推向破产。这些条款不会提供保护，反而会引发破产，对所有<span>债权人</span>产生不利影响。</p>
+<p>⭐ <b>例22.19</b> Which of the following statements about counterparty exposure is correct?</p>
+<ul>
+<li>a. Potential future exposure is the minimum amount of exposure expected to occur on a future date with a high degree of statistical confidence.</li>
+<li>b. Netting rights, collateral agreements, and early settlement provisions are all examples of credit risk mitigants.</li>
+<li>c. Current exposure refers to the current value of the exposure to a subsidiary. </li>
+<li>d. Wrong-way exposures are exposures that are positively correlated with the credit quality of the counterparty.</li>
+</ul>
+<p>解析：选 b 。表述a是不正确的，因为敞口量是最大值，而不是最小值，最小值是零。表述c不正确，因为风险敞口发生在交易对手方，而不是子公司。表述d是不正确的，因为错误的风险敞口与信贷质量负相关。问题是当风险敞口高企而信贷质量下降时。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

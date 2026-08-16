@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C16 多变量模型 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C16 多变量模型">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C16 多变量模型</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>风险映射</span></h2>
+<h3>1、风险简化</h3>
+<p>现代风险度量方法背后的基本思想是在最高水平上聚合投资组合风险。在实践中，对每个位置单独建模往往太复杂。相反，需要一些简化。这就是<b>风险映射</b>(risk mapping)的作用，它用对主要风险因素的总体风险来取代对单个头寸的<span>风险敞口</span>。</p>
+<p>这个想法并不新鲜。例如，考虑一个有许多股票头寸的投资组合。<span>威廉·夏普</span>(William Sharpe)设计了一种方法来简化这些投资组合的风险度量。他的<b><span>对角线模型</span></b>(diagonal model)将单个股票的回报运动分解为一个普通的指数成分和一个特殊成分。在规模较大、分散性良好的投资组合中，特殊成分被淘汰，而普通成分成为风险的主要驱动因素。这证明了将个股与同一指数的仓位进行映射是合理的。</p>
+<figure><img src="https://pic2.zhimg.com/v2-7d21dfc426eb7453ea1dd17af3040cc3_1440w.jpg" width="1824"/>
+<figcaption>映射方法</figcaption>
+</figure>
+<p>更普遍地说，这种方法可以用于任何市场。上图（映射方法）说明了在有六种工具的情况下的映射过程，例如同一种货币的不同远期合约，但期限不同。风险经理判断，这些头寸只能被三个风险因素的风险敞口所取代。</p>
+<p>映射过程有三个步骤：</p>
+<ol>
+<li>用风险因素的 <span>K = 3</span> 敞口替换 <span>N = 6</span> 的每个头寸。定义 <span>x_{i,k}</span>                                            为工具 <span>i</span> 对风险因子 <span>k</span> 的敞口</li>
+<li>将<span>投资组合</span>中的 <span>K</span> 个头寸的风险敞口相加， <span>x_k = \sum^N_{ i=1} x_{i,k}</span>                                            。这就产生了美元风险敞口的 <span>K = 3</span> 值</li>
+<li>利用三种<span>VAR方法</span>中的一种，从风险因素 <span>Δf</span> 的敞口和变化中推导出投资组合收益 <span>R_{p,t+1}</span>                                            的分布</li>
+</ol>
+<h3>2、使用因子模型进行映射</h3>
+<p>对角线模型是一个因子模型的简化形式，只有一个因子，被选为被动市场指数。这个模型首先将股票 <span>i</span> 的收益统计分解为整个市场的收益和一个残差项（特殊项、特定项），将股票 <span>i</span> 的回报率
+                                        <span>R_i</span> 分解为一个常数、一个市场分量和一个<span>残差项</span>：</p>
+<blockquote><span>R_i = \alpha_i + \beta_i × R_M + \epsilon_i</span> </blockquote>
+<p><span>\beta_i </span> 被称为股票 <span>i</span> 的系统风险。假设残差与 <span>R_M</span>                                        不相关。对角线模型加入了所有特定风险都不相关的假设。因此，两只股票之间的任何相关性都必须来自市场的共同效应。</p>
+<p>夏普的贡献在于表明，资本市场的均衡对 <span>\alpha_i </span> 施加了限制。然而，对于风险管理人员来说，拦截不是主要的焦点，在接下来的工作中被忽略了。相反，这个模型简化了风险度量过程。</p>
+<p>考虑一个由各种资产的简单的线性头寸 <span>w_i</span> 组成的投资组合。有</p>
+<blockquote><span>R_p = \sum_{i=1}^N w_i R_i</span> </blockquote>
+<p>投资组合收益可以表示为：</p>
+<blockquote><span>R_p = \sum_{i=1}^N (w_i \beta_iR_M + w_i \epsilon_i) = \beta_p + R_M + \sum_{i=1}^N (w_i\epsilon_i)</span> </blockquote>
+<p>加权平均beta为：</p>
+<blockquote><span>\beta_p = \sum_{i=1}^N w_i \beta_i</span> </blockquote>
+<p><span>组合方差</span>为：</p>
+<blockquote><span>V[R_p] = \beta_p^2 V[R_M] + \sum_{i=1}^N (w_i^2 V[\epsilon_i])</span> </blockquote>
+<p>因为所有的残差项都不相关。为简单起见，假设投资组合是等权的， <span>w_i = w = 1/N</span> ，残差项方差均相同， <span>V[\epsilon_i]= V</span>                                        。随着资产数量的增加，第二项趋于：</p>
+<blockquote><span>\sum_{i=1}^N (w_i^2 V[\epsilon_i]) \rightarrow N \times \frac{V}{N^2} =  \frac{V}{N}</span> </blockquote>
+<p>随着N的增加逐渐消失。在这种情况下，唯一剩下的风险是市场风险，其构成为：</p>
+<blockquote><span>V[R_p] \rightarrow \beta_p^2 V[R_M] </span> </blockquote>
+<p>因此，这为忽视大型、分散性良好的投资组合中的特定风险提供了理由。映射方法用指数中的 <span>x_i \beta_i</span> 替换股票 <span>i</span> 中的 <span>x_i</span> 的美元值：</p>
+<blockquote>股票 <span>i</span> 的 <span>x_i</span> → 指数的 <span>x_i \beta_i</span> </blockquote>
+<p>更一般地，这种方法可以扩展到多个因素。本章末尾的附录展示了如何使用这种方法从一般市场因素建立协方差矩阵。每个证券首先映射到所选的风险因素。然后将整个投资组合的风险敞口相加，将风险集中在顶层。</p>
+<p>当某些头寸没有历史回报时，这种映射方法特别有用。相反，这些位置可以根据选定的风险因素进行映射。例如，考虑一只刚刚通过<b><span>首次公开发行</span></b>(IPO)的股票。IPO股票没有历史，这类股票的风险可能相当大。一个实际的解决方案是将这个位置映射到具有类似特征的股票指数上，例如小盘股、高科技股的指数。</p>
+<h3>3、映射固定收益投资组合</h3>
+<p>作为投资组合简化的另一个重要例子，我们转向无风险债券投资组合的分析。这个投资组合将在不同的时间点有不同的到期付款，从第二天到30年后。将所有这些期限单独建模是不切实际的。相反，我们对无风险期限结构进行了简化。</p>
+<ul>
+<li><b>期限映射</b>(maturity mapping)，简化方法，它将每只债券的当前价值替换为具有相同期限的风险因素的头寸。然而，这忽略了中间的现金流。</li>
+<li><b><span>久期映射</span></b>(duration mapping)，更好的方法，它将债券的零息风险因子与到期期限相等的债券进行映射。</li>
+<li><b><span>现金流映射</span></b>(cash flow (CF) mapping)，更精确，但也更复杂，它在零息风险因子下映射每笔债券支付的当前价值，到期时间等于每笔现金流的等待时间。</li>
+</ul>
+<p>再举一个例子，公司债券投资组合。这增加了风险因素的维度，包括无风险期限结构因素和信贷因素。同样，试图对所有证券单独建模是不切实际的。每只债券可能没有足够的价格历史记录。此外，如果历史记录没有考虑到违约的可能性，那么它可能是不相关的。更一般地说，历史记录可能不代表当前的信用评级或该债券的期限。</p>
+<p>接下来，假设风险管理人员使用久期映射，并将收益率曲线的移动而不是价格作为风险因素。风险经理判断，风险因素可以被限制在一组 <span>J</span> 个国债零息利率 <span>z_j</span> 和 <span>K</span> 个信用利差 <span>s_k</span> ，按信用评级排序。理想情况下，这些应该足以提供投资组合风险的良好近似。</p>
+<p>然后用最接近期限的国债收益率 <span>z_j</span> 和它所属的信用评级 <span>s_k</span> 级别的收益率变化来模拟每个公司<span>债券收益率</span> <span>y_i</span> 的变化。或者可以插值。剩下的分量是 <span>\epsilon_i</span> ，假设它在 <span>i</span>                                        上是独立的。可得 <span>y_i = z_j + s_k + \epsilon_i </span> 。下图对20年期BBB级公司债券进行了分解。</p>
+<figure><img src="https://picx.zhimg.com/v2-6f6478780ae907d53b7978e2dee978a7_1440w.jpg" width="1898"/>
+<figcaption>收益率分解</figcaption>
+</figure>
+<p>债券价格 <span>i</span> 的变化为：</p>
+<blockquote><span>P =\sum_{i=1}^N n_i P_i</span> </blockquote>
+<p>价格变化为：</p>
+<blockquote><span>\Delta  P = \sum_{i=1}^N n_i \Delta  P_i = - \sum_{i=1}^N n_i DVBP_i\Delta y_i</span> </blockquote>
+<p>利用<span>风险因子</span>分解，组合价格运动为：</p>
+<blockquote><span>\Delta  P = - \sum_{i=1}^J DVBP_j^z \Delta z_j -\sum_{i=1}^K DVBP_k^s \Delta s_k - \sum_{i=1}^N DVBP_i \Delta \epsilon_i  </span> </blockquote>
+<p>其中 <span>DVBP_j^z</span> 来自于第 <span>j</span> 个到期的所有债券的 <span>n_iDVBP_i</span>                                        的总和， <span>DVBP^s_k</span> 也是如此。对股票投资组合，总方差可分解为：</p>
+<blockquote><span>V[\Delta P] </span> = 一般风险 + <span> \sum_{i=1}^N n_i^2DVBP_i^2  V[ \Delta \epsilon_i]</span> </blockquote>
+<p>如果投资组合很分散，一般风险项应该占主导地位。我们可以直接忽略第二项。忽略特定的风险，一个由数千种证券组成的投资组合的特点是，它只暴露于少数政府到期期限和<span>信贷利差</span>。这是相当大的简化。</p>
+<p>映射方法将债券 <span>i</span> 中 <span>x_i</span> 的美元金额替换为两个风险因素的美元敞口：</p>
+<blockquote>债券 <span>i</span> 中 <span>x_i</span> → 收益率 <span>j</span> 的 <span>n_iDVBP_i</span> + 利差 <span>k</span> 的 <span>n_iDVBP_i</span> </blockquote>
+<h3>4、风险因素的选择</h3>
+<p>风险因素的选择应由投资组合的性质决定。对角线风险模型可能足够用于股票投资组合，其中有许多小头寸分散在各个行业。然而，对于集中在一个板块的少量股票的投资组合，这种方法将低估风险。类似地，一个股票市场中性的投资组合，由贝塔系数基本为零的多空股票头寸组成，看起来将没有风险，但事实并非如此。</p>
+<p>对一个利率风险因素的简单映射方法可能完全适用于只做多的投资组合。基本上，所有风险敞口都被概括为一个数字，即<span>美元久期</span>。</p>
+<p>接下来考虑一个交易投资组合，其中投资组合经理既做多又做空各种债券，其净持续时间为零。在这种情况下，持续时间模型给出的总风险为零，这具有误导性。还需要更多的因素。另一个例子是一个投资组合，在执行价格和到期日之间对各种期权有多空头寸。在这种情况下，仅仅考虑潜在风险因素的线性甚至二次敞口可能是不够的。风险经理应该在隐含波动率中加入波动。随着市场向更复杂的金融产品发展，风险经理必须确保风险模型不会落后和错过主要风险。</p>
+<p><b>风险因素的数量和风险模型的复杂性取决于交易策略的深度。复杂的投资组合需要更复杂的风险模型。</b></p>
+<p>⭐ <b>例16.1</b> Which of these statements regarding risk factor mapping approaches is/are correct?</p>
+<ol>
+<li>I. Under the cash flow (CF) mapping approach, only the risk associated with the average maturity of a fixed-income portfolio is mapped.</li>
+<li>II. Cash flow mapping is the least precise method of risk mapping for a fixed-income portfolio.</li>
+<li>III. Under the duration mapping approach, the risk of a bond is mapped to a zero-coupon bond of the same duration.</li>
+<li>IV. Using more risk factors generally leads to better risk measurement but also requires more time to be devoted to the modeling process and risk computation.</li>
+</ol>
+<ul>
+<li>a. I and II</li>
+<li>b. I, III, and IV</li>
+<li>c. III and IV</li>
+<li>d. IV only</li>
+</ul>
+<p>解析：选 c 。在现金流映射方法下，每次支付(不仅仅是最后一次)都与不同的风险因素相关，因此I是不正确的。II是不正确的，因为现金流映射方法最精确。</p>
+<p>⭐ <b>例16.2</b> The historical simulation (HS) approach is based on the empirical distributions and a large number of risk factors. The RiskMetrics approach assumes normal distributions and uses mapping on equity
+                                                indices. The HS approach is more likely to provide an accurate estimate of VAR than the RiskMetrics approach for a portfolio that consists of</p>
+<ul>
+<li>a. A small number of emerging market securities</li>
+<li>b. A small number of broad market indices</li>
+<li>c. A large number of emerging market securities</li>
+<li>d. A large number of broad market indices</li>
+</ul>
+<p>解析：选 a 。这个问题涉及资产的分配和多样化的影响。与大盘指数相比，新兴市场证券的波动性更大，正态分布的可能性更小。此外，一个小的投资组合不太可能用映射方法很好地表示，也不太可能是正常的。RiskMetrics方法假设条件分布是正态的，并通过映射简化了风险。对于分布接近正态分布的大量证券，这是可以接受的，即答案d。答案a描述了多样化程度最低的投资组合，对于这种情况，历史模拟法是最好的。</p>
+<p>⭐ <b>例16.3</b> A hedge fund manager has to choose a risk model for a large equity marketneutral portfolio, which has zero beta. Many of the stocks held are recent IPOs. Among the following alternatives, the
+                                                best is</p>
+<ul>
+<li>a. A single index model with no specific risk, estimated over the last year</li>
+<li>b. A diagonal index model with idiosyncratic risk, estimated over the last year</li>
+<li>c. A model that maps positions on industry and style factors</li>
+<li>d. A full covariance matrix model using a very short window</li>
+</ul>
+<p>解析：选 c 。a是不正确的，因为它只考虑投资组合贝塔，它的构造是零。因此，它会错误地得出没有风险的结论。b更好，但会错过IPO头寸的风险，因为它们没有历史。d会产生不可靠的数字，因为窗口很短。最好的解决方案是用行业和风格因素来取代IPO头寸。</p>
+<hr/>
+<h2>二、风险因素的<span>联合分布</span></h2>
+<p>风险系统的第二个组成部分是建立风险因素的联合分配。一种方法是非参数的，由最近的观察结果组成。另一种方法是参数化的，需要指定关节分布的<span>解析函数</span>及其参数。本节介绍<span>Copula</span>的概念，这是风险因素联合分布的核心。</p>
+<p>Copula被广泛用于建模金融工具，如<b><span>债务抵押债券</span></b>(CDO, collateralized debt obligations)。CDO是N种债务凭证的集合，每一种债务凭证的价值取决于借款人的信誉。每次获得一项信贷的风险可以用边际分布来描述。然而，最终重要的是损失在整个投资组合中的分配。因此，CDO的金融工程需要对单个信贷的联合运动进行建模。对于交易资产组合，可以从历史数据评估联合分布。然而，信贷组合没有这种奢侈，因为投资组合中的当前信贷没有违约的历史。因此，构建CDO的损失分布必须依赖于一种参数方法，这需要一个关联函数的规范。Copula还用于企业范围的风险度量，以聚合市场风险、信用风险和操作风险。</p>
+<h3>1、边际密度及分布</h3>
+<p>边际分布单独考虑了每个风险因素。这种降维使得对风险因素建模更容易。相比之下，联合分布要复杂得多，因为它的维数更高，需要估计更多的参数。这造成了严重的困难。</p>
+<p>在<b><a href="https://zhuanlan.zhihu.com/p/412880647">C02 概率基础</a></b>中，<span>概率密度函数</span> <span>f (u)</span>                                                    描述了在 <span>u</span> 附近观察到某个值的概率。例如，正态密度具有钟形曲线。相反，<b>分布函数</b>是累积密度 <span>F (x) = \int_{- \infty}^x f (u)du</span>                                                    ，这个函数的值总是在0到1之间。</p>
+<p>现在考虑一个有两个风险因素的简单案例。问题是如何将这些风险因素的边际密度或分布联系起来。</p>
+<h3>2、Copula函数</h3>
+<p>当这两个变量独立时，关节密度只是边际密度的乘积。然而，财务变量很少是独立的。相关性可以通过一个称为<b>Copula</b>的函数来建模，它将<span>边缘分布</span>连接到一个联合分布中。</p>
+<p>形式上，Copula是一个函数的值的边际分布 <span>F (x)</span> 加上一些参数 <span>\theta</span> ，这是特定于这个函数(而不是边际的)。在二元情况下，它有两个参数：</p>
+<blockquote><span>c_{12}[F_1(x_1), F_2(x_2); \theta]</span> </blockquote>
+<figure><img src="https://pic3.zhimg.com/v2-f2266d79fb1bb9047292975544c2cac2_1440w.jpg" width="1434"/>
+<figcaption>Sklar定理的图象表达</figcaption>
+</figure>
+<p>Copula和边际分布之间的联系由<b>Sklar定理</b>明确表示。该定理指出，对于任何联合密度，都存在连接边际密度的Copula为：</p>
+<blockquote><span>f_{12}(x_1, x_2) = f_1(x_1) × f_2(x_2) × c_{12}[F_1(x_1), F_2(x_2); \theta]</span> </blockquote>
+<p>在独立情况下，Copula函数是常数，总是等于1。</p>
+<p>因此，Copula包含了所有关于随机变量之间依赖性质的信息，但没有给出关于边际分布的信息。例如，考虑一个具有 <span>N</span> 个随机变量的正态多元密度。联合正态密度可以写成向量 <span>x</span>                                                        ，均值 <span>\mu</span> 和协方差矩阵 <span>\Sigma</span> 的函数</p>
+<blockquote><span>f ^N(x_1,...,x_N) = \frac{1}{(2\pi)^{N/2} | \Sigma |^{1/2}} \exp [-\frac{1}{2}(x-\mu)'\Sigma(x-\mu)]</span> </blockquote>
+<p>利用Copula的概念，可以将其分为 <span>N</span> 个不同的边际正态密度和一个联合正态Copula。两个变量的情况为：</p>
+<blockquote><span>f^N _{12}(x_1, x_2) = f^N _1 (x_1) × f^N _2 (x_2) × c^N _{12}[F_1(x_1), F_2(x_2); \rho]</span> </blockquote>
+<p>其中， <span>f^N_1</span> 和 <span>f^N_2</span> 都是正态边际。它们有参数 <span>\mu_1</span> 和 <span>\sigma_1</span> 以及 <span>\mu_2</span> 和 <span>\sigma_2</span> 。此外， <span>c^N_{12}</span> 是正态Copula。注意，它的唯一参数是<span>相关系数</span>
+<span>\rho_{12}</span> 。</p>
+<p>对于标准正态变量， <span>\mu_i=0</span> ， <span> \sigma_i=1</span> ，二元正态密度化简为：</p>
+<blockquote><span>f^N _{12}(x_1, x_2) = \frac{1}{2\pi \sqrt{1-\rho^2}} \exp \{- \frac{x_1^2+2\rho x_1x_2 + x_2^2}{2(1-\rho^2)} \}</span> </blockquote>
+<p>当相关性为零时，得到：</p>
+<blockquote><span>f^N _{12}(x_1, x_2) = \frac{1}{2\pi } \exp \{ - \frac{x_1^2+x_2^2}{2}\} = \frac{1}{\sqrt{2\pi}}\exp \{ - \frac{x_1^2}{2}\} \times \frac{1}{\sqrt{2\pi}}\exp \{ - \frac{x_2^2}{2}\}</span> </blockquote>
+<p>实际上是 <span>x_1</span> 和 <span>x_2</span> 的边际正态密度的乘积，以及Copula函数的乘积，这等于1，因为变量是独立的。</p>
+<p>这样就可以从边际分离出Copula。在联合正态分布的情况下，边际和Copula都是正态分布。然而，事实并非如此。可以将一个族的边际与另一个族的Copula混合。</p>
+<p>正态Copula假设风险因素之间为线性关系，这是由常用的<span>皮尔逊</span>相关系数来衡量的。然而，一般来说，这种关系不需要是线性的，它可以由其他类型的Copula来容纳。</p>
+<p>风险管理人员应该选择与数据最吻合的Copula。这需要首先选择一个分析函数，其次选择使用<span>最大似然估计</span>等标准统计工具的最佳参数。</p>
+<p>Copula的一个重要特征是它们的<b><span>尾部相关</span></b>(tail dependence)。这是由一个变量的极端移动给出另一个变量的极端移动的<span>条件概率</span>得出的。形式上，对于给定的<span>置信水平</span> <span>c</span> ，上条件概率和下条件概率分别为，</p>
+<blockquote><span>P_U(c) = P[X_2 &gt; F ^{−1} _{X_2} (c)|X_1 &gt; F^{ −1} _{X_1} (c)]</span> <br/> <span>P_L(c) = P[X_2 \le F ^{−1} _{X_2} (c)|X_1 \le F^{ −1} _{X_1} (c)]</span> </blockquote>
+<ul>
+<li>上尾相关：当c趋于1时的极限</li>
+<li>下尾相关：当c趋于0时的极限</li>
+</ul>
+<p>当尾相关参数为零时，Copula被称为<b>尾部独立</b>(tail independence)。正态Copula就是这样。例如，考虑16%的较低截止概率，对应 <span>F^{−1 }_X =−1</span> 。接下来，在 <span>X_1≤−1</span> 的前提下，计算 <span>X_2≤−1</span> 的条件概率。假设相关性为0.50，则 <span>P_L (16\%) = P[X_2≤−1|X_1≤−1]= 42%</span>                                                        。接下来，将截止点从−1更改为−1.645。条件概率从42%下降到 <span>P_L(5\%) = 22\%</span> 。继续使用较低的截止点−2.326。条件概率继续下降到 <span>P_L(1\%) = 9\%</span>                                                        。最终，这个收敛到一个尾相关性为零。因为正态分布是对称的，所以上下尾相关性都为零。</p>
+<p>因此，正态Copula无法复制尾部相关。实际上，在金融危机期间，市场通常会同时下跌。例如，考虑一个持有美国和英国股票多头头寸的投资组合。当美国市场大幅下跌时，<span>英国市场</span>往往会同步下跌，这加剧了投资组合的损失。这使得正态Copula对尾部事件是不现实的。但是，也可以使用其他的Copula。一个例子是Student’s t Copula，它确实表现出尾部相关，因此更现实。因此，风险因素的
+                                                        <span>统计建模</span>涉及微妙的选择。</p>
+<p>⭐ <b>例16.4</b> Brenda Williams is a risk analyst who wants to model the dependence between asset returns using copulas and must convince her manager that this is the best approach. Which of the following
+                                                        statements are correct?</p>
+<ol>
+<li>I. The dependence between the return distributions of portfolio assets is critical for risk measurement.</li>
+<li>II. Correlation estimates often appear stable in periods of low market volatility and then become volatile in stressed market conditions. Risk measures calculated using correlations estimated over
+                                                            long horizons will therefore underestimate risk in stressed periods.</li>
+<li>III. Pearson correlation is a linear measure of dependence between the return of two assets equal to the ratio of the covariance of the asset returns to the product of their volatilities.</li>
+<li>IV. Using copulas, one can construct joint return distribution functions from marginal distribution functions in a way that allows for more general types of dependence structure of the asset returns.</li>
+</ol>
+<ul>
+<li>a. I, II, and III</li>
+<li>b. II and IV</li>
+<li>c. I, II, III, and IV</li>
+<li>d. I, III, and IV</li>
+</ul>
+<p>解析：选 d 。相关性是关键的，因此表述I是正确的。通常的皮尔逊相关是一种线性的相关性度量，因此表述III是正确的。表述IV也是正确的。对于表述II，在美国，相关关系确实会在压力时期发生变化，但尚不清楚这是否会导致长期相关性上升或下降。此外，对投资组合风险的影响取决于仓位。因此，没有足够的信息来支持表述II。</p>
+<hr/>
+<h2>三、VAR方法</h2>
+<p>现在进入下一步。一旦在整个投资组合中累计了风险敞口，就需要将这些敞口与风险因素的变化结合起来，以创建投资组合收益分布的概况，可以用VAR进行总结。常用的方法有三种。</p>
+<h3>1、Delta中性法</h3>
+<p><b>Delta中性法</b>是最简单的VAR方法。它假设投资组合的风险敞口是线性的，并且风险因素共同呈正态分布。因此，这是一种局部估值方法。</p>
+<p>因为投资组合收益是正态变量的线性组合，所以它本身是正态分布的。利用矩阵表示法，投资组合方差为：</p>
+<blockquote><span>\sigma^2(R_{p,t+1}) = x_t'\Sigma_{t+1}x_t</span> </blockquote>
+<p>其中， <span>\Sigma_{t+1}</span> 为协方差矩阵在区间上的预测。因为这种方法依赖于协方差矩阵，所以有时被称为<b>方差-协方差矩阵</b>法。如果用美元来衡量投资组合的波动率，VAR直接从对应于置信水平c的标准标准差中得到：</p>
+<blockquote><span>VAR = \alpha \sigma(R_{p,t+1})</span> </blockquote>
+<p>这被称为<b>多样化VAR</b>(diversified VAR)，因为它考虑了多样化效应。相比之下，<b>非多样化VAR</b>(undiversified VAR)只是每个风险因素的VAR之和。它假设所有价格将同时向最坏的方向移动，这是不现实的。</p>
+<p>这种方法的主要好处是它具有吸引力的简单性。分布用方差来描述，方差很快就能得到一个封闭解。这也允许边际VAR和分量VAR的解析表达式。VAR测量也比非参数测量更精确，或具有更小的抽样变异性。</p>
+<p>然而，这种简单性也是它的缺点。Delta中性法不能解释期权头寸或嵌入期权中固有的非线性效应。由于它依赖于正态分布，也可能低估了大观测值的发生。</p>
+<h3>2、历史模拟法</h3>
+<p>这些缺点解释了为什么最常用的方法是<b>历史模拟法</b>(HS)。HS包括时间倒流(例如，过去250天)，并使用这段时间内的因素移动来预测假设的因素值，从中可以推导出投资组合的价值，通常会进行全面重估。换句话说，该方法将历史的磁带重放到当前位置。</p>
+<p>定义当前时间为 <span>t</span> ，我们观察从1到 <span>t</span> 的数据。当前的投资组合价值是 <span>P_t</span>                                                        ，它是当前风险因素的函数：</p>
+<blockquote><span>P_t = P[ f_{1,t}, f_{2,t}, . . . , f_{N,t}]</span> </blockquote>
+<p>从历史分布中以不放回抽样因子移动：</p>
+<blockquote><span>\Delta f _{i}^k = \{\Delta f_{i,1}, \Delta f_{i,2}, . . . ,\Delta f_{i,t}\}</span> </blockquote>
+<p>由此我们可以构建假设的因子值，从当前的因子值开始，</p>
+<blockquote><span>f ^k_i = f_{i,t} + \Delta f^ k_i</span> </blockquote>
+<p>用来构造在新场景下当前投资组合的假设值。得到：</p>
+<blockquote><span>P^k = P[f^k_ 1 , f^k_ 2 , . . . , f^k_N]  </span> </blockquote>
+<p>现在可以从当前位置计算投资组合价值的变化：</p>
+<blockquote><span>R^k = (P^k − P_t)/P_t</span> </blockquote>
+<p>然后我们对 <span>t</span> 个返回值进行排序，选出对应第 <span>c</span> <span>分位数</span>的 <span>R_p(c)</span> 。VAR是由平均值和分位数之间的差得到的，</p>
+<blockquote><span>VAR = Ave[R_p] − R_p(c)</span> </blockquote>
+<p>VAR相对于平均值进行测量。</p>
+<ul>
+<li>优点：它对收益分布不做具体的分布假设，而依赖于历史数据。这是对正态分布的改进，因为历史数据通常包含胖尾。HS也更加直观，因为损失可以追溯到某个特定的时期，其中风险因素的变化可以让人洞察到重大损失的驱动因素。</li>
+<li>缺点：它依赖于一个较短的历史移动窗口来推断市场价格的运动。如果这个窗口没有包含一些可能的市场波动，它可能会错过一些风险。</li>
+</ul>
+<h3>3、<span>蒙特卡罗模拟</span>法</h3>
+<p><b>蒙特卡罗模拟法</b>与历史模拟法相似，不同之处是风险因素的运动是由一些预先指定的分布所产生的：</p>
+<blockquote><span>\Delta f^ k ∼ g(\theta), \ \ \ k = 1, . . . K</span> </blockquote>
+<p>其中 <span>g</span> 为联合分布， <span>\theta</span> 为参数。风险管理者需要明确风险因素的边际分布及其关联关系。例如，这可以包括一个正态分布的或t分布。</p>
+<p>该方法包括从该分布中抽样<b>伪随机数</b>(pseudo-random numbers)，使用完全估值对投资组合重新定价，生成伪美元收益，然后对其进行排序，生成所需的VAR。</p>
+<p>这种方法是最灵活的，但也有巨大的计算负担。它要求用户对<span>随机过程</span>做出假设，并理解结果对这些假设的敏感性。因此，它受到<b>模型风险</b>(model risk)的影响。这方面的一个很好的例子是，信用评级机构使用一个正常的联结函数来衡量CDO的风险。正如前一节所解释的，选择这个Copula低估了真正的风险。</p>
+<p>由于随机化，<span>蒙特卡洛</span>方法也产生了固有的抽样变异性。不同的随机数会导致不同的结果。可能需要大量的迭代才能收敛到一个稳定的VAR度量。与其他方法不同的是，蒙特卡罗模拟明确了风险数的抽样变异性。</p>
+<p>最后需要注意的是，当所有风险因素具有正态分布且暴露为线性时，该方法应收敛于Delta中性VAR所产生的VAR。更一般地说，比较三种VAR方法的输出并检查数字是否如预期的那样相互关联是一种很好的做法。</p>
+<h3>4、方法的比较</h3>
+<p>下面提供了三种主流VAR方法的汇总比较。</p>
+<table>
+<tbody>
+<tr>
+<th></th>
+<th>Delta中性</th>
+<th>历史模拟</th>
+<th>蒙特卡罗</th>
+</tr>
+<tr>
+<td>估值</td>
+<td>线性局部</td>
+<td>完全</td>
+<td>完全</td>
+</tr>
+<tr>
+<td>分布（形状/极端事件）</td>
+<td>正态/低概率</td>
+<td>实际/最近数据</td>
+<td>一般/可能</td>
+</tr>
+<tr>
+<td>实现（简单/沟通/准确）</td>
+<td>是/一般/很好</td>
+<td>一般/容易/短窗口薄弱</td>
+<td>不/难/可多次迭代</td>
+</tr>
+<tr>
+<td>主要缺点</td>
+<td>非线性、肥尾</td>
+<td>风险的时变、不寻常事件</td>
+<td>模型风险</td>
+</tr>
+</tbody>
+</table>
+<p>在这些方法中，Delta中性是迄今为止最容易和最快实现的。对于很少可选性的简单投资组合，这可能是完全合适的。相比之下，期权的存在需要一个完整的估值方法。此外，大多数金融序列显示肥尾，这使得正态近似在高置信水平时不可靠。这就解释了为什么历史模拟是最广泛使用的VAR方法。</p>
+<p>⭐ <b>例16.5</b> In early 2000, a risk manager calculates the VAR for a technology stock fund based on the past three years of data. The strategy of the fund is to buy stocks and write out-of-the-money
+                                                                puts. The manager needs to compute VAR. Which of the following methods would yield results that are least representative of the risks inherent in the portfolio?</p>
+<ul>
+<li>a. Historical simulation with full repricing</li>
+<li>b. Delta-normal VAR assuming zero drift</li>
+<li>c. Monte Carlo style VAR assuming zero drift with full repricing</li>
+<li>d. Historical simulation using delta equivalents for all positions</li>
+</ul>
+<p>解析：选 d 。因为投资组合有选择，基于完全重新定价的方法a或c是合适的。接下来，回想一下科技股在2000年3月之前的大幅上涨。从1996年到1999年，<span>纳斯达克指数</span>从1300点涨到了4000点。这在一系列回报中产生了正向漂移。因此，如果没有对这一漂移进行调整，历史模拟将使模拟收益向上偏误，从而低估VAR。</p>
+<p>⭐ <b>例16.6</b> Which of the following is most accurate with respect to delta-normal VAR?</p>
+<ul>
+<li>a. The delta-normal method provides accurate estimates of VAR for assets that can be expressed as a linear or nonlinear combination of normally distributed risk factors.</li>
+<li>b. The delta-normal method provides accurate estimates of VAR for options that are near or at-the-money and close to expiration.</li>
+<li>c. The delta-normal method provides estimates of VAR by generating a covariance matrix and measuring VAR using relatively simple matrix multiplication.</li>
+<li>d. The delta-normal method provides accurate estimates of VAR for options and other derivatives over ranges even if deltas are unstable.</li>
+</ul>
+<p>解析：选 c 。Delta中性在非线性收益情况下表现不佳，因此答案a不对。同样，如果Delta变化，该方法将不能正确地衡量期权的风险，这是<span>平价期权</span>的情况，因此答案b和d是错误的。</p>
+<p>⭐ <b>例16.7</b> Which of the following statements about VAR estimation methods is wrong?</p>
+<ul>
+<li>a. The delta-normal VAR method is more reliable for portfolios that implement portfolio insurance through dynamic hedging than for portfolios that implement portfolio insurance through
+                                                                        the purchase of put options.</li>
+<li>b. The full-valuation VAR method based on historical data is more reliable for large portfolios that contain significant option-like investments than the delta-normal VAR method.</li>
+<li>c. The delta-normal VAR method can understate the true VAR for stock portfolios when the distribution of the return of the stocks has high kurtosis.</li>
+<li>d. Full-valuation VAR methods based on historical data take into account nonlinear relationships between risk factors and security prices.</li>
+</ul>
+<p>解析：选 a 。对于有期权的投资组合，完全估值方法更为精确，因此答案b和d是正确的。当分布有肥尾时，Delta中性VAR低估了风险，因此答案c是正确的。答案a确实是错误的。Delta中性法对于期权中的完全位置或它们的动态复制是很差的。</p>
+<p>⭐ <b>例16.8</b> Natural gas prices exhibit seasonal volatility. Specifically, the entire forward curve is more volatile during the wintertime. Which of the following statements concerning
+                                                                    VAR is correct if the VAR is estimated using unweighted historical simulation and a three-year sample period?</p>
+<ul>
+<li>a. We will overstate VAR in the summer and understate VAR in the winter.</li>
+<li>b. We will overstate VAR in the summer and overstate VAR in the winter.</li>
+<li>c. We will understate VAR in the summer and understate VAR in the winter.</li>
+<li>d. We will understate VAR in the summer and overstate VAR in the winter.</li>
+</ul>
+<p>解析：选 a 。这种方法基本上估计了三年窗口的平均波动率，忽略了季节性。因此，如果条件波动率在冬季较高，该方法将低估真实风险，反之亦然。</p>
+<p>⭐ <b>例16.9</b> You are given the following information about the returns of stock P and stock Q: variance of return of stock P = 100; variance of return of stock Q = 225; covariance between
+                                                                    the return of stock P and the return of stock Q = 53.2. At the end of 1999, you are holding USD 4 million in stock P. You are considering a strategy of shifting USD 1 million into stock
+                                                                    Q and keeping USD 3 million in stock P. What percentage of risk, as measured by standard deviation of return, can be reduced by this strategy?</p>
+<ul>
+<li>a. 0.5%</li>
+<li>b. 5.0%</li>
+<li>c. 7.4%</li>
+<li>d. 9.7%</li>
+</ul>
+<p>解析：选 b 。原始投资组合的方差为1600，意味着波动率为40。新投资组合的方差为3^2 × 100 + 1^2 × 225 + 2 × 53.2 × 3 × 1 = 1444。这使得波动率为38，降低了5%。</p>
+<hr/>
+<h2>四、风险系统的局限性</h2>
+<p>风险度量系统的目标是描述投资组合中潜在损失的分布情况。VAR是对投资组合收益离散度的单一汇总度量，因此具有明显的局限性。</p>
+<h3>1、非流动性资产</h3>
+<p>所有基于价格历史的风险衡量方法的第一个也是最明显的局限性是<b>非流动性</b>(illiquidity)的影响。非流动性资产不经常交易，这意味着观察到的价格可能不代表最近的交易，在这种情况下，价格是<b>过时的</b>(stale)。例如，一些债券在一个月内几乎没有交易。在这种情况下，每日报告的价格将持平，只有零星的调整。因此，波动率指标将向下倾斜。</p>
+<p>过时的价格表现为特定的自相关性模式，可以用来试图改进传统的风险衡量方法。即便如此，如果价格本身不是很有意义，传统的风险衡量标准必须继承同样的资格。</p>
+<h3>2、VAR以外的损失</h3>
+<p>正如<b><a href="https://zhuanlan.zhihu.com/p/416164855">C12 风险模型</a></b>所解释的，VAR值不能被视为最严重损失的衡量标准。相反，它应该被视为离散度的度量，应该有一定的规律性地超过。例如，在通常99%的置信度水平的1%的情况下。此外，VAR没有描述左尾的损失程度。期权空头等工具在发生时可能会产生罕见但极其严重的损失。为了发现这种脆弱性，还应检查风险价值以外的损失分布情况。</p>
+<h3>3、映射的问题</h3>
+<p>此外，VAR系统的实施通常需要简化，通过映射所选风险因素的位置来获得。因此，风险管理人员应该认识到他们的风险系统的弱点。</p>
+<p>在始于2007年的信贷危机期间，许多银行的风险管理系统失灵。一些银行遭受的损失比他们预期的要频繁得多，也严重得多。例如，仅在2007年，瑞银就因<span>抵押贷款支持证券</span>的头寸损失了190亿美元。这家银行没有经历预期数量的两三个例外(即250天中的1%)，而是遭遇了29个例外，或损失比VAR更大。注意，同样的限制也适用于压力测试。</p>
+<p>除了所有金融市场波动加剧的影响外，许多银行在次级抵押贷款支持的超优先级、AAA级证券上遭受了巨大损失。由于需要估计联合违约概率，这些结构的建模相当复杂。投资超优先级债券可以被视为出售价外看跌期权，正如我们所见，这涉及非线性收益。只要房地产市场持续上涨，次级债务的违约率相对较低，超优先级债务是安全的，不会出现价格波动。然而，随着房地产市场的大幅调整，看跌期权向价内移动，这导致了超优先债务的巨大损失。当然，这些波动在最近的历史数据中都没有体现出来，因为这只反映了房地产市场的持续升值，也因为这些证券固有的非线性。</p>
+<p>一些银行没有对这些复杂性进行建模，而是简单地将超优先级债务绘制在AAA级公司债券曲线上。这忽略了证券的非线性，是对信用评级的盲信行为。在这个案例中，映射过程是有缺陷的，没有给出即将到来的风险的警告信号。</p>
+<h3>4、依赖近期历史数据</h3>
+<p>VAR模型的传统应用，如历史模拟，涉及<b>移动窗口</b>(moving windows)。窗口的选择涉及使用较长的窗口和使用较短的窗口之间的权衡，前者可以提供更精确、更稳定的估计，后者在市场变化或旧数据根本不存在时可能更合适。</p>
+<p>然而，移动窗口的影响使VAR指标变化的解释变得混乱。变化可以是由于位置的变化，也可以是由于移动窗口的变化，或者两者都是。</p>
+<p>窗口越短，VAR值越不稳定。通常，大多数银行使用短窗口，最多一到三年的历史数据。在金融市场稳定一段时间后，这些窗口可能低估未来的风险。</p>
+<p>这就是为什么压力测试需要作为传统VAR模型的补充。事实上，巴塞尔委员会在针对市场风险的资本要求中增加了一个<b>压力VAR</b>(stressed VAR)。这仍然基于当前头寸，但在风险因素中使用了固定冲击。</p>
+<h3>5、顺周期性</h3>
+<p>一个相关的问题是杠杆和使用风险敏感措施的投资组合管理的结合。风险往往是周期性的。经济扩张时期往往伴随着较低的信贷息差和较低的风险因素波动。这是因为在扩张时期，基本面的波动性较低，但也因为违约率较低，避险情绪较低。相比之下，衰退时期的特征是利差扩大和波动性上升。不可避免地，我们将经历商业周期和伴随的波动周期。</p>
+<p>一个好的对风险敏感的测量系统将反映这种波动，并对风险的高低期给出适当的警告。然而，在某些情况下，这些信息可以用来决定投资组合中的<b>杠杆</b>量。如果交易者有固定的波动目标，低波动期会诱使他们增加杠杆。</p>
+<p>例如，假设一个<span>基金经理</span>有一个固定的波动率目标 <span>\bar{\sigma} </span> = 10%。经理在一种随时间变化波动的资产中持有单一头寸。目前为
+                                                                                <span>\sigma_t</span> = 5%。然后，基金经理可以将资产杠杆化 <span>l</span> = 2，以达到目标波动率。然而，如果资产波动性上升到
+                                                                                <span>\sigma_t</span> = 10%，投资组合经理将被迫将杠杆率从 <span>l</span> = 2降至
+                                                                                <span>l</span> = 1，这包括出售一半的投资组合。</p>
+<p>因此，波动率的持续增加会迫使交易员、<span>对冲基金</span>和银行去杠杆。如果他们遭受了持续的损失，这个过程就会加剧。风险敏感措施和杠杆的结合可能会产生<b><span>顺周期效应</span></b>(procyclical effect)。更一般地说，这是指可能放大经济或金融波动的情况。这是银行监管机构面临的主要问题。困境在于，对风险更敏感的规则自动地更顺周期。</p>
+<p>另一个例子是交易所在交易期货合约时设定的保证金。这些保证金是为了在客户违约的情况下保护<span>票据交换所</span>。它们通常基于高置信度的每日VAR度量。例如，一个名义金额为10万美元的头寸的初始保证金通常为m = 5%。这使得杠杆l = 1/m = 20。在市场波动加剧的时候，交易所可以提高利润率。这是明智之举。然而，如果客户不能为提高利润率做出贡献，就可能迫使他们平仓。</p>
+<p>同样，银行或机构经纪商通过<b>反向回购协议</b>(reverse repurchase agreements)向其他银行和资产管理公司提供融资。根据该协议，客户向银行出售证券，以换取证券价值减去减记。实际上，这种<b>减记</b>(haircut)起到了保证金或缓冲的作用，保护银行免受客户违约造成的损失。在信贷危机期间，减记大幅增加。即使是名单上信誉最好、流动性最好的国债，减记率也从0.25%降至3%。对于流动性较差的证券，减记率达到100%，这意味着银行不想要这些证券作为抵押品。</p>
+<p>这是银行谨慎的风险管理做法，它们不希望继承它们无法估值、也没有市场的证券。然而，与此同时，这些做法加剧了去杠杆化的压力，加剧了2007年的恐慌。</p>
+<h3>6、拥挤交易</h3>
+<p>风险度量模型的另一个主要局限性是，它们基本上假设企业是<span>价格接受者</span>。风险度量很少考虑到清算公司投资组合的价格影响。更糟糕的是，他们可能无法解释其他交易员在同一时间被迫卖出相同(多头)头寸的可能性，因为这些其他头寸没有披露。交易员或资产管理公司同时卖出相同头寸有时被称为<b>羊群行为</b>(herding)。容易受到这种影响的交易被称为<b>拥挤交易</b>(crowded
+                                                                                            trades)。</p>
+<p>注意，拥挤的交易需要特殊的条件巧合。一群交易者或基金必须(1)杠杆化，(2)做多或做空非常相似的头寸。此外，羊群行为的驱动因素很难识别，因为动作往往是由新信息的发布而不是其他基金的卖出触发的。</p>
+<hr/>
+<h2>五、例子</h2>
+<h3>1、盯市（MTM）</h3>
+<p>现在用一个简单的例子来说明VAR的计算。当前的问题是评估货币远期合约的单日下跌风险。要计算VAR，首先需要对投资组合进行估值，将投资组合的价值映射到基本风险因素上，然后生成这些风险因素的变化，最后，将风险因素与<span>估值模型</span>结合起来，以模拟合同价值的变化。</p>
+<p>假设1998年12月31日有一份远期合约，购买1000万英镑，互换是在三个月内交付1650万美元。使用符号：</p>
+<ul>
+<li><span>S_t</span> ：当前即期价格，英镑兑美元</li>
+<li><span>F_t</span> ：当前远期价格</li>
+<li><span>K</span> ：合同中规定的<span>采购价格</span></li>
+<li><span>f_t</span> ：当前合同价值</li>
+<li><span>r_t</span> ：国内无风险利率</li>
+<li><span>r_t^*</span> ：国外无风险利率</li>
+<li><span>\tau</span> ：到期时间(time to maturity)</li>
+</ul>
+<p>为了与外汇市场的惯例一致，我们使用离散复利来定义现值因子：</p>
+<blockquote><span>P_t = PV($1) = \frac{1}{1+r_t \tau}</span> ， <span>P_t^*= PV($1) = \frac{1}{1+r_t^* \tau}</span> </blockquote>
+<p>购买一英镑远期合约的当前市场价值为：</p>
+<blockquote><span>f_t = S_t \frac{1}{1+r_t^* \tau} - K \frac{1}{1+r_t \tau} = S_t P_t^* - K P_t</span> </blockquote>
+<p>这涉及到三个风险因素：即期利率和国内国外两种利率。此外，我们可以用这个方程来推导风险因素的敞口程度。微分之后，有：</p>
+<blockquote><span>df = \frac{∂ f}{∂ S} dS +  \frac{∂ f}{∂ P^*} dP^* +  \frac{∂ f}{∂ P} dP = P^* dS + SdP^* - KdP</span> </blockquote>
+<p>即：</p>
+<blockquote><span>df = (SP^∗)\frac{dS}{S} +  (SP^∗)\frac{dP^*}{P^*} - (KP) \frac{dP}{P} </span> </blockquote>
+<p>直观上，远期合约相当于：</p>
+<ul>
+<li>现货汇率多头头寸 <span>SP^*</span> </li>
+<li>外国票据多头头寸 <span>SP^*</span> </li>
+<li>国内票据空头头寸 <span>KP</span> （借款）</li>
+</ul>
+<p>我们现在可以按盯市结算合同了。Q代表数量1000万英镑，合同的当前市场价值为：</p>
+<blockquote><span>V_t = Qf_t</span> = $10,000,000 * <span> S_t \frac{1}{1+r_t^* \tau} </span>                                                                                                - $16,500,000 * <span> \frac{1}{1+r_t \tau} </span> </blockquote>
+<p>在估值日，有 <span> S_t</span> = 1.6637, <span>r_t</span> = 4.9375%,
+                                                                                                <span>r ^∗_t</span> = 5.9688%，因此：</p>
+<blockquote><span>P_t =  \frac{1}{1+r_t \tau}</span> = 1 / (1 + 4.9375% × 90/360) = 0.9879</blockquote>
+<p>类似可得 <span>P^∗_t</span> = 0.9854。合同的当前市场价值是：</p>
+<blockquote><span>V_t</span> = $10,000,000 × 1.6637 × 0.9854 − $16,500,000 × 0.9879 = $93,581</blockquote>
+<p>稍微处以平价(ITM)。我们将用这个公式推导出风险因素在不同情况下合同价值的分布。</p>
+<h3>2、风险因素</h3>
+<p>假设只考虑过去100天来代表市场价格的波动。下表显示了从8月10日开始的过去100个营业日的现场报价和三个月汇率。</p>
+<div>
+<pre><code>* 历史市场因素
+日期    $      £      S($/£) #
+8/10/98 5.5938 7.4375 1.6341
+8/11/98 5.5625 7.5938 1.6315 1
+8/12/98 6.0000 7.5625 1.6287 2
+8/13/98 5.5625 7.4688 1.6267 3
+8/14/98 5.5625 7.6562 1.6191 4
+8/17/98 5.5625 7.6562 1.6177 5
+8/18/98 5.5625 7.6562 1.6165 6
+8/19/98 5.5625 7.5625 1.6239 7
+8/20/98 5.5625 7.6562 1.6277 8
+8/21/98 5.5625 7.6562 1.6387 9
+8/24/98 5.5625 7.6562 1.6407 10
+. . .
+12/15/98 5.1875 6.3125 1.6849 90
+12/16/98 5.1250 6.2188 1.6759 91
+12/17/98 5.0938 6.3438 1.6755 92
+12/18/98 5.1250 6.1250 1.6801 93
+12/21/98 5.1250 6.2812 1.6807 94
+12/22/98 5.2500 6.1875 1.6789 95
+12/23/98 5.2500 6.1875 1.6769 96
+12/24/98 5.1562 6.1875 1.6737 97
+12/29/98 5.1875 6.1250 1.6835 98
+12/30/98 4.9688 6.0000 1.6667 99
+12/31/98 4.9375 5.9688 1.6637 100</code></pre>
+</div>
+<p>首先需要将这些报价转换为真正的随机变量，也就是说，具有零均值和恒定方差。下表列出利率dr的一天变化情况，以及相关现值因子dP/P和即期利率dS/S的相对变化情况。例如，第一天，dr1 = 5.5625 − 5.5938 = −0.0313，dS/S1 = (1.6315 − 1.6341)/1.6341 =
+                                                                                                    −0.0016。这些信息现在被用来构建风险因素的分布。</p>
+<div>
+<pre><code>* 市场因素的变化
+# dr($1) dr(£1) dP/P($1) dP/P(£1) dS($/£)/S
+1 -0.0313 0.1563 0.00000 -0.00046 -0.0016
+2 0.4375 -0.0313 -0.00116 0.00000 -0.0017
+3 -0.4375 -0.0937 0.00100 0.00015 -0.0012
+4 0.0000 0.1874 -0.00008 -0.00054 -0.0047
+5 0.0000 0.0000 -0.00008 -0.00008 -0.0009
+6 0.0000 0.0000 -0.00008 -0.00008 -0.0007
+7 0.0000 -0.0937 -0.00008 0.00015 0.0046
+8 0.0000 0.0937 -0.00008 -0.00031 0.0023
+9 0.0000 0.0000 -0.00008 -0.00008 0.0068
+10 0.0000 0.0000 -0.00008 -0.00008 0.0012
+. . .
+90 0.0937 0.0625 -0.00031 -0.00023 -0.0044
+91 -0.0625 -0.0937 0.00008 0.00015 -0.0053
+92 -0.0312 0.1250 0.00000 -0.00038 -0.0002
+93 0.0312 -0.2188 -0.00015 0.00046 0.0027
+94 0.0000 0.1562 -0.00008 -0.00046 0.0004
+95 0.1250 -0.0937 -0.00039 0.00015 -0.0011
+96 0.0000 0.0000 -0.00008 -0.00008 -0.0012
+97 -0.0938 0.0000 0.00015 -0.00008 -0.0019
+98 0.0313 -0.0625 -0.00015 0.00008 0.0059
+99 -0.2187 -0.1250 0.00046 0.00023 -0.0100
+100 -0.0313 -0.0312 0.00000 0.00000 -0.0018</code></pre>
+</div>
+<h3>3、VAR：历史模拟</h3>
+<p>历史模拟方法利用风险因素的历史运动来模拟潜在的未来运动。例如，美国利率的一种可能情况是，从当前值r0 = 4.9375开始，第二天的走势可能与8月11日观察到的类似，即dr1 =−0.0313下降。新的值是r(1) = 4.9062。</p>
+<p>计算其他变量的模拟值为r*(1) = 5.9688 + 0.1563 = 6.1251和S(1) = 1.6637 ×(1−0.0016)= 1.6611。有了这些新的价值，可以重新定价远期合约，现在的价值为Vt = 10,000,000× 1.6611 × 0.9849 - 16,500,000× 0.9879
+                                                                                                    = 59,941美元。</p>
+<p>注意，由于合约是做多贬值的英镑，因此合约的当前价值相对于初始价值93,581美元有所下降。</p>
+<p>记录新的合同价值，并对从第1天到第100天的所有移动重复这个过程。这将创建合同值的分布，在下表的最后一列中报告。</p>
+<div>
+<pre><code>* 模拟市场因素
+# r($1) r(£1) S($/£) PV($1) PV(£1) 假设盯市（MTM）合约
+1 4.9062 6.1251 1.6611 0.9879 0.9849 $59,941
+2 5.3750 5.9375 1.6608 0.9867 0.9854 $84,301
+3 4.5000 5.8751 1.6617 0.9889 0.9855 $59,603
+4 4.9375 6.1562 1.6559 0.9878 0.9848 $9,467
+5 4.9375 5.9688 1.6623 0.9878 0.9853 $79,407
+6 4.9375 5.9688 1.6625 0.9878 0.9853 $81,421
+7 4.9375 5.8751 1.6713 0.9878 0.9855 $172,424
+8 4.9375 6.0625 1.6676 0.9878 0.9851 $128,149
+9 4.9375 5.9688 1.6749 0.9878 0.9853 $204,361
+10 4.9375 5.9688 1.6657 0.9878 0.9853 $113,588
+. . .
+90 5.0312 6.0313 1.6564 0.9876 0.9851 $23,160
+91 4.8750 5.8751 1.6548 0.9880 0.9855 $7,268
+92 4.9063 6.0938 1.6633 0.9879 0.9850 $83,368
+93 4.9687 5.7500 1.6683 0.9877 0.9858 $148,705
+94 4.9375 6.1250 1.6643 0.9878 0.9849 $93,128
+95 5.0625 5.8751 1.6619 0.9875 0.9855 $84,835
+96 4.9375 5.9688 1.6617 0.9878 0.9853 $74,054
+97 4.8437 5.9688 1.6605 0.9880 0.9853 $58,524
+98 4.9688 5.9063 1.6734 0.9877 0.9854 $193,362
+99 4.7188 5.8438 1.6471 0.9883 0.9856 −$73,811
+100 4.9062 5.9376 1.6607 0.9879 0.9854 $64,073
+   4.9375 5.9688 1.6637 0.9879 0.9854 $93.581</code></pre>
+</div>
+<p>最后一步是对合同值进行排序。假设想报告相对于初始值的VAR，而不是相对于目标日期的平均值。表中的最后一列报告了投资组合值V(k)−V0的变化。这些损失从$200,752到$280,074不等。</p>
+<div>
+<pre><code>* 投资组合价值的分布
+# 假设MTM   MTM改变量
+1 -$107,171 -$200,752
+2 -$73,811 -$167,392
+3 -$46,294 -$139,875
+4 -$37,357 -$130,938
+5 -$33,651 -$127,232 ← 95%VAR
+6 -$22,304 -$115,885
+7 -$11,694 -$105,275
+8 $7,268 -$86,313
+9 $9,467 -$84,114
+10 $13,744 -$79,837
+. . .
+90 $193,362 $99,781
+91 $194,405 $100,824
+92 $204,361 $110,780
+93 $221,097 $127,515
+94 $225,101 $131,520
+95 $228,272 $134,691
+96 $233,479 $139,897
+97 $241,007 $147,426
+98 $279,672 $186,091
+99 $297,028 $203,447
+100 $373,655 $280,074</code></pre>
+</div>
+<p>现在可以用远期合约的整个分布来描述它的风险。VAR的目的是报告一个单一的数字作为下行风险的衡量标准。以95%低分位数为例。上表确定了100个中第五低的值，即-127,232美元。忽略平均值，95%VAR是Var(HS) = 127,232美元。也可以见下图：</p>
+<figure><img src="https://pic2.zhimg.com/v2-edd1f213537bc4b057f4ab37dd7514f9_1440w.jpg" width="1730"/>
+<figcaption>价值变化的经验分布</figcaption>
+</figure>
+<h3>4、VAR：Delta中性法</h3>
+<p>Delta中性法采用了一种不同的方法来构建投资组合价值的分布。假设三个风险因素(dS/S)、(dP/P)、(dP*/P*)共同呈正态分布。重写方程为：</p>
+<blockquote><span>df = (SP^∗)\frac{dS}{S} +  (SP^∗)\frac{dP^*}{P^*} - (KP) \frac{dP}{P}  = x_1dz_1+ x_2dz_2 + x_3dz_3</span> </blockquote>
+<p>其中， <span>dz</span> 为正态变量， <span>x</span> 为敞口。</p>
+<p>定义 <span>dz</span> 的3×3协方差矩阵为 <span>\Sigma</span> ，
+                                                                                                    <span>x</span> 为敞口向量。VAR为 <span>\sigma^2 (df) = x'\Sigma x</span> 。具体步骤如下图所示。</p>
+<figure><img src="https://picx.zhimg.com/v2-8da9327bffae500e4aad2eaceb627dc1_1440w.jpg" width="1788"/>
+<figcaption>协方差矩阵法</figcaption>
+</figure>
+<p>首先，计算三个风险因素的协方差矩阵。顶部显示了日收益的标准差和相关性。构建协方差矩阵。接下来，显示了敞口向量 <span>x'</span> 。<span>矩阵乘法</span> <span>\Sigma x</span> 显示在下面的行中。之后计算 <span>x'\Sigma x</span>                                                                                                        ，得到方差。取平方根，得到σ(df) = 77,306美元。最后，通过乘以1.645转换为95%分位数，得到VAR(DN) = $127,169。</p>
+<p>这个数字很接近VAR(HS) = $127,232。这表明这些变量的分布接近正态分布。事实上，经验分布大致看起来像一个正态分布。拟合后的分布如下图所示：</p>
+<figure><img src="https://pic4.zhimg.com/v2-ec13bf2e4b7b8fc9982085fa1db41a09_1440w.jpg" width="1774"/>
+<figcaption>价值变化的正态分布</figcaption>
+</figure>
+<p>⭐ <b>例16.10</b> A trading book consists of the following two assets, with correlation of 0.2.</p>
+<div>
+<pre><code>Asset   Expected Return   Annual Volatility   Value
+A       10%               25%                 $100
+B       20%               20%                 $50</code></pre>
+</div>
+<p>How would the daily VAR at the 99% level change if the bank sells $50 worth of A and buys $50 worth of B? Assume a normal distribution and 250 trading
+                                                                                                        days.</p>
+<ul>
+<li>a. 0.2286</li>
+<li>b. 0.4571</li>
+<li>c. 0.7705</li>
+<li>d. 0.7798</li>
+</ul>
+<p>解析：选 b 。首先计算当前投资组合的方差。(100 × 0.25)^2 + (50 × 0.20)^2 + 2 × 0.2(100 × 0.25)(50 × 0.20) = 825。因此VAR = (825)^0.5 × 2.33/(250)^0.5 = 4.226。新投资组合的头寸分别为50美元和100美元。方差为(50
+                                                                                                        × 0.25)^2 + (100 × 0.20)^2 + 2 × 0.2(50 × 0.25)(100 × 0.20) = 656.25。VAR为3.769，差值为−0.457。新的VAR较低，因为资产B的权重更大，波动率更低。注意，预期收益不参与计算。</p>
+<hr/>
+<h2>附录：协方差矩阵的简化</h2>
+<p>本附录展示了如何使用对角线模型来构造一个简化的协方差矩阵，这对分析风险模型很有用。假设我们有N = 100个资产。这意味着N(N+ 1)/2 = 5,050个不同项的协方差矩阵。单<span>因素模型</span>为 <span>R_i = \alpha_i + \beta_i × R_M + \epsilon_i</span> ，因此，任何两只股票之间的协方差是：</p>
+<blockquote><span>Cov[R_i , R_j ] = Cov[\beta_i R_M + \epsilon_i , \beta_j R_M + \epsilon_j ] = \beta_i\beta_j\sigma^2_M</span> </blockquote>
+<p>假设剩余成分彼此之间和与市场不相关。股票的方差是</p>
+<blockquote><span>Cov[R_i , R_j ] =  \beta_i\sigma_M^2+ \sigma_{\epsilon, i}^2</span> </blockquote>
+<p>因此，协方差矩阵为：</p>
+<blockquote><span>\Sigma =  \begin{bmatrix}  \beta_1\sigma_M^2+ \sigma_{\epsilon, 1}^2 &amp; \beta_1\beta_2\sigma^2_M &amp; \cdots &amp; \beta_1\beta_N\sigma^2_M \\  \vdots &amp; \vdots &amp; &amp; \vdots \\\ \beta_N\beta_1\sigma^2_M &amp; \beta_N\beta_2\sigma^2_M   &amp; \cdots  &amp;  \beta_N\sigma_M^2+ \sigma_{\epsilon, N}^2 \end{bmatrix}</span> </blockquote>
+<div>
+<pre><code>\Sigma = 
+\begin{bmatrix} 
+\beta_1\sigma_M^2+ \sigma_{\epsilon, 1}^2 &amp; \beta_1\beta_2\sigma^2_M &amp; \cdots &amp; \beta_1\beta_N\sigma^2_M \\ 
+\vdots &amp; \vdots &amp; &amp; \vdots \\\
+\beta_N\beta_1\sigma^2_M &amp; \beta_N\beta_2\sigma^2_M   &amp; \cdots  &amp;  \beta_N\sigma_M^2+ \sigma_{\epsilon, N}^2
+\end{bmatrix}</code></pre>
+</div>
+<p>也可以写为：</p>
+<blockquote><span>\Sigma =  \begin{bmatrix} \beta_1 \\ \vdots \\ \beta_N \end{bmatrix} \begin{bmatrix} \beta_1 &amp; \cdots &amp; \beta_N \end{bmatrix} \sigma^2_M +  \begin{bmatrix}  \sigma_{\epsilon, 1}^2 &amp; \cdots &amp; 0 \\ \vdots &amp; \ddots &amp; \vdots \\  0 &amp; \cdots &amp; \sigma_{\epsilon, N}^2 \end{bmatrix}</span> </blockquote>
+<div>
+<pre><code>\Sigma = 
+\begin{bmatrix} \beta_1 \\ \vdots \\ \beta_N \end{bmatrix}
+\begin{bmatrix} \beta_1 &amp; \cdots &amp; \beta_N \end{bmatrix} \sigma^2_M + 
+\begin{bmatrix} 
+\sigma_{\epsilon, 1}^2 &amp; \cdots &amp; 0 \\
+\vdots &amp; \ddots &amp; \vdots \\ 
+0 &amp; \cdots &amp; \sigma_{\epsilon, N}^2
+\end{bmatrix}</code></pre>
+</div>
+<p>用矩阵表示法，有：</p>
+<blockquote><span>\Sigma = \beta \beta' \sigma_M^2 + D_\epsilon</span> </blockquote>
+<p>它包含向量 <span>\beta</span> 中的 <span>N</span> 个元素，矩阵
+                                                                                                            <span> D_\epsilon</span> 对角线上的 <span>N</span>                                                                                                            个元素，加上市场本身的方差。对角模型将参数数从N× (N+ 1)/2减少到2N+ 1，有较大的改进。例如，100个资产的数量从5050减少到201。</p>
+<p>权重为 <span>w</span> 的投资组合的方差为：</p>
+<blockquote><span>\sigma_p^2 = w'\Sigma w = (w'\beta) ^2 \sigma_M^2 + w' D_\epsilon w</span> </blockquote>
+<p>这取决于投资组合贝塔， <span>\beta_p = w'\beta</span> ，以及残差的方差，如果投资组合很多样化，残差的方差应该很小。</p>
+<p>总之，这种对角线模型极大地简化了股票投资组合的风险结构。风险管理者可以集中精力管理投资组合的整体市场风险，同时控制单个证券的集中风险。</p>
+<p>单因素模型可能忽略了不同股票群之间的共同影响，比如行业效应。为了解释这些，可以推广到 <span>K</span> 个因子，即 <span>Ri = \alpha_i + \beta_{i1}y_1 +· · ·+\beta_{iK} y_K + \epsilon_i</span>                                                                                                                ，其中 <span>y_1, . . . , y_K</span> 为因子。当两两相互独立时，协方差矩阵将式推广为：</p>
+<blockquote><span>\Sigma = \beta_1 \beta_1'\sigma_1^2 + \cdots + \beta_K \beta_K' \sigma_k^2 + D_\epsilon</span> </blockquote>
+<p>现在的参数数是(N× K + K + N)，例如，100个资产，5个因子，这个数是605，这仍然比无限制模型的5050要低很多。同样，投资组合风险可以通过管理风险因素 <span>\beta_{p,1}, \cdots , \beta_{p,K}</span>                                                                                                                的投资组合敞口来控制。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C14 非线性风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C14 非线性风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C14 非线性风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、最优模型</h2>
+<h3>1、定义</h3>
+<p>考虑一个看涨期权，其基础资产是一种外币。定义：</p>
+<ul>
+<li><span>S_t</span> = 以美元计算的资产当前现货价格</li>
+<li><span>F_t</span> = 资产当前的<span>远期价格</span></li>
+<li><span>K</span> = 期权合同的<span>行权价格</span></li>
+<li><span>f_t</span> = <span>衍生工具</span>的现值</li>
+<li><span>r_t</span> = 国内<span>无风险利率</span></li>
+<li><span>r^∗_t</span> = 外国无风险利率，也写作 <span>y</span> </li>
+<li><span>\sigma_t</span> = <span>S</span> 的变化率的<span>年波动率</span></li>
+<li><span>\tau</span> = 到期时间</li>
+</ul>
+<p>一般地， <span>r^∗</span> 代表资产的收入支付，它表<span>股票指数</span>或债券的<span>股息</span>或息票支付的年率。</p>
+<p>衍生品的值可以写成函数 <span>f_t = f (S_t, r_t, r^∗_t , \sigma_t, K, \tau)</span> 。<span>衍生品</span>定价就是在期权到期时的特征和对市场行为的一些假设下，求出
+                                    <span>f</span> 的值。例如，<span>远期合同</span>的表达式为：</p>
+<blockquote><span>f = Se^{−r^∗\tau} − Ke^{−r\tau}</span> </blockquote>
+<p>更一般地，可能无法推导出函数 <span>f</span> 的<span>解析式</span>，需要用数值方法。</p>
+<h3>2、<span>泰勒展开</span></h3>
+<p>衍生品的敞口轮廓可以通过局部泰勒展开来描述：</p>
+<blockquote><span>df = \frac{∂f}{∂S}dS  + \frac{1}{2}  \frac{∂^2f}{∂S^2} dS^2 + \frac{∂f}{∂r}dr + \frac{∂f}{∂r^*}dr^* + \frac{∂f}{∂\sigma}d\sigma +\frac{∂f}{∂\tau}d\tau+...</span> </blockquote>
+<p>通过线性和二次多项式近似一个<span>非线性函数</span>。<b><span>期权定价</span></b>(Option pricing)就是求 <span>f</span> 。<b>期权对冲</b>(Option hedging)使用
+                                    <span>偏导数</span>。<b><span>风险管理</span></b>(Risk management)就是将这些因子与<span>风险因子</span>的变动结合起来。</p>
+<p>下图描述了欧式看涨期权的价值与标的资产之间的关系。细直线是线性(delta)估计，是初始点的<span>切线</span>。另一条线是二次(delta + gamma)估计，因为有更多的参数，它的拟合效果更好。</p>
+<figure><img src="https://pic3.zhimg.com/v2-e92295ed032cb8ced88df0b7582037d0_1440w.jpg" width="1589"/></figure>
+<p>因为处理的是局部价格变动的总和，所以可以在投资组合水平上集合敏感性。这类似于从单个<span>证券</span>的久期的总和计算投资组合的久期，并进行适当的加权。</p>
+<p>定义 <span>\Delta = \frac{∂f}{∂S}</span> ，可以用总敏感度总结投资组合：</p>
+<blockquote><span>\Delta_P = \sum_{i=1}^{N}{x_i \Delta_i}</span> </blockquote>
+<p>其中 <span>x_i</span> 为投资组合中类型 <span>i</span> 的<span>期权数</span>。为了对冲一阶价格风险，对冲净投资组合delta就足够了。这比单独对冲每一种工具更有效。
+                                    <span>泰勒展开式</span>在以下情况无法提供好的近似：</p>
+<ul>
+<li>潜在风险因素大幅波动</li>
+<li>高度非线性的风险敞口，例如即将到期的期权或<span>奇异期权</span></li>
+<li>交叉偏效应(Cross-partial effects)，如 <span>\sigma</span> 随 <span>S</span> 变化</li>
+</ul>
+<p>若有已上情况，就需要对这一工具进行全面重估(full revaluation)。使用下标0和1作为初始值和最终值，期权值的变化是：</p>
+<blockquote><span>f_1 - f_0 =  f (S_1, r_1, r^∗_1 , \sigma_1, K, \tau_1) -  f (S_0, r_0, r^∗_0 , \sigma_0, K, \tau_0)</span> </blockquote>
+<h3>3、期权定价</h3>
+<p>Black-Scholes 模型提供了一个封闭解，从而计算这些衍生品的价值。BS的关键在于，期权中的头寸可以被<span>基础资产</span>中的delta头寸复制。因此，适当比例组合资产和期权的投资组合在局部（价格的小幅波动）是无风险的。<span>期权价值</span>是预期支付的折现：</p>
+<blockquote><span>f_t = E_{RN}[e^{−r\tau} F (S_T)]</span> </blockquote>
+<p>其中 <span>E_{RN}</span> 代表风险中性世界中对未来偿付的期望，即假设标的资产以无风险利率增长，折现也采用无风险利率。对于欧式看涨期权，最终支付是 <span>F (S_T) = Max(S_T−K, 0)</span>                                    ，看涨期权的当前值是：</p>
+<blockquote><span>c = Se^{−r^∗ \tau}N(d_1) − Ke^{−r\tau}N(d_2)</span> </blockquote>
+<p>其中 <span>N(d)</span> 是标准正态分布的<span>累积分布函数</span>：</p>
+<blockquote><span>N(d) = \int_{-\infty}^{d} \Phi(x)dx = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{d} e^{ \frac{1}{2}x^2}dx</span> </blockquote>
+<p>其中 <span>\Phi</span> 是标准<span>正态密度函数</span>。 <span>N(d)</span> 也是值为 <span>d</span> 的<span>标准正态变量</span>左边的面积， <span>d_1</span> 和 <span>d_2</span> 的值为：</p>
+<blockquote><span>d_1 = \frac{ln(Se^{-r^*\tau}/Ke{-r\tau})}{\sigma\sqrt{T}} + \frac{\sigma\sqrt{\tau}}{2}</span> <br/> <span>d_2 = d_1 - \sigma \sqrt{\tau}</span> </blockquote>
+<p>根据看涨看跌期权平价，<span>欧式看跌期权</span>的价值为：</p>
+<blockquote><span>p = Se^{-r\tau} [N(d_1)-1]-Ke^{-r\tau} [N(d_2-1)]</span> </blockquote>
+<h2>二、期权的<span>希腊</span>字母</h2>
+<h3>1、Δ(Delta) 和 Γ(Gamma)</h3>
+<p>有了<span>欧式期权</span>的封闭解，就可以推导出所有的偏导数。最重要的灵敏度是 <span>\Delta</span> ，它是对价格的一阶偏导。对于看涨期权：</p>
+<blockquote><span>\Delta_c = \frac{∂c}{∂S} = e^{r^*\tau}N(d_1) \in (0,1)</span> </blockquote>
+<p>下图将不同期限的 <span>\Delta</span> 与 <span>S</span> 的当前值联系起来，其基本特征是 <span>\Delta</span>                                        随<span>现货价格</span>和时间大幅变化。随着现货价格的上涨， <span>d_1</span> 和 <span>d_2</span> 变得很大，且 <span>\Delta</span> 趋向于 <span> e^{-r^*\tau}</span> ，在短期接近1。在这种情况下，期权就像资产中的直接头寸。的确， <span>c = Se^{−r^∗ \tau}N(d_1) − Ke^{−r\tau}N(d_2)</span>                                        的极限就是 <span>c = Se^{−r^∗ \tau} − Ke^{−r\tau}</span> ，也就是<span>期货合约</span>的价值。</p>
+<figure><img src="https://pic4.zhimg.com/v2-7e5b70e60ebc9f0d62086a2c834b0aed_1440w.jpg" width="1751"/></figure>
+<p>如果 <span>S</span> 非常低， <span>\Delta</span> 接近于零，而期权对 <span>S</span> 不太敏感。当
+                                        <span>S</span> 接近于<span>执行价格</span> <span>K</span> 时， <span>\Delta</span> 接近于0.5，期权表现为标的资产的头寸为0.5。</p>
+<p>即，<b>对于看涨期权，平价时的</b> <span>\Delta</span> <b>接近0.5，深入价内(ITM)时的 </b><span>\Delta</span> <b>变为1，深入价外(OTM)时的 </b>
+<span>\Delta</span> <b>变为0。</b></p>
+<p>对于<span>看跌期权</span>：</p>
+<blockquote><span>\Delta_p = \frac{∂p}{∂S} = e^{-r^*\tau}[N(d_1) -1] &lt; 0</span> </blockquote>
+<p>即，<b>对于看跌期权，平价时的 </b><span>\Delta</span> <b>接近-0.5，深入价内(ITM)时的 </b><span>\Delta</span> <b>变为-1，深入价外(OTM)时的 </b>
+<span>\Delta</span> <b>变为0。</b></p>
+<p>从图中还可以看出，随着期权接近到期， <span>\Delta</span> 函数变得更加弯曲。函数收敛于阶梯函数(step function)。即当S &lt; K 时为0，否则为 1。接近到期的期权具有不稳定的 <span>\Delta</span>。</p>
+<p>对于欧式看涨或看跌期权， <span>\Gamma</span> 是二阶偏导：</p>
+<blockquote><span>\Gamma = \frac{∂^2c}{∂S^2} =\frac{e^{-r^*\tau}\Phi(d_1)}{S\sigma\sqrt{\tau}}</span> </blockquote>
+<p>具备正态密度函数 <span>\Phi</span> 的钟形。这也是 <span>\Delta</span> 对 <span>S</span>                                            的导数。因此 <span>\Gamma</span> 测量 <span>\Delta</span> 中的不稳定性。注意 <span>\Gamma</span>                                            对于看涨和看跌期权是相同的，并且具有相同的特征。下图展示了看涨期权的 <span>\Gamma</span> 曲线：</p>
+<figure><img src="https://pic2.zhimg.com/v2-e3868d71a96593a0fffb57a5e6ef25db_1440w.jpg" width="1575"/></figure>
+<p><br/></p>
+<p><span>平价期权</span>的 <span>\Gamma</span> 值最高，这表明 <span>\Delta</span> 随着 <span>S</span> 的变化变化得非常快。相反，价内期权和价外期权的 <span>\Gamma</span> 都很低，因为它们的 <span>\Delta</span>                                            是常数，分别接近于1或0。从图中还可以看出，随着期限的临近，期权 <span>\Gamma</span> 增大。</p>
+<p>故，<b>相对于短期平价期权，普通期权的 </b><span>\Gamma</span><b> 是最高的、非线性是最明显的</b>。</p>
+<p>因此， <span>\Gamma</span> 类似于债券的凸性概念。然而，<span>固定息票债券</span>总是具有正凸性，而期权可以创造正或负凸性。正凸性或正 <span>\Gamma</span>                                            是有益的，因为它意味着资产的价值下降得更慢，增长得更快。相反，<span>负凸性</span>是危险的，因为它意味着更快的价格下跌和更慢的价格上涨。</p>
+<p>下图总结了期权头寸中的 <span>\Delta</span> 和 <span>\Gamma</span> 暴露。期权的多头头寸，无论是看涨期权还是看跌期权，都会产生正凸性。空头头寸产生负凸性。作为假设这种负凸性的有害影响的交换，期权卖方获得了溢价。</p>
+<figure><img src="https://picx.zhimg.com/v2-4827998afc9c2fd94d1d64f7af73ed5f_1440w.jpg" width="1252"/></figure>
+<p>⭐ <b>Q14.1 </b>The dividend yield of an asset is 10% per annum. What is the delta of a long forward contract on the asset with six months to maturity?</p>
+<ul>
+<li>a. 0.95</li>
+<li>b. 1.00</li>
+<li>c. 1.05</li>
+<li>d. Cannot determine without additional information</li>
+</ul>
+<p>解析：选 a 。多头<span>远期合约</span>的delta是 <span>e^{-r^\ast\tau}</span> = exp(−0.10 × 0.5) = 0.95。</p>
+<p>⭐ <b>Q14.2 </b>A 90-day European put option on Microsoft has an exercise price of $30.The current market price for Microsoft is $30. The delta for this option is close to</p>
+<ul>
+<li>a. −1</li>
+<li>b. −0.5</li>
+<li>c. 0.5</li>
+<li>d. 1</li>
+</ul>
+<p>解析：选 b 。期权是平价的，因为执行价格 = 现货价格。这是一个看跌期权，所以delta必须接近- 0.5。 </p>
+<p>⭐ <b>Q14.3 </b>You are given the following information about a European call option: Time to maturity = 2 years; continuous risk-free rate = 4%; continuous dividend yield = 1%; <span>N(d_1)</span> = 0.64. Calculate the delta of this option.</p>
+<ul>
+<li>a. −0.64</li>
+<li>b. 0.36</li>
+<li>c. 0.63</li>
+<li>d. 0.64</li>
+</ul>
+<p>解析：选 c 。 <span>\Delta=exp\left(-r\tau\right)N\left(d_1\right)</span> = exp(−0.01 × 2) × 0.64 = 0.63.</p>
+<p>⭐ <b>Q14.4 </b>An analyst is doing a study on the effect on option prices of changes in the price of the underlying asset. The analyst wants to find out when the deltas of calls and puts are most sensitive to
+                                                changes in the price of the underlying. Assume that the options are European and that the Black-Scholes formula holds. An increase in the price of the underlying has the largest absolute value impact on
+                                                delta for:</p>
+<ul>
+<li>a. Calls deep in-the-money and puts deep out-of-the-money</li>
+<li>b. Deep in-the-money puts and calls</li>
+<li>c. Deep out-of-the-money puts and calls</li>
+<li>d. At-the-money puts and calls</li>
+</ul>
+<p>解析：选 d 。根据 <span>\Gamma</span> 曲线，对于短期平价期权，delta是最敏感的，gamma是最高的。在BS模型下，gamma对于看涨和看跌是相同的。</p>
+<p>⭐ <b>Q14.5 </b>A bank has sold USD 300,000 of call options on 100,000 equities. The equities trade at 50, the option strike price is 49, the maturity is in three months, volatility is 20%, and the interest rate
+                                                is 5%. How does the bank delta-hedge?</p>
+<ul>
+<li>a. Buy 65,000 shares</li>
+<li>b. Buy 100,000 shares</li>
+<li>c. Buy 21,000 shares</li>
+<li>d. Sell 100,000 shares</li>
+</ul>
+<p>解析：选 a 。这个平价期权的delta约为0.5。由于银行出售了看涨期权，它需要通过购买股票来进行delta对冲。如果delta值为0.54，它将需要购买大约50,000股股票。答案a是最接近的。注意，大多数其他信息都是多余的。</p>
+<p>⭐ <b>Q14.6 </b>Suppose an existing short option position is delta-neutral, but has a gamma of−600. Also assume that there exists a traded option with a delta of 0.75 and a gamma of 1.50. In order to maintain
+                                                the position gamma-neutral and delta-neutral, which of the following is the appropriate strategy to implement?</p>
+<ul>
+<li>a. Buy 400 options and sell 300 shares of the underlying asset.</li>
+<li>b. Buy 300 options and sell 400 shares of the underlying asset.</li>
+<li>c. Sell 400 options and buy 300 shares of the underlying asset.</li>
+<li>d. Sell 300 options and buy 400 shares of the underlying asset.</li>
+</ul>
+<p>解析：选 a 。因为gamma是负的，需要<span>买入看涨期权</span>，将投资组合的gamma增加到零。看涨期权的买入数量为600/1.5 = 400。然而，这将使delta从0增加到400 × 0.75 = 300。因此，必须卖出300股，让delta值回到0。股票头寸的gamma值为0。</p>
+<h3>2、Λ(Vega)</h3>
+<p>与线性合约不同的是，期权不仅受到现货价格方向的波动影响，还受到其<span>波动性</span>的影响。因此，期权可以被视为波动性押注。期权对波动率的敏感性称为期权<b>vega</b>，有时也称为lambda或kappa。对于欧式看涨和看跌期权来说：</p>
+<blockquote><span>\Lambda = \frac{∂c}{∂\sigma} = Se^{-r^*\tau}\sqrt{\tau}\Phi(d_1)</span> </blockquote>
+<p>也具有正态密度函数 <span>\Phi</span> 的钟形。与 <span>\Gamma</span> 一样， <span>\Lambda</span>                                                对于类似的看涨和看跌头寸是相同的。<span>\Lambda</span> 对多头期权头寸肯定是正的。下图展示了看涨期权的 <span>\Lambda</span>，<b>长期平价期权的 </b>
+<span>\Lambda</span><b> 最高</b>：</p>
+<figure><img src="https://pic4.zhimg.com/v2-40bee0fbce31aec94114d89046ba2873_1440w.jpg" width="1773"/></figure>
+<h3>3、ρ(Rho)</h3>
+<p>对国内利率的敏感性叫做 <span>\rho</span> 。对于看涨期权和看跌期权：</p>
+<blockquote><span>\rho_c =  \frac{∂c}{∂r} = Ke^{-r\tau}\tau N(d_2)</span> <br/> <span>\rho_p =  \frac{∂p}{∂r} = -Ke^{-r\tau}\tau N(-d_2)</span> </blockquote>
+<p>利率增加，增加了期权的价值，因为基础资产以更高的速度增长，这增加了行使期权的可能性，而执行价格为固定的 <span>K</span> 。在限制条件下，对于无限利率，执行的概率是1，看涨期权等价于股票本身。</p>
+<p>下图的上半部分展示了看涨期权的 <span>\rho</span> 。对于看涨期权， <span>\rho</span> 为正，当看涨期权处于平价时， <span>\rho</span> 更高。而对于看跌期权，则是相反的，因为 <span>\rho</span> 是负的。在每种情况下，敏感性大致与剩余的到期时间成比例。</p>
+<figure><img src="https://pic4.zhimg.com/v2-8d65582656ea5d3706280312c36e1285_1440w.jpg" width="1285"/></figure>
+<p>看涨期权和看跌期权的资产收益率的风险敞口分别为：</p>
+<blockquote><span>\rho^*_C =  \frac{∂c}{∂r^*} = -Se^{-r^*\tau}\tau N(d_1)</span> <br/> <span>\rho^*_P =  \frac{∂p}{∂r^*} = Se^{-r^*\tau}\tau N(-d_1)</span> </blockquote>
+<p>股息收益率的增加降低了标的资产的增长率，这对看涨期权的价值是有害的，但对看跌期权的价值是有益的。</p>
+<p>如上图的下半部分， <span>\rho</span> 是负的，当看涨期权是平价时 <span>\rho</span> 的绝对值更大。同样，看跌期权的理由与此相反。在每种情况下，敏感性都与剩余的到期时间成比例。</p>
+<p>⭐ <b>Q14.7 </b>Ms. Zheng is responsible for the options desk in a London bank. She is concerned about the impact of dividends on the options held by the options desk. She asks you to assess which options are
+                                                the most sensitive to dividend payments. What would be your answer if the value of the options is found by using the Black-Scholes model adjusted for dividends?</p>
+<ul>
+<li>a. Everything else equal, out-of-the-money call options experience a larger decrease in value than in-the-money call options as expected dividends increase.</li>
+<li>b. The increase in the value of in-the-money put options caused by an increase in expected dividends is always larger than the decrease in value of in-the-money call options.</li>
+<li>c. Keeping the type of option constant, in-the-money options experience the largest absolute change in value and out-of-the-money options the smallest absolute change in value as expected dividends increase.</li>
+<li>d. Keeping the type of option constant, at-the-money options experience the largest absolute change in value and out-of-the-money options the smallest absolute change in value as a result of dividend
+                                                        payment.</li>
+</ul>
+<p>解析：选 c 。价外看涨期权对股息不是很敏感，所以a项错误。这也表明价内期权的 <span>\rho^\ast</span> 的绝对值是最高的。</p>
+<h3>4、Θ(Theta)</h3>
+<p>由于时间的推移而产生的期权价值的变化称为 <span>\Theta</span> ，即<b>时间衰减</b>(time decay)。然而，与其他因素不同的是，剩余到期日的变化是完全可以预测的。时间不是一个风险因子。表达式为：</p>
+<blockquote><span>\Theta_c = \frac{∂c}{∂t} = - \frac{∂c}{∂\tau}  =- \frac{Se^{-r^*\tau}\sigma\Phi(d_1)}{2\sqrt{\tau}} +r^*Se^{-r^*\tau}N(d_1) - rKe^{-r\tau}N(d_2) </span> <br/><span>\Theta_p = \frac{∂p}{∂t} = - \frac{∂p}{∂\tau}  =- \frac{Se^{-r^*\tau}\sigma\Phi(d_1)}{2\sqrt{\tau}} -r^*Se^{-r^*\tau}N(-d_1) + rKe^{-r\tau}N(-d_2) </span> </blockquote>
+<p>对于看涨和看跌的多头头寸， <span>\Theta</span> 通常都是负的。这意味着随着时间的推移，期权会失去价值。</p>
+<p>美式期权的 <span>\Theta</span> 总是负的。因为它们让持有者选择提早执行，短期美式期权显然不如长期期权有价值。对于欧式期权，以上两式表明对于某些参数值可以为正，尽管这是不寻常的。</p>
+<p>下图显示了标的资产的各种价格和到期日的看涨期权 <span>\Theta</span> 的行为。对于期权多头，是负的，这反映了期权是消耗性资产的事实。和 <span>\Gamma</span> 一样，当以绝对值来衡量时，短期平价期权的
+                                                    <span>\Theta</span> 是最大的。平价期权在临近到期日时损失了很大一部分价值。</p>
+<figure><img src="https://pic2.zhimg.com/v2-901cd1f30ec10b0a1887899057fc83ef_1440w.jpg" width="1802"/></figure>
+<h3>5、期权定价与希腊字母</h3>
+<p>定义了期权敏感性后，可以说明推导 Black-Scholes 公式的另一种方法。资产的基础过程遵循<b><span>几何布朗运动</span></b>(GBM, geometric Brownian motion)：</p>
+<blockquote><span>dS = \mu Sdt + \sigma Sdz</span> </blockquote>
+<p>其中， <span>dz \sim N(0,dt)</span> 服从正态分布，均值为零，方差为 <span>dt</span> 。仅考虑这一单一的风险来源，可以回到泰勒展开式。衍生品的价值是
+                                                    <span>S</span> 和时间的函数，可以写成 <span>f (S, t)</span> 。问题是， <span>f</span>                                                    是如何随时间变化的？</p>
+<p>用<span>伊藤引理</span>把 <span>f</span> 的<span>随机过程</span>与 <span>S</span>                                                    的随机过程联系起来，可以看作是泰勒近似在随机环境中的扩展。应用于几何布朗运动，得到：</p>
+<blockquote><span>df = (\frac{∂f}{∂S}\mu S + \frac{1}{2}\frac{∂^2f}{∂S^2}\sigma^2 S^2  + \frac{∂f}{∂\tau}) dt + (\frac{∂f}{∂S} \sigma S) dz</span> </blockquote>
+<p>也可写作：</p>
+<blockquote><span>df = (\Delta \mu S + \frac{1}{2}\Gamma \sigma^2 S^2 + \Theta)dt + (\Delta \sigma S)dz</span> </blockquote>
+<p>第一项包括dt，是趋势。第二项包括dz在内，是随机分量。接下来，构建一个在 <span>S</span> 和 <span>f</span> 之间微妙平衡的投资组合，该组合不涉及 <span>dz</span> 。将此投资组合定义为：</p>
+<blockquote><span>\Pi = f - \Delta S</span> </blockquote>
+<p>联立以上各式可得其随机过程为：</p>
+<blockquote><span>d\Pi = (\frac{1}{2}\Gamma \sigma^2 S^2 + \Theta) dt</span> </blockquote>
+<p>其含有 <span>dz</span> 的项是相互抵消了，该组合已免受这一风险来源的影响。同时， <span>S</span> 中的项也正好相互抵消了。从投资组合的趋势中消失的事实很重要，因为它解释了为什么标的资产的趋势没有出现在
+                                                    BS 公式中。注意到投资组合 <span>\Pi</span> 没有风险。为了避免套利，必须回报无风险利率：</p>
+<blockquote><span>d\Pi = (r\Pi)dt =  ( rf − r\Delta S)dt</span> </blockquote>
+<p>如果标的资产的股息收益率为 <span>y</span> ，则必须将其调整为：</p>
+<blockquote><span>d\Pi = (r\Pi)dt + y\Delta Sdt  = (r f − r\Delta S + y\Delta S)dt</span> </blockquote>
+<p>使 <span>\Pi</span> 的随机过程式和回报式中的趋势相等，有：</p>
+<blockquote><span>(r − y)\Delta S +\frac{1}{2} \Gamma \sigma^2 S^2  + \Theta = rf</span> </blockquote>
+<p>这就是 Black-Scholes 的<b><span>偏微分方程</span></b>(PDE, partial differential equation)，它适用于从 <span>S</span> 中得到价值的任何合约或投资组合。这个方程的解，加上适当的
+                                                        <span>边界条件</span>，就得到一个欧式看涨的BS公式，即：</p>
+<blockquote><span>c = Se^{−r^∗ \tau}N(d_1) − Ke^{−r\tau}N(d_2)</span> </blockquote>
+<p>可以利用这种关系来理解敏感性如何相互关联。考虑一个衍生品投资组合，所有这些衍生品都基于相同的基础资产，并进行 <span>\Delta</span> 对冲。在偏微分方程中设 <span>\Delta</span>                                                                = 0，则有：</p>
+<blockquote><span>\frac{1}{2} \Gamma \sigma^2 S^2  + \Theta = rf</span> </blockquote>
+<p>这表明，对于这样的投资组合，当 <span>\Gamma</span> 较大且为正时，如果 <span>r f</span> 较小， <span>\Theta</span> 一定为负。换句话说，一个 <span>\Gamma</span> 为正的 <span>\Delta</span>                                                                对冲头寸，在价格风险方面是有利的，一定有负的 <span>\Theta</span> 或者时间衰减。例如在<b><a href="https://zhuanlan.zhihu.com/p/416164316">第8章</a></b>中讨论的买入跨式套利。这种头寸是中性的，具有较大的
+                                                                <span>\Gamma</span> 或凸性。它将从 <span>S</span> 的大幅移动中获益，无论是上升还是下降。然而，这种投资组合包括购买价值随时间迅速衰减的期权。因此，在
+                                                                <span>\Gamma</span> 和 <span>\Theta</span> 之间存在一种内在的权衡。</p>
+<p>即，<b>对于 <span>\Delta</span> 对冲组合， <span>\Gamma</span> 和 <span>\Theta</span> 的符号必定相反。例如，具有正凸性的投资组合一定会经历时间衰减</b>。</p>
+<h3>6、小结</h3>
+<p>当期权值在平价时， <span>\Gamma</span> 、 <span>\Lambda</span> 、 <span>\Theta</span> 指标都是最高的，这样的期权具有最非线性的模式。大多数风险来自于 <span>S</span> 。在这种情况下，使用 <span>\Delta</span>                                                                    的<span>线性近似</span>将捕获大部分下行风险。然而，对于近期平价期权来说，二次效应更为重要。</p>
+<p>看涨多头、看跌多头对于 <span>\Delta</span> 有不一样的表现：</p>
+<blockquote>看涨多头：在价外 <span>\Delta \rightarrow 0</span> ，平价 <span>\Delta = 0.5</span>                                                                    ，价内 <span>\Delta \rightarrow 1</span> <br/>看跌多头：在价外 <span>\Delta \rightarrow 0</span>                                                                    ，平价 <span>\Delta = -0.5</span> ，价内 <span>\Delta \rightarrow -1</span></blockquote>
+<p>看涨多头、看跌多头对于 <span>\Gamma</span> 、 <span>\Lambda</span> 、 <span>\Theta</span> 有相同的表现：</p>
+<blockquote>在价外和价内都有低 <span>\Gamma</span> 。在平价有高 <span>\Gamma</span> 且大于0，尤其是短期的。<br/>在价外和价内都有低
+                                                                        <span>\Lambda</span> 。在平价有高 <span>\Lambda</span> 且大于0，尤其是长期的。<br/>在价外和价内都有低
+                                                                        <span>\Theta</span> 。在平价有高 <span>\Theta</span> 且小于0，尤其是短期的。</blockquote>
+<p>⭐ <b>Q14.8 </b>Which of the following statements is true regarding options Greeks?</p>
+<ul>
+<li>a. Theta tends to be large and positive when buying at-the-money options.</li>
+<li>b. Gamma is greatest for in-the-money options with long maturities.</li>
+<li>c. Vega is greatest for at-the-money options with long maturities.</li>
+<li>d. Delta of deep in-the-money put options tends toward +1.</li>
+</ul>
+<p>解析：选 c 。多头价内期权的Theta为负值，所以a是错误的。Gamma对于平价期权来说很小，所以b是不正确的。价内看跌期权的Delta趋向于-1，所以d是不正确的。</p>
+<p>⭐ <b>Q14.9 </b>Steve, a market risk manager at Marcat Securities, is analyzing the risk of its S&amp;P 500 index options trading desk. His risk report shows the desk is net long gamma
+                                                                            and short vega. Which of the following portfolios of options shows exposures consistent with this report?</p>
+<ul>
+<li>a. The desk has substantial long-expiry long call positions and substantial short-expiry short put positions.</li>
+<li>b. The desk has substantial long-expiry long put positions and substantial long-expiry short call positions.</li>
+<li>c. The desk has substantial long-expiry long call positions and substantial short-expiry short call positions.</li>
+<li>d. The desk has substantial short-expiry long call positions and substantial long-expiry short call positions.</li>
+</ul>
+<p>解析：选 d 。做多gamma意味着投资组合是做多高gamma的期权，通常是短期或短期到期的平价期权。做空vega意味着投资组合是做空高vega的期权，通常是长期或长期到期的平价期权。</p>
+<p>⭐ <b>Q14.10 </b>Which of the following statements is incorrect?</p>
+<ul>
+<li>a. The vega of a European-style call option is highest when the option is at-the-money.</li>
+<li>b. The delta of a European-style put option moves toward zero as the price of the underlying stock rises.</li>
+<li>c. The gamma of an at-the-money European-style option tends to increase as the remaining maturity of the option decreases.</li>
+<li>d. Compared to an at-the-money European-style call option, an out-of-the-money European-style option with the same strike price and remaining maturity has a greater negative value
+                                                                                for theta.</li>
+</ul>
+<p>解析：选 d 。价内欧式期权有着最高的Vega，所以a是正确的。Delta是负的，随着S的增加趋于零，所以b是正确的。Gamma随着价内期权的到期日的降低而增加，因此c是正确的。对于短期价内期权，Theta的绝对值更大，因此d是不正确的。</p>
+<p>⭐ <b>Q14.11 </b>How can a trader produce a short vega, long gamma position?</p>
+<ul>
+<li>a. Buy short-maturity options, sell long-maturity options.</li>
+<li>b. Buy long-maturity options, sell short-maturity options.</li>
+<li>c. Buy and sell options of long maturity.</li>
+<li>d. Buy and sell options of short maturity.</li>
+</ul>
+<p>解析：选 a 。期权的多头头寸有正的gamma和vega。Gamma在接近到期日的时候增加，vega在接近到期日的时候减少。因此，为了获得正的gamma和负的vega，需要买入短期期权，卖出长期期权。</p>
+<p>⭐ <b>Q14.12 </b>An option portfolio exhibits high unfavorable sensitivity to increases in implied volatility and while experiencing significant daily losses with the passage of time.
+                                                                            Which strategy would the trader most likely employ to hedge the portfolio?</p>
+<ul>
+<li>a. Sell short-dated options and buy long-dated options.</li>
+<li>b. Buy short-dated options and sell long-dated options.</li>
+<li>c. Sell short-dated options and sell long-dated options.</li>
+<li>d. Buy short-dated options and buy long-dated options.</li>
+</ul>
+<p>解析：选 a 。 这样的投资组合是做空vega (波动性)和做空theta(时间)。需要实施delta中性对冲，包括买卖不同期限的期权。短期期权的多头有较高的负theta和较低的正vega。对冲可以通过出售短期期权、购买长期期权来实现。</p>
+<h2>三、期权风险</h2>
+<h3>1、期权收益的分布</h3>
+<p>与远期、期货等线性衍生品不同，期权的收益在本质上是不对称的。这并不一定是因为潜在因素的分布，而是由于敞口轮廓。无论是看涨期权还是看跌期权，<u>期权的多头头寸都具有正的 <span>\Gamma</span> 值、正偏度、长右尾</u>。相反，<u>期权的空头头寸是小 <span>\Gamma</span> ，因此有负偏度、长左尾</u>。</p>
+<h3>2、期权VAR：线性</h3>
+<p>总结简单期权头寸的VAR公式。假设正态分布，标的资产的VAR为：</p>
+<blockquote><span>VAR(dS) = \alpha S\sigma (dS/S)</span> </blockquote>
+<p>其中 <span>\alpha</span> 对应于期望的<span>置信水平</span>，例如 95% 的置信水平 <span>\alpha</span> = 1.645。</p>
+<p>将期权的移动与资产价值的移动联系起来。考虑在 <span>\Delta</span> 为正的看涨期权中持有多头头寸：</p>
+<blockquote><span>dc = \Delta × dS</span> </blockquote>
+<p>期权VAR为正数：</p>
+<blockquote><span> VAR_1(dc) = −dc = \Delta ×−dS =\Delta × VAR(dS)</span> </blockquote>
+<p>一般地，一个期权的线性VAR是：</p>
+<blockquote><span> VAR_1(dc) = |\Delta |× VAR(dS)</span> </blockquote>
+<h3>3、期权VAR：二次</h3>
+<p>用泰勒近似考虑非线性效应：</p>
+<blockquote><span>df \approx \frac{∂f}{∂S}\mu S + \frac{1}{2}\frac{∂^2f}{∂S^2}\sigma^2 S^2  =\Delta dS +  \frac{1}{2} \Gamma dS^2</span> </blockquote>
+<p>当工具的值是潜在风险因子的<span>单调函数</span>时，可以使用泰勒展开从风险因子 <span>S</span> 的最坏移动(worst move)中找到 <span>f</span> 值中的最坏移动。例如，对于一个多头看涨期权，当基础价格按 <span>VAR(dS)</span> 下降时，最坏的价值就会实现。该期权的二次VAR为：</p>
+<blockquote><span> VAR_2(dc) = |\Delta |× VAR(dS) - \frac{1}{2}\Gamma \times VAR(dS)^2</span> </blockquote>
+<p>这种方法被称为 <span>\Delta-\Gamma</span> (<b>delta-gamma</b>)，因为它为 <span>\Delta</span>                                                                                    - 正态 VAR提供了一种解析的二阶修正。但这种简单的调整只在收益函数是单调的情况下有效，即期权值 <span>f</span> 和 <span>S</span>                                                                                    之间的一对一关系。该式解释了为什么 <span>\Gamma</span> 为正的期权多头头寸比<span>线性模型</span>的风险更小。相反，期权的空头头寸具有负的
+                                                                                    <span>\Gamma</span> ，因此比线性模型所暗示的风险更大。</p>
+<p>这也适用于固定收益头寸，其中泰勒展开使用修正久期 <span>D^∗</span> 和凸性 <span>C</span> ：</p>
+<blockquote><span>dp \approx \frac{∂P}{∂y} dy + \frac{1}{2}\frac{∂^2P}{∂y^2}(dy)^2 S^2  = (- D^*P)dy  +  \frac{1}{2} CP (dy)^2</span> </blockquote>
+<p>因为价格是基础收益率的单调函数，可以使用泰勒展开从收益率的最坏变动中找出债券价格的最坏下跌。称之为 <span>dy^∗ = VAR(dy)</span> ，有：</p>
+<blockquote><span>(Worst ·dP) = P(y_0 + dy^∗) − P(y_0) \approx  (- D^*P)(dy^*)  +  \frac{1}{2} CP (dy^*)^2</span> </blockquote>
+<p>类似可以得到：</p>
+<blockquote><span> VAR(dP) = |-D^* P |× VAR(dy) - \frac{1}{2}(C P) \times VAR(dy)^2</span> </blockquote>
+<p>下图显示了期限为三个月的看涨期权的风险。结果表明，非线性的程度也与区间有关。由于两周的VAR区间，S的可能值的范围非常窄。如果S服从正态分布，则期权值近似正态分布。然而，如果将VAR区间设定为两个月，那么风险敞口中的非线性与更大范围的价格波动相结合，就会形成一个更加有偏的分布。</p>
+<figure><img src="https://pic2.zhimg.com/v2-0ede872fb2afd86c8e4127d052ec7d9b_1440w.jpg" width="1738"/></figure>
+<p>因此，对于一般的期权，只要VAR区间保持较短，线性近似可能就足够了。对于更奇特的期权，或更长的VAR区间，风险经理必须考虑非线性。</p>
+<p>⭐ <b>Q14.13 </b>An option on the Bovespa stock index is struck on 3,000 Brazilian reais(BRL). The delta of the option is 0.6, and the annual volatility of the index is24%.
+                                                                                        Using delta-normal assumptions, what is the 10-day VAR at the 95%confidence level? Assume 260 days per year.</p>
+<ul>
+<li>a. 44 BRL</li>
+<li>b. 139 BRL</li>
+<li>c. 2,240 BRL</li>
+<li>d. 278 BRL</li>
+</ul>
+<p>解析：选 b 。线性VAR是由指标值的最坏变动而来的，为 <span>\alpha S\sigma\sqrt T</span> = 1.645 × 3,000(24%/ 260^0.5) * 10^0.5
+                                                                                        = 232.3。乘以0.6得到139。</p>
+<p>⭐ <b>Q14.14 </b>An investor is long a short-term at-the-money put option on an underlying portfolio of equities with a notional value of USD 100,000. If the 95% VAR of
+                                                                                        the underlying portfolio is 10.4%, which of the following statements about the VAR of the option position is correct when second-order terms are considered?</p>
+<ul>
+<li>a. The VAR of the option position is slightly more than USD 5,200.</li>
+<li>b. The VAR of the option position is slightly more than USD 10,400.</li>
+<li>c. The VAR of the option position is slightly less than USD 5,200.</li>
+<li>d. The VAR of the option position is slightly less than USD 10,400.</li>
+</ul>
+<p>解析：选 c 。delta必须在0.5左右，这意味着线性VAR为$100,000 × 10.4% × 0.5 = $5,200。该头寸是做多期权并且有正的gamma。因此，二次VAR必须低于$5,200。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

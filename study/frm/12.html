@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C12 风险模型 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C12 风险模型">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C12 风险模型</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、金融市场风险概论</h2>
+<h3>1、<span>金融风险</span>的类型</h3>
+<p>金融风险包括<span>市场风险</span>、<span>信用风险</span>和操作风险。<b>市场风险</b>是由于金融市场价格波动或波动而造成损失的风险。这通常包括<b>流动性风险</b>，这是由于需要清算头寸以满足融资要求而造成的损失风险。不幸的是，流动性风险无法被正式量化。<b>信用风险</b>是由于交易对手不愿或不能履行合同义务而造成损失的风险。<b>操作风险</b>是由于失败或不充分的内部流程、系统和人员或外部事件造成的损失风险。</p>
+<p>例如，信用风险可以与其他类型的风险相互作用。在最基本的层面上，它涉及资产的违约风险，比如贷款或债券。然而，在资产交易时，市场风险也反映了信用风险。以公司债券为例。一些价格变动可能是由于<span>无风险利率</span>的变动，这是纯粹的市场风险。剩余部分将反映出市场对违约可能性看法的变化。因此，对于交易资产而言，市场和信用风险并没有明确的界定。必须进行一些任意的分类。此外，操作风险也经常涉及。</p>
+<p>考虑一个简单的交易，交易者从A银行购买了价值100万英镑的现汇。当前的汇率是1.5美元/英镑，在两个工作日内结算。因此，银行必须在两天内交付150万美元，以换取收到100万英镑。这个简单的交易包含了一系列的风险：</p>
+<ul>
+<li>市场风险：当日<span>即期汇率</span>可能会发生变化。假设几个小时后，汇率升至1.4美元/英镑。该<span>交易员</span>削减头寸，并与另一家银行B进行现货出售。这一百万英镑现在只值140万美元。10万美元的损失是投资市场价值的变化。</li>
+<li>信用风险：第二天，B银行破产了。交易者现在必须与C银行进行新的替换交易。如果即期汇率从1.4美元/英镑进一步下降到1.35美元/英镑，那么与B银行进行即期交易获得的50,000美元收益现在面临风险。损失是<span>投资市场</span>价值的变化，如果是正的。因此，市场风险与信用风险之间存在着相互作用。</li>
+<li><span>结算风险</span>：第二天上午，银行将150万美元电汇给A银行，A银行中午违约，没有兑现承诺的100万英镑。这也被称为<b><span>赫斯塔特风险</span></b>(Herstatt risk)，因为这家德国银行在1974年违约，可能会破坏整个金融体系的稳定。现在损失可能是全部的美元本金。</li>
+<li>操作风险：假设我们的银行将这150万美元汇到了错误的银行D银行。两天后，我们的后台办公室取回这笔钱，然后将这笔钱汇到A银行，再加上补偿利息。损失是应付金额的利息。</li>
+</ul>
+<h3>2、风险管理的工具</h3>
+<p>在过去，风险是用各种特殊的工具来衡量的，这些工具在不同类型的风险中没有可比性。其中包括<b>名义数额</b>(notional amounts)和<b>敏感性度量</b>(sensitivity measures)。虽然这些<span>测量方法</span>提供了一种有用的风险直觉，但它们不能对整个投资组合的潜在下行损失提供一致的估计。他们没有考虑到不同市场波动的差异，不同风险因素之间的相关性，以及风险因素不利变动的可能性。</p>
+<p>例如，考虑一个5年期<b>逆浮动</b>(inverse floater)，它的<span>票面利率</span>为16%减去当前LIBOR的两倍(如果为正)，<span>名义本金</span>为1亿美元。该票据的初始市场价值为1亿美元。这种类型的投资对利率变动极为敏感。如果利率上升，息票支付将急剧下降。此外，<span>贴现率</span>也有所提高。与所有债券一样，这种投资可以通过将未来的
+                                            <span>现金流</span>折现到现在来定价。较低的现金流和较高的贴现率的组合将推动债券价格大幅下跌。</p>
+<p>问题是，在特定期限内，投资者在这项投资中可能会损失多少? <b>名义数额</b>只是间接的信息。最坏的情况是利率超过8%。在这种情况下，息票将下降到16−2 × 8 = 0。债券变成了零息债券，价值6800万美元，以8%折现。这就产生了100美元−68美元= 3200万美元的损失。虽然规模相当大，但仍低于名义上的数字。</p>
+<p>像<span>久期</span>这样的<b>敏感性度量</b>更有帮助。在这种情况下，债券的期限是类似五年期债券的三倍，即D= 3 × 4.5 = 13.5年。因此，如果利率上升1%，债券价值将损失13.5%。这种持续时间衡量方法揭示了债券对利率的极端敏感性，但并没有回答利率是否可能出现这种灾难性变化的问题。它还忽略了票据价格和收益率之间的非线性关系。</p>
+<p>另一个普遍的问题是，这些<span>敏感性指标</span>不允许投资者将不同市场的风险综合起来。假设这个投资者还持有一种以欧元计价的债券。风险是叠加在一起，还是相互分散?</p>
+<p>VAR为所有这些问题提供了统一的答案。一个数字综合了整个投资组合的风险，考虑了杠杆和<span>分散投资</span>，并提供了一个具有相关概率的<span>风险度量</span>。如果收益率在95%水平上的最坏增长是明年的1.65%，我们可以计算VAR为：</p>
+<blockquote>VAR = (Market Value × Modified Duration) × Worst Yield Increase</blockquote>
+<p>在这种情况下，VAR = $100 * 13.5 * 0.0165 = $22 million。投资者现在可以这样陈述:在95%的信心水平下，最严重的损失大约是 $22 million。风险经理现在可以用一种简单、直观的方式来解释投资的风险。</p>
+<p>过去和现在，人们一直使用名义数量和风险暴露等措施来设定限度，试图在风险发生之前，<b>事前</b>控制风险。这些措施还应辅以风险价值，这是一种事先衡量潜在美元损失的方法。其他风险管理工具包括<b>止损</b>(stop losses)，止损是在损失发生后，即<b>事后</b>强制减仓的规则。虽然止损是有用的，尤其是在趋势市场中，但它们只能提供部分保护，因为它们是在亏损后使用的。换句话说，现在太晚了，除非能阻止进一步的损失。</p>
+<h3>3、损失的来源</h3>
+<p>债券的价值变化可以描述为：</p>
+<blockquote><span>dP = −(D^∗P) × dy</span> </blockquote>
+<p>其中 <span>D^∗P</span> 是<span>美元久期</span>， <span>dy</span> 是收益率的变化。这说明了一个一般的原则，即两个组成部分的组合可能导致损失：</p>
+<ul>
+<li>该因素的风险敞口，或美元久期。这是一个表示头寸的选择变量。</li>
+<li>移动本身就是风险因素。这是投资组合的外部因素。</li>
+</ul>
+<p>这是一个一般的分解。它也适用于系统性风险，或股票市场的风险敞口。由于存在市场 <span>R_M</span> 和一些剩余风险，我们一般可以将股票 <span>i</span> ， <span>R_i</span> 的收益分解为一个分量：</p>
+<blockquote><span>R_i = \alpha_i + \beta_i × RM + \epsilon_i ≈ \beta_i × R_M</span> </blockquote>
+<p>我们忽略常数 <span>\alpha_i </span> ，因为它对风险没有贡献，也忽略分散的残差 <span> \epsilon_i</span> 。注意，
+                                                            <span>R_i</span> 在这里是用<b>收益率</b>表示的，因此没有维度。美元价格的变化：</p>
+<blockquote><span>dP_i = R_i P_i ≈ (\beta P_i ) × R_M</span> </blockquote>
+<p><span>(\beta P_i ) </span> 是敞口(exposure)，一个选择变量。这个线性敞口的概念也适用于一个被定义为 <span>\Delta</span>                                                            的期权delta，即期权的一阶<span>偏导数</span>。 <span>f</span> 的导数值的变化可以用标的资产 <span>S</span>                                                            的价格变化来表示：</p>
+<blockquote><span>df = (\Delta) × dS</span> </blockquote>
+<p>所有这些都表明，价值的变化与敞口系数和市场变量的变化有关：</p>
+<blockquote>Market Loss = Exposure × Adverse Movement in Financial Variable</blockquote>
+<p>可以通过改变投资组合的敞口来管理投资组合的风险。例如，将一个债券投资组合转换为现金，将创造一个零美元久期，在这种情况下，利率变动对投资组合的价值没有影响。更一般地说，投资组合价值与风险因素之间的关系不一定是线性的。</p>
+<p>⭐ <b>Q12.1 </b>Which of the following statements about trader limits are correct?</p>
+<ul>
+<li>I. Stop loss limits are useful if markets are trending.</li>
+<li>II. Exposure limits do not allow for diversification.</li>
+<li>III. VAR limits are not susceptible to arbitrage.</li>
+<li>IV. Stop loss limits are effective in preventing losses.<br/></li>
+<li>a. I and II</li>
+<li>b. III and IV</li>
+<li>c. I and III</li>
+<li>d. II and IV</li>
+</ul>
+<p>解析：选 a 。<span>止损限额</span>(Stop loss limits)在发生损失后减少头寸，这在市场趋势下是有用的。风险敞口限额(Exposure limits)不允许分散投资，因为没有考虑相关性。VAR限额可以被套利，特别是在弱VAR模型下。最后，止损限额是在发生损失后才设置的，因此不能防止所有损失。</p>
+<h2>二、风险度量系统的组成部分</h2>
+<p>风险度量系统结合了以下三个步骤：</p>
+<ul>
+<li>收集<b>投资组合的头寸</b>，并将其与风险因素联系起来</li>
+<li>从市场数据，构建<b>风险因素</b>的分布，例如正态的、经验的或其他</li>
+<li>使用三种方法之一（参数法、历史法、蒙特卡罗法）构建<b>投资组合的收益分布</b>，并用VAR总结下行风险</li>
+</ul>
+<p>风险系统的组成部分的图示如下：</p>
+<figure><img src="https://picx.zhimg.com/v2-eba171d5a2a8910c41dd72513c62535b_1440w.jpg" width="1624"/></figure>
+<h3>1、投资组合头寸</h3>
+<p>从投资组合头寸开始。在这个例子中，当前的头寸是做空日元，金额为 $4 billion。假设区间内的所有头寸都是恒定的。当然，在一个交易员积极周转投资组合的环境中，这是不可能的。这里是一种简化。</p>
+<p>真实风险可以大于或小于VAR度量。如果风险价值是基于反映较低的交易者限制的接近接近的头寸，并且交易者在一天中承担更多的风险，那么它可能会更大。相反，如果管理层实施损失限制，换句话说，如果出现损失，降低交易员可以承担的风险，真正的风险就会更低。</p>
+<h3>2、<span>风险因子</span></h3>
+<p>接下来是风险因子的选择。在这个单一头寸的例子中，主要的风险因子显然是日元/<span>美元汇率</span>的变化。我们首先收集相关的汇率历史记录。在这个例子中，传统风险模型将给出有用的结果，因为历史数据揭示了风险因子中的许多变化，这些变化代表了未来的风险。</p>
+<p><b>风险因子</b>代表了所有市场变量的子集，这些变量充分跨越了当前或允许的投资组合的风险。对于大型投资组合来说，实际上有成千上万种证券可供选择，但有用的风险因子却有限得多。</p>
+<p>关键是要选择适合投资组合的市场因子。对于一个简单的固定收益投资组合，一个债券市场风险因子可能就足够了。相比之下，对于一个高杠杆的投资组合，就需要多重风险因子。对于一个期权投资组合，波动率应该作为风险因子加进去。一般来说，策略越复杂，需要使用的风险因子就越多。</p>
+<h3>3、投资组合分布</h3>
+<p>最后，关于投资组合头寸和风险因素变动的信息应该结合起来建立投资组合收益的分布。</p>
+<p>对于简单的投资组合，简单的方法可能就足够了。对于固定收益的投资组合，线性方法可能就足够了。相反，如果投资组合包含期权，就需要包含非线性效应。简单的普通期权可以用<span>一阶导数</span> <span>\Delta</span> 和二阶导数
+                                                            <span>\Gamma</span> 来近似<span>价格行为</span>。对于更复杂的期权，如二元期权或<span>障碍期权</span>，这可能还不够。</p>
+<p>风险管理人员需要做出合理的近似，以得出成本效益的风险度量。他们还需要意识到，交易员可能会被诱导去发现风险管理系统中的漏洞。一旦这个风险度量系统就位，它也可以用来进行压力测试。风险管理人员可以轻松地将当前的投资组合提交到各种场景中，这些场景是简单地预定义了风险因素中的移动。因此，压力测试是对VAR系统的简单扩展。</p>
+<p>⭐ <b>Q12.2 </b>The standard VAR calculation for extension to multiple periods also assumes that positions are fixed. If risk management enforces loss limits, the true VAR will be</p>
+<ul>
+<li>a. The same</li>
+<li>b. Greater than calculated</li>
+<li>c. Less than calculated</li>
+<li>d. Unable to be determined</li>
+</ul>
+<p>解析：选 c 。真正的VAR将小于计算值。当损失累积时，损失限制减少了头寸。这类似于看涨期权的多头头寸，当价格上涨时delta值会增加，反之亦然。多头头寸缩短了期权的左尾，因此比无保护头寸的风险更小。</p>
+<h2>三、下行风险度量</h2>
+<h3>1、VAR的定义</h3>
+<p>风险价值(VAR)在1993年得到30国集团(G-30)的赞同后，成为一种<span>风险衡量</span>。VAR是一种以美元或参考货币表示的下行风险的总称。一般的定义是：<u>VAR是指在目标区间内的最大损失，这种损失有一个低的、预先指定的概率，即实际损失将会更大</u>。</p>
+<h3>2、VAR：历史模拟</h3>
+<p>回到40亿美元做空日元的头寸。要衡量其风险，可以使用10年日元兑美元汇率的每日历史数据，比如从2000年到2009年。然后，以美元为单位模拟每日回报为：</p>
+<blockquote><span>R_t($) = Q_0($)[S_t − S_{t−1}]/S_{t−1}</span> </blockquote>
+<p>其中 <span>Q_0</span> 是该头寸当前的美元价值， <span>S</span> 是连续两天以日元对美元的即期汇率。例如，假设有两天 <span>S_1</span> = 112.0和 <span>S_2</span> = 111.8。模拟的回报率为：</p>
+<blockquote><span>R_2($)</span> = $4,000 million × [111.8 − 112.0]/112.0 = −$7.2 million</blockquote>
+<p>在整个样本(或2527个交易日)中重复这个操作，将创建一个假想收益的时间序列。这种方法被称为<b>历史模拟</b>(historical simulation)，因为它利用最近的历史来模拟当前的投资组合。</p>
+<p>现在可以构造每日收益的频率分布。这是基于从最坏到最好的有序损失。例如，在1.5亿美元以下有两个损失，在1.5亿到1亿美元之间有八个损失，以此类推。现在要用一个数字来概括这个分布。我们可以描述<span>分位数</span>，也就是在某个高<span>置信水平</span>下不会超过的损失水平。例如，将这个置信水平选择为
+                                                            <span>c</span> = 95%。这对应于右尾概率。我们也可以用左尾概率来定义VAR，我们将其写成 <span>p = 1−c</span> 。</p>
+<p>定义 <span>x</span> 为美元的利润或损失。VAR通常以正数报告，即使它是亏损。它由隐式定义：</p>
+<blockquote><span> c = \int_{-VAR}^{\infty}f(x)dx </span> </blockquote>
+<p>当结果是离散的，VAR是最小的损失，因此右尾概率至少为 <span>c</span> 。有时，VAR被报告为均值和分位数之间的偏差。第二个定义比通常的定义更加一致。因为它考虑目标日期上两个值之间的偏差，所以它考虑了货币的时间价值。然而，在大多数应用中，时间范围非常短，在这种情况下，金融系列的平均回报接近于零。因此，这两个定义通常给出相似的值。</p>
+<p>在这个<span>对冲基金</span>的例子中，我们想要找到临界值 <span>R^∗ &gt; 0</span> 使得损失比 <span>-R^∗ </span>                                                            更严重的概率为 p = 1 - c = 5%。总共有T = 2,527个观察，这相当于左尾总共有pT = 0.05 * 2,527 = 126个观察。我们从有序分布中选取临界值， <span>R^∗</span> = $42 million。我们现在可以这样陈述：在95%的置信水平下，一天内的最大损失约为$42
+                                                            million。它以一种名义金额或敞口无法传达的方式描述风险。</p>
+<h3>3、VAR：参数</h3>
+<p>测量VAR的另一种方法是假设收益分布属于一个特定的密度函数，例如<span>正态分布</span>。不过，也可以使用其他发行版。离散参数(dispersion parameter)用通常的标准差(SD)来测量，定义为：</p>
+<blockquote><span>SD(X) = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N}[x_i-E(X)]^2}</span> </blockquote>
+<p>这种测量方法的优点是它考虑了所有的观测结果，而不仅仅是分位数周围的少数观测结果。例如，任何较大的负值都会影响方差的计算，增加SD(X)。如果我们愿意对分布的形状采取立场，比如正态分布或Student 's t，我们确实知道标准差是离散度最有效的度量。例如，对于我们的日元头寸，这个值是SD = $26.8 million。</p>
+<p>我们可以将这个<span>标准偏差</span>转化为一个VAR度量，使用一个取决于分布和所选置信水平 <span>c</span> 的乘数 <span>\alpha(c)</span>                                                                ：</p>
+<blockquote><span>VAR = \alpha \sigma W</span> </blockquote>
+<p>其中 <span> \sigma</span> 是回报率的波动率， <span>W</span> 是投资金额，以参考货币衡量。这里 <span>SD = \sigma W</span> ，用美元表示。在正态分布下， <span>c</span> = 95%， <span>\alpha</span>                                                                = 1.645。这使VAR估值为1.645 * 26.8 = 4400万美元，这离 $42 million 的经验分位数不远。</p>
+<p><span>VAR = \alpha \sigma W</span> 度量了相对于平均值的VAR，因为标准偏差是围绕平均值的离散度的度量。如果衡量相对于初始值的损失是重要的，那么VAR就是：</p>
+<blockquote><span>VAR = (\alpha \sigma -\mu )W</span> </blockquote>
+<p><span>\mu</span> 是区间内的<span>预期收益率</span>。在这种情况下，平均值非常小，为−$0.1 million，这几乎不影响VAR。</p>
+<p>标准差的缺点是它是对称的，不能区分巨大的损失或收益。此外，从SD计算VAR需要一个分布假设，这可能是无效的。使用标准差来计算VAR是<b>参数方法</b>(parametric approach)的一个例子（因为它依赖于带参数的分布）。在前一节中，VAR是从经验分布计算的，这是一个<b><span>非参数方法</span></b>(nonparametric
+                                                                approach)的例子。</p>
+<h3>4、VAR：蒙特卡罗</h3>
+<p>最后，第三种风险度量方法是使用<span>蒙特卡罗模拟</span>来模拟收益。这涉及到假设风险因素分布有一个特定的密度，然后从这些分布中抽取随机样本，以产生投资组合的回报。</p>
+<p>⭐ <b>Q12.3 </b>The 10-Q report of ABC Bank states that the monthly VAR of ABC Bank is USD 10 million at the 95% confidence level. What is the proper interpretation of this statement?</p>
+<ul>
+<li>a. If we collect 100 monthly gain/loss data of ABC Bank, we will always see five months with losses larger than $10 million.</li>
+<li>b. There is a 95% probability that the bank will lose less than $10 million over a month.</li>
+<li>c. There is a 5% probability that the bank will gain less than $10 million each month.</li>
+<li>d. There is a 5% probability that the bank will lose less than $10 million over a month.</li>
+</ul>
+<p>解析：选 b 。VAR是最严重的损失，有95%的概率损失会不那么严重，有5%的可能性损失会更严重。</p>
+<h3>5、VAR：注意事项</h3>
+<p>VAR是一种有用的风险衡量方法，但需要注意：</p>
+<p><u><b>第一，VAR不能描述可能的最坏损失</b></u>。这并不是设计VAR来衡量的。我们期望VAR数值以p的频率被超过，即95%置信水平下的100天中的5天。这很正常。事实上，设计回测程序是为了检查超出的频率是否与p一致。</p>
+<p><u><b>第二，VAR不能描述左尾的损失</b></u>。VAR并没有说明其左尾的损失分布。它只是表示这样一个值发生的概率。然而，对于相同的VAR数字，可以有非常不同的分布形状。下图的上半部分中，超过4200万美元的损失的平均价值在6300万美元左右，比VAR差50%，所以超过2亿美元的损失是不寻常的。</p>
+<figure><img src="https://pic3.zhimg.com/v2-2b50c89a73d819b876821d740fb672ce_1440w.jpg" width="1150"/></figure>
+<p>但是，在保持相同的VAR的情况下，也可以进行其他分布。上图的下半部分显示了125次出现1.6亿美元的大损失的分布。因为仍然有一个观察值略低于4200万美元，VAR保持在4200万美元不变。然而，这种分布意味着，与最初的分布不同，它极有可能遭受巨额损失。</p>
+<p>这会产生其他奇怪的结果。例如，我们可以构造一些例子，其中一个投资组合的VAR大于其组件的VAR之和。在这种情况下，可以说风险度量不符合<b><span>次可加性</span></b>(subadditivity)性质。然而，标准差是次加性的，一个投资组合的标准差必须小于，或者最坏等于子投资组合的标准差之和。因此，从标准差计算的VAR也是次加性的。</p>
+<p><b><u>第三，VAR的测量有一定的误差</u></b>。VAR数值本身受正常抽样变化的影响。示例中使用了10年的日常数据。另一个样本周期，或不同长度的周期，将导致不同的VAR数。不同的<span>统计方法</span>或简化也可能导致不同的VAR数字。人们可以用样本周期和方法来实验VAR的准确性。VAR数字的精度是有限。重要的是一阶数量级。例如，将VAR报告为419.89万美元是没有意义的。在这种情况下，只有前两位数字是有意义的。</p>
+<p>参数化方法的优点是比历史模拟方法更精确地估计VAR。这是因为标准差估计器使用了样本中的所有观测值，而<span>样本分位数</span>除了左尾的计数外，只使用了一两个观测值。</p>
+<p>此外，基于近期历史数据的窗口，VAR指标也会遇到影响所有风险指标的相同问题。理想情况下，过去的窗口应该反映未来结果的范围。否则，所有基于近期历史数据的风险衡量都可能具有误导性。</p>
+<h3>6、风险的替代衡量</h3>
+<p>传统的VAR度量是用美元度量的分布分位数。这个简单的数字是一个方便的总结，但它的简单性可能是危险的。我们在之前的VAR图看到，相同的VAR可以隐藏非常不同的分布模式。<b><a href="https://zhuanlan.zhihu.com/p/416165417">第15章</a></b>回顾了风险度量的可取性质，并表明VAR在某些条件下可以显示出不可取的性质。特别是，一个投资组合的VAR可能大于子投资组合VAR的总和。如果是这样，合并投资组合会增加风险，这是一个意想不到的结果。接下来描述风险的其他度量方法。</p>
+<p><b><span>条件风险价值</span></b>(Conditional VAR, CVAR)</p>
+<p>一个相关的概念是损失的期望值，当它超过VAR时，它衡量的是损失大于VAR的情况下的平均损失。将VAR数定义为 <span>q</span> 。形式上，CVAR是负的：</p>
+<blockquote><span>E[X | X &lt; q] = \frac{\int_{-\infty}^{q}xf(x)dx }{\int_{-\infty}^{q}f(x)dx }</span> </blockquote>
+<p>注意，分母代表的是损失超过VAR的概率，也是 <span>p = 1 − c</span> 。这一比率也被称为<b>预期差额</b>(expected shortfall)、<b>尾部条件预期</b>(tail conditional expectation)、<b>条件损失</b>(conditional
+                                                                            loss)或<b>预期尾部损失</b>(expected tail loss)。CVAR表示投资组合超过VAR时的潜在损失。因为CVAR是尾部损失的平均值，所以可以证明它是次加性风险度量。对于我们的日元头寸，超过4,200万美元VAR的平均损失是CVAR = 6,300万美元。</p>
+<p><b>半标准差</b>(Semistandard Deviation)</p>
+<p>这是对通常标准偏差的简单扩展，通常标准差只考虑表示损失的数据点。将 <span>N_L</span> 定义为这些点的个数：</p>
+<blockquote><span>SD_L(X) = \sqrt{\frac{1}{N_L}\sum_{i=1}^{N}[Min(x_i,0)]^2}</span> </blockquote>
+<p>这种测量方法的优点是它考虑了分布的不对称性，例如负偏态，这是特别危险的。半标准差有时被用来报告下行风险，但不像VAR那么直观，也不那么流行。</p>
+<p><b>回撤</b>(Drawdown)</p>
+<p>回撤是指在固定的时间间隔内从峰值开始的下降。定义 <span>x^{MAX}</span> 为时间 <span>t_{MAX}∈[0,T]</span>                                                                                内的局部最大值。相对于这个值，在 <span>t</span> 时刻的回撤是：</p>
+<blockquote><span>DD(X) = \frac{(x^{MAX} - x_t)}{x^{MAX}}</span> </blockquote>
+<p>最大回撤(maximum drawdown)是在这段时间内最大的这样的值，或者从峰值下降到低谷，局部的最大值到局部的最小值。</p>
+<p>如果收益不是独立于不同时期的，这个度量是有用的。例如，当市场趋势变化时，较长时期的累积损失大于较短时期的推断损失。或者，如果投资组合是积极管理的，提取是有用的风险度量。例如，一个投资组合保险计划相对于风险资产的固定头寸应该有更低的提款，因为随着损失累积，它会削减头寸。</p>
+<p>这种措施的缺点是它是滞后的。它不能像VAR那样从当前位置构造。此外，最大下降对应于不同的时间间隔(即 <span>t_{MAX}- t_{MIN}</span> )。因此，与固定水平或按年定义的VAR或标准差相比，最大下降指标不能在整个投资组合中直接进行比较。</p>
+<p>⭐ <b>Q12.4 </b>Given the following 30 ordered percentage returns of an asset, calculate the VAR and expected shortfall at a 90% confidence level: −16,−14,−10,−7,−7,−5,−4,−4,−4,−3,−1,−1,
+                                                                                0, 0, 0, 1, 2, 2, 4, 6, 7, 8, 9, 11, 12, 12,14, 18, 21, 23.</p>
+<ul>
+<li>a. VAR (90%) = 10, expected shortfall = 14</li>
+<li>b. VAR (90%) = 10, expected shortfall = 15</li>
+<li>c. VAR (90%) = 14, expected shortfall = 15</li>
+<li>d. VAR (90%) = 18, expected shortfall = 22</li>
+</ul>
+<p>解析：选 b 。低于10%的截止点(cutoff point)是第三个最小的观察值，即VAR = 10。<span>预期损失</span>(expected shortfall)是尾部观察值的平均值15。</p>
+<p>⭐ <b>Q12.5 </b>Worse-than-VAR scenarios are defined as scenarios that lead to losses in the extreme left tail of the return distribution equal to or exceeding VAR at a given
+                                                                                    level of confidence. Which of the following statements is an accurate description of VAR?</p>
+<ul>
+<li>a. VAR is the average of the worse-than-VAR scenario returns.</li>
+<li>b. VAR is the standard deviation of the worse-than-VAR scenario returns.</li>
+<li>c. VAR is the most pessimistic scenario return (maximum loss) from the worse-than-VAR scenarios.</li>
+<li>d. VAR is the most optimistic scenario return (minimum loss) from the worse-than-VAR scenarios.</li>
+</ul>
+<p>解析：选 d 。CVAR是比VAR严重的损失的平均值，选项a不正确。用绝对值表示，VAR比CVAR所用的任何其他损失都要低，所以VAR一定是最乐观的损失。</p>
+<h2>四、VAR的参数</h2>
+<p>为了度量VAR，我们首先需要定义两个定量参数：置信水平和观测区间。</p>
+<h3>1、置信水平</h3>
+<p><u>置信水平c越高，VAR测量值越大</u>。改变置信水平可以提供关于回报分布和潜在的极端损失的有用信息。然而，尚不清楚是否应该在99%、99.9%、99.99%或更高。这些价值中的每一个都会造成越来越大的损失，但这种损失的可能性越来越小。</p>
+<p>另一个问题是，<u>随着c的增加，低于VAR的出现次数减少，导致高分位数的测量不佳</u>。例如，在1000个观测值中，VAR可以作为第10个最低观测值，其置信度为99%。如果置信水平增加到99.9%，则只从最低的观察值取VAR。最后，没有简单的方法可以从这个样本中估算出99.99%的VAR，因为它的观测值太少了。</p>
+<p>置信水平的选择取决于VAR的使用。在大多数应用中，VAR只是一个衡量下行风险的基准。如果是这样，那么真正重要的是各个交易柜台或时间之间的VAR信心水平的<u>一致性(consistency)</u>。</p>
+<p>相反，如果VAR数字被用来决定要留出多少资金以避免破产，那么高的置信水平是可取的。显然，机构宁愿很少破产。然而，这种<b><span>资本充足率</span></b>(capital adequacy)使用适用于整个机构，而不适用于交易部门。</p>
+<p>另一个重要的一点是，VAR模型只有在可以验证的情况下才有用。这就是回测的目的，系统地检查损失超过VAR的频率是否与 <span>p = 1 - c</span> 一致。为此，风险管理者应该选择一个不太高的c值。举个例子，c = 99.99%将导致平均10,000个交易日中超过1个交易日，即40年。换句话说，我们将无法验证VAR的真实概率是否确实为99.99%。出于所有这些原因，通常的建议是选择一个不太高的置信水平，例如95%到99%。</p>
+<h3>2、观测区间</h3>
+<p>观测区间(horizon) <span>T</span> 越长，VAR的度量就越大。这种推断是由两个因素驱动的：风险因素的行为和投资组合头寸。为了从一天的范围推断到更长的范围，我们需要假设收益是<span>独立同分布</span>的(i.i.d)。如果是这样，每日波动率可以通过乘以时间的平方根转化为多日波动率。我们还需要假设日收益的分布在较长时期内是不变的，这将分布的类别限制在所谓的稳定家族，例如正态分布。如果满足，则：</p>
+<blockquote><span>VAR(T·days) = VAR(1·day) × \sqrt{T}</span> </blockquote>
+<p>这需要：</p>
+<ul>
+<li>(1) 分布不随观测区间改变，即相同的 <span>\alpha</span> 对于正态的情况</li>
+<li>(2) 分布对于不同的观测区间都是一样的，即方差中没有时间衰减(time decay)</li>
+<li>(3) 变革(innovation)在每天是独立的</li>
+</ul>
+<p>因此，<b>通过乘以时间的平方根，VAR可以从1天的范围扩展到T天。这种调整对于具有正态分布的独立同分布(i.i.d)回报率是有效的</b>。</p>
+<p>观测区间的选择还取决于投资组合的特点。如果头寸变化迅速，或者风险敞口（例如期权delta）随着基础价格的变化而变化，增加观测区间将导致VAR度量的下滑。</p>
+<p>同样，观测区间的选择取决于VAR的使用。<u>如果目的是提供一个准确的下行风险基准衡量，期限应该相对较短，理想情况下小于主要投资组合再平衡的平均时间</u>。</p>
+<p>相反，如果VAR数字被用来决定要留出多少资金以避免破产，那么一个长期的观测区间是可取的。出于资本充足率的目的，当问题开始出现时，机构将希望有足够的时间采取<span>纠正行动</span>。VAR期限也应该足够长，以允许有秩序地平仓。换句话说，应该用更长的观测区间来评估流动性较差的资产。</p>
+<p>在实践中，观测区间不能少于报告损益(P&amp;L)的频率。一般来说，银行是按日计算损益，而企业则是按更长的观测区间(从日到月)计算损益。这个区间是VAR的最小水平。</p>
+<p>另一个标准与回测的需要有关。更短的时间区间会产生更多的数据点，这些数据点可以用来将VAR与随后的损益相匹配。对于统计测试来说，拥有更多的数据点意味着测试将更加强大，或者更有可能识别VAR模型中的问题。因此，出于回测的目的，明智的做法是将观测区间设置得越短越好。</p>
+<p>出于所有这些原因，通常的建议是为交易柜台选择一个尽可能短的观测区间，比如一天。例如，对于养老基金等机构，一个月的观测区间可能更合适。</p>
+<p>总之，置信度和观测区间的选择取决于风险度量的预期用途。出于回测的目的，我们应该选择一个低置信水平和一个短期的观测区间。就资本充足率而言，需要有高度的置信水平和长的观测区间。在实践中，这些相互冲突的目标可以通过更复杂的规则加以容纳，就像巴塞尔市场风险收费一样。</p>
+<h3>3、应用：<span>巴塞尔协议</span></h3>
+<p>风险模型的一个重要用途是用于资本充足率目的。巴塞尔银行监管委员会(Basel Committee on Banking Supervision)为商业银行制定了最低资本要求，以应对其交易组合的市场风险。该规定规定了以银行内部VAR指标为基础的<b>市场风险费用</b>(MRC, Market Risk Charge)。1996年制定的原始规则要求下列参数：</p>
+<ul>
+<li>10个交易日，或两个日历周</li>
+<li>99%的<span>置信区间</span></li>
+<li>根据至少一年的历史数据并至少每季度更新一次的观察期</li>
+</ul>
+<p>根据1996年定义的<b>内部模型方法</b>(IMA, Internal Models Approach)， MRC包括<b>一般市场风险收费</b>(GMRC, general market risk charge)和其他组成部分：</p>
+<blockquote><span>GMRC_t = Max( \frac{k}{60} \sum_{i=1}^{60} VAR_{t-i}, VAR_{t-1})</span> </blockquote>
+<p>GMRC包括过去60天的交易VAR平均值，乘以监管者决定的乘数 <span>k</span> （最小值为3），以及昨天的VAR。巴塞尔委员会允许10天的VAR从一天的VAR数据推断出来。因此，VAR为：</p>
+<blockquote><span>{VAR}_t(10, 99\%) = \sqrt{10}* {VAR}_t(1, 99\%) </span> </blockquote>
+<p>大概，如果一家机构开始陷入困境，10天的期限相当于银行监管机构采取纠正行动所需的时间。同样，99%的置信水平对应着银行因市场风险而倒闭的低概率。即便如此，每100个周期出现一次故障意味着故障的高频率。一年中有52/2 = 26个两周的时期。因此，每100/26 = 3.8年应该发生一次故障，这仍然太频繁了。这就解释了为什么巴塞尔委员会使用乘数因子，
+                                                                                                    <span>k \geq 3</span> ，进一步保证安全。此外，这个因素被认为可以防止肥尾、不稳定的参数、变化的位置，以及更普遍的模型风险。2009年，修订了规则，要求至少每个月更新一次。</p>
+<p>⭐ <b>Q12.6 </b>Assume that the P&amp;L distribution of a liquid asset is i.i.d. normally distributed. The position has a one-day VAR at the 95% confidence
+                                                                                                        level of$100,000. Estimate the 10-day VAR of the same position at the 99% confidence level.</p>
+<ul>
+<li>a. $1,000,000</li>
+<li>b. $450,000</li>
+<li>c. $320,000</li>
+<li>d. $220,000</li>
+</ul>
+<p>解析：选 b 。将VAR扩大到99%的水平，$100,000 × 2.326/1.645 = $141,398，再乘以 10^0.5 得到$447,140。</p>
+<p>⭐ <b>Q12.7 </b>Assume that portfolio daily returns are independent and identically normally distributed. Sam Neil, a new quantitative analyst, has
+                                                                                                            been asked by the portfolio manager to calculate portfolio VARs over 10, 15, 20, and 25 days. The portfolio manager notices something amiss with
+                                                                                                            Sam’s calculations, displayed here. Which one of the following VARs on this portfolio is inconsistent with the others?</p>
+<ul>
+<li>a. VAR(10-day) = USD 316M</li>
+<li>b. VAR(15-day) = USD 465M</li>
+<li>c. VAR(20-day) = USD 537M</li>
+<li>d. VAR(25-day) = USD 600M</li>
+</ul>
+<p>解析：选 a 。将每个VAR除以时间的平方根来计算日VAR，例如第一个是316/ 10^0.5 = 100。因此可以得到100, 120, 120, 120。因此a项与其他项不同。</p>
+<p>⭐ <b>Q12.8 </b>The 95%, one-day RiskMetrics VAR for a bank trading portfolio is $1,000,000. What is the approximate general market risk charge, as
+                                                                                                            defined in 1996?</p>
+<ul>
+<li>a. $3,000,000</li>
+<li>b. $9,500,000</li>
+<li>c. $4,200,000</li>
+<li>d. $13,400,000</li>
+</ul>
+<p>解析：选 d 。假设正态分布，将95% VAR转换为99%测度。GMRC为3 × VAR × 10^0.5 = 3 × $1,000,000(2.33)/1.65 × 10^0.5 = $13,396,000。</p>
+<h2>五、压力测试</h2>
+<h3>1、VAR度量的局限性</h3>
+<p>VAR度量具有固有的局限性。另外，由于<b>移动窗口</b>(moving window)的选择，传统的历史模拟应用产生了特殊的问题。这通常使用一到三年的历史数据。</p>
+<p>在始于2007年的信贷危机中，许多银行的风险管理系统失灵。一些银行遭受的损失比他们预期的更频繁、更严重。例如，仅在2007年，瑞银就遭受了29次例外，或者说比VAR更严重的损失，而不是预期的2到3次(即250天中的1%)。这在一定程度上是由于2007年经历了一段较长的稳定时期。2004 - 2006年间，波动率非常低，平均每天为0.7%。其结果是，许多金融机构以高杠杆水平进入2007年。</p>
+<p>然而，银行并不使用EWMA的预测来为自己的风险建模。通常，他们每天使用一个具有相同权重的移动窗口，这本质上是一个<span>移动平均</span>(MA)模型。MA模型系统性地低估了2007年年中开始的EWMA波动率，这解释了大量的例外情况。这一事件的教训是，依赖最近的数据可能不足以评估风险。这就是为什么必须用压力测试来补充传统的VAR模型。</p>
+<h3>2、压力测试的原则</h3>
+<p>风险价值应辅以<b>压力测试</b>(stress-testing)，其目的是确定可能造成巨大损失但看似合理损失的情况。压力测试的一个缺点是，它们比VAR测量方法更主观。VAR数字反映了已实现的风险。相比之下，一个极端的情况，如果它没有反映实际观察，而且看起来太过分，可能更难以被高级管理层接受。</p>
+<p>我们的对冲基金有40亿美元做空日元的头寸，在95%的信心水平上的每日风险价值约为4200万美元。此外，了解损失可能会有多严重也很有帮助。以过去20年为例，汇率的最大变动是1998年10月7日的- 5.4%。这导致了2.15亿美元的压力损失。这样的损失是合理的。</p>
+<p>压力测试是一个关键的风险管理过程，它包括：(1)情景分析；(2)强调模型、波动性和相关性；(3)制定政策回应。<b>情景分析</b>(Scenario analysis)将投资组合提交给金融市场变量的大变动。可以使用多种方法创建这些场景：</p>
+<ul>
+<li><b>每次移动一个关键变量</b>：这是一种简单直观的方法。不幸的是，很难评估财务变量的现实变化。所有变量不太可能同时朝最坏的方向移动。</li>
+<li><b>利用历史情景</b>：例如1987年股市崩盘、1992年英镑贬值、1984年债券市场崩溃、<span>雷曼兄弟</span>破产等等。</li>
+<li><b>创造预期情景</b>：例如研究美国股市崩盘的直接和间接影响。理想情况下，这种情况应该根据手头的投资组合进行调整，评估当前头寸可能发生的最坏情况。</li>
+<li><b><span>反向压力测试</span>：</b>从假设一个巨大的损失开始，然后探究导致这种损失的条件。这种类型的分析迫使机构考虑其他情况，并解决常规压力测试通常不会涉及的问题，例如金融传染。</li>
+</ul>
+<p>压力测试对防范<b>事件风险</b>(event risk)很有用，事件风险是指由于可观察到的政治或经济事件而产生的损失风险。问题（从压力测试的角度来看）在于，此类事件相对较少，而且可能难以预测。这些包括：</p>
+<ul>
+<li><b>政府的变化</b>导致<span>经济政策</span>的变化</li>
+<li><b>经济政策的变化</b>，如违约、资本控制、不可兑换、税法的变化、征用等等</li>
+<li><b>政变、内战、入侵</b>或其他政治不稳定的迹象</li>
+<li><b>货币贬值</b>，通常伴随着其他市场变量的剧烈变化</li>
+</ul>
+<p>即便如此，设计压力测试也不是件容易的事。近年来的情况表明，市场似乎受到了系统性的冲击。例如，似乎没有人预料到俄罗斯的违约。2001年的阿根廷违约在很多方面都是独一无二的。</p>
+<table>
+<tbody>
+<tr>
+<th>案例：阿根廷的动荡</th>
+</tr>
+<tr>
+<td>阿根廷(Argentina)是<span>新兴市场</span>政治风险的一个很好的例子。在2001年之前，<span>阿根廷比索</span>与美元的汇率是一对一的。政府承诺将不惜一切代价捍卫欧元。然而，阿根廷遭受了几十年来最严重的经济危机，再加上过度借贷的成本。<br/>2001年12月，阿根廷宣布将停止支付1350亿美元外债的利息。这是迄今为止有记录以来最大的主权
+                                                                                                                                    <span>债务违约</span>。经济部长卡瓦洛还宣布了对银行存款提款的全面限制，以避免资本外逃。12月20日，在25人死于街头抗议和骚乱之后，Fernando总统辞职。Duhalde总统于1月2日就职，并于1月6日将货币贬值。汇率迅速从1比索兑1美元上升到3比索以上。这些举措本可以通过情景分析纳入风险管理系统。但是，完全出乎意料的是，政府宣布将对银行贷款和存款实行区别对待。以美元计价的银行存款被转换成贬值的比索，但以美元计价的银行贷款以一对一的利率转换成比索。这种错配使得银行系统在技术上大部分处于
+                                                                                                                                        <span>资不抵债</span>状态，因为隔夜贷款(银行资产)的价值低于存款(银行负债)。尽管风险管理人员曾考虑过货币贬值对市场风险的影响，但很少有人考虑过这种政治行动的可能性。到2005年，阿根廷政府提议偿还其债务面值的30%。以历史标准来看，这一回收率非常低。</td>
+</tr>
+</tbody>
+</table>
+<p>压力测试的目标是识别潜在的脆弱性区域。这并不是说，该机构应该得到完全的保护，以防任何可能发生的意外，因为这将使它不可能承担任何风险。相反，压力测试和管理层应对措施的目标应该是确保该机构能够承受可能出现的情况，而不会破产。一旦VAR结构到位，压力测试就很容易实施。在本章一开始的图中，所需要做的就是将场景值输入到风险因素输入中。</p>
+<p>⭐ <b>Q12.9 </b>Which of the following statements about stress testing are true?</p>
+<ul>
+<li>I. Stress testing can complement VAR estimation in helping risk managers identify crucial vulnerabilities in a portfolio.</li>
+<li>II. Stress testing allows users to include scenarios that did not occur in the lookback horizon of the VAR data but are nonetheless
+                                                                                                                                possible.</li>
+<li>III. A drawback of stress testing is that it is highly subjective.</li>
+<li>IV. The inclusion of a large number of scenarios helps management better understand the risk exposure of a portfolio.<br/></li>
+<li>a. I and II only.</li>
+<li>b. III and IV only.</li>
+<li>c. I, II, and III only.</li>
+<li>d. I, II, III, and IV.</li>
+</ul>
+<p>解析：选 c 。对于描述IV，太多的情况将使解读风险敞口变得更加困难。</p>
+<p>⭐ <b>Q12.10 </b>Which of the following is true about stress testing?</p>
+<ul>
+<li>a. It is used to evaluate the potential impact on portfolio values of unlikely, although plausible, events or movements in a set
+                                                                                                                                of financial variables.</li>
+<li>b. It is a risk management tool that directly compares predicted results to observed actual results. Predicted values are also
+                                                                                                                                compared with historical data.</li>
+<li>c. Both a. and b. are true.</li>
+<li>d. None of the above are true.</li>
+</ul>
+<p>解析：选 a 。压力测试用来评估极端事件的影响。b项是回测的作用，不是压力测试的。</p>
+<p>⭐ <b>Q12.11 </b>John Flag, the manager of a $150 million distressed bond portfolio, conducts stress tests on the portfolio. The portfolio’s
+                                                                                                                            annualized return is 12%, with an annualized return volatility of 25%. In the past two years, the portfolio encountered several
+                                                                                                                            days when the daily value change of the portfolio was more than 3 standard deviations. If the portfolio would suffer a 4-sigma
+                                                                                                                            daily event, estimate the change in the value of this portfolio.</p>
+<ul>
+<li>a. $9.48 million</li>
+<li>b. $23.70 million</li>
+<li>c. $37.50 million</li>
+<li>d. $150 million</li>
+</ul>
+<p>解析：选 a 。 先将波动性转化为每日指标25%/ 10^0.5 =1.57%，然后进一步计算150 × 1.57% × 4 = $9.45。</p>
+<h2>六、VAR：局部估值与全面估值</h2>
+<p>风险模型的一般分类，分为局部估值和全面估值方法。<b>局部估值方法</b>(Local valuation methods)利用当前工具的估值，以及一阶、二阶偏导。与此相反，<b>全面估值方法</b>(Full valuation methods)是根据风险因素的大范围价值来重新定价。下图描述了VAR的各种方法：</p>
+<figure><img src="https://pic2.zhimg.com/v2-c5a16e3d75b2968a29d0d5022b1749d7_1440w.jpg" width="1247"/></figure>
+<p>左分支描述了局部估价方法，也称为<b>分析方法</b>(analytical methods)。这些模型包括<span>线性模型</span>和非线性模型。线性模型是基于<span>协方差矩阵</span>的方法。协方差矩阵可以用因子模型来简化，甚至可以用对角模型，这是一个单因子模型。非线性模型考虑了一阶和二阶偏导数。后者称为Gamma或凸性。接下来，右边的分支描述了完整的估值方法，包括历史或蒙特卡罗模拟。</p>
+<h3>1、局部估值</h3>
+<p>VAR产生于这样一种认识，即我们需要对各种风险来源进行估计，并以概率表示损失。将久期方程延伸到某置信水平下的最坏收益率变化，我们得到：</p>
+<blockquote><span>(Worst ·dP) = (−D^∗P) × (Worst· dy)</span> </blockquote>
+<p>其中 <span>D^∗</span> 是修正久期。对于持有美国国债多头头寸的投资者来说，最糟糕的收益率波动就是95%的信心水平上升。这将导致债券价值在相同的信心水平下降。我们称这种方法为<b>局部估值</b>，因为它使用关于初始价格和初始点风险的信息。因此，债券的VAR为：</p>
+<blockquote><span>VAR(dP) =| −D^∗P | ×VAR(dy)</span> </blockquote>
+<p>更一般地说，<b>delta 中性</b>方法用 delta 敞口来代替所有头寸，并假设风险因素具有<span>多元正态分布</span>。在这种情况下，VAR是</p>
+<blockquote><span>VAR(df ) =| \Delta | VAR(dS)</span> </blockquote>
+<p>这种方法的主要优点是它的简单性：价格的分布与收益率(yield)的变化是相同的。这对于风险来源众多的投资组合尤其方便，因为正态分布的<span>线性组合</span>是正态分布的。下图显示了线性敞口与正态密度(右)的结合如何创建一个正态密度。这个线性模型可以扩展到一个近似值，包含二次项
+                                                                                                                                                delta-gamma，在<b><a href="https://zhuanlan.zhihu.com/p/416165185">第14章</a></b>中详细介绍。</p>
+<figure><img src="https://pic1.zhimg.com/v2-7dbd15ffeee85cc82a15fe667754c3bc_1440w.jpg" width="1254"/></figure>
+<h3>2、全面估值</h3>
+<p>更普遍地说，考虑到非线性关系，人们必须根据不同的收益情况对债券重新定价。定义 <span>y_0</span>                                                                                                                                                        为初始收益率，可得：</p>
+<blockquote><span>(Worst· dP) = P[y_0 + (Worst· dy)] − P[y_0]</span> </blockquote>
+<p>我们称这种方法为<b>全面估值</b>，因为它需要对资产重新定价。这种方法如下图所示，非线性敞口与正态密度结合创建了一个不再对称的分布，偏右。这种方法更精确，但比简单的线性估值方法更复杂。</p>
+<figure><img src="https://picx.zhimg.com/v2-aa82035bd9cb5e5068d6dbb9809df9eb_1440w.jpg" width="1014"/></figure>
+<p>当投资组合有选择时，就需要采用完整的估值方法，特别是在风险因素变动很大的情况下。这就解释了为什么压力测试需要全面评估。</p>
+<p>⭐ <b>Q12.12 </b>Which of the following methodologies would be most appropriate for stress-testing your
+                                                                                                                                                            portfolio?</p>
+<ul>
+<li>a. Delta-gamma valuation</li>
+<li>b. Full revaluation</li>
+<li>c. Marking to market</li>
+<li>d. Delta-normal VAR</li>
+</ul>
+<p>解析：选 b 。压力测试涉及风险因素的大变动，就需要对投资组合进行全面重估。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+<p></p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

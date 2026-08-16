@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C01 风险管理 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C01 风险管理">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C01 风险管理</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>一、<span>风险度量</span></h2>
+<h3><b>1、风险度量的例子</b></h3>
+<p>风险管理的第一步是度量风险。在一个时间段内，定义投资组合的盈亏为 <span>\Delta P</span> ，用<b><span>风险货币</span></b>(risk currency)来衡量，这也是初始投资价值 <span>P</span> 与未来<span>收益率</span> <span>R_P</span> 的乘积。<span>R_P</span> 是一个随机变量，用
+                                    <span>概率密度函数</span>来描述。</p>
+<p>概率密度函数的纵轴表示在横轴上显示的大小增减的概率。曲线下的整个区域加起来的总概率是1。大部分在分布的中心，回报很小，无论正负。尾部的权重更小，表明获得高额回报的可能性更小。这是金融资产回报的典型特征。这种模式类似于正态分布的钟形曲线(bell-shaped curve)。</p>
+<figure><img src="https://pic1.zhimg.com/v2-5233d84df4e2d831d7ce0b4bf20b47c8_1440w.jpg" width="1828"/>
+<figcaption>正态分布的钟形曲线</figcaption>
+</figure>
+<p>如果这种风险对投资者来说太大，那么应该将一些钱配置为现金，这是以降低预期回报率为代价的。整个形状可以揭示出大损失的倾向大于大收益的倾向，这个分布可以用一些总结的统计数据来描述。</p>
+<ul>
+<li>均值，<span>平均回报率</span>。定义为 <span>\mu(R_P)</span>，简记为 <span>\mu_P</span> ，在没有其他资产的情况下记为
+                                        <span>\mu</span> 。</li>
+<li><span>标准差</span>。通常被称为<span>波动性</span>，是围绕平均值的<span>离散度</span>的度量，记为 <span>\sigma</span> ，是投资组合方差
+                                        <span>\sigma^2</span> 的<span>平方根</span>。</li>
+<li>风险价值(VAR)，是一个截断点，使得更大损失的概率很低，也是分布的<span>百分位数</span>。</li>
+</ul>
+<h3><b>2、绝对风险与<span>相对风险</span></b></h3>
+<p>假设风险是由回报的分散度或绝对值衡量。但有时风险应该相对于某些<b>基准</b>(benchmark)来衡量，例如<span>标普500</span>。当投资者可能有未来的负债时，基准是负债的<span>现值指数</span>。投资者可能还想在考虑了通货膨胀的影响后衡量回报。这些情况下，投资者关注的是<b>相对风险</b>(<span>relative risk</span>)。</p>
+<p><b>绝对风险</b>是根据相对于投资的初始价值，或现金投资的差额衡量。用标准差作为风险度量的绝对风险是：</p>
+<blockquote><span> \sigma(\Delta P) = \sigma (\Delta P/P) × P =  \sigma(R_P) × P</span> </blockquote>
+<p><b>相对风险</b>是相对于基准指数 <span>B</span> 来衡量的，偏差 <span>e = R_P − R_B</span> ，也被称为<b>跟踪误差</b>(<span>tracking error</span>)，表示为
+                                        <span>e × P</span> ，风险是：</p>
+<blockquote><span>\sigma(e)P = [\sigma(R_P − R_B)] × P = \omega × P</span> </blockquote>
+<p>其中 <span> \omega = \sigma(R_P − R_B)</span> 称为<b>跟踪误差波动率</b>(TEV, tracking error volatility)。</p>
+<figure><img src="https://picx.zhimg.com/v2-c5232fe2c39357cd5761dc2fba177cf9_1440w.jpg" width="1473"/>
+<figcaption>跟踪误差的直观表达</figcaption>
+</figure>
+<p>为了比较这两种方法，设第一年，主动型投资组合的<span>回报率</span>为- 6%，但<span>基准回报率</span>下降了- 10%。因此，超额回报为正，e =−6%−(−10%)= 4%。相对而言，该投资组合表现不错，尽管其绝对表现为负值。第二年，投资组合的回报率为+6%，以绝对标准衡量，这很不错，但如果基准指数上升10%，就不太好了。</p>
+<p>⭐ <b>例1.1 </b>An investment manager is given the task of beating a benchmark. Hence the risk should be measured in terms of </p>
+<ul>
+<li>a. Loss relative to the initial investment</li>
+<li>b. Loss relative to the expected portfolio value</li>
+<li>c. Loss relative to the benchmark</li>
+<li>d. Loss attributed to the benchmark</li>
+</ul>
+<p>解析：选 c 。题干要求是 beating a benchmark，因此排除 a 和 b。题干暗指相对风险，而 d 项指的是基准的绝对风险，也不正确，故选C。</p>
+<hr/>
+<h2><b>二、</b>评估风险度量过程</h2>
+<h3><b>1、已知的已知风险</b></h3>
+<p>已知的已知风险(Known Knowns)指正确识别、衡量风险，如股票头寸的例子。由于运气不好和投资组合决策的组合，损失仍然可能发生，但不应该经常发生。假设99%<span>置信水平</span>下的VAR报告为14.4%。在这种情况下，连续几个月亏损15%或更多应该是极不寻常的，表明该模型存在缺陷。</p>
+<h3><b>2、</b>已知的未知风险</h3>
+<p>已知的未知风险(Known Unknowns)指已知存在但风险管理人员没有适当衡量的模型弱点。例如，风险经理可能忽略了重要的已知风险因素。其次，包括波动性和相关性在内的风险因素的分布可能测量不准确。第三，用风险因素风险敞口替换头寸的制图过程可能是不正确的。这通常被称为<b><span>模型风险</span></b>(model risk)。这种风险可以通过<span>压力测试</span>来评估，压力测试对金融变量或模型的冲击超出了典型范围。</p>
+<p>另一种 Known Unknowns 是<b>流动性风险</b>(<span>liquidity risk</span>)。大多数风险模型假设，头寸可以在选定的期限内<span>平仓</span>。在实践中，这取决于许多因素。首先是资产的内在流动性。例如，<span>国库券</span>比高收益债券流动性更强。它们的价差较低，对市场的影响也较小。其次是头寸的规模，当持仓相对于正常交易活动来说很大时，这就需要接受一个很大的价格下跌来执行交易。</p>
+<h3><b>3、</b>未知的未知风险</h3>
+<p>未知的未知风险(UnKnown Unknowns)表示的事件完全超出了大多数场景的范围，包括监管风险，比如突然限制<span>卖空</span>可能会破坏<span>对冲策略</span>，或者结构性变化，比如投资银行转变为商业银行，加速了该行业的<span>去杠杆化</span>。事实上，2010年的一项调查显示，风险管理人员最关心的是“政府改变规则”。</p>
+<p>同样，很难完全解释<span>交易对手风险</span>。仅仅了解你的交易对手是不够的，你还需要了解你的交易对手的交易对手。换句话说，存在<span>网络外部性</span>。例如，要理解<span>雷曼破产</span>的全部后果，就需要了解整个金融网络的
+                                                    <span>拓扑</span>结构。由于没有一家公司能够获得这一信息，因此无法直接衡量这种传染风险。</p>
+<p>同样，某些形式的流动性风险也很难评估。这涉及到类似交易者的活动和头寸，这通常是未知的。在缺乏<span>流动性</span>的市场，如果同时出售多个类似的投资组合，强制出售的代价将高得多。</p>
+<p>未知的未知风险有时被称为<b>奈特不确定性</b>(Knightian uncertainty)，是一种无法衡量的风险。金融机构不可能拥有足够的资本来抵御大规模的交易对手破产或系统性风险。在这种情况下，中央银行或政府实际上成为最后的风险管理者。</p>
+<p>补充：风险的概念化也可以表示为：</p>
+<figure><img src="https://pic3.zhimg.com/v2-568b49e1b2f7819b473fac6aff457218_1440w.jpg" width="1858"/></figure>
+<h3><b>4、风险管理失灵</b></h3>
+<p>风险管理的作用包括以下几个任务：</p>
+<ul>
+<li>识别公司面临的所有风险</li>
+<li>评估和监测这些风险</li>
+<li>管理这些风险（如果得到授权）</li>
+<li>向决策者传达这些风险</li>
+</ul>
+<p><u>巨大的损失并不一定意味着风险管理的失败。它可能是在已知的范围内，并恰当地传达给公司，在这种情况下，它反映了坏运气</u>。毕竟风险管理的目标不是防止损失。如果没有完成这些任务，风险管理可能会失败。一些风险可能会被忽视。由于模型风险、流动性风险或分布未得到充分测量，可能会发生风险度量错误。风险限制无法实施。最后，当风险管理不能有效地传达风险时，它就会失败。</p>
+<p>⭐ <b>例1.2 </b>Based on the risk assessment of the CRO, Bank United's CEO decided to make a large investment in a levered portfolio of CDOs. The CRO had estimated that the <span>portfolio</span>                                                            had a 1% chance of losing $1 billion or more over one year, a loss that would make the bank insolvent. At the end of the first year the portfolio has lost $2 billion and the bank was closed by
+                                                            <span>regulators</span>. Which of the following statements is correct?</p>
+<ul>
+<li>a. The outcome demonstrates a risk management failure because the bank did not eliminate the possibility of financial distress.</li>
+<li>b. The outcome demonstrates a risk management failure because the fact that an extremely unlikely outcome occurred means that the probability of the outcome was poorly estimated.</li>
+<li>c. The outcome demonstrates a risk management failure because the CRO failed to go to regulators to stop the shutdown.</li>
+<li>d. Based on the information provided, one cannot determine whether it was a risk management failure.</li>
+</ul>
+<p>解析：选 d 。题干大意为：据CRO估计，该投资组合在一年内损失10亿美元或更多的可能性为1%，这一损失将导致银行破产，第一年年底损失了20亿美元。由于“巨大的损失并不一定意味着风险管理的失败”，且题目没有给出VAR以外的分布信息，所以这可能是坏运气导致的。风险管理不能保证一定没有损失。</p>
+<hr/>
+<h2><b>三、</b>投资组合构建</h2>
+<h3><b>1、风险后绩效评估</b></h3>
+<p><b><span>夏普比率</span></b>(Sharpe ratio, SR)是一种绝对风险度量，<span>表达式</span>为：</p>
+<blockquote><span>SR = \frac{\mu(R_P)-R_F}{\sigma(R_P)}</span> </blockquote>
+<p>夏普比率可以扩展到将VAR包含在分母中，而不是收益的波动性。夏普比率是从现金到每项资产的<span>直线斜率</span>，这条线表示现金和每种资产之间的投资组合。</p>
+<p><b><span>信息比率</span></b>(information ratio, IR)是指投资组合 <span>P</span> 超过基准 <span>B</span>                                                            的平均收益率与 <span>TEV</span> 的比率，是一种相对风险度量：</p>
+<blockquote><span>IR = \frac{\mu(R_P)-\mu(R_B)}{\sigma(R_P-R_B)}</span> </blockquote>
+<p>跟踪误差波动率TEV可以由投资组合和基准的<span>波动率</span> <span>\sigma_P</span> 和 <span>\sigma_B</span>                                                            以及它们之间的相关性 <span>\rho</span> 得到。随机变量和的方差，可以表示为：</p>
+<blockquote><span>\omega^2  = \sigma_P^2 − 2\rho \sigma_P \sigma_B  + \sigma_B^2</span> </blockquote>
+<p>信息比率已被普遍用于比较同一组中的积极管理者。它是对主动管理技能的纯粹衡量，是对主动风险的衡量。信息比率越高，说明有更好的管理技能。信息比率的缺点是TEV不根据平均收益进行调整。例如，一个投资组合可以系统性地每月高于基准0.10%。在这种情况下，跟踪误差的平均值为0.10%，标准差接近于零。这就导致了很高的信息比率，如果主动风险不能轻易地扩大，这是不现实的。</p>
+<h3><b>2、混合资产</b></h3>
+<p>投资组合的方差是权重的<span>非线性函数</span>，可以表示为：</p>
+<blockquote><span>\sigma_P^2 = w_1^2 \sigma_1^2 + 2 \rho w_1 w_2 \sigma_1  \sigma_2 + w_2^2 \sigma_2^2 </span> </blockquote>
+<p>投资组合的预期收益是一个简单的线性平均：</p>
+<blockquote><span>\mu_P = w_1\mu_1 + w_2\mu_2</span> </blockquote>
+<h3><b>3、有效组合</b></h3>
+<p>假设所有资产都服从联合正态分布。整个投资组合收益的分布只用均值和方差来概括。需要每个由一组权重 <span>\{w\}</span> 定义的投资组合，对于期望收益 <span>\mu_p</span>                                                                的指定值，风险是最小的：</p>
+<blockquote><span>Min_w \sigma_p^2</span> </blockquote>
+<p>满足以下条件：</p>
+<ul>
+<li>(1) 投资组合的收益等于指定值 <span>k</span> </li>
+<li>(2) 投资组合的权重之和为1</li>
+</ul>
+<p>改变这个指定的值 <span>k</span> 将追踪到有效集。当不存在卖空限制时，有效集存在一个封闭解。任何投资组合都是两个投资组合的线性组合：</p>
+<ul>
+<li>一是全局<b>最小方差投资组合</b>(minimum-variance portfolio)，它在所有完全投资组合中具有最低的波动性</li>
+<li>二是夏普比率最高的投资组合</li>
+</ul>
+<figure><img src="https://pica.zhimg.com/v2-f016ab7e13f1e01f5e3e2d8ce71acf78_1440w.jpg" width="1836"/>
+<figcaption>有效边界与全局最小方差投资组合</figcaption>
+</figure>
+<p><br/></p>
+<hr/>
+<h2><b>四、</b>资产定价理论</h2>
+<h3><b>1、<span>资本资产定价模型</span></b></h3>
+<p>威廉•夏普(William Sharpe)提出了资本资产定价模型(CAPM)。夏普的第一步是用单<span>因素模型</span>简化股票的<span>协方差</span>结构。对股票 <span>i</span>                                                                在整个市场上的超额回报进行回归：</p>
+<blockquote><span>R_{i,t} − R_{F,t} = \alpha_i + \beta_i [R_{M,t} − R_{F,t}] + \epsilon_{i,t}</span> </blockquote>
+<p>斜率系数 <span>\beta_i</span> 衡量的是股票 <span>i</span> 对市场因素的敞口，也被称为<b>系统性风险</b>(systematic risk)。截距是
+                                                                <span>\alpha_i</span> ，对于一个积极管理的投资组合来说， <span>\alpha</span> 是管理技能的衡量标准。 <span>\epsilon_i</span> 是残差，其均值为零，与 <span>R_M</span> 不相关，与所有其他残差不相关。这是一个单因素模型，因为股票之间的任何相互作用都是由于它们对市场的敞口。</p>
+<p>对于两个股票 <span>i</span> 和 <span>j</span> 之间的协方差：</p>
+<blockquote><span>Cov(R_i ,R_j ) = \beta_i \beta_j \sigma^2(R_M)</span> </blockquote>
+<p>因为所有的 <span>\epsilon</span> 都与 <span>R_M</span> 不相关，彼此之间也不相关。因此，特定资产风险 <span>\epsilon</span> 被称为<b>异质性风险</b>(idiosyncratic risk)。这种简化的因子结构非常有用，因为它减少了参数的数量，大大简化了分析。这种近似是<b>映射</b>(mapping)的核心，映射是风险管理中广泛使用的过程。映射用更少量的基本风险因素敞口取代了单个头寸。</p>
+<p>夏普接着研究了资本市场均衡的条件，要求从投资者的投资<span>组合优化</span>中得到的每种资产的总需求，与未偿付资产的供应完全匹配。总需求可以被聚集起来，因为假设投资者对收益率的分布有同质预期，这也是假定正态分布。此外，该模型假定存在一种可用于借贷的无风险资产，其利率相同。在大多数经济模型中，通常都假定资本市场是完美的。也就是说，不存在
+                                                                    <span>交易成本</span>，证券是无限可分的，并且允许卖空。</p>
+<p>在这些条件下，夏普证明了市场投资组合，定义为投资组合中所有股票的价值加权平均，必须具有任何可行投资组合中最高的夏普比率。因此，它必须是均值-方差有效的。在有效边界上，连接无风险资产与市场投资组合的直线具有最高的夏普比率，称为<b>资本市场线</b>(CML, capital market line)。它主导着任何现金和股票投资组合。</p>
+<figure><img src="https://pica.zhimg.com/v2-1140b5ac3ed94a5e5f3be6d62d2d6b94_1440w.jpg" width="2024"/>
+<figcaption>资本市场线</figcaption>
+</figure>
+<p>非常厌恶风险的投资者将持有接近F的组合。风险承受能力强的投资者会选择更接近甚至高于市场M的投资组合。高于M的投资组合代表市场中的杠杆头寸（以<span>无风险利率</span>借款，并将所得再投资于股市）。</p>
+<p><b>双基金分离</b>(two-fund separation)：任何有效的投资组合都必须是直线的，因此可以分为两个基金，无风险资产和市场。市场的均值-方差效率意味着预期超额收益与市场组合中所有股票的系统风险之间存在线性关系：</p>
+<blockquote><span>E(R_i ) = R_F + \beta_i [E(R_M) − R_F ]</span> </blockquote>
+<figure><img src="https://pic1.zhimg.com/v2-1342e595759d7ad0e6fe34c4375cc1d4_1440w.jpg" width="1329"/>
+<figcaption>双基金分离</figcaption>
+</figure>
+<p>这一要求的股本回报率也可以被视为股本资本的成本。因此，大多数异质性风险都被消除了，而系统性风险无法分散。这导致了另一种性能衡量方法，即<b><span>特雷诺</span>比率</b>(Treynor ratio, TR)，定义为：</p>
+<blockquote><span>TR = \frac{\mu(R_P)-R_F}{\beta_P}</span> </blockquote>
+<p>如果资本资产定价模型成立，所有资产的特雷诺比率应该是相同的。</p>
+<p>对于一个投资组合与市场相似的投资者，贝塔系数衡量的是投资组合的风险贡献。因此，对于分散化良好的投资组合来说，这是一个更好的业绩衡量标准。相反，SR可用于调整非分散投资组合的业绩。因此，SR和IR的一个主要缺点是不会对系统性风险进行惩罚。</p>
+<p>这就产生了另一种绩效衡量方法，它直接来源于CAPM——<b>詹森阿尔法</b>(Jensen's alpha)：</p>
+<blockquote><span>\alpha_P = \mu(R_P) − R_F − \beta_P[\mu(R_M) − R_F ]</span> </blockquote>
+<figure><img src="https://picx.zhimg.com/v2-d80051eb33411348687f664db640571d_1440w.jpg" width="1626"/>
+<figcaption>詹森阿尔法</figcaption>
+</figure>
+<p>对于一个固定的投资组合，如果所有的股票都按照CAPM定价，那么投资组合的詹森阿尔法应该是零。实际上，如果考虑到管理费和其他成本，它应该是负的。</p>
+<p>综上所述，CAPM假设：</p>
+<ul>
+<li><u>(1)投资者具有同质预期</u></li>
+<li><u>(2)分布是正态的</u></li>
+<li><u>(3)资本市场是完善的</u></li>
+<li><u>(4)市场是均衡的</u></li>
+</ul>
+<p>但理论上市场投资组合应该包含全球所有<span>可投资资产</span>，因此不可观测。</p>
+<h3><b>2、套利定价理论</b></h3>
+<p>资产回报的变动可能由多种风险来源引起的：</p>
+<blockquote><span>R_i = \alpha_i +\beta_{i1}y_1 +· · ·+\beta_{iK}y_K + \epsilon_i</span> </blockquote>
+<p>残差 <span>\epsilon_i</span> 在构造上被假定与因子不相关在假设上也相互不相关。Stephen Ross(1976)提出的套利定价理论就是基于这样一个因素结构和金融市场不存在套利的假设。投资组合可以被构建成具有良好的多样化和低风险。为了防止套利机会，这些投资组合的预期回报率应该为零。这些条件迫使预期收益和因素暴露之间形成线性关系：</p>
+<blockquote><span>E[R_i] = R_F + \sum_{k=1}^{K}{\beta_{ik}\lambda_k}</span> </blockquote>
+<p>APT并不依赖于均衡，而只是基于资本市场不应存在套利机会的假设，这是一个弱得多的要求。它甚至不需要因子模型严格保持。相反，它只要求剩余风险非常小。如果确定了足够多的公共因素，并且在一个高度分散的投资组合中，情况肯定是这样的。</p>
+<p>APT模式不需要确定市场，这是一个优势。不幸的是，这个模型的测试是模棱两可的，因为这个理论没有提供关于应该是什么因素的指导。有几种选择因素的方法。</p>
+<ul>
+<li>第一种是结构性方法(structural approach)，即从经济直觉或经验中预设因素。诸如价值、规模和动量等因素已被广泛用于解释预期股票回报</li>
+<li>第二种方法是从观测数据中提取因子的统计方法。例如，<b><span>主成分分析</span></b>(PCA)是一种最适合于资产回报的<span>相关矩阵</span>的技术。第一个PC是资产回报的线性组合，它提供了这个矩阵对角线的最佳近似。第二个PC是资产回报的线性组合，它与第一个正交，并提供次优近似。分析可以继续，直到其余因素不再重要为止。</li>
+</ul>
+<p>当风险管理是一个大问题时，比如一个大的投资组合，这种方法对风险管理非常重要。例如，风险经理可以使用10个风险因素来降低100只股票的投资组合的维数。这种减少对<span>蒙特卡罗模拟</span>特别重要，因为它减少了计算时间。</p>
+<p>⭐ <b>例1.3 </b>An analyst at CAPM Research Inc. is projecting a return of 21% on Portfolio A. The market risk premium is 11%, the volatility of the market portfolio
+                                                                                            is 14%, and the risk-free rate is 4.5%. Portfolio A has a beta of 1.5. According to the capital asset pricing model, which of the following statements is true?</p>
+<ul>
+<li>a. The expected return of Portfolio A is greater than the expected return of the market portfolio.</li>
+<li>b. The expected return of Portfolio A is less than the expected return of the market portfolio.</li>
+<li>c. The return of Portfolio A has lower volatility than the market portfolio.</li>
+<li>d. The expected return of Portfolio A is equal to the expected return of the market portfolio.</li>
+</ul>
+<p>解析：选 a 。首先观察到a、b、d 三项构成了全部的三种情况，故排除 c 项。又已知组合A的回报率为21%，市场溢价为11%，无风险利率为4.5%，因此市场回报率为15.5%，组合A的回报率较高。</p>
+<p>⭐ <b>例1.4 </b>Suppose Portfolio A has an expected return of 8%, volatility of 20%, and beta of 0.5. Suppose the market has an expected return of 10% and volatility
+                                                                                            of 25%. Finally, suppose the risk-free rate is 5%. What is Jensen’s alpha for Portfolio A?</p>
+<ul>
+<li>a. 10.0%</li>
+<li>b. 1.0%</li>
+<li>c. 0.5%</li>
+<li>d. 15%</li>
+</ul>
+<p>解析：选 c 。α = 8 - [5 + 0.5×(10 - 5)] = 8 − 7.5 = 0.5%。</p>
+<p>⭐ <b>例1.5 </b>Which of the following statements about the Sharpe ratio is false?</p>
+<ul>
+<li>a. The Sharpe ratio considers both the systematic and unsystematic risks of a portfolio.</li>
+<li>b. The Sharpe ratio is equal to the excess return of a portfolio over the risk-free rate divided by the total risk of the portfolio.</li>
+<li>c. The Sharpe ratio cannot be used to evaluate relative performance of undiversified portfolios.</li>
+<li>d. The Sharpe ratio is derived from the capital market line.</li>
+</ul>
+<p>解析：选 c 。夏普比率考虑总风险，包括系统性风险和非系统性风险。夏普比率是由CML推导出来的，CML表示市场是均值-方差有效的，因此在任何可行的投资组合中夏普比率最高。夏普比率可以用来评估非多样化的投资组合，正是因为它包含了非系统性风险。</p>
+<p>⭐ <b>例1.6 </b>A portfolio manager returns 10% with a volatility of 20%. The benchmark returns 8% with risk of 14%. The correlation between the two is 0.98. The risk-free
+                                                                                            rate is 3%. Which of the following statements is correct?</p>
+<ul>
+<li>a. The portfolio has higher SR than the benchmark.</li>
+<li>b. The portfolio has negative IR.</li>
+<li>c. The IR is 0.35.</li>
+<li>d. The IR is 0.29.</li>
+</ul>
+<p>解析：选 d 。根据以下计算：</p>
+<ul>
+<li>组合SR = (10% − 3%)/20% = 0.35</li>
+<li>基准SR = (8% − 3%)/14% = 0.36 &gt; 0.35</li>
+<li>TEV = (20%^2 + 14%^2 − 2 × 0.98 × 20% × 14%)^0.5 = 6.87%</li>
+<li>IR = (10% − 8%)/6.87% = 0.29</li>
+</ul>
+<hr/>
+<h2><b>五、</b>风险管理的价值</h2>
+<h3><b>1、风险管理的无关性</b></h3>
+<p>CAPM模型强调，投资者不喜欢系统性风险，他们可以自己分散其他非系统性风险。因此，系统风险是唯一需要定价的风险。公司可以利用金融衍生品来对冲其波动性。然而，如果这改变了波动性，而不是市场贝塔值，那么公司的资本成本和估值就不会受到影响。这一结果仅在CAPM基础的完美资本市场假设下成立。</p>
+<p>例如，假设一家公司对冲了一些金融风险，而投资者自己也可以对冲这些风险。例如，石油公司可以对冲其石油风险敞口。然而，对于该公司股票的投资者来说，如果他们愿意的话，自己对冲这样的石油敞口是很容易的。例如，他们可以使用石油期货，这很容易交易。在这种情况下，该公司的风险管理实践不应增加经济价值。</p>
+<p>在这个抽象的世界里，风险管理是无关紧要的。这是经典的MM定理的应用，MM定理认为，企业的价值不能依赖于其财务政策。对这一结果的直觉是，任何由一家公司采取的融资行动，如果它的投资者可以很容易地自行采取，<u>就不应该增加价值</u>。更糟糕的是，<u>如果风险管理实践成本高昂，可能会损害公司的经济价值</u>。</p>
+<h3><b>2、风险管理的相关性</b></h3>
+<p>MM定理是建立在以下几个假设基础上：不存在<span>财务困境成本</span>、税收和资本市场准入等摩擦；金融市场参与者之间不存在信息不对称。如果其中一些假设不成立，风险管理可以增加价值：</p>
+<ul>
+<li>如果对冲有助于避免巨额财务困境成本(cost of financial distress)，那么它应该会增值。由于被迫出售或<span>破产程序</span>的法律成本，破产公司的价值通常会大幅下降，例如<span>雷曼兄弟</span>。</li>
+<li>企业所得税(corporate income taxes)可以被视为一种摩擦。假设没有结转<span>准备金</span>，在非常好的年份，所得税会很高，而且不会被亏损年度的退税所抵消。如果收入为正，就要交税，这类似于期权的多头头寸，具有类似的凸性效应。因此，通过稳定收益，企业随着时间的推移减少了平均税款，这应该会增加它们的价值。</li>
+<li>当外部融资(external financing)的成本高于内部资金时，就会出现其他摩擦。公司可以决定不对冲其财务风险，这将导致更不稳定的收益。在好年景，项目由内部资助。在经济不景气的年份，总有可能通过从资本市场借款来为项目融资。然而，如果外部借贷成本过高，一些有价值的项目将在不景气的年份得不到资金。
+                                                                                                        <span>套期保值</span>有助于避免这种<b><span>投资不足问题</span></b>(underinvestment problem)，这应该会增加公司价值。</li>
+<li>信息不对称的一种形式是由于管理自由裁量权的代理成本(agency costs of managerial discretion)。投资者聘请经理作为他们的代理人，并赋予他们管理公司的自主权。然而，好经理和坏经理并不总是容易识别的。如果不进行对冲，收益会因外部因素而波动。这很难确定管理的绩效。有了对冲，就没有多少借口了。糟糕的管理者更容易被发现并被解雇，这应该会增加公司的价值。</li>
+<li>另一种形式的信息不对称出现在大股东对公司业务有专门知识(expertise in the firm's business)的时候。这种专业知识，加上比其他人更有效地监控管理的能力，可能会增加公司价值。通常情况下，这类投资者会将很大一部分财富投资于这家公司。因为他们没有多元化，他们可能更愿意投资于公司，从而在公司降低风险时增加价值。</li>
+</ul>
+<p>在实践中，有<span>经验证据</span>表明，从事风险管理项目的公司往往比其他公司有更高的估值。然而，这种类型的分析充满了困难。研究人员无法接触到完全相同的公司，只是它们的对冲程序不同。其他混杂效应可能在起作用。对冲可能与管理质量相关，而管理质量对公司价值有影响。</p>
+<p>⭐ <b>例1.7 </b>In perfect markets, risk management expenditures aimed at reducing a firm's diversifiable risk serve to</p>
+<ul>
+<li>a. Make the firm more attractive to shareholders as long as costs of risk management are reasonable</li>
+<li>b. Increase the firm’s value by lowering its cost of equity</li>
+<li>c. Decrease the firm’s value whenever the costs of such risk management are positive</li>
+<li>d. Has no impact on firm value </li>
+</ul>
+<p>解析：选 c 。在完全市场中，降低公司可分散风险的风险管理行为不应影响其资本成本，因此也不会增加价值。如果这些活动是昂贵的，企业价值应该下降。</p>
+<p>⭐ <b>例1.8 </b>By reducing the risk of financial distress and bankruptcy, a firm’s use of derivatives contracts to hedge its cash flow uncertainty will</p>
+<ul>
+<li>a. Lower its value due to the transaction costs of derivatives trading</li>
+<li>b. Enhance its value since investors cannot hedge such risks by themselves</li>
+<li>c. Have no impact on its value as investors can costlessly diversify this risk</li>
+<li>d. Have no impact as only systematic risks can be hedged with derivatives</li>
+</ul>
+<p>解析：选 b 。金融困境的成本是市场的不完善，或称无谓成本(deadweight cost)。通过套期保值，企业将降低这一成本，这将增加企业的经济价值。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

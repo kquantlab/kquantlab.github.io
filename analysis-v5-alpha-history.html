@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>v5 Alpha 探索历史（2023–2025）| KQuantLab</title>
+  <meta name="description" content="归档 v5 在 2023 至 2025 年围绕成交量、EMA、SMA、RSI、MACD、动态网格与多因子选币开展的 Alpha 回测探索。">
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles.css?v=20260809-1">
+</head>
+<body>
+<nav class="nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><img class="brand-logo" src="logo.png" alt="KQuantLab logo" width="34" height="34" style="width:34px;height:34px;max-width:34px;max-height:34px;object-fit:contain;display:block">KQuantLab</a><button class="menu" aria-label="打开菜单" aria-expanded="false">菜单</button><div class="nav-links"><a href="index.html">首页</a><a href="projects.html">Projects</a><a class="active" href="analysis.html">Analysis</a><a href="execution.html">Execution</a><a href="learning.html">Learning</a><a href="about.html">About</a></div></div></nav>
+<main class="wrap research-page">
+  <section class="page-hero research-hero">
+    <div class="eyebrow">Crypto · Alpha Research History · 2023–2025</div>
+    <h1>v5 Alpha 探索历史：从成交量信号到多因子选币</h1>
+    <p>这是一份历史研究索引，整理 v5 中为了寻找 Alpha 而进行的回测与信号实验。它记录研究过的假设、版本演化、标的与周期，不代表这些旧策略已经通过统一回测或样本外验证。</p>
+    <div class="research-verdict"><strong>档案定位</strong><span>七个主要 Alpha 回测研究族，加一个探索性 K 线形态实验。数据下载、手续费、杠杆、强平和日志程序属于研究基础设施，不单独计为 Alpha。</span></div>
+  </section>
+
+  <section class="research-metrics" aria-label="历史研究概览">
+    <div><span>主要研究族</span><strong>7</strong><small>按 Alpha 假设归类</small></div>
+    <div><span>探索性实验</span><strong>1</strong><small>TA-Lib K 线形态</small></div>
+    <div><span>主要市场</span><strong>Crypto</strong><small>BTC、ETH、SOL 等</small></div>
+    <div><span>研究周期</span><strong>1m–240m</strong><small>短周期至 4 小时</small></div>
+  </section>
+
+  <section class="section research-layout">
+    <article class="research-body prose">
+      <h2>1. 成交量动量 Alpha</h2>
+      <p><strong>核心假设：</strong>短期价格方向与成交量同步放大时，行情更可能延续。</p>
+      <ul>
+        <li>比较当前成交量与固定门槛、上一根成交量。</li>
+        <li>上涨放量做多、下跌放量做空，并测试反向换仓和固定止损。</li>
+        <li>主要集中在 BTCUSDT 的 1 分钟与 3 分钟短周期实验。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>v0.php–v2.php</code>、<code>volume/</code>、<code>volumeresult/</code>。</p>
+
+      <h2>2. EMA 趋势交叉 Alpha</h2>
+      <p><strong>核心假设：</strong>快慢 EMA 的交叉、方向和距离能够捕捉趋势启动或反转。</p>
+      <ul>
+        <li>测试 EMA10/20、EMA10/35、EMA10/50。</li>
+        <li>比较金叉/死叉、交叉反手、价格相对长 EMA 和 EMA 距离过滤。</li>
+        <li>逐步加入成交量确认，并扩展到 BTC、SOL 与不同时间周期。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>ema20-*.php</code>、<code>ema50-*.php</code>、<code>ema50btc.php</code>、<code>ema50sol*.php</code>。</p>
+
+      <h2>3. SMA 趋势与多周期排列 Alpha</h2>
+      <p><strong>核心假设：</strong>SMA 交叉、价格距离及多周期均线排列可以识别更稳定的趋势状态。</p>
+      <ul>
+        <li>测试 SMA10/50 交叉、价格突破/跌破均线和均线距离。</li>
+        <li>加入成交量、小时价格、当日低点等确认条件。</li>
+        <li>后期测试 SMA80/240/480 排列与 RSI 方向过滤。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>sma1.php</code>、<code>sma2.php</code>、<code>sma50*.php</code>、<code>sma/</code>、<code>smaresult/</code>。</p>
+
+      <h2>4. RSI 均值回归与分批进场 Alpha</h2>
+      <p><strong>核心假设：</strong>RSI 进入或离开极端区域时，价格可能出现反转；配合趋势过滤和分批进场，可以改善盈亏结构。</p>
+      <ul>
+        <li>测试 RSI 25、32、35 等超卖阈值，以及相应超买条件。</li>
+        <li>比较直接入场与离开极端区后的确认入场。</li>
+        <li>发展出多次确认、分批加仓、多级止损，以及 MACD、ATR、ADX 等过滤尝试。</li>
+        <li>覆盖 BTC、ETH、SOL 和 15 分钟、240 分钟等周期。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>rsiBtc.php</code>、<code>rsiEth.php</code>、<code>rsiSol.php</code>、<code>rsiSola*.php</code>、<code>rsi/</code>、<code>rsiresult/</code>。</p>
+
+      <h2>5. MACD 趋势延续 Alpha</h2>
+      <p><strong>核心假设：</strong>MACD 主线、Signal 与 Histogram 同向时，趋势延续概率可能提高。</p>
+      <ul>
+        <li>测试 MACD 上穿/下穿 Signal 与 Histogram 正负确认。</li>
+        <li>叠加 EMA 趋势方向，并以 MACD 反向或固定止损退出。</li>
+        <li>对多个历史窗口和版本保存逐笔开平仓记录。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>macd1.php</code>、<code>macd2.php</code>、<code>macd/</code>、<code>macdresult/</code>。</p>
+
+      <h2>6. 动态网格与区间位置 Alpha</h2>
+      <p><strong>核心假设：</strong>价格在动态区间中的相对位置，结合 RSI、趋势与成交量，可以捕捉均值回归和区间波动。</p>
+      <ul>
+        <li>按近期最高价和最低价建立五层动态网格。</li>
+        <li>测试 SOL 约 1.5% 与 ZEC 约 2.5% 的网格间距。</li>
+        <li>加入 RSI25/75、SMA50、成交量和多空区间阈值。</li>
+        <li>从单向网格逐步发展为双向网格、网格止盈与区间止损。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>grid1.php</code>、<code>gridSol.php</code>、<code>gridZec.php</code>、<code>gridtest*.php</code>、<code>grid*/</code>。</p>
+
+      <h2>7. 横截面突破与多因子评分 Alpha</h2>
+      <p><strong>核心假设：</strong>在高流动性币种中，同时出现突破、连续方向、放量、短期涨跌、EMA 与 RSI 确认的标的，可能具有短期相对强弱 Alpha。</p>
+      <ul>
+        <li>按 24 小时成交额筛选高流动性币种。</li>
+        <li>为突破、连续阳线/阴线、成交量放大、短期涨跌、EMA 和 RSI 分别评分。</li>
+        <li>由多头扫描扩展到多空版本，并尝试 Bybit 与 Bitget 数据源。</li>
+        <li>使用止盈、止损和从峰值回撤等退出规则。</li>
+      </ul>
+      <p><strong>历史线索：</strong><code>factor/test.php</code>、<code>factor/test2.php</code>、<code>factor/test3.php</code>。<code>factor/24hour.php</code> 属于市场扫描辅助工具。</p>
+
+      <h2>探索性实验：TA-Lib K 线形态 Alpha</h2>
+      <p>后期使用 TA-Lib 蜡烛形态函数测试单根或组合 K 线信号，包括 <code>CDLSHORTLINE</code> 等形态，并加入多空、止损和手续费逻辑。由于实验数量和结果证据少于前七类，单独标为探索性研究。</p>
+      <p><strong>历史线索：</strong><code>talib1.php</code>。</p>
+
+      <h2>覆盖范围</h2>
+      <div class="table-wrap"><table><thead><tr><th>维度</th><th>历史覆盖</th></tr></thead><tbody>
+        <tr><td>主要标的</td><td>BTCUSDT、ETHUSDT、SOLUSDT、BNBUSDT，以及 ZEC、DOGE 等扩展实验</td></tr>
+        <tr><td>时间周期</td><td>1m、3m、5m、15m、30m、60m、120m、240m</td></tr>
+        <tr><td>数据来源</td><td>Bybit API、本地 NDJSON、MongoDB、CSV；部分横截面实验使用 Bitget</td></tr>
+        <tr><td>历史证据</td><td>PHP 研究脚本、逐步运行日志、结果文本、部分逐笔交易 JSON 与 CSV</td></tr>
+      </tbody></table></div>
+
+      <h2>证据边界</h2>
+      <ul>
+        <li>不同脚本的收益单位、仓位、杠杆、手续费和数据窗口并未统一。</li>
+        <li>部分结果依赖少数大盈利覆盖连续小止损，不能只凭局部总和判断 Alpha 有效。</li>
+        <li>历史文件尚未统一排查 K 线排序、未来数据、多周期对齐和同根 K 线成交顺序。</li>
+        <li>现有记录没有形成一致的样本内、样本外与前瞻验证体系。</li>
+        <li>因此本页用于保存研究历程和假设地图，不把旧结果认定为当前可交易策略。</li>
+      </ul>
+
+      <h2>各策略失败的主要原因</h2>
+      <p>这里的“失败”不是指每个版本在每段行情都亏损，而是指没有形成能够覆盖成本、跨时期重复、并在邻近参数下保持稳定的可交易 Alpha。</p>
+      <div class="table-wrap"><table><thead><tr><th>研究族</th><th>失败原因</th><th>从结果学到什么</th></tr></thead><tbody>
+        <tr><td>成交量动量</td><td>5 分钟信号出现过于频繁，简单放量并不能区分趋势启动、消息冲击和短暂噪声。频繁反向使手续费、滑点和 Funding 快速累积，是所有研究族中成本后表现最弱的一类。</td><td>成交量本身更适合作为确认条件，需要配合趋势、波动率和冷却时间，不能单独作为方向 Alpha。</td></tr>
+        <tr><td>EMA 交叉</td><td>EMA10/20、10/35、10/50 在震荡期反复交叉，产生大量追涨杀跌。四个币种与邻近参数整体 PF 低于 1，说明结果不是某一个均线周期选择错误，而是短周期交叉本身缺乏足够优势。</td><td>均线适合定义市场状态；如果直接把每次交叉当成交易信号，换手和滞后会吞噬趋势利润。</td></tr>
+        <tr><td>SMA 趋势</td><td>短周期 SMA10/50、20/50 仍有较多假突破。DOGE 60m SMA80/240/480 虽在 2025 盈利，但最大回撤 -33.93%，开发期回撤 -53.92%，邻近 SMA 参数也没有同步盈利，收益集中在少数趋势月份。</td><td>低频多周期趋势是唯一值得继续研究的方向，但需要 ATR 仓位、市场状态过滤和 2026 未见数据验证。</td></tr>
+        <tr><td>RSI 反转</td><td>部分版本胜率较高，但盈利单幅度不足以覆盖止损、费用和连续逆势抄底。强趋势中 RSI 可以长时间停留在超买或超卖区，离开阈值也不等于趋势已经反转。</td><td>高胜率不等于正期望；RSI 应结合趋势方向、波动状态和明确的盈亏比约束。</td></tr>
+        <tr><td>MACD 趋势</td><td>MACD 与 Signal 在 15 分钟级别频繁翻转，信号本质仍来自价格均线，新增 Histogram 没有提供足够独立信息。换手率高，成本后各版本均未形成稳定 PF。</td><td>MACD 可以描述动量变化，但单独的交叉确认并没有形成新的信息优势。</td></tr>
+        <tr><td>动态网格</td><td>网格版本虽然经常获得较高胜率，但约 1.5%–2.0% 的目标利润相对手续费、滑点和止损空间太薄。行情离开区间时，少数大亏损会抵消多次小盈利；动态区间还会随价格移动，使入场参考不够稳定。</td><td>网格必须先识别真正的震荡状态，并建模挂单成交概率；仅凭区间位置与 RSI 不能保证正期望。</td></tr>
+        <tr><td>多因子评分</td><td>SOL score6of6 在 2025 略正，但 PF 仅 1.019、最大回撤 -54.44%，2023–2024 开发期亏损 -921.20 U；放宽到 score5of6 后也亏损。多个条件多数来自同一价格与成交量信息，并不等于六个独立 Alpha。</td><td>因子数量增加不会自动提高有效信息量；应检验因子独立性，并用真实横截面排名和共享资金组合复核。</td></tr>
+        <tr><td>Short Line K 线形态</td><td>单根短实体 K 线在不同市场环境中含义不稳定，既可能是反转前犹豫，也可能只是趋势中的短暂停顿。缺少位置、趋势和后续确认时，BTC 最佳版本在 OOS 仍明显亏损。</td><td>K 线形态应作为上下文特征，而不是独立开仓信号。</td></tr>
+      </tbody></table></div>
+
+      <h2>共同失败模式</h2>
+      <ul>
+        <li><strong>信息重复：</strong>EMA、SMA、MACD、RSI 和多数评分条件都由同一 OHLCV 数据派生，组合后不一定产生新的信息。</li>
+        <li><strong>换手过高：</strong>短周期信号反复变化，毛优势不足以覆盖双边手续费、滑点和持仓成本。</li>
+        <li><strong>市场状态不匹配：</strong>趋势方法在震荡期失效，均值回归和网格在单边行情失效，但旧规则缺少可靠的状态路由。</li>
+        <li><strong>收益集中：</strong>少数大行情或少数月份贡献大部分利润，导致回撤深、月度稳定性不足。</li>
+        <li><strong>参数不稳定：</strong>看起来盈利的单一参数，其邻近周期或阈值没有同步为正，存在偶然拟合风险。</li>
+        <li><strong>跨时期失效：</strong>开发期和 2025 OOS 表现经常方向相反，说明优势无法稳定迁移。</li>
+      </ul>
+
+      <div class="research-decision"><strong>历史结论</strong><p>v5 的主要贡献是建立了从单指标信号、趋势与均值回归，到动态网格和横截面多因子筛选的完整 Alpha 探索路径。后续研究可以从这些历史假设中选择有证据的方向，用统一数据、执行与成本模型重新验证；原始脚本和日志继续作为历史证据保留。</p></div>
+    </article>
+
+    <aside class="research-aside">
+      <div class="aside-card"><span>研究状态</span><strong>历史档案</strong><p>记录做过什么，不代表策略当前有效。</p></div>
+      <div class="aside-card"><span>分类方式</span><strong>按 Alpha 假设</strong><p>币种和周期作为属性，不单独拆分。</p></div>
+      <div class="aside-card"><span>主要方向</span><strong>趋势 + 均值回归</strong><p>并延伸至网格和横截面选币。</p></div>
+    </aside>
+  </section>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><span>© 2026 KQuantLab · Research only</span><div class="footer-links"><a href="analysis.html">返回 Analysis</a><a href="disclaimer.html">免责声明 / Disclaimer</a></div></div></footer>
+<script src="site.js"></script>
+</body>
+</html>

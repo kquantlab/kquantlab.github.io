@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C28 巴塞尔协议 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C28 巴塞尔协议">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C28 巴塞尔协议</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>引言</h2>
+<p>1988年7月15日由巴塞尔银行监管委员会（BCBS）签署的<span>《巴塞尔资本协议》</span>是对商业银行进行监管的基石。它首次规定了在国际上活跃的商业银行应对金融风险的最低资本水平。该协议被称为<b>巴塞尔协议I</b>，根据一套相对简单的规则设定了针对信贷风险的资本收费。在此基础上，1996年又增加了针对市场风险的<span>资本充足率</span>要求。</p>
+<p>2004年6月，该协议进行了根本性修订，增加了对风险敏感的资本要求，并增加了针对操作风险的收费。因此，新协议被称为<b>巴塞尔协议II</b>。</p>
+<p>始于2007年的信贷危机暴露了监管框架的严重缺陷。这导致了新一轮的修订，非正式地称为<b>巴塞尔协议III</b>。BCBS于2009年7月同意对资本要求进行重大扩张，并于2010年9月最终确定。巴塞尔委员会制定了广泛的监管标准，但其结论不具有法律效力。</p>
+<p>尽管如此，仍有100多个国家采用了《巴塞尔协议》，其时间表和适用范围各不相同。例如，美国监管机构只对美国最大的银行适用《巴塞尔协议II》。相比之下，欧盟通过<b>资本充足指引</b>（Capital Adequacy Directive）将巴塞尔II规则纳入欧盟法律，该指令适用于欧盟内的所有银行。</p>
+<h2>一、步骤</h2>
+<h3>1、协议I</h3>
+<p>1988年《巴塞尔协议》于1992年生效，最初的目标是为商业银行设定最低资本要求，以缓冲<span>金融损失</span>。因此，它的主要目标是促进<span>全球金融体系</span>的安全和稳健。第二个目标是通过制定统一的最低标准，为在国际上活跃的银行创造一个公平的竞争环境。该协议适用于国际上活跃的商业银行，这些银行的倒闭可能导致系统性风险，并在全球范围内竞争。至于是否纳入其他规模较小的国内银行，则取决于当地监管机构。</p>
+<p>最初，1988年的巴塞尔协议只涉及信用风险。巴塞尔协议I要求银行持有的最低资本水平至少为总<b>风险加权资产</b>（RWA）的8%。RWA包括表内和表外项目，使用风险权重，根据信用风险对资产进行粗略分类。<b>资本</b>（Capital）包括<span>资产负债表</span>上经调整的股本的账面价值，以及<span>次级债务</span>等其他分录。这笔资金的目的是作为意外财务损失的缓冲。提高资本金应能降低可能导致金融市场不稳定的破产可能性，并应能保护把钱委托给银行的储户。</p>
+<h3>2、修正</h3>
+<p>1996年，巴塞尔委员会修订了《资本协议》，纳入了市场风险。这是因为许多银行都在扩大<span>自营交易</span>业务的规模。该修正案于1997年底生效，并增加了市场风险的资本费用。银行可以根据自己的风险管理系统，使用标准化模型或<b>内部模型方法</b>（IMA）。</p>
+<p>修正案将银行的资产分为两类：交易账簿和银行账簿。</p>
+<ul>
+<li><b><span>交易账簿</span></b>（trading book）代表银行持有的金融工具的投资组合，这些金融工具是有意为短期转售而持有的，通常按市价计价。</li>
+<li><b>银行账簿</b>（banking book）由其他工具组成，主要是贷款，这些工具持有至到期，通常以历史成本为基础估值。</li>
+</ul>
+<p>1996年的修正案增加了：</p>
+<ul>
+<li>(1)交易账簿的市场风险</li>
+<li>(2)银行账簿的货币和商品风险的资本费用</li>
+</ul>
+<p>作为交换，信用风险费用不包括交易簿中的债务和<span>权益证券</span>以及大宗商品头寸（除具体风险费用外）。和以前一样，它仍然包括所有的场外（OTC）衍生品，无论是在交易账簿上还是在银行账簿上。</p>
+<h3>3、协议II</h3>
+<p>自1988年最初的《资本协议》以来，资本市场发生了重大变化。最初的信贷风险变化设计已经越来越过时，更糟糕的是，可能促进了一些银行的不良行为。</p>
+<p>2004年6月，巴塞尔委员会完成了对《巴塞尔协议》的全面修订。在欧盟，实施巴塞尔协议II的新资本充足率指令从2007年开始适用于欧盟的所有银行，最先进的方法从2008年开始可用。美国监管机构将巴塞尔协议II适用于少数大型银行，而其他银行则适用修订后的巴塞尔协议I，因为这是一个更简单的体系。巴塞尔协议II于2008年开始实施，有三年过渡期，在此期间，美国监管机构保留改变规则适用范围的权利。</p>
+<p>新框架基于<b>三大支柱</b>（three pillars），相辅相成：</p>
+<ul>
+<li><b>支柱1：最低资本要求</b>。这是为了覆盖信贷、市场和操作风险。与1988年的协议相比，现在银行在计算风险收费方面有了更广泛的模型选择。然而，BCBS仍试图将全球银行体系的总资本水平保持在风险加权资产的8%不变。</li>
+<li><b>支柱2：监督审查程序</b>。相对于以前的框架，监督者被赋予了更大的作用。监管者需要确保：① 银行有一个适当的程序来评估与风险相关的资本。② 银行的运营确实高于最低监管资本比率。 ③ 当问题出现时，尽快采取纠正措施。</li>
+<li><b>支柱3：市场纪律</b>。巴塞尔协议II强调了<span>财务报表</span>中风险披露的重要性。这种披露使市场参与者能够评估银行的风险状况和资本状况的充分性。新框架规定了披露要求和建议。未能满足披露要求的银行将没有资格使用<span>内部模型</span>。由于内部模式通常导致较低的<span>资本费用</span>，这为遵守披露要求提供了强有力的激励。从本质上讲，更多依赖银行自己的模型的代价是更高的透明度。</li>
+</ul>
+<p>巴塞尔协议II提供了更精细的信贷风险衡量标准，这通常会降低资本要求。然而，为了维持银行资本的整体水平，新的资本费用是针对<b>操作风险</b>（operational risk）设定的。银行被要求携带足够的资本，以超过<b>信用风险费用</b>（CRC）、<b>市场风险费用</b>（MRC）和<b>操作风险费用</b>（ORC）的总和，即 Total Capital &gt; CRC + MRC + ORC。</p>
+<p>和以前一样，信用风险费用是<span>信用风险</span>加权资产的8%。MRC和ORC使用另一种方法计算。为了实现银行间的可比性，资本实力以比率形式报告：总资本 / (信用风险+市场风险+操作风险) = 银行资本比率 &gt; 8%。</p>
+<p>分母中的最后两个分量是由市场风险收费(MRC)和操作风险收费(ORC)乘以(1/8%)= 12.5计算得出的。例如，如果一家银行有875美元的信用风险加权资产，MRC = 10美元，ORC = 20美元，则分母计算为875美元+[(10美元+ 20美元)× 12.5] = 1250美元。然后，银行必须持有至少8% × 1,250美元= 100美元的资本才能满足最低要求。这相当于说总费用必须至少为8% ×
+                                                    $875 + $10 + $20 = $70 + $10 + $20 = $100。</p>
+<p>下图总结了银行和交易账簿的信贷、市场和操作风险费用的覆盖范围：</p>
+<figure><img src="https://pica.zhimg.com/v2-a348b3a444b4b3e1460991bbf468e8e8_1440w.jpg" width="687"/>
+<figcaption>巴塞尔协议II风险收费摘要</figcaption>
+</figure>
+<p>银行还可以使用一系列方法来计算它们的风险收费，以下描述了这些特性：</p>
+<ul>
+<li>信用风险：标准方法(基于1988年协议)；基础内部评级法；高级内部评级法</li>
+<li>市场风险：标准方法；<span>内部模型法</span></li>
+<li>操作风险：基本指标法；标准方法；<span>高级计量法</span></li>
+</ul>
+<p>我们应该注意到，第一支柱忽略了一些重要的银行风险。特别是，银行账簿中的利率风险不包括在内。银行确实面临着重新定价的风险，这种风险源于资产和负债的期限和重新定价的差异。例如，如果利率上升，一家通过短期存款为长期<span>固定利率贷款</span>提供资金的银行可能会遭受重新定价损失。然而，衡量这种风险需要对存款的复杂行为进行建模，因为存款没有固定的到期日，也需要对贷款的提前支付选择权进行建模。由于这些困难，各银行在监测和管理这种风险的方法上存在很大的差异。因此，英国央行决定，这种风险属于第二支柱。那些被认为有更多这种风险的机构可能会面临更高的资本费用。</p>
+<p>最后，由于难以对<b>流动性风险</b>进行正式计量，因此没有对流动性风险进行正式的资本收费。然而，巴塞尔委员会认识到“<span>流动性</span>对任何银行组织的持续生存能力至关重要。”</p>
+<h3>4、协议III</h3>
+<p>始于2007年的信贷危机暴露了监管框架的弱点。一些看起来资本充足的银行经历了重大损失，在许多情况下需要政府的支持。作为回应，巴塞尔委员会对巴塞尔协议II框架进行了修改。这套新规则被称为巴塞尔协议III，其目标是通过提高资本的数量、质量和覆盖范围来增强<span>银行体系</span>的弹性。</p>
+<p>2009年7月，BCBS修订了市场风险框架，增加了交易风险所需的资本金额，使其与同一工具在银行账面上的资本费用更加一致。2010年7月，宣布了更多的重大修订。</p>
+<ul>
+<li><b>资本的定义</b>。对可接受资本的定义进行了修改，排除了一些在信贷危机期间未能提供预期保护的成分。</li>
+<li><b><span>杠杆比率</span></b>。BCBS对杠杆率进行了限制。这是因为一些银行利用巴塞尔协议II的规定拥有充足的资本，但由于杠杆率过高而陷入困境。通常，杠杆率被定义为资产与权益的比率。例如，一家拥有500亿美元资产和10亿美元股本的银行，其杠杆比率为50比1，或者反过来说，杠杆资本比率为2%。这种方法对风险不敏感，因为它忽略了资产质量和
+                                                            <span>对冲效应</span>，但它简单而稳健。巴塞尔对杠杆的定义包括表外项目。目前的建议是要求最低杠杆资本比率为3%，并在2018年1月1日之前纳入支柱1。</li>
+<li><b>流动性需求</b>。在整个金融危机期间，许多银行都在努力维持充足的流动性。正如我们在第26章看到的，流动性在北岩银行的破产中发挥了作用。因此，BCBS引入了全球最低<b>流动性标准</b>。这包括<b>30天<span>流动性覆盖率</span></b>(LCR)，这将允许银行将资产转换为现金，以满足压力情景下的流动性需求。优质流动资产存量与30天以上现金流出净额之比必须大于100%。除此之外，还增加了<b><span>净稳定资金比率</span></b>(NSFR)，这有助于更好地匹配资产和负债。这被定义为可用的稳定资金与所需资金的比率，该比率必须大于100%。北岩银行若达不到这一比率，是因为它是通过不充足的稳定资金(如长期债务)来满足长期需求(如长期抵押贷款)的。经过一段时间的观察，新规则预计将于2015年1月1日适用于LCR，并于2018年1月1日适用于NSFR。</li>
+</ul>
+<p>⭐ <b>例28.1</b> For regulatory capital calculation purposes, what market risks must be incorporated into a bank’s VAR estimate?</p>
+<ul>
+<li>a. Risks in the trading account relating to interest rate risk and equity risk</li>
+<li>b. Risks in the trading account relating to interest rate risk and equity risk, and risks throughout the bank related to foreign exchange and commodity risks</li>
+<li>c. Risks throughout the bank related to interest rate risk, equity risk, foreign exchange risk, and commodity risk</li>
+<li>d. Interest rate risk, equity risk, foreign exchange risk, and commodity risk in the trading account only</li>
+</ul>
+<p>解析：选 b 。除了交易账上的所有风险(利率、股权、外汇、商品)外，市场资本费用还包括银行账上的外汇和商品风险。</p>
+<hr/>
+<h2>二、定义资本</h2>
+<h3>1、协议I和II</h3>
+<p>1988年的资本充足率规则要求任何在<b>国际上活跃的银行</b>至少持有其总风险加权资产8%的资本。这适用于合并基础上的商业银行。因此，例如，作为银行集团母公司的控股公司必须满足资本充足率要求。</p>
+<p>衡量资本的起点是银行的财务报表。在巴塞尔协议中，资本的解释比股权的账面价值更广泛。资本的主要目的是吸收损失，为债权人和存款人提供一定的保护。因此，要想有效，资本必须是永久性的，不能对收益强制征收固定费用，而且必须允许债权人和存款人的权利在法律上处于从属地位。巴塞尔协议承认三种形式的资本：</p>
+<p><b>① <span>一级资本</span>或核心资本</b>。一级资本包括权益资本和披露的准备金，最显著的是税后<span>留存收益</span>。这样的资本被认为是最高质量的缓冲。</p>
+<ul>
+<li><b>权益资本</b>或股东资金，由已发行和已足额支付的普通股和不可赎回的非<span>累积优先股</span>(也称为优先股)组成。</li>
+<li><b>披露的准备金</b>，对应于股票溢价、留存利润和一般准备金。</li>
+</ul>
+<p><b>商誉</b>总是从账面权益中减去。这是一项<span>会计分录</span>，在收购之后，进入账面权益，代表购买价值超过账面价值的部分。省略它是因为它不代表可以作为损失缓冲的资金。</p>
+<p>由于信贷危机的经历，人们越来越关注资本的狭义定义。值得注意的是，<b>核心一级资本</b>不包括优先股。其次，<b>有形普通股</b>(TCE)，不包括优先股和无形资产，TCE = Equity − Intangible Assets − Goodwill − Preferred。<b>无形资产</b>是指不能接触的非<span>货币性资产</span>，如专利和商标。例如，在美国，商业银行也受到最大杠杆要求的约束，其定义为资产减去无形资产和商誉与总资产收益率的比率。</p>
+<p><b>② <span>二级资本</span>或补充资本</b>。二级资本包括资产负债表中提供一定损失保护的部分，但最终必须赎回或包含针对未来收入的强制性费用。包括：</p>
+<ul>
+<li><b>未披露的准备金</b>，或某些国家会计准则允许的隐性储备。这些是通过收益表但未公布的准备金。由于缺乏透明度，以及许多国家拒绝承认未公开储备，未公开储备不属于核心资本的一部分。</li>
+<li><b><span>资产重估</span>准备金</b>，例如，由于长期持有按历史收购成本计价的权益证券而产生的准备金。这些资本可用于在持续经营的基础上吸收损失，但要有一定的折扣，以反映市场波动和未来出售时的税收。</li>
+<li><b>一般备付金或贷款损失准备金</b>，用于防范未来不明损失。这是贷款损失准备金的结果，贷款损失准备金是在预期可能出现信贷损失时从利息收入中扣除的。这些扣除减少了一级资本中的留存利润，但如果它们不反映特定资产的已知恶化（这种情况下是“特定的”），则可能符合二级资本的条件。</li>
+<li><b>混合债务资本工具</b>，结合了股权和债务的某些特征。当这些债券是无担保的、次级的、并已全额偿付时，它们被允许作为补充资本。例如，这包括累积优先股。</li>
+<li><b>次级定期债务</b>，最低原始期限为五年，在最后五年有20%的折扣。在清算的情况下，次级债务的支付权将低于所有其他债务。</li>
+</ul>
+<p>③ <b>三级资本</b>。三级资本包括期限至少为两年的短期次级债务，只适用于市场风险。</p>
+<p>对不同类别的相对数量有额外的限制。</p>
+<ul>
+<li>在8%的信用风险资本费用中，至少有50%必须由一级资本承担。</li>
+<li>三级资本的数量被限制为一级资本的250%，以支持市场风险（如果需要，二级资本可以代替三级资本）。</li>
+<li>其他限制适用于各层的各个元素。</li>
+</ul>
+<p><b>注</b>：巴塞尔资本充足率规则要求：</p>
+<ul>
+<li>总资本（一级和二级）至少为风险加权资产(RWA)的<b>8%</b>。</li>
+<li>一级资本需要至少达到RWA的<b>4%</b>。</li>
+<li>地方监管机构可以强制要求更高的比率和附加规定。</li>
+</ul>
+<h3>2、协议III </h3>
+<p>巴塞尔协议III对资本协议进行修订的主要目标是提高银行资本的水平和质量。主要焦点是<b>普通股资本</b>，这是一级资本的一部分，但被认为具有最好的吸收损失的能力。</p>
+<p>2010年9月，BCBS同意将要求的普通股资本水平提高到4.5%。一级资本从4%提高到6%。这两项改革将于2013年开始，并将于2015年1月1日分阶段实施。总资本仍保持在8%的最低水平。然而，BCBS也增加了2.5%的<b>资本保护缓冲</b>（CCB，capital conservation buffer）。银行将被允许在压力时期动用这一缓冲，但随后将受到收益分配方面的限制（例如，股息和奖金支付）。该缓冲将于2016年1月开始实施，并于2019年1月1日全面生效。全面生效后，这将使核心一级资本、一级资本和总资本的最低充足率分别达到7%、8.5%和10.5%：</p>
+<figure><img src="https://pic1.zhimg.com/v2-276c99af8fac2a6ad9625199d136e9ee_1440w.jpg" width="1207"/>
+<figcaption>巴塞尔协议III各年资本要求(1月1日)，包括资本保留缓冲(CCB)</figcaption>
+</figure>
+<p>在此基础上，还增加了一个<b><span>反周期缓冲</span></b>（countercyclical buffer），由0%至2.5%的普通股本组成，但要根据国情而定。这一缓冲的目标是在信贷过度增长可能导致风险积聚时，增加银行资本的数量。</p>
+<p>巴塞尔协议III对什么可以算作一级资本的一部分引入了额外的限制。例如，代表海外子公司少数股权的部分股权已被禁止。其他不允许包括一些<span>递延所得税</span>资产和抵押服务权利。最后，巴塞尔协议III废除了三级资本。</p>
+<p>这些更改是逐步引入的。这反映出一种担忧，即即时的改革将导致对私营部门的贷款收缩，这将对本已疲弱的经济产生负面影响。如果银行不能筹集到足够的资金来遵守这些新规定，它们将被迫减少风险敞口，这将限制信贷扩张。截至2010年，大多数大型全球银行已经拥有足够的核心一级资本，以满足7%的最低资本要求，而不考虑新的限制。预计留存收益将是满足反周期缓冲所必需的。</p>
+<p><b>注</b>：巴塞尔协议III将核心一级资本的最低资本比率从2%提高到<b>4.5%</b>，加上<b>2.5%</b>的缓冲，总计<b>7%</b>，于2019年1月1日生效。</p>
+<p>⭐ <b>例28.2</b> What is the best definition of tier 1 regulatory capital?</p>
+<ul>
+<li>a. Equity capital, retained earnings, disclosed reserves</li>
+<li>b. Subordinated debt, undisclosed reserves</li>
+<li>c. Equity capital, subordinated debt with a maturity greater than five years</li>
+<li>d. Long-term debt, revaluation reserves</li>
+</ul>
+<p>解析：选 a 。一级资本包括权益资本、披露准备金和留存收益。第二级包括未披露储备、混合债务和次级债务。</p>
+<p>⭐ <b>例28.3</b> Consider a bank balance sheet with (1) common stock of USD 600,000,000;(2) unrealized long-term marketable equity securities gain: USD 5,000,000;(3) allowance in anticipation of
+                                                                possible credit losses: USD 5,000,000;(4) goodwill: USD 30,000,000.Based solely on this information, the tier 1 and tier 2 capital numbers are, respectively:</p>
+<ul>
+<li>a. USD 595,000,000, USD 45,000,000</li>
+<li>b. USD 570,000,000, USD 10,000,000</li>
+<li>c. USD 600,000,000, USD 15,000,000</li>
+<li>d. USD 630,000,000, USD 20,000,000</li>
+</ul>
+<p>解析：选 b 。一级资本包括权益减去商誉，即5.7亿美元。二级资本包括500万美元的资产重估准备金和500万美元的贷款损失准备金。对于这个问题，找到正确的一级资本数量就足够了。</p>
+<p>⭐ <b>例28.4</b> Consider the following financial data for a bank, in millions of dollars:shareholders’ funds: 627.4; retained earnings: 65.6; undisclosed reserves:33.5; goodwill: 21.3; subordinated
+                                                                debt: 180.0; specific provisions: 11.7.The ratio of tier 2 to tier 1 capital is:</p>
+<ul>
+<li>a. 30.81%</li>
+<li>b. 31.78%</li>
+<li>c. 33.53%</li>
+<li>d. 34.03%</li>
+</ul>
+<p>解析：选 b 。一级资本包括股东资金加上留存收益，减去商誉，等于671.7。二级资本包括次级债务加上未披露的准备金，即213.5美元。比率为31.78%。专项拨备不能计入风险资本，因为它们很可能被专项不良贷款吸收。</p>
+<hr/>
+<h2>三、协议I的信用风险</h2>
+<h3>1、表内风险</h3>
+<p>表内资产主要由大多数信贷机构的贷款组成。理想情况下，资本费用应反映出资产信贷质量的差异。事实上，1988年的巴塞尔协议适用于每项资产的名义风险资本权重，如下所示，风险资本权重取自四个类别。</p>
+<ul>
+<li>权重 = 0% </li>
+<ul>
+<li>Cash held</li>
+<li>Claims on OECD central governments</li>
+<li>Claims on central governments in national currency</li>
+</ul>
+<li>权重 = 20% </li>
+<ul>
+<li>Cash to be received</li>
+<li>Claims on OECD banks and regulated securities firms</li>
+<li>Claims on non-OECD banks below one year</li>
+<li>Claims on multilateral development banks</li>
+<li>Claims on foreign OECD public-sector entities</li>
+</ul>
+<li>权重 = 50% </li>
+<ul>
+<li>Residential mortgage loans</li>
+</ul>
+<li>权重 = 100% </li>
+<ul>
+<li>Claims on the private sector (corporate debt, equity, etc.)</li>
+<li>Claims on non-OECD banks above one year</li>
+<li>Real estate</li>
+<li>Plant and equipment</li>
+</ul>
+</ul>
+<p>每一美元的风险加权名义敞口必须有8%的资本覆盖。这些分类提供了对信用风险极其粗略的分类。例如，对OECD中央政府的债权，如持有的美国国债，被赋予零权重，因为这些资产可能没有违约风险。持有现金的权重也为零。在另一个极端，对公司的债权，包括贷款、债券和股票，获得100%的权重，而不考虑违约风险或贷款期限。</p>
+<p>然后将资产负债表项目的<b>信用风险费用</b>（CRC）定义为</p>
+<blockquote>CRC(BS) = 8% × (RWA) = 8% × <span>\Sigma_i RW_i \times Notional_i</span> </blockquote>
+<p>其中RWA为风险加权资产， <span>RW_i</span> 为资产 <span>i</span> 的风险权重。</p>
+<p>⭐ <b>例28.5</b> A bank subject to the Basel I Accord makes a loan of $100 million to a firm with a risk weight of 50%. What is the basic on-balance-sheet credit risk charge?</p>
+<ul>
+<li>a. $8 million</li>
+<li>b. $4 million</li>
+<li>c. $2 million</li>
+<li>d. $1 million</li>
+</ul>
+<p>解析：选 b 。根据巴塞尔协议I的规定，费用为100 × 50% × 8% = 4。</p>
+<h3>2、表外风险</h3>
+<p>到20世纪80年代末，关注资产负债表项目只会忽略银行系统信用风险的一个重要组成部分——互换风险敞口。第一笔<span>掉期交易</span>发生在1981年。到1990年，未平仓头寸的名义余额已经增长到3.5万亿美元，这似乎是一个巨大的数字。必须考虑<span>互换交易</span>的信用风险。然而，与贷款不同，名义金额并不代表最大损失。</p>
+<p>为了解释这些<b>表外项目</b>，巴塞尔协议通过<b>信用转换因子</b>（CCF）计算了一个<b>信用风险敞口</b>（CE），它相当于贷款的名义风险敞口。该协议确定了五大类别：</p>
+<ol>
+<li>替代贷款的工具(如担保、<span>银行承兑汇票</span>和作为贷款和证券担保的备用<span>信用证</span>)具有100%的权重(或信用转换系数)。理由是，这种风险敞口与贷款没有什么不同。以<b>金融信用证</b>（LC）为例，它为客户提供了不可撤销的银行资金。当客户面临信用危机时，它几乎肯定会提取信用证。与贷款一样，全额名义债券也存在风险。这一类还包括有追索权的资产出售(信用风险仍由银行承担)和远期资产购买。</li>
+<li>与交易有关的或有事项（例如，与特定交易有关的履约保证金或<b>商业信用证</b>（commercial letters of credit））占50%。其基本原理是，履约信用证通常由一些收入流担保，比一般的金融信用证风险更低。</li>
+<li>短期、可自行清偿的与贸易有关的负债(例如，以基础货物为抵押的跟单信用证)有20%的因素。</li>
+<li>期限超过一年的承诺(如信用额度)以及票据发行工具(nif)具有50%的信用转换因子。短期承诺或可撤销承诺的权重为零。请注意，这只适用于承诺的无资金部分，因为资金部分是未偿还的贷款，出现在资产负债表上。根据巴塞尔协议II，短期承诺现在获得20%的CCF。</li>
+<li>其他衍生品，如货币、利率、股票和商品的互换、远期和期权，由于其风险敞口的复杂性而受到特殊对待。</li>
+</ol>
+<p>对于前四类，头寸被信用等价物或信用敞口取代，计算为：信用敞口 = 信用转换因子 × 本金。</p>
+<p>对于最后一个类别（衍生品），信用风险被计算为当前<b>净重置价值</b>（NRV）加上应该<b>捕获</b>（add-on）未来或<b>潜在敞口</b>（potential exposure）的附加价值的总和：</p>
+<ul>
+<li>Credit Exposure = NRV + Add-On</li>
+<li>Add-On = Notional × Add-On Factor × (0.4 + 0.6×NGR)</li>
+</ul>
+<p>其中NGR是净毛比。在这里，附加因素取决于合同的<b>期限</b>（tenor）(到期日)和类型，如下表所示：</p>
+<figure><img src="https://pic3.zhimg.com/v2-e2ba6e2ee571e1a41b253022dd509872_1440w.jpg" width="1189"/></figure>
+<p>它大致说明了最大信贷敞口，这取决于风险因素的波动性和期限。波动率最高的是大宗商品，其次是股票，其次是货币，最后是固定收益工具。</p>
+<p>更准确地说，这些数字是从模拟实验中获得的，这些实验测量了一对匹配互换交易的整个生命周期中第80个<span>百分位数</span>的最大损失。对的匹配反映了掉期交易商的对冲实践，并有效地将风险敞口分为两部分，因为只有一个互换可以是在场内的。以初始到期日为5年的<span>货币互换</span>为例。假设汇率是
+                                                                    <span>正态分布</span>的，并且忽略利率风险，那么作为名义风险的一小部分，最大信贷敞口应该是：</p>
+<blockquote>WCE = (1/2) * 0.842 * <span>σ \sqrt 5</span> </blockquote>
+<p>其中1/2因子反映互换匹配，0.842因子对应于单边的80%<span>置信水平</span>。假设年波动率为10%，则WCE = 9.4%。这与上表中7.5%的附加项一致。</p>
+<p>英国央行和<span>纽约联邦储备银行</span>进一步的模拟显示，这些数字也大致相当于6个月内95%的损失。例如，以新的五年期利率掉期为例，在第80个百分位水平上的最坏风险敞口为1.49%；在第95个百分位水平上，六个月内最严重的风险敞口为1.58%。这与该类别1.5%的附加费用一致。</p>
+<p>其次，NGR因子表示<b>净毛比</b>（net-to-gross ratio），即当前净市值与总市值的比率，该比率始终在0到1之间。这一因素的目的是减少属于合法有效的净额协议的合同的资本要求。如果没有净值协议(即NGR = 1)，乘数(0.4 + 0.6 × NGR)等于1。附加费没有减少。</p>
+<p>相反，假设一家银行与同一对手方有两笔掉期交易，当前价值分别为+100和- 60。总重置价值是正数之和，即100。净值为40，则NGR为0.4。乘数(0.4 + 0.6 × NGR)等于0.64。</p>
+<p>在另一种极端情况下，如果目前所有合同的净收益为零，则NGR = 0，乘数(0.4 + 0.6 × NGR)等于0.4。这个最小值0.4的目的是为NGR的潜在移动提供保护，即使目前为零，也可能随着时间的推移而改变。</p>
+<p>然后，通过将<span>交易对手风险</span>权重应用于式(28.6)中的信用敞口，得到风险加权资产的计算。由于此类交易的大多数对手方往往具有良好的信用，因此表28.4中的风险权重乘以50%。表外项目的信用风险费用定义为：</p>
+<blockquote>CRC(OBS) = 8% × <span>\Sigma_i RW_i </span> × 50% × <span>Credit \ Exposure_i</span> </blockquote>
+<p>例：考虑与一家国内公司进行1亿美元的利率互换。假设剩余期限为四年，当前市场价值为100万美元。信用风险费是多少?</p>
+<p>解：由于不存在净额（netting），因此因子(0.4 + 0.6 × NGR) = 1。从上表可得附加因子为0.5。信贷敞口为CE = $1,000,000 + $100,000,000 × 0.5% × 1 = $1,500,000。这个数字乘以交易对手特定风险权重和8%的一半，才能得出支持互换所需的最低资本水平。最后得到6万美元。</p>
+<p>⭐ <b>例28.6</b> The Basel I Accord computes the credit exposure of derivatives using both replacement cost and an add-on to cover potential future exposure. Which of the following is the correct
+                                                                    credit risk charge for a purchased seven-year OTC equity index option of $50 million notional with a current mark to market of $15 million with no netting and a counterparty weighting
+                                                                    of 100%?</p>
+<ul>
+<li>a. $1.6 million</li>
+<li>b. $1.2 million</li>
+<li>c. $150,000</li>
+<li>d. $1 million</li>
+</ul>
+<p>解析：选 a 。经过查表，附加因子为10%，信用风险敞口为15 + 50 × 10% = 20，信用风险费用为20 × 8% = 1.6。</p>
+<hr/>
+<h2>四、案例：花旗银行</h2>
+<h3>1、风险加权资产</h3>
+<figure><img src="https://pic1.zhimg.com/v2-29ec596c0d92889cf8c31afcb8931c68_1440w.jpg" width="1197"/>
+<figcaption>花旗银行信贷风险加权资产（2009年）</figcaption>
+</figure>
+<p>上表汇总了截至2009年12月的表内和表外项目。该银行的总资产为1161亿美元，包括现金等价物、证券、贷款、交易资产和其他资产。每项资产的名义风险权重被分配到四个风险权重类别中的一个，范围从0%到100%。例如，在2570亿美元的证券中，1290亿美元的风险权重为零，因为这些证券代表了经合组织政府债券的头寸。在剩下的资产中，640亿美元的权重为20%，110亿美元的权重为50%，630亿美元的权重为100%。大多数贷款的风险权重为100%。交易资产不包括在这一计算中，因为它们只承担市场风险费用。</p>
+<p>表格的第二个面板显示表外信息。第二列显示名义值，第三列显示转换因子，第四列显示信用等价物，它是前两列的乘积。金融贷款和证券贷款的转换系数为1.00，履约贷款和超过一年的未使用承诺的转换系数为0.50，商业贷款的转换系数为0.20。</p>
+<p>最后注意名义衍生品头寸的巨大规模。花旗银行的总资产规模为35265亿美元，是其总资产规模(1.161万亿美元)的数倍，令其1,170亿美元的股本相形见绌。然而，名义金额并未显示出风险。由净重置价值加上附加价值组成的信贷等值额为1990亿美元，这个数字要低得多。</p>
+<h3>2、资本充足性</h3>
+<p>根据这些信息，可以计算总风险加权资产和资本充足率。</p>
+<figure><img src="https://pic4.zhimg.com/v2-81476e7c5b8dadd280f8fdb40b65332b_1440w.jpg" width="901"/>
+<figcaption>花旗银行风险加权资产（2009年）</figcaption>
+</figure>
+<p>上表的第一行将每个类别的表内和表外项目相加。乘以风险权重得到第二行。信贷风险的RW资产总额为6,960亿美元，其中包括5150亿美元的抵押贷款项目和1,810亿美元的抵押贷款项目。在此基础上，再加上RW资产的市场风险，即550亿美元。因此，花旗银行的大部分监管风险资本涵盖了信用风险。市场风险只占总风险的不到10%。</p>
+<p>RW的总资产总计达7360亿美元。根据8%的比率，我们发现最低监管资本为590亿美元。事实上，可用的风险资本总计1110亿美元，占15%的比例，远高于监管的最低要求。在美国，<b>资本充足的银行</b>的这一比率为10%。显然，监管约束是没有约束力的。</p>
+<figure><img src="https://pic3.zhimg.com/v2-bc68d832342cf35adb5ff1e349778ee4_1440w.jpg" width="669"/>
+<figcaption>花旗银行资本要求（2009年）</figcaption>
+</figure>
+<p>只要监管资本比率不具有约束力，银行就可以在仔细考虑预期收益增加与风险增加之间的权衡的基础上，决定目标最优资本比率。换句话说，这需要衡量<b>经济资本</b>（economic capital）。如果认为当前资本比率相对于这一目标过高，该行可以通过派息或股票回购来缩减其资本基础。相反，如果银行认为它需要更多的资本，它可以发行新股。与危机后的其他主要银行一样，花旗银行持有的资本远远高于8%的最低监管标准。</p>
+<h3>3、花旗集团和TARP</h3>
+<figure><img src="https://pic3.zhimg.com/v2-62d5d107e73b1ee9678b4362ab5c7958_1440w.jpg" width="1195"/>
+<figcaption>花旗集团的简要财务报告（$ Billion）</figcaption>
+</figure>
+<p>上表总结了花旗集团2003年至2009年的财务报表。这家<span>银行控股公司</span>全资拥有花旗银行，花旗银行是一家商业银行。从2003年到2006年，公司积极扩张，资产增长表明，资本比率保持在一个狭窄的范围内。这在一定程度上是通过股息支付和股票回购来实现的。</p>
+<p>1967年至1984年担任汇丰首席执行官的沃尔特•里斯顿（Walter Wriston）有一句名言：只要银行运营良好，就不需要多少资本。换句话说，收入应该足以弥补损失。事实上，花旗银行在上世纪80年代末就陷入了严重的困境，原因是第三世界的贷款变成了坏账，而且在1991年美国经济衰退期间。这迫使银行在1991年筹集了大量资本，证实了监管机构的观点，即银行需要携带足够的资本来吸收巨大的、意外的损失。</p>
+<p>然而，从2007年开始，由于大量不良抵押贷款，包括对表外结构性投资工具（SIV）的间接敞口，该公司的状况迅速恶化。2007年第四季度，花旗集团报告亏损98亿美元，导致资本充足率大幅下降。2008年1月，标准普尔将花旗集团的信用评级从AA下调至AA -。2008年，情况继续恶化。</p>
+<p>2008年9月<span>雷曼兄弟</span>破产后，花旗集团于2008年10月被迫从美国财政部问题资产救助计划(TARP)筹集250亿美元。作为交换，财政部获得永久优先股，这被视为一级资本。</p>
+<p>然而，政府的救助还不够。2008年12月，政府又向优先股投资了200亿美元。这被称为TARP II。此外，美国政府同意为花旗集团约3,060亿美元的贷款和证券提供担保，以换取另外71亿美元的优先股。如果没有这520亿美元的注资，花旗集团的股本将缩水至190亿美元，这意味着该银行基本上已经资不抵债。</p>
+<p>2009年7月，花旗集团实施了一项交换要约，投资者将其优先股转换为570亿美元的普通股；政府将TARP计划中的250亿美元资金转换为普通股。正如花旗首席执行官潘伟迪（Vikram Pandit）所说，“这个证券交易所有一个目标——增加我们的有形普通股权益”，因为“市场也将有形普通股权益视为一项重要指标”。到2009年12月，花旗集团已经筹集了大约200亿美元的新股本，并偿还了200亿美元的TARP
+                                                                                II资金。它还退出了亏损分担协议。</p>
+<p>资本比率的大幅上升是由于风险敞口减少和筹资的共同作用。这是以稀释先前股东的股份为代价的。花旗的股价在2007年初曾达到55美元，现在则徘徊在4美元左右。换句话说，2500亿美元的股票市值蒸发了。</p>
+<p>花旗集团的困境被普遍归咎于管理不善、监管不力和风险控制不足。高层管理人员为了追求更高的利润，有意将业务扩展到结构性信贷领域。事实上，2007年7月，时任花旗首席执行官的查克•普林斯（Chuck Prince）在谈到公司的杠杆贷款业务时曾说过一句臭名昭著的话:“当音乐停止时，就流动性而言，事情将变得复杂。”但只要音乐响起，你就得站起来跳舞。我们还在跳舞。”</p>
+<hr/>
+<h2>五、协议II</h2>
+<p>人们普遍认为，巴塞尔协议在提高银行资本比率方面取得了成功。该协议的结果是，从1990年到1998年，1000家最大银行的总一级资本充分率从8400亿美元增加到1.5万亿美元。</p>
+<h3>1、1988年的问题</h3>
+<p>然而，随着时间的推移，这些规定已经过时了。该体系导致了<b>监管套利</b>（regulatory arbitrage），这可以广义地定义为旨在绕过这些监管的银行活动。贷款模式发生了转变，一般是朝着承担更多信贷风险的方向，推动经济资本达到监管资本的水平。</p>
+<p>为了说明这一点，考虑这样一种情况：银行可以向评级为AAA的投资级公司或评级为CCC的投机级公司提供1亿美元的贷款。不管信贷质量如何，该银行被迫持有800万美元的监管资本，因此它必须借入9200万美元。假设扣除费用和<span>预期损失</span>后，AAA贷款的回报率为6%。借款成本接近5.7%。股东的净回报为1亿美元×
+                                                                                6% - 9200万美元× 5.7% = 75.6万美元。与800万美元的资本基础相比，这仅代表9.5%的回报率，这对股东来说可能不够。银行可以用小得多的资本基础来支持这笔贷款。例如，200万美元的资本基础将需要借款9800万美元，假设债务成本保持不变，将产生1亿美元× 6% - 9800万美元× 5.7% = 41.4万美元的回报。这意味着20.7%的回报率，这是更容易接受的。然而，由于具有约束力的监管要求，该银行无法降低其资本。</p>
+<p>假设扣除费用和预期信贷损失后，CCC贷款的回报率为7%。目前股东的净回报为175.6万美元，回报率为22%。在这种情况下，银行有动机增加其贷款的风险，以使经济资本更符合其监管资本。这个简单的例子表明，监管可能会反常地促使银行将贷款转向评级较低的借款人。</p>
+<p>除了对信贷风险区分不充分之外，1988年《协定》没有承认信贷缓解技术，也没有承认证券化的影响。其中一些缺陷在巴塞尔协议II中得到了纠正。</p>
+<p>⭐ <b>例28.7</b> A bank that funds itself at LIBOR − 5bp purchases an A+ rated corporate floating coupon loan paying LIBOR + 15bp. Based on the Basel I minimum capital requirements,
+                                                                                    what is the annualized return on regulatory capital for this loan?</p>
+<ul>
+<li>a. 2.5%</li>
+<li>b. 5.0%</li>
+<li>c. 11%</li>
+<li>d. None of the above</li>
+</ul>
+<p>解析：选 a 。这种债券需缴纳8%的资本费用。以银行利率购买价值100的债券，净收益为100 [(L+ 0.15%) - (L - 0.05%)] = 0.20。需要保留8的资金，假设这笔资金没有用于投资。收益率是0.20/8= 2.5%。</p>
+<h3>2、资本的定义</h3>
+<p>巴塞尔协议II提供了标准化方法和更复杂的基于内部评级(IRB)的方法之间的选择。标准化方法是巴塞尔协议I规则的简单扩展。</p>
+<p>对于前者，资本的定义仍然和以前一样。然而，<b>一般拨备</b>（general provisions）或<b>贷款损失准备金</b>（loan loss reserves）只能在风险加权资产的1.25%的限制下纳入第二级。相比之下，对于IRB方法，巴塞尔协议II区分了预期损失(EL)和意外损失(UL)。资本应该吸收意外的损失，这意味着它不能支持预期的损失。银行通常为称为一般准备金或贷款损失准备金的账户提供资金，以吸收预期的信贷损失。因此，巴塞尔协议II从二级资本中撤回了一般准备金。</p>
+<h3>3、信用风险方法</h3>
+<p>与以前一样，信用风险费用按个人信用费用的总和计算：</p>
+<blockquote>CRC(BS) = 8% × <span>\Sigma_i RW_i \times CE_i</span></blockquote>
+<p>其中RW是风险权重，CE是信用敞口。一般而言，资本费用是根据在一年内支持99.9%置信度所需的资本数额进行校准的。银行现在有三种方法来选择风险权重。</p>
+<p><b>标准化方法</b>。这是1988年协议的延伸，但根据<b>外部信用评估机构</b>（external credit assessment institutions）提供的外部信用评级，对信用风险进行了更精细的分类。下表描述了新的权重，现在银行和主权国家的权重分为五类，企业的权重分为四类。</p>
+<figure><img src="https://pic2.zhimg.com/v2-898a3889940ba9c5c500efa4fcf4892b_1440w.jpg" width="1193"/>
+<figcaption>风险权重：标准化方法</figcaption>
+</figure>
+<blockquote>注：在选项1中，银行评级基于其所在的主权国家。在选项2下，银行评级基于外部信用评估。短期债权被定义为原始期限少于三个月的债权。</blockquote>
+<p>对主权国家而言，经合组织成员国不再享有优先地位。对于银行来说，有两种选择。前者的风险权重比主权评级低一级，而后者则采用外部信用评估。巴塞尔协议II还取消了衍生品50%的风险权重上限。</p>
+<p><b>基金会内部评级方法</b>（FIRB方法）。在基于<b>内部评级方法</b>（IRB）下，银行被允许在遵守监管标准的情况下使用它们对信用价值的内部估计。在基础IRB方法下，银行估计<b>违约概率</b>（PD），监管机构提供其他输入，这些输入从标准化方法中延续下来。下表说明了PD与各种资产类别的风险权重之间的联系：</p>
+<figure><img src="https://pic3.zhimg.com/v2-6e367df406734e6b8a9529d9655b1566_1440w.jpg" width="745"/>
+<figcaption>内部评级方法风险权重</figcaption>
+</figure>
+<blockquote>注：LGD的说明性权重为45%，期限为2.5年，大型企业风险敞口（营业额超过5000万欧元的公司）。</blockquote>
+<p>例如，违约概率为1.00%的企业贷款，其风险权重为92.32%，接近巴塞尔协议i中100%的标准风险权重。注意，零售贷款的风险权重远低于其他类别，反映了其更大的多元化。</p>
+<p><b>高级内部评级方法</b>（AIRB方法）。在AIRB方法下，银行也可以提供其他投入。这包括违约损失(LGD)和违约暴露(EAD)。然后将所有适用风险敞口的综合PD和LGDs映射为监管风险权重。资本费用由风险权重乘以EAD乘以8%得到。高级IRB方法仅适用于主权国家、银行和公司的风险敞口，而不适用于零售投资组合。</p>
+<p><b>违约相关性的因子模型</b>。巴塞尔协议II仍然根据个人信用费用的总和来计算信用风险费用。的确，公式加性的。该规范简单而稳健。</p>
+<p>然而，目前尚不清楚为什么个别资本费用的增加会导致资本费用反映整个投资组合99.9%的VAR指标。毕竟，将单个VAR加起来肯定不会等于投资组合VAR。然而，事实证明，当单个因素产生默认相关性时，这种分解加起来可以很好地近似于投资组合风险。巴塞尔委员会选择了资本费用来代表具有典型违约相关性的典型规模的银行投资组合。</p>
+<p>更准确地说，IRB模型的风险权重函数基于所谓的<b>渐近单风险因素</b>（ASRF）模型，该模型假设(1)单一共同因素和(2)特质风险的完美多样化。一个分散化良好的投资组合有大量没有集中的头寸，在这种情况下，它也被称为高度分散或无限分散。ASRF模型创建的单个资本费用是投资组合不变的，这意味着它们不依赖于投资组合的其余部分。</p>
+<p>标准化方法表中的风险权重函数是根据资产的PD、LGD和期限来指定的。它结合了一个相关函数ρ(PD)，该函数随着企业和零售信贷的PD增加而减小。对于企业信用，低市盈率的相关性从0.24左右开始，而高于10%的市盈率则降至0.12。这反映了一种观察结果，即低信用的违约概率更为特殊，而较好的信用往往会因总体经济状况而违约。零售信贷的违约相关性较低，从0.16到0.03不等，反映出它们更大的多样化。</p>
+<p><b>方法的采用</b>。拥有简单投资组合的银行可以遵循标准化方法。更先进的银行预计将采用内部审查制度。为了符合IRB方法的资格，银行必须向其主管证明它符合一组最低要求。最重要的是，内部评级系统必须是一致和可靠的。此外，银行不能在不同的评级体系中分配借款人，也不能为了最小化资本要求而挑选评级。此外，银行开发的评级体系必须得到最高层的批准，并接受独立监督。</p>
+<p>一旦一家银行采用了IRB方法，预计它最终将扩展到所有资产类别和整个银行集团。预计采用内部审查委员会方法的银行将继续采用这种方法;只有在特殊情况下，经主管批准，才允许自愿返回标准化方法。</p>
+<h3>4、信用风险缓释</h3>
+<p>巴塞尔协议II还承认<b>信用风险缓释</b>（CRM，Credit Risk Mitigation）技术，如抵押、第三方担保、信用衍生品和<span>净额结算</span>。信用抵押敞口是指借款人将资产作为抵押品的敞口。只对现金、黄金、上市股票、投资级债务、评级为BB
+                                                                                                                -或以上的主权证券，或投资于相同资产的共同基金予以确认。</p>
+<p>标准化方法下，有两种方法：</p>
+<ul>
+<li><b>简单方法</b>（simple approach）：抵押品的风险只是代替了交易对手的风险，通常有20%的下限</li>
+<li><b>综合方法</b>（comprehensive approach）：更准确的，将导致更低的资本费用</li>
+</ul>
+<p>即使风险敞口与抵押品完全匹配，由于违约期间价值的波动，也存在一些信用风险。在最坏的情况下，风险敞口的价值可能会上升，而抵押资产的价值可能会下降。这种波动率效应通过工具特定的 <b>haircut </b>参数 H 来衡量，并且在10天内近似于99%的VAR度量。以股票为例，H = 25%。对于现金为0。</p>
+<p>风险缓解后的敞口是：</p>
+<blockquote><span>E^∗ = E × (1 + H_e) − C × (1 − H_c − H_{f x})</span> </blockquote>
+<p>如果为正，其中：</p>
+<ul>
+<li><span>E</span> ：无担保敞口的价值</li>
+<li><span>C</span> ：所持抵押品的当前市场价值</li>
+<li><span>H_e</span> ：风险敞口的减记值</li>
+<li><span>H_c</span> ：抵押品的减记值</li>
+<li><span>H_{f x}</span> ：两者之间货币错配的减记值</li>
+</ul>
+<p>在基础法下，只允许采用综合法。违约情况下的有效损失 <span>LGD ^*</span> 由通常的LGD和敞口E的当前值以及风险缓解后的敞口 <span>E^ *</span> 求得 <span>LGD^∗ = LGD × (E^∗/E)</span>                                                                                                                    。</p>
+<p>其他形式的<b>担保</b>（guarantees）和<b>信用衍生品</b>（credit derivatives），这是一种防止债务人违约的保护形式，由第三方提供，称为担保人。然而，只有在担保质量不存在不确定性的情况下，才会给予资本减免。保护必须是直接、明确、不可撤销和无条件的。在这种情况下，可以应用<b>替换</b>（substitution）原则。换句话说，如果A银行向C银行购买针对B公司违约的信用保护，那么它可能用C的信用风险代替B的风险。如果C银行的信用等级高于B银行，就会这样做。</p>
+<p>不过，可以考虑到<b>双重违约</b>（double default）的可能性很低。为了使A银行蒙受信用损失，B银行和C银行都必须违约。这种双重违约发生的可能性通常非常低。例如，如果违约是独立的，则信用损失的概率由两个违约概率的乘积给出。2005年7月，BCBS采用了新的资本要求，以应对双重违约效应：</p>
+<blockquote><span>RW_{DD} = RW_0(0.15 + 160 × PD_g)</span> </blockquote>
+<ul>
+<li><span>RW_0</span> ：原始资本要求</li>
+<li><span>PD_g</span> ：担保人C银行违约的概率</li>
+</ul>
+<p>例如，假设C银行被评为A级，其违约概率约为0.1%，则得到RWDD = RW0(0.31)，低于RW0。</p>
+<h3>5、证券化</h3>
+<p>最后，巴塞尔协议II也明确处理<b>证券化</b>（Securitization），这涉及到资产向第三方的经济或法律转移，通常称为<b>特殊目的载体</b>（SPV）。例如资产支持证券，如贷款抵押债券（CLO），其基础资产是银行贷款池。由于将贷款保留在资产负债表上的监管成本很高，银行现在通常将贷款转换为可交易证券。</p>
+<p>银行只有在真正出售后才能将这些资产从资产负债表中移除，而<b>真正出售</b>（true sale）是用<b>完全分离</b>（clean break）标准定义的。如果满足以下几个条件：</p>
+<ul>
+<li>(1)重大信用风险必须转移给第三方</li>
+<li>(2)卖方对资产不保持有效或间接控制</li>
+<li>(3)证券不是卖方的义务</li>
+<li>(4)特殊目的工具的持有人有权质押或交换这些利益。</li>
+</ul>
+<p>另外还有两个技术条件。</p>
+<p>如果这些条件都满足了，那么银行就可以将这些资产从资产负债表中移除，并接受证券化部分的新风险权重。下表在标准化方法下对这些进行了描述：</p>
+<figure><img src="https://pic2.zhimg.com/v2-af788a71fe98b24ca10c27210bc476d1_1440w.jpg" width="1195"/>
+<figcaption>证券化的风险权重：标准化方法</figcaption>
+</figure>
+<p>例如，BBB级债券的风险权重为100%。对于评级最低的部分，银行必须持有等于名义金额的资本，这意味着风险权重(1/8%)= 1.250%。</p>
+<p>⭐ <b>例28.8</b> Which of the following statements about the Basel II capital requirements is false?</p>
+<ul>
+<li>a. It increases the risk sensitivity of minimum capital requirements for internationally active banks.</li>
+<li>b. It addresses only credit risk and market risk.</li>
+<li>c. U.S. insurance companies are not required to comply with Basel II capital requirements.</li>
+<li>d. Banks are not allowed to use their internal models for credit risk in determining the capital requirements for credit risk.</li>
+</ul>
+<p>解析：选 b 。表述b是错误的，因为巴塞尔协议II也涵盖了操作风险。银行可以提供输入，但不能使用其信用风险的内部模型，因此表述d成立。</p>
+<p>⭐ <b>例28.9</b> Which of the following statements is not correct about the foundation IRB and the advanced IRB approaches for credit
+                                                                                                                                risk capital charges in Basel II?</p>
+<ul>
+<li>a. Under the advanced IRB approach, banks are allowed to use their own estimates of PD, LGD, EAD, and correlation coefficient
+                                                                                                                                    but must use the risk weight functions provided by the supervisors.</li>
+<li>b. Under the foundation IRB approach, banks provide their own estimates of PD and rely on supervisory estimates for other risk
+                                                                                                                                    components.</li>
+<li>c. Banks adopting the advanced IRB approach are expected to continue to employ this approach. A voluntary return to the standardized
+                                                                                                                                    approach is permitted only in extraordinary circumstances.</li>
+<li>d. Under both foundation IRB and advanced IRB approaches, the expected loss is not included in the credit risk capital charge.</li>
+</ul>
+<p>解析：选 a 。银行从未被允许使用自己的相关性。</p>
+<p>⭐ <b>例28.10</b> Under the comprehensive approach for the foundation internal ratings-based approach under Basel II, which of the
+                                                                                                                                following methods is used for calculating the effective loss given default (LGD∗) where: LGD∗ is the effective loss given default
+                                                                                                                                (considering risk mitigation measures), LGD is that of the senior unsecured exposure before recognition of collateral, E is
+                                                                                                                                the current value of the exposure (i.e., cash lent or securities lent or posted), and E∗ is the exposure value after risk mitigation?</p>
+<ul>
+<li>a. LGD∗ = LGD × (E∗ /E)</li>
+<li>b. LGD∗ = LGD × (E∗) ∗ (E)</li>
+<li>c. LGD∗ = LGD × (E∗ + E)</li>
+<li>d. LGD∗ = LGD × (E∗ − E)</li>
+</ul>
+<p>解析：选 a 。见正文。</p>
+<p>⭐ <b>例28.11</b> The Basel II risk weight function for the internal ratings-based (IRB) approach is based on the asymptotic single
+                                                                                                                                risk factor (ASRF) model, under which the the system-wide risks that affect all obligors are modeled with only one systematic
+                                                                                                                                risk factor. The major reason for using the ASRF is:</p>
+<ul>
+<li>a. The model should not depend on the granularity of the portfolio.</li>
+<li>b. The model should be portfolio invariant so that the capital required for any given loan depends only on the risk of that
+                                                                                                                                    loan and does not depend on the portfolio it is added to.</li>
+<li>c. The model should not be portfolio invariant and the capital required for any given loan should not depend on the risk of
+                                                                                                                                    other loans.</li>
+<li>d. The model corresponds to the one-year VAR at a 99.9% confidence level.</li>
+</ul>
+<p>解析：选 b 。因为单个信贷的资本费用是加在一起的，所以它对投资组合的其余部分必须是不变的。该模型还假设了无限粒度。</p>
+<p>⭐ <b>例28.12</b> Which of the following is not a drawback of the Basel II foundation internal ratings-based (IRB) approach?</p>
+<ul>
+<li>a. PDs and LGDs are assumed to be uncorrelated.</li>
+<li>b. Asset correlations decrease with increasing PDs.</li>
+<li>c. The portfolio of the financial institution is assumed to be infinitely granular.</li>
+<li>d. The approach uses a single risk factor portfolio model instead of a multiple risk factor model.</li>
+</ul>
+<p>解析：选 b 。在实践中，pd和lgd是正相关的，因此表述a是一个问题。高pd年份与高lgd相关。投资组合可能不是高度精细的，因此表述c是一个问题。投资组合可能面临多种常见的风险因素，因此表述d是一个问题。相反，在实践中确实观察到，低信用往往具有更多的特质风险，这意味着高pd具有低相关性。</p>
+<h3>6、评估</h3>
+<p>英国央行组织了一次大规模的分析，分析新资本要求对银行体系的影响。下表报告了10国集团228家银行的结果：</p>
+<figure><img src="https://pic1.zhimg.com/v2-22a36b99d4bcbfdb82515bca3d324e9a_1440w.jpg" width="943"/>
+<figcaption>资本要求的百分比变化</figcaption>
+</figure>
+<p>从表中可以看出，新的资本要求对银行的影响是不同的。拥有更多零售风险敞口的小型银行的资本金要求将低于以往。零售风险确实比其他类型的风险更多样化。</p>
+<p>大型银行更有可能采用AIRB方法，因为它比标准化方法的资本要求更低。该表列出了标准化和最可能的IRB方法的结果。例如，在标准化方法下，大型银行将承受略高的资本费用(1.8%)，这主要是由于增加了操作风险费用。然而，在AIRB方法下，信用风险费用下降了10.5%，这导致资本要求净下降4.4%。然而，巴塞尔协议III将要求提高银行资本的数量和质量。</p>
+<hr/>
+<h2>六、市场风险</h2>
+<p>1988年设立信用风险收费后，巴塞尔委员会将注意力转向市场风险，以应对商业银行自营交易活动的增加。《资本协议》于1996年修订，纳入了针对市场风险的资本收费，并于1998年1月实施。这就是众所周知的<b>1996年修正案</b>（1996 Amendment）。</p>
+<p>资本费用可以用两种方法计算。第一种是基于标准化方法，类似于由巴塞尔规则确定的附加条款的信用风险体系。由于分散效应没有得到充分认识，这种方法产生了很高的市场风险费用。第二种方法被称为<b>内部模型方法</b>（IMA），它基于银行自己的风险管理系统，比一套严格的标准化规则更具适应性。这种做法必须被视为金融监管方面的突破。监管机构第一次依靠银行自己的VAR系统来确定资本费用。然而，由于银行可能有低估其市场风险的动机，内部模型方法还包括一个基于回溯测试的强大验证系统。IMA的另一个动机是为银行开发风险管理系统提供激励。这是因为IMA方法比标准化方法的资本费用更低。</p>
+<p>市场风险框架得到更新，并完全纳入巴塞尔协议II。然而，在最近的信贷危机中，许多银行遭受了通常的VAR数字无法反映的巨大损失。因此，巴塞尔委员会对市场风险框架进行了一些修改，将于2011年12月31日实施。</p>
+<h3>1、标准化方法</h3>
+<p>这种<b>搭积木法</b>（building block approach）包括将附加组件附加到所有头寸上，这些附加组件在整个投资组合中进行汇总。银行的市场风险费用首先根据具体的指导方针，分别计算利率风险(IR)、股票风险(EQ)、
+                                                                                                                                            <span>外汇风险</span>(FX)、商品风险(CO)和期权风险(OP)的投资组合。然后从四类风险的总和中获得银行的总风险。由于风险费用的构建遵循预先指定的过程，因此这种方法有时被称为<b>标准化方法</b>。</p>
+<p>银行的总风险由每天 <span>t</span> 的不同类型风险 <span>j</span> 的风险总和得到：</p>
+<blockquote><span>\displaystyle MRC^{STD}_ t = \sum_{j=1}^5 MRC_t^i = MRC^{IR}_ t + MRC^{EQ}_ t + MRC^{FX}_ t + MRC^{CO}_ t + MRC^{OP}_t</span> </blockquote>
+<p>利率风险费用是一般市场风险费用和特定风险费用的总和。一般市场风险费用对于期限较长的工具通常会增加，而特定风险费用则包括针对发行人特定风险的费用。例如，长期投资级信贷的权重为1.60%。对于股票风险，一般市场风险费用为<span>净头寸</span>的8%;具体的风险费用是总头寸的8%，除非投资组合兼具流动性和良好的分散性，在这种情况下，权重减少到4%。对于货币风险，市场风险费用是货币净多头头寸或货币净空头头寸的高者的8%。对于商品风险，有几种可能的方法。在简化方法中，风险费用是每种商品净头寸的15%。最后，对于期权风险，有几种方法也是可能的。在简化的方法中，当银行处理有限范围的购买期权时，资本费用是基础证券的市场风险费用和期权溢价中较小者。</p>
+<p>因此，标准化模型相对容易实现。它对错误规范建模也具有鲁棒性。然而，构建块方法在几个方面受到了批评。首先，风险分类是武断的。例如，8%的资本费用统一适用于股票和货币，而不考虑它们的实际回报波动。不同的货币相对于美元有不同的波动性，也会随着时间而变化。</p>
+<p>其次，这种方法导致了高资本要求，因为风险费用是在不同的风险来源之间系统地加起来的，这忽略了多样化。例如，固定收益费用是针对每种货币分别计算的，然后在各个市场中相加。隐含的是，这种方法是一种最坏的情况，它假设最坏的损失将在所有风险来源中同时发生。实际上，这些市场并不是完全相关的，这意味着最严重的损失将小于单个最严重损失的总和。因此，标准化模型未能认识到多元化的好处，这没有激励银行谨慎地进行多元化。认识到这些问题导致了基于内部模型的另一种更灵活的方法。</p>
+<p>⭐ <b>例28.13</b> You are an analyst at Bank Alpha. You were given the task to determine whether under Basel
+                                                                                                                                                    II your bank can use the standardized approach to report options exposure instead of the internal models
+                                                                                                                                                    approach. Which of the following criteria would your bank have to satisfy in order for it to use the simplified
+                                                                                                                                                    approach?</p>
+<ul>
+<li>a. The bank writes options, but its options trading is insignificant in relation to its overall business
+                                                                                                                                                            activities.</li>
+<li>b. The bank purchases and writes options and has significant option trading.</li>
+<li>c. The bank solely purchases options, and its options trading is insignificant in relation to its overall
+                                                                                                                                                            business activities.</li>
+<li>d. The bank purchases and writes options, but its option trading is insignificant.</li>
+</ul>
+<p>解析：选 c 。银行只有在购买期权且其<span>期权交易</span>不显著的情况下才能使用简化方法。否则，需要使用中间方法。另一种看待问题的方式是，答案c包含了最弱的条件，即最不可能导致重大损失的条件。</p>
+<h3>2、内部模型方法</h3>
+<p>与简单化的标准化方法相比，内部模型方法(IMA)依靠银行自己开发的内部风险管理系统作为市场风险收费的基础。然而，监管机构并没有放弃自己的权力。银行只有在得到监管部门的明确批准后才能使用内部模型。银行首先必须满足质量要求。其次，输出要经过严格的回测过程。</p>
+<p><b>定性需求</b>。并非所有银行都能使用内部模型。监管机构首先必须得到银行<span>风险管理体系</span>健全的总体保证。因此，银行首先要满足各种质量标准：</p>
+<ul>
+<li><b>独立的风险控制单元</b>。银行必须有一个独立于交易的风险控制部门，并向高级<span>管理层报告</span>。这种结构最大限度地减少了潜在的利益冲突。</li>
+<li><b>回测</b>。银行必须定期进行回测，对内部VAR模型的准确性提供必要的反馈。</li>
+<li><b>参与</b>。高层管理人员和董事会需要参与风险控制过程，并投入足够的资源进行风险管理。</li>
+<li><b>集成</b>。银行的内部风险模型必须与日常管理相结合。这避免了银行仅仅为了监管目的而计算其VAR，而忽略它的情况。</li>
+<li><b>使用限制</b>。银行应利用其风险衡量系统设定内部交易和风险敞口限制。</li>
+<li><b>压力测试</b>。银行应定期进行压力测试。压力测试结果应由高级管理层审查，并反映在管理层和董事会制定的政策和限制中。</li>
+<li><b>遵从性</b>。银行应该遵守一套成文的政策。</li>
+<li><b>独立审查</b>。应当定期对交易单位和风控单位进行独立审查，至少每年一次。</li>
+</ul>
+<p>除了这些要求外，银行的风险模型必须包含足够数量的风险因素，其中“足够”的定义取决于交易活动的程度和复杂程度。2009年的修订版将要求银行解释为何在VAR计算中忽略了任何用于定价的因素。</p>
+<p>对于利率的重大风险敞口，应该至少有6个<span>收益率曲线</span>风险因素加上单独的因素来模拟价差风险。对于股票风险，该模型应至少包含一个指数的beta映射；更详细的方法是建立行业甚至个人风险
+                                                                                                                                                                <span>因素模型</span>。对于活跃的<span>大宗商品交易</span>，风险模型应考虑到现货利率和<span>便利收益率</span>的变动。银行还应抓住期权头寸的非线性价格特征，包括维加风险。广泛风险类别之间的相关性被明确地识别出来。监管机构还可以识别风险类别之间的相关性，前提是模型是健全的。</p>
+<p><b>IMA市场风险收费</b>。满足这些条件后，按以下规则计算市场风险费用：</p>
+<ul>
+<li><b>量化参数</b>。日VAR的计算应基于一组统一的定量输入</li>
+<ul>
+<li>10个交易日或两个日历周的期限；然而，银行可以用时间的平方根来计算每日风险价值。</li>
+<li>99%的<span>置信区间</span>。</li>
+<li>基于至少一年历史数据的观察期，或者如果使用非等加权方案，则至少六个月的平均时间滞后。</li>
+<li>至少每季度更新一次，或者每当价格发生重大变化时（以便发现突然增加的风险）；2009年的修订版要求至少每月更新一次。</li>
+</ul>
+<li><b>市场风险收费</b>（Market risk charge）。一般市场资本费用应按前一日的VAR或过去60个工作日的平均VAR乘以乘数k的较高者设定。该乘数因子（multiplicative
+                                                                                                                                                                                factor）的确切值由当地监管机构确定，但绝对下限为3。</li>
+<ul>
+<li>这个因素的目的是双重的。如果没有这种风险因素，一家银行每100天就会有一个10天的亏损超过其资本，或者大约每4年就会有一次。这似乎并不谨慎。其次，这个因子可以作为模型错误规范的缓冲，例如，假设一个正态分布，而实际上该分布有更肥的尾部。</li>
+</ul>
+<li><b>附加因子</b>（plus factor）。如果对VAR预测的验证表明银行系统性地低估了其风险，则应在乘数因子k上添加一个称为附加因子的惩罚成分。这一因素的目的是惩罚对其市场风险预测过于乐观的银行。</li>
+</ul>
+<p>总之， <span>t</span> 日的市场风险收费是：</p>
+<blockquote><span>\displaystyle MRC^{IMA}_ t = \max \left( k \frac{1}{60} \sum_{i=1}^{60} VAR_{t−i }, VAR_{t−1}   \right)+SRC_t</span> </blockquote>
+<ul>
+<li><span>VAR_{t−i }</span>                                                                                                                                                                                    是银行在99%置信水平下的10天内的VAR</li>
+<li><span>SRC</span> 是具体的风险收费</li>
+<li>因子 <span>k</span> 同时反映了乘号因子和附加因子</li>
+</ul>
+<p>第一项由乘数 <span>k</span> 乘以过去60天的平均VAR组成。第二项使用昨天的VAR，只有当头寸发生巨大变化时才具有约束力。在实践中，这种情况很少发生。</p>
+<p>2009年修订版增加了<b>压力风险值</b>（SVAR）和<b>增量风险收费</b>（IRC）：</p>
+<blockquote><span>\displaystyle MRC^{IMA}_ t = \max \left( k \frac{1}{60} \sum_{i=1}^{60} VAR_{t−i }, VAR_{t−1}   \right)+\max \left( k_S \frac{1}{60} \sum_{i=1}^{60} SVAR_{t−i }, SVAR_{t−1}   \right)+SRC_t+IRC_t</span> </blockquote>
+<ul>
+<li><span>SVAR</span> 是当前投资组合在10天内对应99%置信水平的损失，在连续12个月期间进行校准</li>
+<li>与 <span>k</span> 一样，乘数
+                                                                                                                                                                                        <span>k_S</span> 的下限为3</li>
+<li>此外还有一个加号因子，该因子取决于回测常规VAR的结果，而不是SVAR</li>
+</ul>
+<p>SRC代表特定风险收费，它是针对个别债券和股票发行人的特殊因素（包括基差风险和事件风险）的缓冲。事件风险包括降级风险和违约风险。使用内部模型的银行可以将特定风险纳入其VAR中，只要它们(1)满足附加标准，(2)能够证明它们能够处理事件风险。</p>
+<p>例如，考虑福特汽车发行的公司债券，我们假设其信用评级为b。一般市场风险成分可以捕捉到b级公司债券指数收益率变动的影响。相比之下，SRC应该捕捉福特债券与该指数之间的基差风险的影响，以及评级下调或违约的影响。</p>
+<p>在2007年和2008年的事件中，许多银行遭受了通常的VAR数字无法反映的巨大损失。银行在信贷相关工具上亏损，比如ABS的CDO头寸，这些工具经历了剧烈的价格波动。由于交易账簿中的资本费用较低，许多这些头寸已从银行账簿转移到交易账簿。此外，银行贷款等头寸的流动性大大降低。因此，巴塞尔委员会将特定风险收费扩大为两个部分：</p>
+<ul>
+<li>第一种是更窄的特定风险收费，仍然基于10天99%的VAR，乘数为3或更多，涵盖了特殊风险。这反映了一种证券的波动可能超过一般市场因素的风险。</li>
+<li>第二种是增量风险收费（IRC），涵盖(1)债务工具的违约风险和(2)信用迁移风险。应该考虑默认值之间的相关性。此外，集中度较高的投资组合应该有更高的资本费用。对于股票工具而言，这项新收费应涵盖合并破裂和收购等事件。此费用不适用于依赖于货币、无风险利率和大宗商品的头寸。证券化产品不能包括在IRC模型中，即使被用作对冲，因为它们受制于银行账簿上的资本费用。</li>
+</ul>
+<p>IRC以<b>增量<span>风险度量</span></b>（IRM）为基础，在一年内校准到99.9%的置信水平，至少每周计算一次。选择这些参数是为了避免与银行账簿套利。IRC是根据12周平均值的最大值和最近的值计算的：</p>
+<blockquote><span>\displaystyle IRC_ t = \max \left(  \frac{1}{12} \sum_{i=1}^{12} IRM_{t−i }, IRM_{t−1}   \right)</span> </blockquote>
+<p>任何流动性期限短于一年的头寸，都会被具有相同风险水平的头寸所取代，或者被展期（rolled over）。</p>
+<p>这些变化导致市场风险费用发生实质性变化，通常会增加三倍。这一变化的一半是由于增加了SVAR；另一半来自新的IRC。此外，这些变化将使市场风险收费的顺周期性减弱。当传统的VAR基于短窗口时，良性的市场条件会导致估计的VAR指标偏低，这可能导致银行增加风险敞口，而当市场条件恶化时，风险敞口可能难以管理。SVAR消除了这种影响，因为风险因素的运动更稳定。</p>
+<h3>3、方法的结合</h3>
+<p>银行的市场风险资本要求：</p>
+<ul>
+<li>(1)：通过标准化方法获得的风险费用，通过五种风险类别的算术求和获得，或</li>
+<li>(2)：通过内部模型方法获得的风险费用，或</li>
+<li>(3)：(1)和(2)的混合算术求和。</li>
+</ul>
+<p>⭐ <b>例28.14</b> Under the Basel II Capital Accord, banks that
+                                                                                                                                                                                                    have obtained prior regulatory approval can use the internal
+                                                                                                                                                                                                    models approach to estimate their market risk capital requirement.
+                                                                                                                                                                                                    What approach or methodology is used under the internal
+                                                                                                                                                                                                    models approach to compute capital requirements?</p>
+<ul>
+<li>a. Internal rating and vendor models</li>
+<li>b. Stress-testing and backtesting</li>
+<li>c. Expected tail loss, as VAR is not a coherent measure
+                                                                                                                                                                                                        of risk</li>
+<li>d. VAR methodology</li>
+</ul>
+<p>解析：选 d 。内部模型方法是基于银行的内部VAR方法。</p>
+<p>⭐ <b>例28.15</b> Under the 1996 market risk amendment to the
+                                                                                                                                                                                                    Basel Accord, a bank can use its internal models to calculate
+                                                                                                                                                                                                    its market risk charge subject to all the following provisions
+                                                                                                                                                                                                    except:</p>
+<ul>
+<li>a. A time horizon of 10 trading days</li>
+<li>b. A 99% confidence level</li>
+<li>c. One year of historical observations, which are updated
+                                                                                                                                                                                                        semiannually</li>
+<li>d. The market risk charge set at the higher of the previous
+                                                                                                                                                                                                        day’s VAR or the average VAR over the past 60 days
+                                                                                                                                                                                                        scaled by a multiplicative factor</li>
+</ul>
+<p>解析：选 c 。IMA要求使用一年的历史数据，至少每季度更新一次，而不是每半年更新一次。</p>
+<p>⭐ <b>例28.16</b> The 1996 amendment to the Capital Accord requires
+                                                                                                                                                                                                    that internal models</p>
+<ul>
+<li>a. Utilize at least six months of historical data</li>
+<li>b. Utilize at least one year of equally weighted historical
+                                                                                                                                                                                                        data</li>
+<li>c. Utilize enough historical data so that the weighted
+                                                                                                                                                                                                            average age of the data is at least six months</li>
+<li>d. Utilize two years of historical data, unequally
+                                                                                                                                                                                                            weighted</li>
+</ul>
+<p>解析：选 c 。如果银行只使用固定权重，答案b是正确的。否则，观测的平均滞后时间不能小于6个月。</p>
+<p>⭐ <b>例28.17</b> Which of the following best describes the quantitative
+                                                                                                                                                                                                    parameters of the 1996 internal models approach?</p>
+<ul>
+<li>a. Ten-day trading horizon, 99% confidence interval, minimum
+                                                                                                                                                                                                        one year of data, minimum quarterly updates</li>
+<li>b. One-day trading horizon, 95% confidence interval, five
+                                                                                                                                                                                                        years of data, updated weekly</li>
+<li>c. One-day trading horizon, 99% confidence interval,
+                                                                                                                                                                                                            minimum one year of data, updated monthly</li>
+<li>d. Ten-day trading horizon, 97.5% confidence interval,
+                                                                                                                                                                                                            minimum five years of data, updated daily</li>
+</ul>
+<p>解析：选 a 。IMA基于10天的期限，99%的置信度，一年的数据，至少每季度更新一次。</p>
+<p>⭐ <b>例28.18</b> As a risk manager for Bank ABC, John is asked
+                                                                                                                                                                                                    to calculate the market risk capital charge of the bank’s
+                                                                                                                                                                                                    trading portfolio under the 1996 internal models approach.
+                                                                                                                                                                                                    The VAR (95%, one-day) of the last trading day is USD 30,000;
+                                                                                                                                                                                                    the average VAR (95%, one-day) for the last 60 trading
+                                                                                                                                                                                                    days is USD 20,000. The multiplier is k = 3. Assuming the
+                                                                                                                                                                                                    return of the bank’s trading portfolio is normally distributed,
+                                                                                                                                                                                                    what is the market risk capital charge of the trading portfolio?</p>
+<ul>
+<li>a. USD 84,582</li>
+<li>b. USD 189,737</li>
+<li>c. USD 268,200</li>
+<li>d. USD 134,594</li>
+</ul>
+<p>解析：选 c 。平均VAR乘以3为6万美元。因为这比昨天的VAR要高，所以这是有约束力的数字。乘以 (10)^0.5
+                                                                                                                                                                                                    × 2.323/1.645 = 4.47，得到268,200美元。</p>
+<p>⭐ <b>例28.19</b> In the latest guidelines for computing capital
+                                                                                                                                                                                                    for incremental risk in the trading book, the incremental
+                                                                                                                                                                                                    risk charge (IRC) addresses a number of perceived shortcomings
+                                                                                                                                                                                                    in the 99%/10-day VAR framework. Which of the following
+                                                                                                                                                                                                    statements about the IRC are correct?</p>
+<ol>
+<li>I. For all IRC-covered positions, the IRC model must measure
+                                                                                                                                                                                                        losses due to default and migration over a one-year
+                                                                                                                                                                                                        horizon at a 99% confidence level.</li>
+<li>II. A bank can incorporate into its IRC model any securitization
+                                                                                                                                                                                                        positions that hedge underlying credit instruments
+                                                                                                                                                                                                        held in the trading account.</li>
+<li>III. A bank must calculate the IRC measure at least weekly,
+                                                                                                                                                                                                        or more frequently as directed by its supervisor.</li>
+<li>IV. The incremental risk capital charge is the maximum
+                                                                                                                                                                                                        of (1) the average of the IRC measures over 12 weeks
+                                                                                                                                                                                                        and (2) the most recent IRC measure.</li>
+</ol>
+<ul>
+<li>a. I and II</li>
+<li>b. III and IV</li>
+<li>c. I, II, and III</li>
+<li>d. II, III, and IV</li>
+</ul>
+<p>解析：选 b 。表述I是不正确的，因为置信水平是99.9%。表述II是不正确的，因为证券化受制于银行账面资本要求。另外两个表述是正确的。</p>
+<hr/>
+<h2>小结</h2>
+<p>巴塞尔协议II是衡量和管理银行风险的重要一步。它为信贷风险增加了更多对风险敏感的资本费用，并首次试图将操作风险考虑在内。赢家将包括投资于风险管理系统的银行、拥有大量零售投资组合的银行以及拥有高评级企业信贷的银行。事实上，所有这些公司的信用风险都应该低于该行业的其他公司。然而，这个新框架肯定不是完美的。这种标准化方法因赋予信用评级机构更大的作用而受到批评。内部模型方法被认为给了银行过多的自由裁量权。然而，这些特点肯定比巴塞尔协议I要好得多，而且是转向风险敏感型资本收费的必然结果。</p>
+<p>与任何一套正式规则一样，由于某些资产的经济资本和监管资本之间存在差异，巴塞尔协议II的规则为监管套利留下了一些可能性。该框架在信用风险收费的构建中纳入了典型的相关性。与典型银行相比，多元化程度更高的机构无法享受更低的资本金要求。理论上，这可以通过使用银行自己开发的内部投资组合信贷风险模型来纠正。在实践中，这些模型不被允许用于设定信用风险收费，因为它们被认为不够稳健。事实上，始于2007年的信贷危机期间所遭受的损失，突显了信贷风险管理方面的重大弱点。更重要的是，资本收费体系忽略了银行风险的一个重要因素，即流动性风险。政府对主要银行进行资本重组的必要性证明，资本水平不足以抵御一场重大金融危机。这证明在巴塞尔协议III下增加流动性风险收费是合理的。</p>
+<p>最后，更多对风险敏感的资本收费可能会产生<span>顺周期效应</span>。在经济衰退中，违约增加，导致更大的信贷风险和更大的资本支出。与此同时，银行体系遭受信贷损失，侵蚀了其实际资本。在实际资本较低和监管资本要求较高之间，银行体系可能会通过减少对经济的贷款活动来应对，这可能会加剧经济衰退的程度。长期以来，这一问题一直被视为设定对风险更为敏感的资本收费的必然副产品。这就解释了为什么巴塞尔委员会建立了一个反周期缓冲机制。实际上，资本费用在扩张时期会更高，但在压力时期会降低。总体而言，我们预计未来几年银行监管机构将继续采取一系列行动。</p>
+<p>⭐ <b>例28.20</b> Your bank is implementing the AIRB
+                                                                                                                                                                                                            approach for credit risk, the AMA for operational
+                                                                                                                                                                                                            risk, and the internal models approach for market
+                                                                                                                                                                                                            risk. The chief risk officer (CRO) wants to estimate
+                                                                                                                                                                                                            the bank’s total risk by adding up the regulatory
+                                                                                                                                                                                                            capital for market risk, credit risk, and operational
+                                                                                                                                                                                                            risk. The CRO asks you to identify the problems
+                                                                                                                                                                                                            with using this approach to estimate the bank’s
+                                                                                                                                                                                                            total risk. Which of the following statements about
+                                                                                                                                                                                                            this approach is incorrect?</p>
+<ul>
+<li>a. It assumes market, credit, and operational
+                                                                                                                                                                                                                    risks have zero correlation.</li>
+<li>b. It uses a 10-day horizon for market risk.</li>
+<li>c. It ignores strategic risks.</li>
+<li>d. It ignores the interest risk associated
+                                                                                                                                                                                                                        with the bank’s loans.</li>
+</ul>
+<p>解析：选 a 。把资本支出加起来，假设两者之间存在完全的相关性(或者至少是高度相关性，意味着同时发生极端冲击)，而不是零相关性。市场风险费用使用10天期限，因此表述b是正确的。巴塞尔资本收费确实忽略了银行账面上的战略风险和利率风险，因此表述c和d是正确的。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C06 债券基础 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C06 债券基础">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C06 债券基础</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、现值与终值</h2>
+<p>将 <span>C_t</span> 定义为 <span>t</span> 时刻的现金流量，将<span>贴现因子</span>(discounting factor)定义为 <span>y</span> ，将 <span>T</span> 定义为到期日的期限。债券的<b>现值</b>(present value)可以计算为：</p>
+<blockquote><span>PV = \frac{C_T}{(1+y)^T}</span> </blockquote>
+<p>因此，在其他条件一定，零息债券的<span>市场价值</span>随着期限的延长而下降。同样，在保持 <span>T</span> 不变的情况下，债券的价值随着<span>收益率</span>的增加而减少。反过来，债券的<b>终值</b>(future
+                                    value)为：</p>
+<blockquote><span>FV = PV × (1 + y)^T</span> </blockquote>
+<p>定义半年复利的利率为 <span>y^S</span> ，以年化形式表示（即乘以2后）。现在的期限数是 <span>2T</span> ，则：</p>
+<blockquote><span>PV = \frac{C_T}{(1+y^S)^{2T}}</span> </blockquote>
+<p>对应地， <span>(1 + y) = (1 + y^S/2)^2</span> 。连续复利是这种情况的极限，即每年的复利周期数增加到无穷大。设<span>连续复利利率</span> <span>y^C</span> ：</p>
+<blockquote><span>PV = C_T × e^{−y^CT}</span> </blockquote>
+<p>由于复利周期不同，收益率也会有所不同。因此，应始终标明复利期。</p>
+<p>注意，<b>对于固定的现值和现金流，增加复利的频率会降低相关的收益率</b>。</p>
+<p>⭐ <b>例6.1</b> An investor buys a Treasury bill maturing in one month for $987. On the maturity date the investor collects $1,000. Calculate effective annual rate (EAR).</p>
+<ul>
+<li>a. 17.0%</li>
+<li>b. 15.8%</li>
+<li>c. 13.0%</li>
+<li>d. 11.6%</li>
+</ul>
+<p>解析：选 a 。根据以下公式可得：EAR = (1000/987)^12 − 1 = 17.0%.</p>
+<blockquote><span>FV/PV = (1 + EAR)^T</span> ， <span>EAR = (FV/PV)^{1/T} − 1</span> </blockquote>
+<p>⭐ <b>例6.2  </b>Lisa Smith, the treasurer of Bank AAA, has $100 million to invest for one year. She has identified three alternative one-year certificates of deposit (CDs),with different compounding periods and annual rates.
+                                    CD1: monthly, 7.82%;CD2: quarterly, 8.00%; CD3: semiannually, 8.05%; and CD4: continuous,7.95%. Which CD has the highest effective annual rate (EAR)?</p>
+<ul>
+<li>a. CD1</li>
+<li>b. CD2</li>
+<li>c. CD3</li>
+<li>d. CD4</li>
+</ul>
+<p>解析：选 d 。使用金融计算器的ICONV功能，可知CD4的EAR最大。</p>
+<blockquote>CD1, NOM = 7.82, C/Y = 12, CPT EFF = 8.1065.<br/>CD2, NOM = 8.00, C/Y = 4, CPT EFF = 8.2431.<br/>CD3, NOM = 8.05, C/Y = 2, CPT EFF = 8.212.<br/>CD4, NOM = 7.95, C/Y = 9999, CPT EFF = 8.2745.</blockquote>
+<p>⭐ <b>例6.3   </b>Consider a savings account that pays an annual interest rate of 8%. Calculate the amount of time it would take to double your money. Round to the nearest year.</p>
+<ul>
+<li>a. 7 years</li>
+<li>b. 8 years</li>
+<li>c. 9 years</li>
+<li>d. 10 years</li>
+</ul>
+<p>解析：选 c 。FV/PV = 2 = (1 + 8%)^T，因此 T = ln(2/1.08) = 9.006。</p>
+<hr/>
+<h2>二、<span>价格收益率</span>关系</h2>
+<h3><b>1、估值</b></h3>
+<p>把债券的现值 <span>P</span> 写成未来现金流的贴现值：</p>
+<blockquote><span>P = \sum_{t=1}^{T}\frac{C_t}{(1+y)^t}</span> </blockquote>
+<p>一个典型的现金流模式包括固定的息票支付加上到期时的本金或面值的偿还。定义 <span>c</span> 为<span>票面利率</span>， <span>F</span> 为票面价值。到期前有
+                                        <span>C_t = cF</span> ，到期时有 <span>C_t = cF + F</span> 。</p>
+<p>当<span>息票利率</span>c与收益率y精确匹配时，使用相同的复利频率，债券的现值必须等于面值。这种债券被称为<b><span>平价债券</span></b>(par bond)。如果<span>息票</span>大于收益，价格必然大于面值，这意味着这是<b><span>溢价债券</span></b>(premium
+                                        bond)。相反，如果票面利率更低，甚至是零票面利率，债券的票面价格必须小于面值，这意味着这是<b><span>贴现债券</span></b>(discount bond)。</p>
+<p><span>P</span> 的值也可以写成收益率 <span>y</span> 的<span>非线性函数</span>，<b><span>收益函数</span></b>(payoff
+                                        function) <span>P = f (y)</span> ，可以设 <span>P</span> 为债券的当前市场价格，包括任何应计利息。由此，可以计算出解决这个方程的<span>隐含收益率</span>。</p>
+<p><b><span>永续债券</span></b>(consols, perpetual bonds)的关系特别简单，这种债券定期支付息票，但没有赎回日期。对于永续债券，期限是无限的，现金流都等于面值的一个固定百分比， <span>C_t = C = cF</span>                                        。其价格为：</p>
+<blockquote><span>P = \frac{c}{y}F</span> </blockquote>
+<p>在这种情况下，价格与收益率成反比。高收益导致债券价格下降，反之亦然。</p>
+<h3><b>2、泰勒展开</b></h3>
+<p>如果变化 <span>\Delta y</span> 不是太大，非线性关系可以应用初值周围的<b><span>泰勒展开式</span></b>(Taylor expansion)来近似：</p>
+<blockquote><span>P_1 = P_0 + f '(y_0)\Delta y + \frac{1}{2}f ''(y_0)(\Delta y)^2 +· · ·</span> </blockquote>
+<p>这种展开可以推广到函数依赖于两个或多个变量的情况。对于债券来说，一阶导数与久期有关，二阶导数与<span>凸性</span>有关。该式表示的是 <span>\Delta y</span> 的幂次无限膨胀，一般只使用前两项。相对于对资产定价所做的其他假设，泰勒展开式提供了一个很好的价格变化
+                                            <span>近似值</span>。如果增量很小，二次项也可以忽略不计。</p>
+<p>泰勒展开式也被用来近似衍生品合约（如<span>股票期权</span>）的价值变动，写做：</p>
+<blockquote><span>\Delta P = f '(S)\Delta S + \frac{1}{2}f ''(S)(\Delta S)^2 +· · ·</span> </blockquote>
+<p><span>S</span> 表示标的资产（股票）的价格。 <span>f '(S)</span> 被称为 delta ， <span>f' '(S)</span>                                            被称为 gamma。</p>
+<p>泰勒扩张可以轻松地将各种金融工具进行汇总。如果有 <span>x_i</span> 单位的债券 <span>i</span> ，投资组合中总共 <span>N</span>                                            个不同的债券，投资组合的导数是：</p>
+<blockquote><span>f ’(y) = \sum_{i=1}^{N} x_i f_i'(y)</span> </blockquote>
+<p>⭐ <b>例6.4   </b>A five-year corporate bond paying an annual coupon of 8% is sold at a price reflecting a yield to maturity of 6%. One year passes and the interest rates remain unchanged. Assuming a flat term structure
+                                            and holding all other factors constant, the bond’s price during this period will have</p>
+<ul>
+<li>a. Increased</li>
+<li>b. Decreased</li>
+<li>c. Remained constant</li>
+<li>d. Cannot be determined with the data given</li>
+</ul>
+<p>解析：选 b 。息票大于收益，说明以溢价出售，即当前价格大于面值。如果收益率不变，债券价格将向面值收敛。即开始时很高，然后向下回落。</p>
+<hr/>
+<h2>三、债券定价</h2>
+<p>一阶导数的负值是<b><span>美元久期</span></b>(Dollar Duration, DD)：</p>
+<blockquote><span>f '(y_0) =\frac{dP}{dy}= −D^* × P_0</span> </blockquote>
+<p>其中， <span>D^∗</span> 为<b>修正久期</b>(modified duration)。因此，美元久期为：</p>
+<blockquote><span>DD = D^∗ × P_0</span> </blockquote>
+<p>其中价格 <span>P_0</span> 代表市场价格，包括<span>应计利息</span>。</p>
+<p>风险还可以被衡量为<b>一个基点的美元价值</b>(dollar value of a basis point, DVBP, DV01)：</p>
+<blockquote><span>DVBP = DD × \Delta y = [D^∗ × P_0] × 0.0001</span> </blockquote>
+<p>0.0001代表利率变动1个基点(basis point, bp)或1%%。DVBP指标可以很容易地在整个投资组合中相加。</p>
+<p>即，<b>一个基点的美元价值是债券价格的美元敞口，收益率变化为0.01%。它也是<span>久期</span>乘以债券价值，并在整个投资组合中具有<span>可加性</span></b>。</p>
+<p>二阶导数是<b>美元凸性</b>(DC):</p>
+<blockquote><span>f ''(y_0) =\frac{d^2P}{dy^2}= C × P_0</span> </blockquote>
+<p>其中 <span>C</span> 称为凸性。对于现金流已知的固定收益工具，价格收益函数是已知的，可以计算一阶和二阶导数。对于简单的零息债券，其中唯一的支付是面值， <span>C_T = F</span> 。一阶导数推导为：</p>
+<blockquote><span>\frac{dP}{dy}= \frac{d}{dy}\frac{F}{(1+y)^T}  = (-T) \frac{F}{(1+y)^{T+1}} =- \frac{T}{(1+y)}P</span> </blockquote>
+<p>修正久期由 <span>D^∗= T/(1 + y)</span> 给出。<b>久期</b>的常规度量是 <span>D= T</span> ，它不包括分母中除 <span>(1 + y)</span> 。也被称为<span>麦考利久期</span>。修正久期与麦考利久期的关系为：</p>
+<blockquote><span>D^* = \frac{D}{1+y}</span> </blockquote>
+<p>修正久期是衡量利率风险的合适尺度。 <span>(1 + y)</span> 出现在分母上因为用<span>离散复利</span>对现值项<span>求导</span>。如果我们使用<span>连续复利</span>，修正时程与传统时程
+                                                <span>测量方法</span>相同。在实践中，麦考利和修正久期之间的差别通常很小。二阶导数推导为：</p>
+<blockquote><span>\frac{d^2P}{dy^2}=  = -(T+1)(-T) \frac{F}{(1+y)^{T+2}} = \frac{(T+1)T}{(1+y)^2}×P</span> </blockquote>
+<p>汇总上述方程，得到债券价格变化的泰勒展开式：</p>
+<blockquote><span>\Delta P = −[D^∗ × P](\Delta y) + \frac{1}{2} [C × P](\Delta y)^2 +· · ·</span> </blockquote>
+<p>或写做：</p>
+<blockquote><span>\frac{\Delta P}{P}=-D^\ast\Delta y+\frac{1}{2}C\left(\Delta y\right)^2</span> </blockquote>
+<p>因此，久期度量收益率变化的一阶效应，而凸性度量二阶效应。</p>
+<p>对于债券定价，可以表示为：</p>
+<ul>
+<li>实际的准确价格， <span>P = f (y_0 + \Delta y)</span> </li>
+<li>久期估计， <span>P = P_0 − D^∗P_0\Delta y</span> </li>
+<li>久期和凸性估计， <span>P = P_0 − D^∗P_0\Delta y + \frac{1}{2} CP_0(\Delta y)^2</span> </li>
+</ul>
+<p>实际价格曲线显示，如果收益率下降，债券价格上升；反之，如果收益率上升，债券价格下降。这种效果可以通过真实价格曲线的切线体现出来，它代表了基于持续时间的<span>线性近似</span>。对于收益率的小波动，这种线性近似提供了对准确价格的合理匹配。然而，对于价格的大变动，价格-收益函数变得更弯曲，线性拟合恶化。在这些条件下，二次逼近明显更好。</p>
+<p>注意，<b>美元久期衡量的是价格-收益曲线在起始点的切线负斜率</b>。</p>
+<p>对于凸性，当收益率上升时，价格下降，但低于切线的预测。相反，如果收益率下降，价格上升的速度要快于切线。换句话说，二次项总是有益的。</p>
+<p>注意，<b>对于普通的付息债券，凸性总是正的。更大的凸性对下降和上升的收益率都有好处</b>。</p>
+<p>债券的修正久期和凸性也可以直接从数值导数计算。对于一些债券，如<span>抵押贷款支持证券</span>，久期和凸性不能直接计算，因为它们的现金流是不确定的。这时可以使用定价模型，用于在不同的收益率环境下对证券<span>重新定价</span>。</p>
+<p><b>有效久期</b>(Effective duration)的公式为：</p>
+<blockquote><span>D^E = \frac{P_- - P_+}{2 P_0 \Delta y}  = \frac{P(y_0 -  \Delta y)-  P(y_0 + \Delta y)}{(2 \Delta y)  P_0}</span> </blockquote>
+<p><b>有效凸性</b>(Effective convexity)的公式为：</p>
+<blockquote><span>C^E = \frac{D_- - D_+}{2 P_0 \Delta y}  = \frac{1}{\Delta y}  (\frac{P(y_0 -  \Delta y)- P_0}{P_0 \Delta y}- \frac{P_0-P(y_0 + \Delta y)}{P_0 \Delta y}) </span> </blockquote>
+<p>其中，有效凸性使用了向上和向下移动的美元久期之间的差异。如果久期随着收益率下降而增加，或者 <span>D_- &gt; D_+</span> ，则凸性为正。</p>
+<p>令<span>息票率</span>增加值为 <span>\Delta c</span> ，则<b>息票曲线久期</b>(coupon curve duration)为：</p>
+<blockquote><span>D^{CC} = \frac{P_- - P_+}{2 P_0 \Delta c}  = \frac{P(y_0 ; c+ \Delta c)-  P(y_0 ; c- \Delta c)}{(2 \Delta c)  P_0}</span> </blockquote>
+<p>这种方法对于在不同的收益情况下难以定价的证券是有用的。它只需要不同息票证券的市场价格。</p>
+<p>⭐ <b>例6.5   </b>A zero-coupon bond with a maturity of 10 years has an annual effective yield of 10%. What is the closest value for its modified duration?</p>
+<ul>
+<li>a. 9 years</li>
+<li>b. 10 years</li>
+<li>c. 99 years</li>
+<li>d. 100 years</li>
+</ul>
+<p>解析：选 a 。零息债券的麦考利久期就是期限，10年。按年复合计算，修正久期为 10/(1 + 10%)，接近9年。</p>
+<p>⭐ <b>例6.6  </b>A portfolio manager has a bond position worth USD 100 million. The position has a modified duration of eight years and a convexity of 150 years.Assume that the term structure is flat.
+                                                            By how much does the value of the position change if interest rates increase by 25 basis points?</p>
+<ul>
+<li>a. USD −2,046,875</li>
+<li>b. USD −2,187,500</li>
+<li>c. USD −1,953,125</li>
+<li>d. USD −1,906,250</li>
+</ul>
+<p>解析：选 c 。根据以下公式可得，ΔP = -[8 × 100](0.0025) + 0.5[150 × 100](0.0025)^2 = −1.953125.</p>
+<blockquote><span>\Delta P = −[D^∗ × P](\Delta y) + \frac{1}{2} [C × P](\Delta y)^2</span> </blockquote>
+<p>⭐ <b>例6.7  </b>A portfolio manager uses her valuation model to estimate the value of a bond portfolio at USD 125.482 million. The term structure is flat. Using the same model, she estimates that
+                                                            the value of the portfolio would increase to USD127.723 million if all interest rates fell by 30bp and would decrease to USD122.164 million if all interest rates rose by 30bp. Using these estimates,
+                                                            the effective duration of the bond portfolio is closest to:</p>
+<ul>
+<li>a. 8.38</li>
+<li>b. 16.76</li>
+<li>c. 7.38</li>
+<li>d. 14.77</li>
+</ul>
+<p>解析：选 c 。根据以下公式可得，DE = (127.723-122.164)/(125.482×0.6%) = 7.38</p>
+<blockquote><span>D^E = \frac{P_- - P_+}{2 P_0 \Delta y} </span> </blockquote>
+<hr/>
+<h2>四、久期与凸性的进一步探讨</h2>
+<h3><b>1、</b>付息债券的久期与凸性</h3>
+<p>对于付息债券，久期为：</p>
+<blockquote><span>D =  \sum_{i=1}^{T} \frac{tC_t}{(1+y)^t} / P</span> </blockquote>
+<p>对久期的经济学解释是，由相关现金流的现值加权的等待每次支付的平均时间。即，<b>麦考利久期表示等待所有现金流的平均时间</b>。</p>
+<p>不包含 <span>P</span> 的写法为：</p>
+<blockquote><span>D =  \sum_{i=1}^{T} t \frac{C_t / (1+y)^t}{Σ C_t / (1+y)^t} =  \sum_{i=1}^{T} t × w_t</span> </blockquote>
+<p>其中，权重 <span>w_t</span> 表示每个现金流量 <span>C_t</span> 的现值相对于总额的比率，权重之和等于1。零息债券的期限与到期时间相等，因为只有一个现金流，它的权重是1。</p>
+<p>对于永续债券，久期可以表达为：</p>
+<blockquote><span>D_C = \frac{1+y}{y}</span> </blockquote>
+<p>即使债券的期限是无限的，久期也是有限的。永续债券的久期并不取决于息票。得到一个经验法则：对于长期支付息票的债券，在大多数情况下期限应该低于 <span>(1 + y)/y</span> 。</p>
+<p><b><span>长期债券</span>的久期可以用具有相同收益率的永续债券的久期来近似表示</b>， <span>D_C = (1 + y)/y</span> 。</p>
+<p>对于固定期限，更大的息票会减少期限，因为更多的付款提前到来。</p>
+<p>对于付息债券，凸性为：</p>
+<blockquote><span>C =  \sum_{i=1}^{T} \frac{t(t+1)C_t}{(1+y)^{t+2}} / P</span> </blockquote>
+<p>不包含 <span>P</span> 的写法为：</p>
+<blockquote><span>C =  \sum_{i=1}^{T}  \frac{t(t+1)}{(1+y)^{2}}  × w_t</span> </blockquote>
+<p>因为 <span>t</span> 的平方项在分数中占主导地位，这基本上涉及到时间平方的加权平均。因此，长期债券的凸性要大得多，因为它们的收益与较大的 <span>t</span> 值有关。公式还表明，此类债券的凸性总是正的，这意味着曲率效应是有益的。对于现金流不确定的债券，如<b>抵押贷款支持证券</b>(MBS)或
+                                                                    <span>可赎回债券</span>，凸性可能是负的。</p>
+<p>要点：<b>其他一定，期限较长、息票较低和收益率较低时，久期和凸性都会增加</b>。</p>
+<p>⭐ <b>例6.8  </b>Suppose the face value of a three-year option-free bond is USD 1,000 and the annual coupon is 10%. The current yield to maturity is 5%. What is the modified duration of this
+                                                                    bond?</p>
+<ul>
+<li>a. 2.62</li>
+<li>b. 2.85</li>
+<li>c. 3.00</li>
+<li>d. 2.75</li>
+</ul>
+<p>解析：选 a 。使用金融计算器的BOND功能，可知修正久期为2.62。</p>
+<blockquote>SDT = 1.0100 (1-01-2000), CPN = 10, RDT = 1.0103 (1-01-2003), YLD = 5<br/>→ DUR = 2.6231</blockquote>
+<p>⭐ <b>例6.9  </b>A Treasury bond has a coupon rate of 6% per annum (the coupons are paid semiannually) and a semiannually compounded yield of 4% per annum.The bond matures in 18 months and
+                                                                    the next coupon will be paid 6 months from now. Which number of years is closest to the bond’s Macaulay duration?</p>
+<ul>
+<li>a. 1.023 years</li>
+<li>b. 1.457 years</li>
+<li>c. 1.500 years</li>
+<li>d. 2.915 years</li>
+</ul>
+<p>解析：选 b 。对于付息债券，麦考利久期略小于到期久期，这里的期限是1.5年。所以b是一个很好的猜测。</p>
+<p>⭐ <b>例6.10  </b>A and B are two perpetual bonds; that is, their maturities are infinite. A has a coupon of 4% and B has a coupon of 8%. Assuming that both are trading at the same yield, what
+                                                                    can be said about the duration of these bonds?</p>
+<ul>
+<li>a. The duration of A is greater than the duration of B.</li>
+<li>b. The duration of A is less than the duration of B.</li>
+<li>c. A and B both have the same duration.</li>
+<li>d. None of the above.</li>
+</ul>
+<p>解析：选 c 。永续债券的久期不依赖于息票，只与收益率有关。所以二者的久期相同。</p>
+<p>⭐ <b>例6.11  </b>A manager wants to swap a bond for a bond with the same price but higher duration. Which of the following bond characteristics would be associated with a higher duration?</p>
+<ul>
+<li>I. A higher coupon rate</li>
+<li>II. More frequent coupon payments</li>
+<li>III. A longer term to maturity</li>
+<li>IV. A lower yield<br/><br/></li>
+<li>a. I, II, and III</li>
+<li>b. II, III, and IV</li>
+<li>c. III and IV</li>
+<li>d. I and II</li>
+</ul>
+<p>解析：选 c 。其他一定，期限较长、息票较低、收益率较低、低频率的息票支付时，久期会增加。</p>
+<p>⭐ <b>例6.12  </b>When the maturity of a plain coupon bond increases, its duration increases</p>
+<ul>
+<li>a. Indefinitely and regularly</li>
+<li>b. Up to a certain level</li>
+<li>c. Indefinitely and progressively</li>
+<li>d. In a way dependent on the bond being priced above or below par</li>
+</ul>
+<p>解析：选 b 。在固定息票的情况下，久期上升到相同息票的债券水平。（靠近永续债）</p>
+<p>⭐ <b>例6.13  </b>Consider the following bonds:</p>
+<table>
+<tbody>
+<tr>
+<th>Bond Number</th>
+<th>Maturity (Years)</th>
+<th>Coupon Rate</th>
+<th>Frequency</th>
+<th>Yield (Annual)</th>
+</tr>
+<tr>
+<td>1</td>
+<td>10</td>
+<td>6%</td>
+<td>1</td>
+<td>6%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>10</td>
+<td>6%</td>
+<td>2</td>
+<td>6%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10</td>
+<td>0%</td>
+<td>1</td>
+<td>6%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10</td>
+<td>6%</td>
+<td>1</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>9</td>
+<td>6%</td>
+<td>1</td>
+<td>6%</td>
+</tr>
+</tbody>
+</table>
+<p>How would you rank the bonds from the shortest to longest duration?</p>
+<ul>
+<li>a. 5-2-1-4-3</li>
+<li>b. 6-2-3-4-5</li>
+<li>c. 5-4-3-1-2</li>
+<li>d. 2-4-5-1-3</li>
+</ul>
+<p>解析：选 a 。其他一定，期限较长、息票较低、收益率较低、低频率的息票支付时，久期会增加。因此，1和2相比，1的久期大；1和3相比，3的久期大；1和4相比，4的久期大；1和5相比，1的久期大。因此1排在第3位，故选 a。</p>
+<p>⭐ <b>例6.14  </b>Which of the following statements is/are true?</p>
+<ul>
+<li>I. The convexity of a 10-year zero-coupon bond is higher than the convexity of a 10-year 6% bond.</li>
+<li>II. The convexity of a 10-year zero-coupon bond is higher than the convexity of a 6% bond with a duration of 10 years.</li>
+<li>III. Convexity grows proportionately with the maturity of the bond.</li>
+<li>IV. Convexity is always positive for all types of bonds.</li>
+<li>V. Convexity is always positive for straight bonds.<br/></li>
+<li>a. I only</li>
+<li>b. I and II only</li>
+<li>c. I and V only</li>
+<li>d. II, III, and V only</li>
+</ul>
+<p>解析：选 c 。由于凸性与支付时间的平方成正比，债券的凸性主要由未来的现金流驱动，因为10年期零债券只有一个现金流，而息票债券有其他几个降低凸性的现金流，故 I 正确。6%的10年期债券必须有远到未来的现金流，比如30年，这将创造更大的凸性，故 II 错误。凸度随时间的平方而增长，没说平方，故 III 错误。抵押贷款支持证券或可赎回债券可能具有负凸性，故 IV 错误。对于支付息票的债券，凸性一定为正，故
+                                                                    V 正确。</p>
+<h3><b>2、投资组合的久期与凸性</b></h3>
+<p>投资组合的美元久期(DD)为：</p>
+<blockquote><span>D^∗_pP_p =   \sum_{i=1}^{T}  D_i^* x_i P_i</span> </blockquote>
+<p><span>x_i</span> 是投资组合中债券 <span>i</span> 的数量。投资组合的美元凸性(DC)也存在类似的关系。如果所有成分的收益率都是相同的，那么这个等式也适用于麦考利久期。因为投资组合的总市值只是各部分市值的总和：</p>
+<blockquote><span>P_p =   \sum_{i=1}^{T}   x_i P_i</span> </blockquote>
+<p>可以定义投资组合权重 <span>w_i</span> 为 <span>w_i = x_i P_i/P_p</span> ，前提是投资组合的市场价值不为零。然后可以将投资组合的久期写成单个久期的加权平均：</p>
+<blockquote><span>D^∗_p=   \sum_{i=1}^{N}  D_i^* w_i </span> </blockquote>
+<p>同样，投资组合的凸性是凸性的加权平均：</p>
+<blockquote><span>C_p=   \sum_{i=1}^{N}  C_i w_i </span> </blockquote>
+<p>由很短和很长期限组成的投资组合被称为<b>杠铃投资组合</b>(barbell portfolio)。相反，期限在相同范围内的投资组合称为<b>子弹投资组合</b>(bullet portfolio)。杠铃组合比子弹组合有更大的凸性。如果收益率大幅波动，杠铃组合的表现有望超过子弹组合。</p>
+<p>⭐ <b>例6.15  </b>A bond portfolio has the following composition:</p>
+<ul>
+<li>1. Portfolio A: price $90,000, modified duration 2.5, long position in 8 bonds</li>
+<li>2. Portfolio B: price $110,000, modified duration 3, short position in 6 bonds</li>
+<li>3. Portfolio C: price $120,000, modified duration 3.3, long position in 12 bonds</li>
+</ul>
+<p>All interest rates are 10%. If the rates rise by 25 basis points, then the bond portfolio value will decrease by</p>
+<ul>
+<li>a. $11,430</li>
+<li>b. $21,330</li>
+<li>c. $12,573</li>
+<li>d. $23,463</li>
+</ul>
+<p>解析：选 a 。根据以下公式，投资组合美元久期 = +8 × 2.5 × $90,000 − 6 × 3.0 × $110,000 + 12 × 3.3 × $120,000 = $4,572,000。因此投资组合价值的变化位 −(D∗ P)(Δy) = −$4,572,000 × 0.0025 = −$11,430。</p>
+<blockquote><span>D^∗_pP_p =   \sum_{i=1}^{T}  D_i^* x_i P_i</span> ，</blockquote>
+<p>⭐ <b>例6.16  </b>Consider the following portfolio of bonds (par amounts are in millions of USD).</p>
+<table>
+<tbody>
+<tr>
+<th>Bond</th>
+<th>Price</th>
+<th>Par Amount Held</th>
+<th>Modified Duration</th>
+</tr>
+<tr>
+<td>A</td>
+<td>101.43</td>
+<td>3</td>
+<td>2.36</td>
+</tr>
+<tr>
+<td>B</td>
+<td>84.89</td>
+<td>5</td>
+<td>4.13</td>
+</tr>
+<tr>
+<td>C</td>
+<td>121.87</td>
+<td>8</td>
+<td>6.27</td>
+</tr>
+</tbody>
+</table>
+<p>What is the value of the portfolio’s DV01 (dollar value of 1 basis point)?</p>
+<ul>
+<li>a. $8,019</li>
+<li>b. $8,294</li>
+<li>c. $8,584</li>
+<li>d. $8,813</li>
+</ul>
+<p>解析：选 c 。根据以下公式，投资组合美元久期 = 101.43*3*2.36 + 84.89*5*4.13 + 121.87 *8*6.27 = 8 584.1021。</p>
+<blockquote><span>D^∗_pP_p =   \sum_{i=1}^{T}  D_i^* x_i P_i</span> </blockquote>
+<p>⭐ <b>例6.17  </b>Which of the following statements is correct regarding the effects of interest rate shift on fixed-income portfolios with similar durations?</p>
+<ul>
+<li>a. A barbell portfolio has greater convexity than a bullet portfolio because convexity increases linearly with maturity.</li>
+<li>b. A barbell portfolio has greater convexity than a bullet portfolio because convexity increases with the square of maturity.</li>
+<li>c. A barbell portfolio has lower convexity than a bullet portfolio because convexity increases linearly with maturity.</li>
+<li>d. A barbell portfolio has lower convexity than a bullet portfolio because convexity increases with the square of maturity.</li>
+</ul>
+<p>解析：选 b 。对于两个期限相同的投资组合。杠铃投资组合包括短期和长期债券的组合。子弹投资组合只有中期债券。凸性是等待支付时间的<span>二次函数</span>，因此长期债券对杠铃型投资组合的凸性贡献较大，杠铃型大于子弹型投资组合的凸性。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

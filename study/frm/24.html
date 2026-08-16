@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C24 管理信用风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C24 管理信用风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C24 管理信用风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、信用损失的分布</h2>
+<h3>1、步骤</h3>
+<p>前面详细分析了<span>信用模型</span>的各个组成部分，包括违约概率、<span>信用敞口</span>和回收率。现在可以汇集这些信息来衡量信用风险造成的损失分布。为简单起见，最初只考虑<b>违约模式</b>(DM, default mode)下的损失，即违约造成的损失，而不考虑市场价值的变化。</p>
+<p>对于一种工具，潜在信用损失(CL)为<b>CL = b× CE × LGD。</b>其中，<span>随机变量</span>b在离散违约状态下取值为1，违约概率(PD)为p；信用风险敞口(CE)，也称为<span>违约风险敞口</span>(EAD)；以及违约造成的损失(LGD)。根据这一定义，信用损失为正。而对于N个交易对手的投资组合，信用损失(CL)为：</p>
+<blockquote><span>\displaystyle CL =\sum_{i=1}^Nb_i × CE_i × LGD_i</span> </blockquote>
+<p>其中 <span>CE_i</span> 现在是对交易对手 <span>i</span> 的总信用敞口，包括所有合同并考虑到<span>净额协议</span>。信贷损失的分配相当复杂。通常，有关信用风险的信息当前时间评估的<b><span>净重置价值</span></b>(NRV,
+                                        net replacement value)来描述，即：</p>
+<blockquote><span>\displaystyle NRV =\sum_{i=1}^N CE_i </span> </blockquote>
+<p>这是在所有各方同时违约( <span>b_i = 1</span> )且没有恢复( <span>LGD_i = 1</span> )的情况下可能损失的最大金额。然而，这并不是很有用。通常在年度报告中披露的NRV，相当于使用名义值来描述衍生品投资组合的风险。它没有考虑违约的可能性，也没有考虑违约与
+                                        <span>风险敞口</span>之间的相关性。</p>
+<p><b><a href="https://zhuanlan.zhihu.com/p/626090751">C19 信用风险导论</a></b>给出了一个有三个交易对手的简单投资组合的损失分配的例子。这个例子很容易处理，因为我们可以列举所有可能的状态。总的来说，我们需要考虑更多的信贷事件。我们还需要考虑风险因素的变动和变动，这些因素会导致风险敞口、不确定的回收率以及违约之间的相关性。这可以在
+                                        <span>蒙特卡罗模拟</span>的帮助下完成。一旦对整个投资组合执行了这一操作，我们就可以获得目标日期的信用损失分布。下图描述了信用损益的典型分布。</p>
+<figure><img src="https://pic4.zhimg.com/v2-02e074b2b5aeb1c6d0fafc8a400f1dc7_1440w.jpg" width="1484"/>
+<figcaption>信用损益的分布</figcaption>
+</figure>
+<p>信贷损益的分布高度向左倾斜，而市场风险因素的分布通常大致对称。这种信用分配类似于<span>期权</span>的空头头寸。这是<span>默顿模型</span>的基本见解之一，该模型将风险债券等同于<span>无风险债券</span>加上期权的空头头寸。</p>
+<h3>2、主要特性</h3>
+<ul>
+<li><b>预期信用损失</b>(ECL)。预期信用损失代表平均信用损失。<span>投资组合</span>的定价应涵盖预期损失。换句话说，价格应该足够有利，以抵消平均信贷损失。就债券而言，价格应该足够低，或者收益率应该足够高，以弥补预期的损失。就衍生品而言，承担信用风险的银行应将预期损失计入其产品定价。<span>贷款损失准备金</span>应作为针对预期损失的信贷准备金积累。</li>
+<li><b><span>未预期信用损失</span></b>(UCL)。最严重的信贷损失是指在某种信心水平上不会超过的损失，通常是99.9%。这基本上是分布的<span>分位数</span>。取预期损失的偏差即为意外信用损失。该机构应有足够的股本来弥补意外损失。UCL只关注默认变量，它依赖于默认概率和默认相关性。</li>
+</ul>
+<h3>3、相关性的影响</h3>
+<p>这种方法的关键是在投资组合的顶层度量风险。这种方法还可以揭示风险类型之间和之间的相关性的影响。</p>
+<p>列表的顶部是默认事件 <span>b_i</span> 之间的相关性。由于相关性低，债务人多，因此分布将很窄。在这种情况下，银行可以将其股本杠杆化数倍。在其最简单的版本中，<span>巴塞尔协议</span>要求最低股本与资产比率为8%，这意味着最高<span>杠杆率</span>为12.5。相反，高相关性将导致同时违约，从而延长分布的尾部并增加UCL。在完全相关的极限情况下，在一个固定的
+                                        <span>置信水平</span>上，最严重的损失是投资组合的全部名义金额。在这种情况下，银行没有任何<span>杠杆</span>。它的资产必须有相同数量的权益。</p>
+<p>相关性也可以发生在默认事件和公开之间(即bi和CE之间)。例如，<b>错路交易</b>(wrong-way trades)是指风险敞口与违约概率正相关的头寸。例如，在亚洲金融危机之前，许多美国银行以美元贷款给亚洲公司，或者签订了等值的掉期协议。这些亚洲公司中有许多没有美元收入，而是进行投机，将资金再投资于本币。当货币贬值时，这些头寸对美国银行来说是有价值的，但由于交易对手违约，这些头寸无法收回。相反，当交易对交易对手来说是一种
+                                        <span>对冲</span>时，就会出现<b>对路交易</b>(right-way trades)——例如，当交易中对方的损失抵消了经营收益时。</p>
+<p>注意，<b>对路交易降低了信用风险，因为交易对手将交易作为对冲。相反，错路交易在信用敞口和违约概率之间创造了正相关关系。</b></p>
+<p>另一个有害的相关性存在于<span>违约事件</span>和违约造成的损失之间，即 <span>b_i</span> 和LGD之间。在<span>经济衰退</span>年份，无担保高级债券的回收率明显低于其他年份。这些年来，违约率也非常高。这种影响将扩大信贷损失分布的尾部。如果忽略信用VAR，它将低估风险。</p>
+<p>⭐ <b>例24.1</b> Credit provisions should be taken to cover all of the following except</p>
+<ul>
+<li>a. Nonperforming loans</li>
+<li>b. The expected loss of a loan <span>portfolio</span></li>
+<li>c. An amount equal to the VAR of the credit portfolio</li>
+<li>d. Excess credit profits earned during below-average-loss years</li>
+</ul>
+<p>解析：选 c 。应当为实际损失和预期损失准备信贷准备金。然而，资本应该为基于VAR的意外损失提供缓冲。</p>
+<p>⭐ <b>例24.2</b> Following is a set of identical transactions. Assuming all counterparties have the same credit rating, which transaction should preferably be executed?</p>
+<ul>
+<li>a. Buying gas from a trading firm</li>
+<li>b. Buying gas from a gas producer</li>
+<li>c. Buying gas from a <span>distributor</span></li>
+<li>d. Indifferent among a., b., and c.</li>
+</ul>
+<p>解析：选 b 。这是对路交易的一个例子。为了降低信用风险，最好是在合约是现价的情况下，从事交易对手违约的可能性较低的交易。如果交易对手为对冲经营风险而进行交易，就会发生这种情况。例如，天然气生产商在操作时自然会接触到天然气。如果生产商以固定价格出售天然气，如果天然气市场价格上涨，互换协议就会亏损。然而，在这种情况下，几乎没有违约风险，因为生产商坐拥天然气库存。如果交易亏损，贸易公司或分销商可能会破产。</p>
+<hr/>
+<h2>二、预期信用损失</h2>
+<h3>1、目标区间的<span>预期损失</span></h3>
+<p>出于定价目的，我们需要衡量预期信用损失，即：</p>
+<blockquote><span>\displaystyle E[CL] = \int f (b, CE, LGD)(b× CE × LGD) db \ dCE \ dLGD</span> </blockquote>
+<p>如果随机变量是独立的，则联合密度可以化为密度的乘积。有：</p>
+<blockquote><span>\displaystyle E[CL] = \int f (b, CE, LGD)db  \int f (CE)(CE) dCE \int f (LGD)(LGD) dLGD</span> </blockquote>
+<p>也就是期望值的乘积。换句话说：</p>
+<blockquote><span>ECL = Prob[default] × E[CE] × E[LGD]</span> </blockquote>
+<p>以bbb级1亿美元五年期债券为例，其精算预期信用损失为：E[CL] = 2.28% × $100,000,000 ×(1 - 47%) = 120万美元。无论银行有一个1亿美元的风险敞口还是100个各100万美元的风险敞口，这个预期损失都是相同的。然而，随着信用额度的增加，分配将会大不相同。</p>
+<h3>2、预期损失的时间轮廓</h3>
+<p>目前为止一直专注于一个固定的期限。然而，出于定价目的，需要考虑资产整个生命周期内的总信用损失。应包括敞口的时间分布、违约概率和贴现因子。定义 <span>PV_t</span> 为时刻 <span>t</span> 支付的1美元的现值。</p>
+<p><b>期望信用损失的现</b>值(PVECL)是在每个<span>时间步长</span>的预期信用损失折现之和：</p>
+<blockquote><span>\displaystyle  PVECL = \sum_tE[CL_t] × PV_t =\sum_t  [k_t × ECE_t × (1 − f )] × PV_t</span> </blockquote>
+<p>这里的违约概率是 <span>k_t = S_{t - 1}d_t</span> ，或者说t时刻的违约概率，前提是之前没有违约。</p>
+<p>或者可以通过使用平均违约概率和资产生命周期内的平均风险敞口来简化：</p>
+<blockquote><span>\displaystyle  PVECL_A = Ave[k_t] × Ave[ECE_t] × (1 − f ) × \sum_t PV_t</span> </blockquote>
+<p>然而，当违约风险和敞口情况随时间相关时，这种方法可能不是很好的近似值。例如，与评级较高的交易对手进行<span>货币互换</span>，其风险敞口和违约概率会随着时间的推移而增加。由于这种相关性，取平均值的乘积低估了信用风险。在其他情况下，它可能会夸大信贷风险。</p>
+<p>一种更简单的方法是，当ECE为常数时，只考虑最终期限T，使用累积违约率 <span>c_T</span> 和贴现因子 <span>PV_T</span> ：</p>
+<blockquote><span>PVECL_F = c_T × ECE × (1 − f ) × PV_T</span> </blockquote>
+<h3>3、例子</h3>
+<p><b>（1）互换</b></p>
+<p>PVECL的计算方法下表所示。考虑与最初评级为BBB的交易对手进行五年期利率互换，名义金额为$100 million。折现率为6%，回收率为45%。假设违约只会在每年年底发生，这种分析类似于对CDS的分析。为简单起见，在这里使用真实世界的违约概率。</p>
+<figure><img src="https://pica.zhimg.com/v2-b71127d5f37f9ccf760dab5e6248253a_1440w.jpg" width="1505"/>
+<figcaption>互换交易预期信用损失的计算</figcaption>
+</figure>
+<ul>
+<li>第1列：累积违约概率 <span>c_t</span> ，从第1年到第5年的BBB评级的信用，表示为百分比</li>
+<li>第2列：当年违约的边际概率 <span>d_t</span> </li>
+<li>第3列：每年违约的概率，前提是之前没有违约， <span>k_t = S_{t - 1}d_t</span> </li>
+<li>第4列：年底预期的信贷敞口， <span>ECE_t</span> </li>
+<li>第5列：恒定的 <span>LGD</span> </li>
+<li>第6列：现值因子 <span>PV_t</span> </li>
+<li>第7列：根据 <span>k_tECE_t(1 − f )PV_t</span> 得到</li>
+</ul>
+<p>例如，第一行是0.220% × $1,660,000 × 0.55 × 0.9434 = $1,895。这笔互换交易的名义金额为$100 million，相当于本金的0.007%，年数之和为7,535美元。这非常小，小于1个基点。因此，利率互换的预期信贷损失是微乎其微的。基本上，由于风险敞口较小，预期信贷损失非常低。对于常规的债券或货币互换，预期损失要大得多。</p>
+<p>最后一行显示了基于平均值测量预期信贷损失的简便公式，即 <span>\displaystyle  PVECL_A = Ave[k_t] × Ave[ECE_t] × (1 − f ) × \sum_t PV_t</span>                                                        。年平均违约概率为0.456。用平均风险敞口$956,000乘以LGD，再乘以折现率的总和，得到10100美元。这和精确计算的数量级是一样的。</p>
+<p><b>（2）债券</b></p>
+<p>下表详细说明了假设固定敞口为$100 million的债券的计算。预计信贷损失为$1.197 million，约为掉期损失的100倍。这是因为敞口也增大了大约100倍。</p>
+<figure><img src="https://pic3.zhimg.com/v2-ad064ad525f65c55bcbe774b184b6cd2_1440w.jpg" width="1490"/>
+<figcaption>债券预期信用损失的计算</figcaption>
+</figure>
+<p>与之前的表一样，下一行显示了基于平均值的结果。这里的预期信贷损失为$1.056 million，非常接近确切的数字，因为信贷敞口没有随时间变化。也可以采取通常的捷径，简单地计算5年累积违约率带来的预期信贷损失乘以$100 million乘以违约造成的损失，即$1.254 million。贴现到现在得到$0.937 million，接近之前的结果。</p>
+<p>⭐ <b>例24.3</b> Which of the following loans has the lowest credit risk?</p>
+<p>Loan[One-Year Probability of Default, Loss Given Default, Remaining Term(Months)]</p>
+<ul>
+<li>a. Loan[1.99%, 60%, 3]</li>
+<li>b. Loan[0.90%, 70%, 9]</li>
+<li>c. Loan[1.00%, 75%, 6]</li>
+<li>d. Loan[0.75%, 50%, 12]</li>
+</ul>
+<p>解析：选 a 。一年期的PD需要调整为贷款期限，使用(1 - d^m)^T，其中d^m由(1 - d^m)^12 = (1 - d)计算。分别可以得到四个贷款的PD to Maturity、LGD和Expected Loss为：</p>
+<ol>
+<li>a. 0.50%、60%、0.301%</li>
+<li>b. 0.68%、70%、0.473%</li>
+<li>c. 0.50%、75%、0.376%</li>
+<li>d. 0.75%、50%、0.375%</li>
+</ol>
+<p>⭐ <b>例24.4</b> Mr. Rosenqvist, asset manager, holds a portfolio of SEK 200 million, which consists of BBB-rated bonds. Assume that the one-year probability of default is 4%, the recovery rate is 60%,
+                                                        and defaults are uncorrelated over years.What is the two-year cumulative expected credit loss on Mr. Rosenqvist’s portfolio?</p>
+<ul>
+<li>a. SEK 6.40 million</li>
+<li>b. SEK 6.27 million</li>
+<li>c. SEK 9.60 million</li>
+<li>d. SEK 9.48 million</li>
+</ul>
+<p>解析：选 b 。2年生存率为S2 =(1−4%)^2 = 92.16%，即2年累计违约率为7.84%。第一年的PD为4%，那么(1−4%)4% = 3.84%。乘以200和40%得到6.27。</p>
+<hr/>
+<h2>三、<span>信用风险价值</span></h2>
+<h3>1、定义</h3>
+<p><b>信用风险价值</b>(Credit VAR)被定义为在某个置信水平上的意外信用损失。使用信用损失度量，构建了目标范围内信用损失 <span>f (CL)</span> 的分布。在给定的信心 <span>c</span>                                                        下，最坏信用损失(WCL)定义为：</p>
+<blockquote><span>\displaystyle 1-c=\int_{WCL}^{\infty} f(x)dx</span> </blockquote>
+<p>然后将信用VAR衡量为对ECL的偏离：</p>
+<ul>
+<li>Credit VAR = UCL = WCL − ECL</li>
+</ul>
+<p>其中所有损失都被定义为正数。</p>
+<p>这个信用风险值应该被看作是为了缓冲意外损失而持有的<span>经济资本</span>。它的应用与预期信用损失有着根本的不同，后者是债务人之间的累加性损失，可以随着时间的推移而累积。</p>
+<p>相反，信贷风险值是在一个目标期限内衡量的，比如一年，这个期限被认为足以让银行在信贷问题开始出现时采取纠正措施。<span>纠正行动</span>可以采取减少风险敞口或调整经济资本的形式，这两种方式所需的时间都比市场风险的典型期限长得多。</p>
+<h3>2、管理组合</h3>
+<p>信用VAR<span>被测量</span>可以被管理。投资组合经理可以检查对信用VAR贡献最大的交易，如果这些交易不是特别有利可图，就应该取消。</p>
+<p><b>风险边际贡献</b>(marginal contribution to risk)也可以用来分析拟议交易对总投资组合风险的增量效应。与市场风险的情况一样，对单个信贷的评估不仅应基于其单独风险，还应基于其对投资组合风险的贡献。对于相同的预期回报，降低风险的交易应该比增加投资组合风险的交易更可取。然而，这种权衡只能通过对投资组合信用风险的正式衡量来实现。</p>
+<p>这种边际分析还可以帮助确定支持该职位所需的<b>资本报酬</b>(remuneration of capital)。假设该分配的ECL为10亿美元，UCL为50亿美元。然后，银行需要拨出50亿美元来弥补与预期信贷损失的随机偏差。然而，这些权益资本将需要报酬。因此，贷款的定价不仅应包括预期损失，还应包括这些经济资本报酬。这就是我们所说的风险溢价，并解释了为什么观察到的信用利差比仅仅为了弥补精算损失所必需的要大。</p>
+<p>⭐ <b>例24.5</b> A risk analyst is trying to estimate the credit VAR for a risky bond. The credit VAR is defined as the maximum unexpected loss at a confidence level of 99.9% over a one-month horizon.
+                                                        Assume that the bond is valued at$1,000,000 one month forward, and the one-year cumulative default probability is 2% for this bond. What is the best estimate of the credit VAR for the bond, assuming
+                                                        no recovery?</p>
+<ul>
+<li>a. $20,000</li>
+<li>b. $1,682</li>
+<li>c. $998,318</li>
+<li>d. $0</li>
+</ul>
+<p>解析：选 c 。首先必须将年度违约概率转化为月度违约概率。使用(1 - 2%)= (1 - d)^12，d = 0.00168，它假设年内违约的概率恒定。接下来计算预期信用损失，即d × $1,000,000 = $1,682。最后在99.9%的置信水平下计算WCL，这是使P(CL≤CLi)≥99.9%的最低数量CLi。有P(CL = 0) = 99.83%，P(cl≤1,000,000)=
+                                                            100.00%。因此，WCL = $1,000,000，CVAR = $1,000,000 - $1,682 = $998,318。</p>
+<p>⭐ <b>例24.6</b> A risk analyst is trying to estimate the credit VAR for a portfolio of two risky bonds. The credit VAR is defined as the maximum unexpected loss at a confidence level of 99.9% over
+                                                            a one-month horizon. Assume that each bond is valued at $500,000 one month forward, and the one-year cumulative default probability is 2% for each of these bonds. What is the best estimate of
+                                                            the credit VAR for this portfolio, assuming no default correlation and no recovery?</p>
+<ul>
+<li>a. $841</li>
+<li>b. $1,682</li>
+<li>c. $998,318</li>
+<li>d. $498,318</li>
+</ul>
+<p>解析：选 d 。如<b>例24.5</b>，月违约概率为0.00168。下表显示了信贷损失的分布情况。预计损失为1682美元，与之前相同。$500,000是最低99.9%置信水平下的WCL，因为观察到等于或低于此值的总概率大于99.9%。信用VAR则为$500,000 - $1,682 = $498,318。</p>
+<figure><img src="https://pic4.zhimg.com/v2-e5ae5b0a9e00bab0b85e726d66f22ac1_1440w.jpg" width="1203"/></figure>
+<p>⭐ <b>例24.7</b> You are the credit risk manager for Bank Happy. Bank Happy holds Treasuries for USD 500 million: one large loan that has a positive probability of default for USD 400 million and another
+                                                            loan that has a positive probability of default for USD 100 million. The defaults are uncorrelated. The bank computes a credit VAR at 1% using CreditRisk+. Which of the following statements made
+                                                            about the VAR by the analyst who works for you is necessarily wrong?</p>
+<ul>
+<li>a. The VAR or WCL can be equal to zero.</li>
+<li>b. The expected loss on the portfolio exceeds the VAR.</li>
+<li>c. The expected loss on the portfolio is necessarily smaller than the VAR.</li>
+<li>d. None of the above statements is wrong.</li>
+</ul>
+<p>解析：选 c 。信用VAR可以为零。例如，假设PD为0.003。无违约的联合概率为(1−0.003)(1−0.003)= 99.4%。因为这大于99%的置信水平，所以最坏的损失为零。然而，假设回收率为零，预期损失为0.3%，高于VAR。</p>
+<hr/>
+<h2>四、信用组合风险模型</h2>
+<p><span>组合信用风险模型</span>可以根据其方法进行分类。本节还描述了四种主要的投资组合信用模型。</p>
+<h3>1、信用风险模型的方法</h3>
+<p>下表总结了行业内组合信用风险模型的基本特征：</p>
+<table>
+<tbody>
+<tr>
+<th></th>
+<th>信用矩阵(CreditMetrics)</th>
+<th>信用风险+(CreditRisk+)</th>
+<th>穆迪KMV (Moody's KMV)</th>
+<th>信贷组合观点(Credit Portfolio View)</th>
+</tr>
+<tr>
+<td>提出者</td>
+<td>摩根大通</td>
+<td><span>瑞士信贷</span></td>
+<td>KMV</td>
+<td>麦肯锡</td>
+</tr>
+<tr>
+<td>模型类型</td>
+<td>自下而上</td>
+<td>自下而上</td>
+<td>自下而上</td>
+<td>自上而下</td>
+</tr>
+<tr>
+<td>风险定义</td>
+<td>市值 (MTM)</td>
+<td>违约损失 (DM)</td>
+<td>违约损失 (MTM/DM)</td>
+<td>市值 (MTM)</td>
+</tr>
+<tr>
+<td>风险驱动</td>
+<td>资产价值</td>
+<td>违约率</td>
+<td>资产价值</td>
+<td>宏观因子</td>
+</tr>
+<tr>
+<td>信用事件</td>
+<td>评级更改/违约</td>
+<td>违约</td>
+<td>连续违约概率</td>
+<td>评级更改/违约</td>
+</tr>
+<tr>
+<td>概率类型</td>
+<td>无条件</td>
+<td>无条件</td>
+<td>有条件</td>
+<td>有条件</td>
+</tr>
+<tr>
+<td>波动率类型</td>
+<td>恒定</td>
+<td>可变</td>
+<td>可变</td>
+<td>可变</td>
+</tr>
+<tr>
+<td>相关性来源</td>
+<td>股票 (结构式)</td>
+<td>违约过程 (简化式)</td>
+<td>股票 (结构式)</td>
+<td>宏观因子</td>
+</tr>
+<tr>
+<td>恢复率假设</td>
+<td>随机</td>
+<td>带内常数</td>
+<td>随机</td>
+<td>随机</td>
+</tr>
+<tr>
+<td>解的类型</td>
+<td>模拟/分析</td>
+<td>分析</td>
+<td>分析</td>
+<td>模拟</td>
+</tr>
+</tbody>
+</table>
+<p><b>（1）模型类别</b></p>
+<ul>
+<li><b>自上而下</b>(Top-down models)：使用单一的统计数据对信用风险进行分组</li>
+<ul>
+<li>将许多被视为同质的风险来源汇总为一个整体的投资组合风险，而不涉及单个交易的细节</li>
+<li>适用于拥有大量信贷的零售投资组合，但不太适用于企业或主权贷款</li>
+<li>即使在零售投资组合中，自上而下的模型也可能根据行业或地理位置隐藏特定的风险</li>
+</ul>
+<li><b>自下而上</b>(Bottom-up models)：解释了每种工具的特征</li>
+<ul>
+<li>这种方法与市场VAR系统特征的头寸结构分解最为相似</li>
+<li>适用于公司和资本市场的投资组合</li>
+<li>对于采取纠正措施也是最有用的，因为可以对风险结构进行<span>逆向工程</span>以修改风险概况</li>
+</ul>
+</ul>
+<p><b>（2）风险定义</b></p>
+<ul>
+<li><b>DM</b>：违约模式模型只将完全违约视为信用事件。因此，债券市场价值或信用评级的任何变动都无关紧要。</li>
+<li><b>MTM</b>：盯市模型考虑市场价值的变化和评级的变化，包括违约值。这些公平市场价值模型提供了更好的风险评估，这与根据清算期定义的持有期一致。</li>
+</ul>
+<p><b>（3）概率类型</b></p>
+<ul>
+<li><b>条件模型</b>(Conditional models)：通过函数关系将不断变化的宏观经济因素纳入违约概率</li>
+<ul>
+<li>值得注意的是，我们观察到，在经济衰退中，违约率上升</li>
+</ul>
+<li><b>无条件模型</b>(Unconditional models)：具有固定的违约概率，并且倾向于关注借款人或特定因素的信息</li>
+<ul>
+<li>但是，可以通过手动更改输入参数来允许对环境进行一些更改</li>
+</ul>
+</ul>
+<p><b>（4）相关性来源</b></p>
+<p>由于不能直接观察到投资组合中债务人的违约相关性，因此必须从模型中推断出它们。</p>
+<ul>
+<li><b>结构式模型</b>(Structural models)：通过资产(例如股票价格)的联合运动来解释相关性</li>
+<ul>
+<li>对于每个债务人，这个价格是表示违约概率变动的随机变量。</li>
+</ul>
+<li><b>简化式模型</b>(Reduced-form models)：通过假设违约概率和背景因素之间的特定函数关系来解释相关性</li>
+<ul>
+<li>例如，债务国违约之间的相关性可以通过共同风险因素（比如工业和国家）的载荷来建模。</li>
+</ul>
+</ul>
+<h3>2、信用矩阵</h3>
+<p>摩根大通于1997年4月发布的信用矩阵是一个早期的投资组合信用风险模型。该体系是一种自下而上的方法，信用风险由从<span>过渡矩阵</span>中得出的债券评级变动驱动。在这个模型中，信用质量是由一个潜在变量来衡量的，不可观察的，它可以被解释为债务人的资产价值。这与权益价值有关，权益价值是债务人之间相关性的来源，因为权益价格是可观察的。当资产价值低于某一下限时，债务人被认为处于违约状态。因此，这类模型包括三种类型的随机变量：(1)权益值、(2)资产值、(3)违约指标。如下图所示：</p>
+<figure><img src="https://pic4.zhimg.com/v2-ed2350b4be495f28bc4fde057b0f588f_1440w.jpg" width="1586"/>
+<figcaption>信用矩阵的结构</figcaption>
+</figure>
+<p><b>（1）用工具度量敞口</b></p>
+<p>从用户的投资组合开始，按风险敞口分解所有工具，并评估市场波动对目标日期预期风险敞口的影响。承保的工具范围包括债券和贷款、互换、应收账款、承诺和信用证。</p>
+<p><b>（2）个人违约风险分布</b></p>
+<p>首先为每个工具分配一个特定的信用评级。然后，信用事件通过评级迁移(包括违约)通过迁移概率矩阵来定义。因此，违约概率的变动是离散的。在信用事件发生后，使用每个评级类别的信用利差对工具进行估值。在默认情况下，恢复率的分布使用不同资历类别的历史数据。</p>
+<p>如下表所示，从初始评级为BBB的债券或信用工具开始。在不久的将来，评级可以跳到8个值，包括违约。对于每个评级，该工具的价值被重新计算，例如，如果评级降至AAA，则为109.37美元，如果违约，则为51.13美元的恢复价值。给定状态概率和相关值，我们可以计算期望债券价值，即107.09美元，<span>标准偏差</span>为2.99美元。</p>
+<figure><img src="https://pica.zhimg.com/v2-670270433b728966e42d3aa1749bae86_1440w.jpg" width="1646"/>
+<figcaption>建立债券价值的分布</figcaption>
+</figure>
+<figure><img src="https://pic1.zhimg.com/v2-bdebc9e67bc7b89cbe368bc113862772_1440w.jpg" width="1534"/>
+<figcaption>模拟的截止值</figcaption>
+</figure>
+<p>信用等级的变化是由潜在因素驱动的，即资产价值。每个资产价值都有一个标准的<span>正态分布</span>，选择截断点来表示信用评级变化的概率。从BBB进入违约状态的概率为0.18%。我们选择z1使它左边的面积为N(z1) = 0.18%。得到z1 =−2.91。接下来，我们需要选择z2，使落在z1和z2之间的概率为0.12%，或者总左尾概率为N(z2)
+                                                                    = 0.18% + 0.12% = 0.30%。由此得到z2 = - 2.75，以此类推。</p>
+<p><b>（3）违约之间的相关性</b></p>
+<p>违约值之间的相关性是从资产值之间的相关性推断出来的。这些数据依次取自各股指之间的相关性。使用预先分配的权重，将每个债务人映射到一个行业和一个地理部门。使用包含152个国家-行业指数、28个国家指数和19个全球行业指数的数据库，从共同风险因素的变动推断出相关性。</p>
+<p>举个例子，公司1可能90%的波动来自美国化工行业。使用标准化回报，有：</p>
+<ul>
+<li><span>r_1 = 0.90 r_{US,Ch} + k_1\epsilon_1</span> </li>
+</ul>
+<p>残差 <span>\epsilon</span> 与其他变量不相关。因为总波动率归一化为1，必有 <span>k_1 =\sqrt{1−0.9^2} = 0.44</span>                                                                    。</p>
+<p>假设公司2在德国保险指数中占有74%的权重，在德国银行指数中占有15%的权重：</p>
+<ul>
+<li><span>r_2 = 0.74 r_{GE,In} + 0.15 r_{GE,Ba}+ k_2\epsilon _2</span> </li>
+</ul>
+<p>两家公司资产价值之间的相关性为：</p>
+<ul>
+<li><span>\rho (r1, r2) = (0.90 × 0.74)\rho(r_{US,Ch}, r_{GE,In}) + (0.90 × 0.15)\rho(r_{US,Ch}, r_{GE,Ba})</span> </li>
+</ul>
+<p>解得 (0.90 × 0.74)0.15 + (0.90 × 0.15)0.08 = 0.11。</p>
+<p>然后，信用矩阵使用联合资产价值的模拟，假设具有预先指定的相关性的多变量正态分布。因此，该方法依赖于一个正常的联结。这给出了投资组合的总价值和每年信贷损失的分布情况。</p>
+<p>这些模拟还可用于计算违约事件之间的相关性。由于违约远不如评级变化常见，因此其相关性通常远低于资产价值之间的相关性。信用矩阵报告称，40%至60%的资产相关性通常会转化为2%至4%的违约相关性。</p>
+<p>这种方法的另一个缺点是，它没有把信用风险和市场风险结合起来。损失只由信贷状态的变化产生，而不是由市场波动产生。市场敞口不存在不确定性。例如，对于互换，目标日期的风险敞口是从预期风险敞口中提取的。债券的重估使用的是今天的远期利率和当前的信用利差，并应用于即将到来的信用评级。所以没有利率风险。</p>
+<h3>3、信用风险+</h3>
+<p><b>信用风险+</b>(CreditRisk+)由瑞士信贷于1997年10月上市。这种方法与信用矩阵截然不同。它是基于一个纯粹的精算方法衍生自<span>财产保险</span>文献。信用风险+是一种违约模式(DM)模型，而不是盯市(MTM)模型。假设世界上只有两种状态：违约和不违约。</p>
+<p>该模型首先假设大量相同的贷款 <span>n</span> 具有独立的违约概率 <span>p</span> 。总损失 <span>x = \Sigma_{i=1}^n b_i</span> 遵循<span>二项分布</span>，该二项分布可以近似为强度 <span>\lambda = np</span>                                                                    的<span>泊松分布</span>：</p>
+<blockquote><span>\displaystyle  f (x) = e^{-\lambda}\frac{\lambda^x}{x!}</span> </blockquote>
+<p>违约相关性是通过假设强度本身是随机的来引入的。 <span>\lambda</span> 高会增加每个债务人违约的可能性。这种违约强度也可以随时间变化，在这种情况下，它被建模为随时间变化的因素的函数。信用风险通过将投资组合划分为同质部门，其中债务人共享相同的
+                                                                    <span>系统风险</span>因素，来解释违约率的可变性。</p>
+<p>该方法的另一个组成部分是损失的严重程度。这大致是通过按严重程度对资产进行分类来建模的，例如第一级的贷款约为20,000美元，第二级的贷款约为40,000美元，以此类推。然后得到每个波段的损耗分布。将这些分布跨频带组合起来，生成违约损失的总体分布。</p>
+<p>该方法以最小的数据输入为信贷损失的分布提供了快速的分析解决方案。然而，与信用矩阵一样，市场风险敞口不存在不确定性。</p>
+<h3>4、穆迪KMV</h3>
+<p><b>穆迪KMV</b>(Moody’s KMV)为全球约30,000家上市公司提供估计违约频率(EDF)的预测。它的许多技术是专有、未发表的。该模型是默顿方法的应用，该方法将公司的股权E视为公司资产的看涨期权：</p>
+<ul>
+<li><span>E = c(A, K, r, \sigma_A, \tau)</span> </li>
+</ul>
+<p>在实践中，KMV将下限K定义为所有短期负债(一年及以下)的价值加上所有长期债务账面价值的一半。资产价值取权益的市场价值加上所有债务的账面价值A= nS + D。</p>
+<p>这个方程必须从可观测变量，特别是股票价格 <span>S</span> 及其波动率 <span>\sigma_S</span> 进行迭代估计，才能得到资产波动率。KMV计算归一化的<b>违约距离</b>(DD,
+                                                                    distance to default)，它本质上是资产的当前值和边界点之间的距离。例如，假设A= $100 million，K = $80 million， <span>\sigma_A </span> = $10 million。有：</p>
+<ul>
+<li>DD = z = (A− K) / <span>\sigma_A </span> = ($100 − $80) / $10 = 2</li>
+</ul>
+<p>DD的主要驱动因素是(1)股票价格水平，(2)杠杆数量，(3)资产价值的波动性。较低的股票价格、较高的杠杆率和较高的资产波动性将降低DD指标。</p>
+<p>在最后一步中，KMV使用这些信息来报告估计的默认频率(EDF)或默认概率。例如，如果我们假设正态分布的收益，则标准正态变量z低于- 2的概率约为PD = 2.3%。在实践中，EDF是根据实际的违约数据进行校准的，这些数据给出了客观的(相对于风险中性的)违约概率。</p>
+<p>与信用矩阵不同，KMV直接从债务人的股票价格中产生违约相关性。首先，资产价值的回报是根据债务人权益和债务价值的变化来计算的。其次，这些回报是根据一系列宏观经济因素、国家指数和行业指数进行回归的。最后，使用该因子模型生成代表债务人资产价值的联合随机变量，再次使用行业标准正态copula。</p>
+<p>这种方法的优势在于，它依赖于可能是一家公司最好的市场数据：股价。因此，它最适合上市公司。KMV还为私营公司提供了一个模型，该模型基于公司和行业的会计数据以及股权信息，但仅适用于同一行业的上市公司。正如预期的那样，私营公司的EDF的准确性要低得多。</p>
+<h3>5、信贷组合观点</h3>
+<p>最后一个模型是麦肯锡咨询公司于1997年发布的<b>信贷组合观点</b>(CPV, Credit Portfolio View)。这种自上而下的模型的重点是宏观经济因素对投资组合信用风险的影响。这种方法根据子投资组合中信贷的数量和大小对损失分布进行建模，通常由<span>客户细分</span>组成。该模型没有考虑固定的过渡概率，而是将违约概率设定在经济状况的条件下，允许在衰退期间违约增加。时间t的违约概率
+                                                                    <span>p_t</span> 是由一组宏观经济变量 <span>x^k</span> 驱动的，不同国家和行业通过一个称为 <span>y_t</span> 的<span>线性组合</span>。与 <span>y_t</span> 的函数关系称为logit模型，它保证了概率始终在0到1之间：</p>
+<ul>
+<li><span>p_t = 1/[1 + exp(y_t)]</span> ， <span>y_t = \alpha + \Sigma \beta^k x_t^k</span> </li>
+</ul>
+<p>使用多<span>因素模型</span>，每个债务人被分配到一个国家、行业和评级部分。回收率的不确定性也被考虑在内。该模型采用数值模拟的方法来构建投资组合的违约损失分布。虽然这种方法对基于经济状况的违约概率建模很有用，但它主要是自上而下的，不能对企业投资组合的信用风险产生足够的细节。</p>
+<h3>6、比较</h3>
+<p>国际互换和<span>衍生工具</span>协会(ISDA)对信用风险模型进行了比较调查。实证研究包括三个一年期贷款组合，每个组合的名义总额为$66.3 billion。</p>
+<ul>
+<li>组合A: 高信用质量、多元投资组合(500 names)</li>
+<li>组合B: 高信用质量、集中投资组合(100 names)</li>
+<li>组合C: 低信用质量，多元投资组合(500 names)</li>
+</ul>
+<figure><img src="https://pic4.zhimg.com/v2-9b74d77fded281139c9f48c7fddddeef_1440w.jpg" width="1502"/>
+<figcaption>各种信用风险模型的资本费用</figcaption>
+</figure>
+<p>模型列于上表，均为1年期限，置信水平为99%。报告还包括来自巴塞尔协议I标准规则的收费。这些规则没有考虑到信贷质量或多样化效应的变化。资本费用(capital charge)是基于名义贷款的8%。</p>
+<p>表的顶部检查了零相关性的情况。无论质量或多样化效应如何，巴塞尔规则都会产生相同的资本费用。这笔费用也一致高于其他大多数费用，为$5,304 million，占名义费用的8%。</p>
+<p>总体而言，这四种信贷组合模型在资本支出方面表现出显著的一致性。投资组合A和B具有相同的信用质量，但B更集中。投资组合A的信用VAR确实较低，约为$800 million，而B为$2,000 million，这反映了更多样化的好处。投资组合A和C的名称数量相同，但C的信用质量较低。这使得信用风险从$800 million左右增加到$2,000 million。</p>
+<p>底部的面板评估经验相关性，这通常是正的。正如预期的那样，巴塞尔的收费没有变化，因为它们没有考虑到相关性。内部模型显示，资本费用系统性地高于前一种情况。然而，不同模型的结果也有更大的差异。特别有趣的是，信贷质量较低的投资组合C的经济资本收费通常是巴塞尔收费的两倍。这些结果表明，巴塞尔规则可能导致不适当的信用风险收费。因此，受这些资本要求约束的银行可能会将其风险状况转向评级较低的信贷，直到它们的经济资本与监管资本相符。这种向较低信贷质量的转变肯定不是最初巴塞尔规则的目标。正是由于缺乏敏感性，才产生了新的《巴塞尔协议II》。</p>
+<p>最近，另一项研究将新巴塞尔II规则的资本收费与三种<span>商业模式</span>进行了比较，非常小心地调整了参数。基础投资组合包括$100 billion的贷款，贷给分布在不同行业和国家的3,000个债务人，平均信用评级为BBB。</p>
+<figure><img src="https://pic1.zhimg.com/v2-b0c9f73213d4c9aafe08267a6078ab7c_1440w.jpg" width="1482"/>
+<figcaption>信用风险模型比较</figcaption>
+</figure>
+<p>上表显示了违约模式下的结果。巴塞尔协议II要求经济资本约为$3.3 billion，接近名义资本的4%。这三种商业模型给出的结果非常接近。报告的结论是：如果假设是一致的，那么项目管理和项目管理的评估方法之间就没有太大的区别。当然，这也是因为这些模型是基于相同的关节密度函数，使用正态copula，并校准到相同的历史数据。</p>
+<hr/>
+<h2>五、结论</h2>
+<p>组合信用风险模型将市场风险模型向前推进了一步。基本的直觉是，债务人、地区和行业的多元化应该降低投资组合风险。然而，内部投资组合信用风险模型的问题在于其复杂性。与市场风险不同，风险经理可以观察风险因素的历史变动，而对于特定债务人来说，通常没有违约的历史。因此，违约概率必须间接建模。对于估计违约相关性以及违约联合密度的形状来说，问题甚至更加困难。在2007年之前，这些模型还没有经过一个完整的市场周期的测试，其中应该包括经济衰退。这一点尤其重要，因为经济低迷会导致更高的违约概率、更高的违约相关性和更低的回收率。</p>
+<p>最后，这些模型很难验证，因为它们产生的是长期（通常为一年）的经济资本度量，而且置信度非常高，通常为99.9%。相比之下，市场风险模型在99%的置信水平上产生每日VAR，这应该平均每年产生两到三个例外。因此，与市场风险不同，信用风险VAR估计的回测是不可行的。</p>
+<p>这就解释了为什么监管机构对这些模型的准确性有相当大的怀疑，并因此不允许商业银行使用其内部投资组合模型作为其信用风险收费的基础。事实上，在2007年开始的经济衰退中遭受的损失远远大于假定的最坏情况。尽管我们对信用风险的理解已经取得了相当大的进展，但我们可以公平地得出结论，要建立健全的模型，还需要做更多的工作。</p>
+<p>⭐ <b>例24.8</b> When determining the standard deviation of value due to credit quality changes for a single exposure, the CreditMetrics model uses three primary factors. Which
+                                                                                of the following is not one of the factors used in this model?</p>
+<ul>
+<li>a. Credit ratings</li>
+<li>b. Seniority</li>
+<li>c. Equity prices</li>
+<li>d. Credit spreads</li>
+</ul>
+<p>解析：选 c 。信用矩阵使用信用评级、转换矩阵、回收率和不同优先级的LGD，但不使用债务人的股权价格。</p>
+<p>⭐ <b>例24.9</b> A bank computes the distribution of its loan portfolio marked-to-market value one year from now using the CreditMetrics approach of computing values for rating
+                                                                                transition outcomes using a rating agency transition matrix,current forward curves, and correlations among rating transition outcomes derived from stock returns of the obligors.
+                                                                                In computing firmwide risk using this distribution of its loan portfolio, the bank is most likely to understate its risk because it ignores</p>
+<ul>
+<li>a. The term structure of interest rates</li>
+<li>b. Rating drift</li>
+<li>c. Spread risk</li>
+<li>d. The negative correlation between the Treasury rates and credit spreads</li>
+</ul>
+<p>解析：选 c 。信用矩阵忽略了价差风险。它确实解释了评级漂移和<span>利率期限结构</span>，尽管不是它们的波动性。</p>
+<p>⭐ <b>例24.10  </b>KMV measures the normalized distance from default. How is this defined?</p>
+<ul>
+<li>a. (Expected assets − Weighted debt)/(Volatility of assets)</li>
+<li>b. Equity/(Volatility of equity)</li>
+<li>c. Probability of stock price falling below a threshold</li>
+<li>d. Leverage times stock price volatility</li>
+</ul>
+<p>解析：选 a 。违约距离度量是一个<span>标准化变量</span>，用于度量公司资产价值超过负债的程度。</p>
+<p>⭐ <b>例24.11  </b>A firm’s assets are currently valued at $500 million and its current liabilities are $300 million. The standard deviation of asset values is $80 million. The
+                                                                                firm has no other debt. What will be the approximate distance to default using the KMV calculation?</p>
+<ul>
+<li>a. 2 standard deviations</li>
+<li>b. 2.5 standard deviations</li>
+<li>c. 6.25 standard deviations</li>
+<li>d. Cannot be determined</li>
+</ul>
+<p>解析：选 b 。(500 − 300)/80 = 2.5</p>
+<p>⭐ <b>例24.12  </b>You are given the following information about a firm. The market value of assets at time 0 is 1,000; at time 1 is 1,200. Short-term debt is 500; long-term debt
+                                                                                is 300. The annualized asset volatility is 10%. According to the KMV model, what are the default point and the distance to default at time 1?</p>
+<ul>
+<li>a. 800 and 3.33</li>
+<li>b. 650 and 7.50</li>
+<li>c. 650 and 4.58</li>
+<li>d. 500 and 5.83</li>
+</ul>
+<p>解析：选 c 。违约点是短期负债加上一半的长期负债，即500 + 300/2 = 650。点1到违约值的距离是(V − K)/ σV =(1200−650)/(1200 × 0.10) = 4.58。</p>
+<p>⭐ <b>例24.13  </b>Which of the following credit risk models uses the option-theoretic approach for modeling correlation between the credit-risky assets?</p>
+<ul>
+<li>a. CreditRisk+</li>
+<li>b. CreditMetrics</li>
+<li>c. KMV for public firms</li>
+<li>d. Both CreditMetrics and KMV for public firms</li>
+</ul>
+<p>解析：选 c 。KMV使用基于公司股票价格的默顿方法估计违约概率。</p>
+<p>⭐ <b>例24.14  </b>Which of the following statements correctly applies to the KMV model, CreditMetrics, and CreditRisk+ together?</p>
+<ul>
+<li>a. In their original implementations these models do not take into account changes in interest rates or credit spreads.</li>
+<li>b. All three models allow for changes in default probability only when ratings change, rather than continuously.</li>
+<li>c. It is impossible to compute a VAR measure using these models.</li>
+<li>d. Credit migrations from one ratings class to another are ignored by these models.</li>
+</ul>
+<p>解析：选 a 。这些模型都没有考虑到<span>无风险利率</span>和利差的变化，因此答案a是正确的。答案b是不正确的，因为KMV模型基于股票价格对PD的估计，而股票价格是持续变化的。答案c是不正确的，因为所有这些模型的主要目的是估计信用VAR度量。例如，答案d是不正确的，因为信用矩阵是基于信用评级的。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

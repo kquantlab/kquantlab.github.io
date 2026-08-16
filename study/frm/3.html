@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C03 统计基础 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C03 统计基础">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C03 统计基础</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>参数估计</span></h2>
+<h3><b>1、参数</b></h3>
+<p>定义 <span>X</span> 为随机变量，观察到 <span>x_1, x_2，…, x_T</span> 的序列。假设 <span>x</span>                                    的观测值来自正态分布：</p>
+<blockquote><span>x ∼ \Phi(\mu, \sigma)</span> </blockquote>
+<p>一般地，还需要假设随机变量是<span>独立同分布</span>的。这里可以说，随机变量 <span>X</span> 服从以 <span>\mu</span> 为均值、 <span>\sigma^2</span> 为方差的正态分布。例如，正态分布意味着<span>峰度系数</span>为3，可以检验它是否等于3。如果不是，则必须拒绝正态分布的假设，必须寻找另一种更适合数据的分布。</p>
+<h3><b>2、参数估计量</b></h3>
+<p>均值 <span>\mu = E(X)</span> 可以由样本均值估计：</p>
+<blockquote><span>m = \hat{\mu} = \frac{1}{T} \sum_{i=1}^{T}{x_i}</span> </blockquote>
+<p>样本均值是一个<b>估计量</b>(estimator)，这个样本的估计值是一个<b>点估计</b>(point estimate)。这里给所有观测值分配相同的权重 <span>1/T</span> ，由于独立同分布，它们都有相同的概率。然而，其他的估计也是可能的。只要权重之和为1，权重模式可以不同。一个好的估计量应该有以下特性：</p>
+<ul>
+<li><b>无偏</b>(unbiased)：期望等于兴趣参数，<span>E[m] =\mu</span> 。否则，估计量是有偏的。</li>
+<li><b>有效</b>(efficient)：它在所有可能的估计量中具有最小的标准差， <span>V[m−\mu]</span> 为最小值。</li>
+</ul>
+<p>样本均值满足所有这些条件。在所有数据的线性组合中，一个无偏且有效的估计量被称为<b>最佳线性<span>无偏估计</span>量</b>(best linear unbiased estimator, BLUE)。</p>
+<p>一个较弱的条件是估计量是<b>一致</b>(consistent)的。这意味着当样本容量 <span>T</span> 增加或渐近时，它收敛于真实参数。</p>
+<p>方差 <span>\sigma^2 = E[(X− \mu)^2]</span> 可以由样本方差估计：</p>
+<blockquote><span>s^2 = \hat{\sigma}^2 = \frac{1}{T-1}  \sum_{i=1}^{T}{(x_i - \hat{\mu})^2}</span> </blockquote>
+<p>这里除以 <span>T−1</span> 而不是 <span>T</span> 。这是因为估计了一个未知参数（均值）的方差，所以自由度要减1。因此需要调整 <span>s^2</span>                                    ，以确保它的期望等于真值，或者它是无偏的。然而，在大多数情况下， <span>T</span> 很大的，所以这个调整是很小的。这些估价值取决于特定的样本，因此具有一些固有的可变性。样本均值的分布是：</p>
+<blockquote><span>m = \hat{\mu} ∼ N(\mu, \sigma^2/T)</span> </blockquote>
+<p>如果总体分布是正态分布，这恰好描述了样本均值的分布。否则，<span>中心极限定理</span>表明该分布仅渐近有效（对于大样本）：</p>
+<blockquote><span>se(m) = \frac{\sigma}{\sqrt{T}}</span> </blockquote>
+<p>即，<b>在独立的情况下，样本均值的<span>标准误</span>是由总体波动性除以观测数 <span>T</span> 的平方根给出的</b>。</p>
+<p>样本方差 <span>\hat{\sigma}^2 </span> 的分布为：</p>
+<blockquote><span>\frac{(T-1) \hat{\sigma}^2 }{\sigma^2} \sim \chi^2(T-1)</span> </blockquote>
+<p>如果样本容量 <span>T</span> 足够大，<span>卡方分布</span>收敛为正态分布：</p>
+<blockquote><span>\hat{\sigma}^2 \sim N(\sigma^2, \sigma^4 \frac{2}{T-1})</span></blockquote>
+<p>采用同样的近似，样本标准差为正态分布，<span>标准误差</span>为：</p>
+<blockquote><span>se(\hat{\sigma}) =  \frac{\sigma}{\sqrt{2T}}</span> </blockquote>
+<p>可以利用这些信息进行<span>假设检验</span>。例如，想要检测 <span>X</span> 的一个常量趋势，这里的<span>零假设</span>是 <span>\mu =0</span> 。计算一个<span>标准正态变量</span>作为估计均值与标准误差的比值：</p>
+<blockquote><span>z = \frac{m-0}{\sigma / \sqrt{T}}</span> </blockquote>
+<p>这是一个标准正态变量，不会期望观察到离0很远的值。需要确定测试的显著性水平，也是1减去置信度。通常，我们将 <span>c</span> 设为95%，这意味着 <span>z_c</span> 的双尾区间为 <span>[-1.96,+1.96]</span> 。显著性水平是5%。如果 <span>z</span> 的绝对值大于2，拒绝 <span>m</span> 来自均值为0的分布的假设。可以确信，真正的
+                                        <span>\mu</span> 不等于零。</p>
+<p>若不知道真正的 <span>\sigma</span> ，而是使用估计的 <span>s</span> 。这个分布就变成了有 <span>t</span>                                        个自由度的<span>学生 t 分布</span>：</p>
+<blockquote><span>t = \frac{m-0}{s/\sqrt{T}}</span> </blockquote>
+<p>截止值可查表。这个间隔的分位数是 <span>t_c</span> 。然而，对于较大的 <span>T</span> 值，这种分布接近正态分布。这些<span>检验统计量</span>可以转换为
+                                        <span>置信区间</span>。这些是包含真实参数的随机区间，具有固定的置信度：</p>
+<blockquote><span>c = P[m− z_c × se(m) ≤ \mu ≤ m+ z_c × se(m)]</span> </blockquote>
+<p>例如，想要确定一个包含 <span>\mu</span> 的95%置信区间。如果 <span>T</span> 很大，我们可以用正态分布，乘子 <span>z_c</span>                                        是1.96。均值的置信区间是：</p>
+<blockquote><span>m± z_cse(m) = [m− 1.96 × se(m),m+ 1.96 × se(m)]</span> </blockquote>
+<p>在这种情况下，置信区间是对称的，因为分布是正态的。更普遍地说，这个区间可能是不对称的，例如卡方分布是不对称的。</p>
+<h3><b>3、选择<span>显著性水平</span></b></h3>
+<p><b>第1类错误</b>拒绝正确的模型。<b>第2类错误</b>接受不正确的模型。对于给定的测试，增加显著性水平将减少第1类错误的概率，但增加第2类错误的概率。</p>
+<p>因此，对于给定的测试方法，这两种错误之间存在权衡。显著性水平的选择应反映每个错误的代价。然而，测试方法至少应该设计得非常强大。这意味着，对于固定的第1类错误，产生第2类错误的概率应该尽可能低。</p>
+<h3><b>4、估计的精确度</b></h3>
+<p>当样本量增加时， <span>\hat{\mu}</span> 的标准误差以 <span>1/ \sqrt{T}</span> 的比例缩小。估计的精度随着观测数量的增加而增加。这一结果将证明有助于评估<b>数值模拟</b>(numerical
+                                        simulations)产生的估计精度，在风险管理中广泛应用。数值模拟在固定数量的重复 <span>T</span> 次创建独立的随机变量，如果 <span>T</span> 太小，最终的估计将不精确测量。如果 <span>T</span> 非常大，估计是准确的。估计的精度以 <span>1/ \sqrt{T}</span> 的速度增加。</p>
+<p><u>在独立的情况下，大多数统计量的标准差与观测次数 <span>T</span> 的平方根成反比，观测次数越多，估计越精确</u>。</p>
+<p>⭐ <b>例3.1</b> What does a hypothesis test at the 5% significance level mean?</p>
+<ul>
+<li>a. P(not reject H0 | H0 is true) = 0.05</li>
+<li>b. P(not reject H0 | H0 is false) = 0.05</li>
+<li>c. P(reject H0 | H0 is true) = 0.05</li>
+<li>d. P(reject H0 | H0 is false) = 0.05</li>
+</ul>
+<p>解析：选 c 。显著性水平是提交第1类错误或拒绝正确模型的概率，即P(reject H0 | H0 is true)。相比之下，第2类错误为P(not reject H0 | H0 is false)。</p>
+<p>⭐ <b>例3.2</b> When testing a <span>hypothesis</span>, which of the following statements is correct when the level of significance of the test is decreased?</p>
+<ul>
+<li>a. The likelihood of rejecting the null hypothesis when it is true decreases.</li>
+<li>b. The likelihood of making a type 1 error increases.</li>
+<li>c. The null hypothesis is rejected more frequently, even when it is actually false.</li>
+<li>d. The likelihood of making a type 2 error decreases.</li>
+</ul>
+<p>解析：选 a 。显著性水平也是发生第1类错误的概率，或者当原假设为真时拒绝原假设的概率，这个概率在减小。这与答案b和c相反，这两个答案都是错误的。这就增加了犯<span>第二类错误</span>的可能性，即接受错误的假设，所以答案d是错误的。</p>
+<p>⭐ <b>例3.3</b> A population has a known mean of 1,000. Suppose 1,600 samples are randomly drawn (with replacement) from this population. The mean of the observed samples is 998.7, and the standard deviation of the observed
+                                        samples is 100. What is the standard error of the sample mean?</p>
+<ul>
+<li>a. 0.025</li>
+<li>b. 0.25</li>
+<li>c. 2.5</li>
+<li>d. 25</li>
+</ul>
+<p>解析：选 c 。 <span>\sigma / \sqrt{T}</span> = 100/ (1,600)^0.5 = 100/40 = 2.5。</p>
+<h3><b>5、分布的假设检验</b></h3>
+<p>定义估计偏度为 <span>\hat{\gamma}</span> ，估计峰度为 <span>\hat{\delta}</span>。正态分布的真实值为 <span>\gamma = 0</span> ， <span>\delta = 3</span> 。</p>
+<p><b>Jarque-Bera</b> (JB) 统计量测量了与期望值的偏差：</p>
+<blockquote><span>JB = T[\frac{\hat{\gamma}^2}{6} + \frac{(\hat{\delta}-3)^2}{24}]</span> </blockquote>
+<p>在零假设下它有两个自由度的卡方分布。95%<span>置信水平</span>的截断点是5.99。如果JB统计量的观测值高于5.99，就拒绝观测值来自正态分布的假设。</p>
+<hr/>
+<h2>二、回归分析</h2>
+<h3><b>1、<span>最小二乘法</span></b></h3>
+<p><span>线性回归</span>表示为：</p>
+<blockquote><span>y_t = \alpha + \beta x_t + \epsilon_t</span> </blockquote>
+<p>其中 <span>y</span> 为回归变数(regressand)， <span>x</span> 为回归量(<span>regressor</span>)， <span>\epsilon</span> 为误差项。</p>
+<p>估计的回归为：</p>
+<blockquote><span>y_t = \hat{\alpha} + \hat{\beta} x_t + \hat{\epsilon}_t</span> </blockquote>
+<p>其中估计误差 <span>\hat{\epsilon}</span> 为残差(residual)。</p>
+<p>普通最小二乘(OLS)的假设包括：</p>
+<ul>
+<li>误差与变量 <span>x</span> 无关。</li>
+<li>误差的方差是常数。</li>
+<li>误差在不同的观测中是不相关的。</li>
+<li>误差是正态分布的。</li>
+</ul>
+<p>两个随机变量 <span>u</span> 和 <span>v</span> 之间的独立性是一个强假设;这意味着<span>协方差</span> <span>Cov(u, v)</span> 和相关性 <span>\rho (u, v)</span> 为零。否则，正态性假设会导致精确的统计结果。中心极限定理的条件随着 <span>T</span> 的增大而成立，这导致了类似的结果。</p>
+<p>OLS通过最小化误差平方和 <span>\Sigma \hat{\epsilon}_t^2</span> 来提供系数的估计量。因此，估计量提供了最小的误差平方和。在模型假设下，高斯-马尔可夫(Gauss-Markov)定理表明OLS提供了最好的线性无偏估计量(BLUE)。估计量
+                                        <span>\hat{\beta}</span> 是无偏的，其期望是真实值 <span>\beta</span> 。“最好”表示OLS估计量是有效的，或者与其他估计量相比方差最小。当误差为正态时，OLS是最大似然估计量。然而，它对于更广的分布也有很好的性质。</p>
+<p>OLS的估计量为：</p>
+<blockquote><span>\hat{\beta} = \frac{\sum_{t} (x_t - \bar{x}) (y_t - \bar{y})}{\sum_{t} (x_t - \bar{x})^2}</span>                                        ， <span>\hat{\alpha} = \bar{y} - \hat{\beta}  \bar{x}</span> </blockquote>
+<p>当回归包含截距时，可以证明估计的残差必须通过构造平均为零：</p>
+<blockquote><span>\sum_{t=1}^{T}{\hat{\epsilon}} = 0</span> </blockquote>
+<p>两个序列间的样本协方差可以写为：</p>
+<blockquote><span>\hat{\sigma}_{ij} = \frac{1}{T-1}\sum_{t=1}^{T}(x_{t,i} - \hat{\mu}_i)(x_{t,j} - \hat{\mu}_j)</span> </blockquote>
+<p>为了解释 <span>\beta</span> ，可以取 <span>y</span> 和 <span>x</span> 之间的协方差：</p>
+<blockquote><span>Cov(y, x) = Cov(\alpha+ \beta x + \epsilon	, x) = \beta Cov(x, x) = \beta V(x)</span> </blockquote>
+<p>总体 <span>\beta</span> 可以表示为：</p>
+<blockquote><span>\beta(y,x) = \frac{Cov(y,x)}{V(x)} = \rho(y,x) \frac{\sigma(y)}{\sigma(x)}</span> </blockquote>
+<p>然后就可以根据对 <span>x</span> 的观测建立对 <span>y</span> 的预测：</p>
+<blockquote><span>\hat{y}_t = E[y_t|x_t] = \hat{\alpha} +\hat{ \beta} x_t</span> </blockquote>
+<p>这是一种非常方便的风险度量表示。这表明，当回归拟合良好时，变量 <span>y</span> 可以映射到变量 <span>x</span> 上，意味着误差项相对较小。</p>
+<h3><b>2、拟合质量</b></h3>
+<p><b>回归拟合</b>(regression fit)可以通过检验残差的大小来评估：</p>
+<blockquote><span>\hat{\epsilon}_t = y_t - \hat{y_t} = y_t - \hat{\alpha} - \hat{\beta}x_t</span> </blockquote>
+<p>可得估计方差为：</p>
+<blockquote><span>V(\hat{\epsilon}) = \frac{1}{T-2} \sum_{t=1}^{T} \hat{\epsilon}_t^2</span> </blockquote>
+<p>除以 <span>T−2</span> 是因为估计量有两个未知量， <span>\hat{\alpha}</span> 和 <span>\hat{\beta}</span> 。拟合的质量可以用一种称为<b>回归R平方</b>的单位测度来评估，也称为<b><span>决定系数</span></b>(coefficient of determination)，定义为：</p>
+<blockquote><span>R^2 = 1 - \frac{SSE}{SSY} = 1 - \frac{\sum_{t}\hat{\epsilon}_t^2}{\sum_{t}(y_t - \bar{y})^2}</span> </blockquote>
+<p>其中 <span>SSE</span> 是<b>误差平方和</b>(sum of squared errors)，而 <span>SSY</span> 是 <span>y</span> 在其均值附近的<b><span>偏差平方和</span></b>(sum of squared deviations)。如果回归包含常数，则 <span>0 ≤ R^2 ≤ 1</span>                                                        。<span>R^2</span> 越大说明拟合越好。此时 <span>R^2</span> 也是相关系数的平方：</p>
+<blockquote><span>R^2 = \rho (y,x)^2</span> </blockquote>
+<p>或者，我们可以通过分解方差来解释 <span>R^2</span> ，推导可得：</p>
+<blockquote><span>V(y) = \beta^2V(x) + V(\epsilon)</span> ，<span>R^2 = \beta^2 \frac{V(x)}{V(y)}</span> </blockquote>
+<p>评估拟合质量还包括检查是否满足OLS假设。例如，误差的分布应该具有恒定的方差：</p>
+<blockquote><span>V(\epsilon_t|x_t) = \sigma^2</span> </blockquote>
+<p>也可以通过在 <span>x_t</span> 上绘制残差平方来检验。</p>
+<h3><b>3、假设检验</b></h3>
+<p>对于斜率参数， <span>\hat{\beta} \sim N(\beta, V(\hat{\beta}))</span> ，其方差为：</p>
+<blockquote><span>V(\hat{\beta}) = V(\hat{\epsilon}) \frac{1}{\sum_{t}(x_t - \bar{x})^2}</span> </blockquote>
+<p>可以用来检验斜率系数是否显著不为零。相关检验统计量为：</p>
+<blockquote><span>t = \frac{\hat{\beta}}{\sigma(\hat{\beta})}</span> </blockquote>
+<p>服从学生 t 分布。通常的做法是检查统计量的绝对值是否大于2。若大于2，拒绝 <span>y</span> 和 <span>x</span> 之间没有关系的假设，这相当于5%的双尾显著性水平。这也可以用来构造总体系数的置信区间。</p>
+<h3><b>4、自回归</b></h3>
+<p><span>自回归方程</span>为：</p>
+<blockquote><span>y_t = \alpha + \beta_k y_{t-k} + \epsilon_t</span> </blockquote>
+<p>如果 <span>\beta</span> 系数是显著的，那么该变量以前的变动可以用来预测未来的变动。在这里，系数 <span>\beta_k</span> 称为 <span>k</span> 阶<b>自相关系数</b>(autocorrelation coefficient)。实践中，大多数金融变量的斜率系数在统计上并没有显著的零差异。自相关性改变了跨界风险的正常模式。当不存在自相关时，风险随时间的平方根而增加。在正自相关的情况下，冲击的影响持续时间更长，风险增加的速度快于时间的平方根。</p>
+<h3><b>5、<span>多元回归</span></b></h3>
+<p>多元回归的矩阵写法为：</p>
+<blockquote><span>y = X\beta + 	\epsilon</span> </blockquote>
+<p>估计系数可以简写为：</p>
+<blockquote><span>\hat{\beta} = (X'X)^{-1}X' y</span> </blockquote>
+<p>这里需要另一个假设：<b>矩阵 <span>X</span> 必须是满秩的，一个变量不能是其他变量的线性组合</b>。如果 <span>X</span> 不是满秩的，矩阵 <span>X'X</span> 就不是可逆的。这个假设排除了变量之间的完全相关性。然而，有时两个变量可以高度相关，这被描述为<b><span>多重共线性</span></b>(multicollinearity)。在这种情况下，回归输出是不稳定的。数据的微小变化可能导致估计值的巨大变化。系数会有非常高的标准误差。</p>
+<p>系数的<span>协方差矩阵</span>为：</p>
+<blockquote><span>V(\hat{\beta} )=V(\hat{\epsilon})  (X'X)^{-1}</span> </blockquote>
+<p>其中：</p>
+<blockquote><span>V(\hat{\epsilon}) = \frac{1}{T-N} \sum_{t=1}^{T} \hat{\epsilon}_t^2</span> </blockquote>
+<p>令 <span>\hat{\beta}_m</span> 为组合系数， <span>V_m(\hat{\beta} )</span>                                                                    为协方差矩阵。可以设定 F 统计量为：</p>
+<blockquote><span>F = \frac{\hat{\beta}_m' V_m(\hat{\beta} )^{-1} \hat{\beta}_m / m}{SSE / (T-N)}</span> </blockquote>
+<p>这是具有 <span>m</span> 和 <span>T - N</span> 自由度的 F 分布。如果F值比表中的临界值大，将拒绝假设。</p>
+<p><b>调整后R方</b>(adjusted R-squared)为：</p>
+<blockquote><span>\bar{R}^2 = 1 - \frac{SSE / (T-N)}{SSY/ (T-1)} = 1- (1 - R^2) \frac{T-1}{T-N}</span> </blockquote>
+<p>⭐ <b>例3.4</b> Consider the following linear regression model: Y = a +b X+ e. Suppose a = 0.05, b = 1.2, SD(Y) = 0.26, and SD(e) = 0.1. What is the correlation between X and Y?</p>
+<ul>
+<li>a. 0.923</li>
+<li>b. 0.852</li>
+<li>c. 0.701</li>
+<li>d. 0.462</li>
+</ul>
+<p>解析：选 a 。思路是先求出V(x)，再求ρ。根据以下公式：</p>
+<blockquote><span>V(y) = \beta^2V(x) + V(\epsilon)</span> ，<span>\beta(y,x)  = \rho(y,x) \frac{\sigma(y)}{\sigma(x)}</span></blockquote>
+<p>V(x) = [V(y) − V(ε)] / β^2 = 0.26^2 − 0.10^2) / 1.2^2 = 0.04，即 σ(x) = 0.2。因此，相关系数 ρ = σ(x) × β / σ(y) = 0.2 × 1.2 / 0.26 = 0.923。</p>
+<p>⭐ <b>例3.5</b> Consider two stocks, A and B. Assume their annual returns are jointly normally distributed, the marginal distribution of each stock has mean 2% and standard deviation 10%,
+                                                                        and the correlation is 0.9. What is the expected annual return of stock A if the annual return of stock B is 3%?</p>
+<ul>
+<li>a. 2%</li>
+<li>b. 2.9%</li>
+<li>c. 4.7%</li>
+<li>d. 1.1%</li>
+</ul>
+<p>解析：选 b 。先构建A对B的回归模型 <span>\hat{R}_A = R_F + \rho (\hat{R}_B - R_F) </span> ，代入 <span>R_F</span> = 2%， <span>\rho</span> = 0.9， <span>\hat{R}_B</span>                                                                        = 3%，有 <span>\hat{R}_A</span> = 2% + 0.9(3% − 2%) = 2.9%。</p>
+<p>⭐ <b>例3.6</b> A portfolio manager is interested in the systematic risk of a stock portfolio, so he estimates the linear regression: <span>R_{Pt} − R_F = α_P + β_P [R_{Mt}− R_F ] +ε_{Pt}</span>                                                                        where <span>R_{Pt }</span> is the return of the portfolio at time <span>t</span>                                                                        , <span> R_{Mt}</span> is the return of the market portfolio at time <span>t</span>                                                                        , and <span>R_F </span> is the risk-free rate, which is constant over time. Suppose that <span>α</span> = 0.008, <span>β</span> = 0.977, <span>σ(R_P) </span> = 0.167,
+                                                                        and <span>σ(R_M) </span> = 0.156. What is the approximate coefficient of determination in this regression?</p>
+<ul>
+<li>a. 0.913</li>
+<li>b. 0.834</li>
+<li>c. 0.977</li>
+<li>d. 0.955</li>
+</ul>
+<p>解析：选 b 。代入以下公式可得 R = 0.977^2 × 0.156^2 / 0.167^2 = 0.83。</p>
+<blockquote><span>R^2 = \beta^2 \frac{V(x)}{V(y)}</span> </blockquote>
+<p>⭐ <b>例3.7</b> Which of the following statements about the linear regression of the return of a portfolio over the return of its benchmark presented below are correct?</p>
+<ul>
+<li>Beta = 1.25</li>
+<li>Alpha = 0.26</li>
+<li>Coefficient of determination = 0.66</li>
+<li>Standard deviation of error = 2.42<br/></li>
+<li>I. The correlation is 0.71.</li>
+<li>II. About 34% of the variation in the portfolio return is explained by variation in the benchmark return.</li>
+<li>III. The portfolio is the dependent variable.</li>
+<li>IV. For an estimated portfolio return of 12%, the confidence interval at 95% is (7.16% − 16.84%).<br/></li>
+<li>a. II and IV</li>
+<li>b. III and IV</li>
+<li>c. I, II, and III</li>
+<li>d. II, III, and IV</li>
+</ul>
+<p>解析：选 b 。对于 I，根据 R^2 = ρ^2 可知，相关性 ρ = 0.66^0.5 = 0.8124，排除 c 项。对于 II，由于 R^2 = 0.66，因此表述应该为解释了66%的Y变化，排除 a、d 项。对于 IV，95%范围在±1.96，置信区间为 y−1.96×SD(e)， y + 1.96×SD(e)，代入正确。</p>
+<h3><b>6、回归缺陷</b></h3>
+<p>有时，在 <span>X</span> 变量中有测量误差(measurement errors)，导致测量的 <span>X</span> 与 <span>\epsilon</span> 相关。这个所谓的<b>变量误差</b>(errors in the variables)问题导致了估计系数的向下偏差。</p>
+<p>一个相关的问题是<b>规范误差</b>(specification error)。假设真实的模型有 <span>N</span> 个变量，但我们只使用子集 <span>N_1</span>                                                                        。如果省略的变量与包含的变量相关，估计的系数将有偏差。这是一个非常严重的问题，因为它很难识别。系数的偏差导致<b>估计</b>(estimation)问题。</p>
+<p>另一类问题与系数的标准误差的潜在偏差有关。如果低估了标准误差，这些误差就会特别严重，从而在回归结果中产生错误的精确度，并可能导致错误的结论。OLS方法假设这些误差在观测中是独立的。这通常是金融时间序列的情况，但通常不是横断面设置。人们必须检查残差是否有系统的相关模式。即使是时间序列，误差中的<b>自相关</b>(autocorrelation)也会出现问题。标准误差中的偏差会导致<b>推断</b>(inference)的问题，因为人们可能会错误地得出一个系数在统计上是显著的。</p>
+<p>当评估没有使用所有可用的信息时，<b>效率</b>(efficiency)就会出现问题。例如，残差可以在不同的观测值之间有不同的方差，此时存在<b><span>异方差</span></b>(heteroskedasticity)。这与<b>同方差</b>(homoskedasticity)的情况相反。当方差与自变量相关时，就会发生条件异方差。例如，较大的
+                                                                        <span>X</span> 值可能与高误差方差有关。这些问题可以通过残差的诊断检查来识别。如果存在异方差，可以构建更好的标准错误或尝试另一种规范。然而，这比估算或推断问题要小得多。低效的估计不一定会产生偏差。</p>
+<p>回归可能具有<b>多重共线性</b>(multicollinearity)。当 <span>X</span> 变量高度相关时，就会出现这种情况，估计的 <span>\beta</span>                                                                            不可靠。然而，这个问题会在很大的标准误差中表现出来。可以通过丢弃一些与其他变量高度相关的变量来解决这个问题。</p>
+<p>⭐ <b>例3.8</b> You built a linear regression model to analyze annual salaries for a developed country. You incorporated two independent variables, age and experience, into your model.
+                                                                            Upon reading the regression results, you notice that the coefficient of experience is negative, which appears to be counterintuitive. In addition, you discover that the coefficients
+                                                                            have low t-statistics but the regression model has a high <span>R^2</span> . What is the most likely cause of these results?</p>
+<ul>
+<li>a. Incorrect standard errors</li>
+<li>b. Heteroskedasticity</li>
+<li>c. Serial correlation</li>
+<li>d. Multicollinearity</li>
+</ul>
+<p>解析：选 d 。年龄和经验可能是高度相关的。当系数的标准误差较高时，多重共线性就会出现。</p>
+<p>⭐ <b>例3.9</b> Which of the following statements regarding linear regression is false?</p>
+<ul>
+<li>a. Heteroskedasticity occurs when the variance of residuals is not the same across all observations in the sample.</li>
+<li>b. Unconditional heteroskedasticity leads to inefficient estimates, whereas conditional heteroskedasticity can lead to problems with both inference and estimation.</li>
+<li>c. Serial correlation occurs when the residual terms are correlated with each other.</li>
+<li>d. Multicollinearity occurs when a high correlation exists between or among two or more of the independent variables in a multiple regression.</li>
+</ul>
+<p>解析：选 b 。a 项，当残差的方差不是常数时，存在异方差；b 项，异方差将导致低效的估计，但不会导致推论和估计方面的问题；c 项，当残差项相互关联时，就会出现序列相关，这是定义句；当两个或两个以上的自变量之间存在高度相关时，就会出现多重共线性，这是定义句。</p>
+<p>⭐ <b>例3.10</b> Under what circumstances could the explanatory power of regression analysis be overstated?</p>
+<ul>
+<li>a. The explanatory variables are not correlated with one another.</li>
+<li>b. The variance of the error term decreases as the value of the dependent variable increases.</li>
+<li>c. The error term is normally distributed.</li>
+<li>d. An important explanatory variable is omitted that influences the explanatory variables included and the dependent variable.</li>
+</ul>
+<p>解析：选 d 。如果真实回归包括第三个影响 <span>y</span> 和 <span>x</span> 的变量 <span>z</span> ，则误差项将不会有条件地独立于 <span>x</span> ，违反了OLS模型的假设。这人为地增加回归的解释能力，因为变量 <span>x</span>                                                                            可以解释 <span>y</span> 的更多变化，因为它与 <span>z</span> 相关。a 和 c 是正常情况；b 是条件异方差。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

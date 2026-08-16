@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C08 期权市场 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C08 期权市场">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C08 期权市场</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、期权的收益</h2>
+<h3><b>1、期权的基础知识</b></h3>
+<p><b>期权</b>是一种工具，它赋予持有者在特定到期日之前以特定价格购买或出售资产的权利。指定的<b>交割价格</b>(delivery price, exercise price, strike price)用 <span>K</span> 表示。由于期权赋予了<span>期权购买者</span>一种权利，而不是一种义务，因此只有当期权产生利润时，期权才会被行使。相比之下，
+                                    <span>远期交易</span>涉及买卖的义务，可以产生利润或亏损。和<span>远期合约</span>一样，期权也可以买卖。在后一种情况下，卖方被称为<span>卖出期权</span>(write the option)。</p>
+<p>根据执行时间的不同，期权可分为<b><span>欧式期权</span></b>和<b><span>美式期权</span></b>。欧式期权只能在到期日行使。美式期权可以在到期前或到期时的任何时间行使。由于美式期权包括到期时行使的权利，它们必须至少与欧式期权一样有价值。然而，在实践中，这种早期行权特性的价值很小，因为投资者通常可以通过在
+                                    <span>公开市场</span>上转售期权而不是<span>行权</span>获得更好的价值。设：</p>
+<ul>
+<li>欧式看涨期权的价值为 <span>c </span> </li>
+<li><span>美式看涨期权</span>的价值为 <span>C</span> </li>
+<li><span>欧式看跌期权</span>的价值为 <span>p</span> </li>
+<li><span>美式看跌期权</span>的价值为 <span>P</span> </li>
+</ul>
+<p>看涨期权多头头寸的收益为： <span>C_T = Max(S_T − K, 0)</span> <br/>看跌期权多头头寸的收益为： <span>P_T = Max(K − S_T, 0)</span> </p>
+<p>如果当前<span>资产价格</span> <span>S_t</span> 接近执行价格 <span>K</span> ，则称为<b><span>平价期权</span></b>(at-the-money)。如果当前资产价格
+                                    <span>S_t</span> 是这样的，期权现在可以在盈利的情况下执行，那么这个期权就被称为<b>价内期权</b>(in-the-money)。如果存在剩余的情况，则称该期权处于<b>价外期权</b>(out-of-the-money)。如果 <span>S_t &gt;K</span>                                    ，则该看涨期权将兑现。如果 <span>S_t &lt;K</span> ，看跌期权将是<span>实值期权</span>。</p>
+<p>因为购买期权在到期日只能产生利润(最坏为零)，期权合约必须是有价值的资产(或最坏为零价值)。这意味着需要付款才能获得合同。这种预先支付的费用叫做<b><span>期权保险金</span></b>(option premium)。不可能是负的。当期权进入资金时，它会变得更加昂贵。</p>
+<p>因此期权的收益必须考虑到成本(多头头寸)或收益(空头头寸)。为了计算<span>总收益</span>，我们应该将所有期权的收益用未来的保费值来换算，即欧洲看涨期权的 <span>ce^{r\tau}</span> 。</p>
+<p>与远期不同的是，期权收益在潜在的现货价格中是<b>非线性</b>的。有时它们被称为曲棍球杆图(hockey stick)。这是因为远期是一种义务，而期权是一种权利。注意，同一合约的位置是围绕水平轴对称的。对于给定的现货价格，做多者和<span>做空</span>者的利润或亏损之和为0。</p>
+<figure><img src="https://pica.zhimg.com/v2-daf933775e76d883ce6df53b25d3b52a_1440w.jpg" width="1083"/>
+<figcaption>期权的非线性收益图</figcaption>
+</figure>
+<p>多头期权头寸的下行风险有限，即损失期权费。由于 <span>S</span> 没有上限，做空看涨期权头寸有无限的下行风险。做空看跌头寸的最大损失发生在 <span>S</span> 趋近于零的时候。</p>
+<p>期权也可以在期货交易中执行。当执行看涨期权时，投资者买入<span>期货合约</span>。相反，行使看跌期权会在期货合约中创建一个空头头寸。因为期货的头寸相当于基础现金工具的杠杆头寸，所以现金工具的期权和期货的期权在经济上是等价的。</p>
+<h3><b>2、<span>看涨看跌平价</span></b></h3>
+<p>这些期权收益可以用作更复杂头寸的基本构建模块。标的资产的多头头寸可以分解为具有相同<span>执行价格</span>和到期日的多头看涨加上空头看跌期权，如下图所示：</p>
+<figure><img src="https://picx.zhimg.com/v2-c746d2788abae3abcfdb9bc5803b802b_1440w.jpg" width="1138"/>
+<figcaption>分解资产的多头头寸</figcaption>
+</figure>
+<p>多头看涨期权提供了相当于上行的风险，而空头看跌期权产生了与持有资产相同的下行风险。这个链接创建了看涨期权和看跌期权之间的关系，也称为<b>看涨看跌平价</b>(put-call parity)。我们只考虑具有相同期限和执行价格的欧洲期权。同时，我们假设标的资产没有收益支付。<span>投资组合</span>包括看涨期权的多头头寸，看跌期权的空头头寸，以及确保我们能够在到期时支付
+                                    <span>行权价格</span>的投资。多头仓位以负值表示，因为它们代表流出或成本。</p>
+<p>看涨看跌平价可以写为：</p>
+<blockquote><span>c − p = Se^{−r ^∗\tau} − Ke^{−r\tau} = (F − K)e^{−r\tau}</span> </blockquote>
+<p>因为 <span>c≥0</span> 、 <span>p≥0</span> ，这个关系也可以用来确定欧式看涨和看跌的下界。但这种关系并不完全适用于美式期权，因为有可能会在早期行权，这可能会导致不匹配的回报。</p>
+<p>看涨看跌平价可以用来确定市场价格里<b>隐含的股息收益率</b>(implied dividend yield)。该收益率用于确定<b>股息互换</b>(dividend swaps)的远期利率，这种合约的支付与视界内支付的实际股息减去隐含股息挂钩。</p>
+<p><b>资产的多头头寸，相当于欧式看涨期权的多头头寸和其他相同的看跌期权的空头头寸，再加上无风险头寸</b>。</p>
+<p>⭐ <b>例8.1</b> According to put-call parity, buying a put option on a stock is equivalent to</p>
+<ul>
+<li>a. Buying a call option and buying the stock with <span>fund</span>s borrowed at the risk-free rate</li>
+<li>b. Selling a call option and buying the stock with funds borrowed at the risk-free rate</li>
+<li>c. Buying a call option, selling the stock, and investing the proceeds at the risk-free rate</li>
+<li>d. Selling a call option, selling the stock, and investing the proceeds at the risk-free rate</li>
+</ul>
+<p>解析：选 c 。如果<span>股票价格</span>下跌，买进看跌期权就会获利，类似于在股价下跌时卖出股票。在股市上行时，通过<span>买入看涨期权</span>来限制损失。</p>
+<p>⭐ <b>例8.2</b> A one-year European put option on a non-dividend-paying stock with strike at EUR 25 currently trades at EUR 3.19. The current stock price is EUR 23and its annual volatility is 30%. The annual risk-free interest
+                                    rate is 5%.What is the price of a European call option on the same stock with the same parameters as those of this put option? Assume continuous compounding.</p>
+<ul>
+<li>a. EUR 1.19</li>
+<li>b. EUR 3.97</li>
+<li>c. EUR 2.41</li>
+<li>d. Cannot be determined with the data provided</li>
+</ul>
+<p>解析：选 c 。根据看涨看跌平价， <span>c=p+Se^{-r^\ast \tau}–Ke^{-rτ}</span> = 3.19 + 23 − 25exp(−0.05 × 1) = 3.19 − 0.78 = 2.409。本题的波动率信息没用。</p>
+<p>⭐ <b>例8.3</b> The current price of stock ABC is $42 and the call option with a strike at $44 is trading at $3. Expiration is in one year. The corresponding put is priced at $2. Which of the following trading strategies
+                                    will result in arbitrage profits? Assume that the risk-free rate is 10% and that the risk-free bond can be shorted costlessly. There are no transaction costs.</p>
+<ul>
+<li>a. Long position in both the call option and the stock, and short position in the put option and risk-free bond</li>
+<li>b. Long position in both the call option and the put option, and short position in the stock and risk-free bond</li>
+<li>c. Long position in both the call option and the risk-free bond, and short position in the stock and the put option</li>
+<li>d. Long position in both the put option and the risk-free bond, and short position in the stock and the call option</li>
+</ul>
+<p>解析：选 c 。a和b的收益取决于股票价格，因此不能创造套利利润。Put-call parity得到 c − p = 3 − 2 = $1需要等于 <span> S\ –Ke^{-rτ}</span> = 42 − 44 × 0.9048 = $2.19。看涨期权很便宜。因此，买入看涨期权，并通过卖出股票来对冲上行风险。如果S下跌，卖出股票的收益会被卖出看跌期权所抵消。</p>
+<p>⭐ <b>例8.4</b> Jeff is an arbitrage trader, who wants to calculate the implied dividend yield on a stock while looking at the over-the-counter price of a five-year European put and call on that stock. He has the following
+                                    data: S = $85, K = $90,r = 5%, c = $10, p = $15. What is the continuous implied dividend yield of that stock?</p>
+<ul>
+<li>a. 2.48%</li>
+<li>b. 4.69%</li>
+<li>c. 5.34%</li>
+<li>d. 7.71%</li>
+</ul>
+<p>解析：选 c 。根据看涨看跌平价，<span>c=p+Se^{-r^\ast \tau}–Ke^{-rτ}</span> 。因此， <span>Se^{-r^\ast\tau} = (c − p + Ke^{-r\tau})</span>                                        = (10 − 15 + 90exp(0.05 × 5) = 65.09。股息率y = −(1/T)ln(65.09/85) = 5.337%。</p>
+<h3><b>3、期权的组合</b></h3>
+<p>期权可以以不同的方式组合，既可以相互组合，也可以与标的资产组合。首先考虑相关资产和期权的组合。股票的多头头寸可以伴随着卖空看涨期权来收取期权溢价。此操作称为<b>覆盖性看涨期权</b>(covered call)，如下图所示：</p>
+<figure><img src="https://pica.zhimg.com/v2-5d6a77d74e5bbf90b836ae478b9dc93c_1440w.jpg" width="1158"/>
+<figcaption>覆盖性看涨期权</figcaption>
+</figure>
+<p>同样地，在做多股票的同时，可以<span>买入看跌期权</span>以保护下跌。这种操作称为<b><span>保护性看跌期权</span></b>(protective put)。</p>
+<p>期权也可以与基础头寸组合，以限制潜在的收益和损失的范围。假设一个投资者做多一只股票，目前的交易价格是10美元。投资者可以买入执行价较低的看跌期权(如7美元)，部分资金来自于卖出执行价较高的看涨期权(如12美元)。忽略<span>净保费</span>，最大的潜在收益是2美元，最大的损失是3美元。这种策略被称为 <b>collar </b>。如果执行价格相同，这就相当于做空股票头寸，净收益正好为零。</p>
+<p>我们还可以结合执行价格和期限相同或不同的看涨期权和看跌期权。当看涨期权和看跌期权的执行价格和期限相同时，这种组合称为<b>跨式期权</b>(straddle)。下图显示了如何构建一个多空交易，即购买具有相同期限和执行价格的看涨期权和看跌期权。该头寸预计将受益于价格的大幅波动，无论是上升还是下降。</p>
+<figure><img src="https://pica.zhimg.com/v2-9a7be67a824f0683b9a8f01e18f1e38e_1440w.jpg" width="950"/>
+<figcaption>买入跨式期权</figcaption>
+</figure>
+<p>当执行价格不同时，这种组合被称为<b><span>宽跨式期权</span></b>(strangle)。（宽跨式期权的图象是个倒梯形。）因为宽跨式期权是价外期权，所以买宽跨式期权比跨式期权便宜。</p>
+<p>到目前为止，我们主要关注涉及两类期权的头寸。不过，人们可以用一种叫做<b>价差</b>(spreads)的期权建立头寸。日历价差或<b>水平价差</b>(horizontal spreads)对应于不同的期限。<b><span>垂直价差</span></b>(Vertical spreads)对应不同的执行价格。价差的名称来源于它们在报纸上列出的方式：时间横向列出，执行价格纵向列出。<b>对角价差</b>(Diagonal
+                                            spreads)在到期日和执行价格之间移动。</p>
+<p>例如，<b>牛市价差</b>(bull spread)的定位是利用标的资产价格的上涨。相反，<b>熊市价差</b>(bear spread)代表押注价格下跌。下图显示了如何用两个相同期限的看涨期权构建一个牛市垂直价差，也可以用看跌期权来构造。</p>
+<figure><img src="https://pic3.zhimg.com/v2-ad94ff9fe51bfaae27d27f7d81189ef4_1440w.jpg" width="947"/>
+<figcaption>构造牛市价差</figcaption>
+</figure>
+<p>牛市价差是通过买入一个行使价格较低的看涨期权，卖出另一个行使价格较高的看涨期权而形成的。注意，第一个期权 <span>c(S, K_1)</span> 的成本必须超过第二个期权 <span>c(S, K_2)</span>                                            的成本，因为第一个期权比第二个期权更加位于价内。因此，两笔期权保险费的总和就是净成本。到期时， <span>S_T &gt; K_2</span> ，收益是 <span>K_2-K_1 &gt;0</span>                                            。因此，该头寸预计将从上涨中受益，而只会承受有限的下行风险。</p>
+<p>涉及两个以上头寸的价差有<b>蝶式价差</b>(butterfly spread)、<b><span>三明治价差</span></b>(sandwich spreads)。蝶式价差包括三种期限相同的期权：执行价格 <span>K_1</span> 的看涨期权、较高执行价格
+                                            <span>K_2</span> 的看涨期权和较高执行价格 <span>K_3</span> 的看涨期权，三者的间距相同。下图显示，当标的资产价格保持稳定，接近 <span>K_2</span> 时，这一头寸有望盈利。中间的两个头寸叫做身体(body)，其他的叫做翅膀(wings)。三明治价差是蝶式价差图象倒过来的样子。</p>
+<figure><img src="https://pic4.zhimg.com/v2-57328cdbc5dc7ebb93e9e7b519473d7f_1440w.jpg" width="944"/>
+<figcaption>构造蝶式价差</figcaption>
+</figure>
+<p>⭐ <b>例8.5</b> Which of the following is the riskiest form of speculation using option contracts?</p>
+<ul>
+<li>a. Setting up a spread using call options</li>
+<li>b. Buying put options</li>
+<li>c. Writing naked call options</li>
+<li>d. Writing naked put options</li>
+</ul>
+<p>解析：选 c 。在最坏的情况下，做多期权可能会损失保险费，所以b是错误的。价差涉及期权的多头和空头头寸，并且损失有限，所以a是错误的。卖出期权会使卖方遭受巨大损失。在看跌期权的情况下，当资产价格趋于零时，执行价格K是最大的损失。然而，在看涨期权的情况下，最坏的损失在理论上是无限的，因为在c和d之间，c是更好的答案。</p>
+<p>⭐ <b>例8.6</b> An investor sells a June 2008 call of ABC Limited with a strike price of USD 45 for USD 3 and buys a June 2008 call of ABC Limited with a strike price of USD 40 for USD 5. What is the name of this
+                                                strategy and the maximum profit and loss the investor could incur?</p>
+<ul>
+<li>a. Bear spread, maximum loss USD 2, maximum profit USD 3</li>
+<li>b. Bull spread, maximum loss unlimited, maximum profit USD 3</li>
+<li>c. Bear spread, maximum loss USD 2, maximum profit unlimited</li>
+<li>d. Bull spread, maximum loss USD 2, maximum profit USD 3</li>
+</ul>
+<p>解析：选 d 。这是牛市价差。它受益于价格在40到45之间的上涨。最严重的损失发生在K1­ = 40以下，即没有期权被行使，净损失保费为5 - 3 = 2。当这两项期权被执行时，最大利润出现在K2­ = 45以上，<span>净利润</span>为5美元减去损失的保费，即3美元。</p>
+<p>⭐ <b>例8.7</b> A portfolio manager wants to hedge his bond <span>portfolio</span> against changes in interest rates. He intends to buy a put option with a strike price below the portfolio’s
+                                                current price in order to protect against rising interest rates. He also wants to sell a call option with a strike price above the portfolio’s current price in order to reduce the cost of buying the put
+                                                option. What strategy is the manager using?</p>
+<ul>
+<li>a. Bear spread</li>
+<li>b. Strangle</li>
+<li>c. Collar</li>
+<li>d. Straddle</li>
+</ul>
+<p>解析：选 c 。经理做多投资组合，通过买入执行价格较低的看跌期权，卖出执行价格较高的看涨期权来保护投资组合。这锁定了一系列的利润和亏损，是一个collar。如果执行价格相同，<span>套期保值</span>将是完美的。</p>
+<p>⭐ <b>例8.8</b> Consider a bearish option strategy of buying one $50 strike put for $7, selling two $42 strike puts for $4 each, and buying one $37 put for $2. All options have the same maturity. Calculate the
+                                                final profit per share of the strategy if the underlying is trading at $33 at expiration.</p>
+<ul>
+<li>a. $1 <span>per share</span></li>
+<li>b. $2 per share</li>
+<li>c. $3 per share</li>
+<li>d. $4 per share</li>
+</ul>
+<p>解析：选 b 。因为最终价格低于三个执行价格中的最低价格，所有的看跌期权都将被执行。最后的回报是($50 − $33) − 2($42 − $33) + ($37 − $33) = $17 − $18 + $4 = $3。从中扣除前期费用(up-front cost)，得到−$7 + 2($4) − $2 = −$1，总利润就是每股$3 − $1 = $2。</p>
+<p>⭐ <b>例8.9</b> According to an in-house research report, it is expected that USDJPY (quoted as JPY/USD) will trade near 97 at the end of March. Frankie Shiller, the investment director of a house fund, decides
+                                                to use an option strategy to capture this opportunity. The current level of the USDJPY exchange rate is97 on February 28. Accordingly, which of the following strategies would be the most appropriate for
+                                                the largest profit while the potential loss is limited?</p>
+<ul>
+<li>a. Long a call option on USDJPY and long a put option on USDJPY with the same strike price of USDJPY 97 and expiration date </li>
+<li>b. Long a call option on USDJPY with strike price of USDJPY 97 and short a call option on USDJPY with strike price of USDJPY 99 and the same expiration date </li>
+<li>c. Short a call option on USDJPY and long a put option on USDJPY with the same strike price of USDJPY 97 and expiration date </li>
+<li>d. Long a call option with strike price of USDJPY 96, long a call option with strike price of USDJPY 98, and sell two call options with strike price of USDJPY 97, all of them with the same expiration date</li>
+</ul>
+<p>解析：选 d 。其中最好的策略是做多叠式期权，如果<span>即期汇率</span>停留在当前的水平，它将受益。a项是做多跨式期权，如果即期汇率不变动，就会赔钱。b项是牛市价差，它假设现货价格会上涨。c项与做空即期头寸等价。</p>
+<h2>二、期权保险金</h2>
+<h3><b>1、一般关系</b></h3>
+<p><span>期权价值</span>和当前价格 <span>S</span> 之间的瞬时关系如下图所示：</p>
+<figure><img src="https://pic1.zhimg.com/v2-272f0076e43dafa0a8775d9b819afe96_1440w.jpg" width="1917"/></figure>
+<p>对于看涨期权，较高的价格 <span>S</span> 会增加期权的当前价值，但是以非线性的凸形。对于看跌期权，较低的 <span>S</span> 值会增加期权的价值，这也是一种凸形。随着时间的推移，曲线接近曲棍球棍线。上面的图将当前保险金分解为：</p>
+<ul>
+<li><b><span>内在价值</span></b>(intrinsic value)，主要包括今天行使的期权价值，看涨期权的价值为 <span>Max(S_t−K, 0)</span> ，看跌期权的价值为 <span>Max(K−S_t, 0)</span> </li>
+<li><b><span>时间价值</span></b>(time value)，由剩余部分组成的，反映了期权在未来创造进一步收益的可能性</li>
+</ul>
+<p>举个例子，假设有一个一年期期权，K = 100美元。当前价格S = 120美元，利率r = 5%。该资产不支付股息。假设期权费是26.17美元。这可以分解为120美元的内在价值，100美元= 20美元和6.17美元的时间价值。时间价值随标的资产的<span>波动性</span>而增加。它通常也会随着期权的到期而增加。如图所示，期权可分为：</p>
+<ul>
+<li><b>平价期权</b>，即当前现货价格接近执行价格</li>
+<li><b>价内期权</b>，当内在价值很大时</li>
+<li><b>价外期权</b>，当现货价格远低于看涨期权的执行价格，而看跌期权的执行价格则相反（价外期权的内在价值为零）</li>
+</ul>
+<p>我们还可以为欧式期权确定一些总应得到满足的总体界限，否则就会有套利机会。为了简单起见，假设没有红利。我们知道欧式期权的价值低于美式期权。首先，看涨期权的当前价值必须小于或等于资产价格，即：</p>
+<blockquote><span>c_t ≤ C_t ≤ S_t</span> </blockquote>
+<p>这是因为，在限价下，行使价为零的期权在这种情况下等同于持有股票。我们一定会行使期权。其次，欧洲看涨期权的价值必须大于或等于资产的价格减去执行价的现值，即：</p>
+<blockquote><span>c_t ≥ S_t − Ke^{−r\tau}</span> </blockquote>
+<p>对于看跌期权的上下限。看跌期权的价值不能超过 <span>K</span> ，即：</p>
+<blockquote><span>p_t ≤ P_t ≤ K</span> </blockquote>
+<p>这是价格降为0时的上限。利用看涨看跌平价，欧式看跌期权的价值必须满足：</p>
+<blockquote><span>p_t ≥ Ke^{-r\tau}- S_t</span> </blockquote>
+<h3><b>2、提前行权</b></h3>
+<p>这些关系可以用来评估提前行权对美式期权的价值。美式期权的价值是<b>死的</b>(dead)，即已行使的，还是<b>活的</b>(alive)，即未行使的。两者之间存在基本的取舍。因此，要在行使期权和在公开市场上出售期权之间做出选择。</p>
+<p>考虑一个无派息股票的美式看涨期权。通过提前行使期权，持有者得到的正好是 <span>S_t − K</span> 。然而，期权已行使的价值必须高于同等的欧式看涨期权的价值，即必须满足 <span>c_t ≥ S_t − Ke^{−r\tau}</span>                                                。严格大于<span>S_t − K</span> ，因为 <span>e^{−r\tau} &lt; 1</span> ，利率为正。因此，无派息股票的美式看涨期权永远不应过早执行。</p>
+<p>在我们的例子中，欧洲看涨期权的下限是24.88美元。如果我们使用美式看涨期权，我们只得到S - K = $120 - $100 = $20。因为这低于欧洲呼吁的最小值，美国呼吁不应该被执行。因此，美式特征的值为零，我们总是得到 <span>c_t = C_t</span> 。</p>
+<p>提前行使看涨期权的唯一理由是获得股息支付。直觉上，高收入支付使得持有资产比持有期权更具吸引力。因此，具有收入支付资产的美式期权可以提前行使。请注意，这也适用于期货期权，因为标的的隐含收益流是<span>无风险利率</span>。</p>
+<p>因此，<b>无<span>股息股票</span>或无收益资产的美式看涨期权不应该提权行权。如果资产支付收入，可能会发生早期行使，其概率随收入支付的规模而增加。</b></p>
+<p>对于美式看跌期权，需要满足：</p>
+<blockquote><span>P_t ≥ K − S_t</span> </blockquote>
+<p>因为现在可以行使了。与看涨期权的关系不同，这个下界 <span>K - S_t</span> 严格大于欧式看跌期权的下界 <span>Ke^{−r\tau} − S_t</span>                                                    ，所以应该提前行权。</p>
+<p>为了决定是否提前行权，期权持有者必须权衡行权的好处（现在而不是以后获得 <span>K</span> ）和遭受期权时间价值的损失。因为现在收钱比以后收钱好，所以提前行使看跌期权可能是值得的。</p>
+<p>非收入支付资产的美式看跌期权可以提前行使，这与看涨期权不同。当利率较低和资产的收入较高时，早期行使的可能性就会降低。在每一种情况下，出售资产的吸引力都会降低。</p>
+<p>因此，<b>无股息股票或无收益资产的美式看跌期权可以提前行使。如果资产支付收入，早期行使的可能性随着收入支付的规模而减小</b>。</p>
+<p>⭐ <b>例8.10</b> Given strictly positive interest rates, the best way to close out a long American call option position early (on a stock that pays no dividends) would be to</p>
+<ul>
+<li>a. Exercise the call</li>
+<li>b. Sell the call</li>
+<li>c. Deliver the call</li>
+<li>d. Do none of the above</li>
+</ul>
+<p>解析：选 b 。若无股息，就没有任何理由提前行使美式期权。期权应该出售给另一方。</p>
+<p>⭐ <b>例8.11</b> You have been asked to verify the pricing of a two-year European call option with a strike price of USD 45. You know that the initial stock price is USD 50,and the continuous risk-free rate
+                                                    is 3%. To verify the possible price range of this call, you consider using price bounds. What is the difference between the upper and lower bounds for that European call?</p>
+<ul>
+<li>a. 0.00</li>
+<li>b. 7.62</li>
+<li>c. 42.38</li>
+<li>d. 45.00</li>
+</ul>
+<p>解析：选 c 。上界为S = 50，下界为 <span>c\ \geq S\ –Ke^{-rτ}</span> = 50 − 45exp(−0.03 × 2) = 50 − 42.38 = 7.62。因此，二者的差是42.38。</p>
+<p>⭐ <b>例8.12</b> Which two of the following four statements are correct about the early exercise of American options on non-dividend-paying stocks?</p>
+<ul>
+<li>I. It is never optimal to exercise an American call option early.</li>
+<li>II. It can be optimal to exercise an American put option early.</li>
+<li>III. It can be optimal to exercise an American call option early.</li>
+<li>IV. It is never optimal to exercise an American put option early.</li>
+<li>a. 0.00</li>
+<li>b. 7.62</li>
+<li>c. 42.38</li>
+<li>d. 45.00</li>
+</ul>
+<p>解析：选 a 。如果股票不支付股息，美式看涨期权的价值总是高于行使，基本上是因为没有股息可以获取。因此，提前对看涨期权行权是不值得的。另一方面，提前执行美式看跌期权可能是理性的，因为在利率为正的情况下，现在得到的执行价格比以后得到的要好。</p>
+<h2>三、<span>期权定价</span></h2>
+<h3><b>1、复制定价</b></h3>
+<p>定价模型的原理是通过资产组合来复制工具的收益。为了避免套利，工具的价格必须等于复制的投资组合的价格。</p>
+<p>考虑一个股票的看涨期权，其价格用二项过程表示：</p>
+<ul>
+<li><span>S_0 = $100</span> 的初始价格只能向上或向下移动到两个值， <span>S_1 = $150</span> 或 <span>S_2 = $50</span> 。</li>
+<li>期权是 <span>K = $100</span> 的看涨期权，因此只能取 <span>c_1 = $50</span> 或 <span>c_2 = $0</span> 。</li>
+<li>假设利率是 <span>r = 25%</span> ，所以现在投资的1美元，在到期时增长到1.25美元。</li>
+</ul>
+<p>衍生品定价的关键在于<b>复制</b>(replication)。通过适当的标的资产组合加上无风险票据的多头或空头头寸来复制期权的收益。这在这个简单的设定中是可行的，因为有两种状态和两种工具，股票和债券。为了防止套利，衍生品的现值必须与投资组合的现值相同。</p>
+<p>该投资组合包括n股和一项无<span>风险投资</span>，目前价值为B(负值意味着借款)。令 <span>c_1 = nS_1 + B</span> ，或者 <span>$50 = n$150 + B</span> ， <span>c_2 = nS_2 + B</span> ，或者 <span>$0 = n$50 + B</span>                                                    ，然后解出这个2 × 2<span>方程组</span>，得到 <span>n = 0.5</span> ， <span>B = −$25</span>                                                    。在 <span>t = 0</span> 时，贷款的价值是 <span>B_0 = $25/1.25 = $20</span> 。投资组合的现值为 <span>nS_0 + B_0 = 0.5\times$100\times $20 = $30</span> 。因此，期权的现值必须是 <span>c_0 = $30</span>                                                    。这一推导揭示了期权定价方法的本质。</p>
+<p>注意，我们不需要实际的上升概率。将其定义为 <span>p</span> 。为了了解它是如何推导的，我们假设投资者是风险中性的，将股票的现值写成预期收益折现：</p>
+<blockquote><span>S_0 = [p × S_1 + (1 − p) × S_2]/(1 + r )</span> </blockquote>
+<p>括号中的这一项是未来现货价格的期望，由概率乘以每个状态的价值给出。求 <span>100 = [p\times 150 + (1- p) \times50]/1.25</span> ，我们发现风险中性概率 <span>p = 0.75</span> 。我们现在以同样的方式对期权进行估值：</p>
+<blockquote><span>c_0 = [p × c_1 + (1 − p) × c_2]/(1 + r )</span> </blockquote>
+<p>因此得到 <span>c_0 = [0.75 × $50 + 0.25 × $0]/1.25 = $30</span> 。这个简单的例子说明了一个非常重要的概念，即<b><span>风险中性定价</span></b>(risk-neutral
+                                                    pricing)。</p>
+<h3><b>2、BS 定价</b></h3>
+<p>布莱克-斯科尔斯(Black-Scholes, BS)模型就是这些思想的一个应用，它为欧式看涨期权的定价提供了一个优雅的封闭解。模型的推导基于四个假设：</p>
+<ul>
+<li>① 标的资产的价格以一种连续的方式波动</li>
+<li>② 利率是已知且不变的</li>
+<li>③ 标的资产回报的方差是常数</li>
+<li>④ 资本市场是完美的（卖空交易是允许的，没有<span>交易成本</span>或税收，市场持续运转）</li>
+</ul>
+<p>这个模型背后最重要的假设是价格是连续的。这就排除了样本路径中的<span>不连续点</span>，比如跳跃点，而这些点在这个模型中是无法被对冲的。资产价格的统计过程采用<span>几何布朗运动</span>模型：在很短的时间间隔 <span>dt</span>                                                    内，对数回报呈均值为 <span>\mu dt</span> 和方差为 <span>\sigma^2dt</span> 的<span>正态分布</span>。总收益可以建模为：</p>
+<blockquote><span> \frac{dS}{S}= \mu dt + \sigma dz</span> </blockquote>
+<p>式中，第一项为漂移分量，第二项为随机分量， <span>dz</span> 正态分布，均值为0，方差为 <span>dt</span> 。这个过程意味着期末价格的<span>对数分布</span>为：</p>
+<blockquote><span>ln(S_T) = ln(S_0) + (\mu − \frac{\sigma^2}{2})\tau + \sigma \sqrt{\tau}\epsilon</span> </blockquote>
+<p>其中， <span>\epsilon</span> 是一个N(0,1)的<span>随机变量</span>。因此，价格是<span>对数正态分布</span>。</p>
+<p>基于这些假设，Black和Scholes(1972)推导出了非派息股票欧式期权的封闭公式，称为<b>Black- Scholes 模型</b>。分析的重点是，期权的头寸可以被标的资产的delta头寸所复制。因此，以适当比例组合资产和期权的投资组合在当地是无风险的，也就是说，对于价格的小波动。为了避免套利，该投资组合必须获得无风险利率。</p>
+<p>因此，我们可以直接将衍生品的现值计算为贴现后的预期支付：</p>
+<blockquote><span>f_t = E_{RN}[e^{−r\tau}F (S_T)]</span> </blockquote>
+<p>假设标的资产以无风险利率增长，并且以无风险利率折现。在这里，下标RN指的是分析假定<span>风险中立</span>这一事实。在风险中性的世界中，所有证券的预期回报率必须是无风险利率 <span>r</span> 。原因是风险中性投资者不需要风险溢价来诱使他们承担风险。假设所有支付都以无风险率增长，并以相同的无风险率折现，BS模型值可以计算。</p>
+<p>毫无疑问，这种风险中性估值方法是衍生品定价中最重要的工具。在BS理论取得突破之前，萨缪尔森(Samuelson)在1965年就推导出了一个非常类似的模型，但资产以 <span>\mu</span> 的速度增长，并以其他一些 <span>\mu^*</span> 的速度折现。由于 <span>\mu</span> 和 <span>\mu^* </span> 是未知的，萨缪尔森模型并不实用。然而，风险中性估值只是获得正确解决方案的一种人为方法。这并不意味着投资者是风险中性的。</p>
+<p>此外，这种方法在<span>风险管理</span>方面的用途有限。BS模型可用于推导<span>期权执行</span>的<b>风险中性概率</b>(risk-neutral probability)。然而，对于风险管理来说，重要的是锻炼的实际概率，也称为<b>物理概率</b>(physical
+                                                                probability)。这可能与风险中性概率不同。</p>
+<p>转向BS模型的制定。在欧式期权的情况下，最终支付是 <span>F (S_T) = Max(S_T−K, 0)</span> 。最初，我们假设资产不支付股息。看涨期权的当前值是：</p>
+<blockquote><span>c = SN(d_1) − Ke^{−r\tau} N(d_2)</span> </blockquote>
+<p>式中 <span>N(d)</span> 为标准正态分布的<span>累积分布函数</span>：</p>
+<blockquote><span>N(d) = \int_{-\infty}^{d}\Phi(x)dx = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{d} e^{- \frac{1}{2}x^2 }dx</span> </blockquote>
+<p>其中， <span>\Phi</span> 定义为标准正态密度函数。如下图所示，<span>N(d)</span> 是值为 <span>d</span> 的标准正态变量的左侧区域。由于正常密度是对称的， <span>N(d) = 1 -N(-d)</span> ， <span>d</span> 左边的面积与 <span>-d</span> 右边的面积相同。</p>
+<figure><img src="https://pic2.zhimg.com/v2-bed27f5ddf43952134438f6b69a805f3_1440w.jpg" width="904"/></figure>
+<p><span>d_1</span> 和 <span>d_2</span> 的取值为：</p>
+<blockquote><span>d_1 = \frac{ln(S/Ke^{-r\tau})}{\sigma \sqrt{\tau}} + \frac{\sigma \sqrt{\tau}}{2}</span>                                                                    ， <span>d_2 = d_1 − \sigma \sqrt{\tau}</span> </blockquote>
+<p>根据看涨看跌平价，欧洲看跌期权的价值是：</p>
+<blockquote><span>p = S[N(d_1) − 1] − Ke^{−r\tau} [N(d_2) − 1]</span> </blockquote>
+<p><span>c = SN(d_1) − Ke^{−r\tau} N(d_2)</span> 可以根据风险中性世界的折现公式重新解释：</p>
+<blockquote><span>c = E_{RN}[e^{−r\tau}Max (S_T− K, 0)] = e^{−r\tau} [ \int_{K}^{\infty}Sf(S)dS] - K e^{−r\tau} [\int_{K}^{\infty}f(S)dS]</span> </blockquote>
+<p>可以看到， <span>K</span> 乘以的积分项是执行看涨期权的风险中性概率，或者期权最终会停止在价内， <span>S &gt;K</span> 。将这个与
+                                                                    <span>d_1</span> 、 <span>d_2</span>的公式联立，得到行权的风险中性概率为 <span>N(d_2)</span> 。</p>
+<h3><b>3、扩展</b></h3>
+<p>Merton(1973)将BS模型扩展到连续股息收益率为 <span>q</span> 的股票。Garman和Kohlhagen(1983)将公式扩展到外币，在<b>Garman-Kohlhagen模型</b>中，将收益率重新解释为外国利率 <span>q = r^∗</span> 。</p>
+<p>然后，Merton模型将所有出现的S替换为 <span>Se^{−r^∗\tau}</span> 。这个看涨期权为：</p>
+<blockquote><span>c = Se^{−r^∗\tau}N(d_1) − Ke^{−r\tau} N(d_2)</span> </blockquote>
+<p>取 <span>c = SN(d_1) − Ke^{−r\tau} N(d_2)</span> 的极限，当现货价格 <span>S</span>                                                                    远大于 <span>K</span> 时，当期权越往价内移动。在这种情况下， <span>d_1</span> 和 <span>d_2</span> 变得非常大，函数 <span>N(d_1)</span> 和 <span>N(d_2)</span> 趋于统一。看涨期权的价值趋向于：</p>
+<blockquote><span>c(S \gg K) =  Se^{−r^∗\tau} − Ke^{−r\tau} </span> </blockquote>
+<p>这是远期合约的估值公式。一份深度价内期权相当于一份远期合约，因为几乎肯定会执行。</p>
+<p><b>Black 模型</b> (1976) 将同样的公式应用于期货期权。唯一概念上的区别在于对标的工具的收入支付。对于现金期权，其收入是现金工具的股息或利息。相比之下，对于期货合约，经济上等价的收入流是无风险利率。直觉告诉我们，期货合约可以被视为投资者在标的资产中持有的仓位，投资者留出了相当于现值 <span>F</span> 的现金。</p>
+<p>因此，<b>对于期货期权，其隐含收益是无风险利率</b>。</p>
+<p>对于 Black model ，我们简单地将 <span>S</span> 替换为 <span>F</span> (当前期货报价)，并将 <span>r^∗</span> 替换为 <span>r</span> (国内无风险费率)。期货期权估值的Black模型为：</p>
+<blockquote><span>c = [FN(d_1) − KN(d_2)] e^{−r\tau}</span> </blockquote>
+<p>⭐ <b>例8.13</b> Using the Black-Scholes model, calculate the value of a European call option given the following information: spot rate = 100; strike price = 110; riskfree rate = 10%;
+                                                                        time to expiry = 0.5 years; N(d1) = 0.457185; N(d2) =0.374163.</p>
+<ul>
+<li>a. $10.90</li>
+<li>b. $9.51</li>
+<li>c. $6.57</li>
+<li>d. $4.92</li>
+</ul>
+<p>解析：选 c 。假设资产没有收益支付，有 <span>c=SN\left(d_1\right)-Ke^{-r\tau}N\left(d_2\right)</span> = 100
+                                                                        × 0.457185 − 110 exp(−0.1 × 0.5) × 0.374163 = $6.568。</p>
+<p>⭐ <b>例8.14</b> In the Black-Scholes expression for a European call option, the term used to compute option probability of exercise is</p>
+<ul>
+<li>a. d1</li>
+<li>b. d2</li>
+<li>c. N(d1)</li>
+<li>d. N(d2)</li>
+</ul>
+<p>解析：选 d 。风险中性的行权概率公式为N(d2)</p>
+<h2><b>四、奇异期权</b></h2>
+<h3>1、两值期权</h3>
+<p><b>两值期权</b>(Binary options)，也称为<b>数字期权</b>(digital options)，如果资产价格最终高于执行价格，支付固定金额Q，可以表示为：</p>
+<blockquote><span>c_T = Q× I(S_T − K)</span> </blockquote>
+<p>其中 <span>I(x)</span> 是一个指示变量，如果 <span>x &gt; 0</span> ，则 <span>I(x) = 1</span> ，否则取值为0。当 <span>K = $100</span> 时，收益函数如下图所示：</p>
+<figure><img src="https://picx.zhimg.com/v2-2f647b39a7b5882e2cadc7094b5d2cdd_1440w.jpg" width="1033"/></figure>
+<p>风险中性世界中，最终赚到钱的概率是 <span>N(d_2)</span> ，所以两值期权的初始值为：</p>
+<blockquote><span>c = Qe^{−r\tau} N(d_2)</span> </blockquote>
+<p>这些期权涉及执行价格的剧烈间断。在 <span>K</span> 以下，它们的值是0，反之价值是名义上的 <span>Q</span> 。由于这种不连续性，这些期权很难对冲。</p>
+<h3>2、<span>障碍期权</span></h3>
+<p><b>障碍期权</b>(Barrier options)是指收益取决于资产在一定时期内达到障碍的价值的期权。如果价格达到一定的门槛，<b><span>敲出期权</span></b>(knock-out option)就会消失。当价格触及某个障碍时，<b>敲入期权</b>(knock-in option)就会产生。</p>
+<p>敲出期权的一个例子是<b>向下敲出看涨期权</b>(down-and-out call)。如果 <span>S</span> 在其到期前达到指定的水平 <span>H</span>                                                                            ，这就消失了。在这种情况下，敲出价格 <span>H</span> 必须低于初始价格 <span>S_0</span> 。出现在 <span>H</span> 点的期权是<b>向下敲入看涨期权</b>(down-and-in call)。由于参数相同，这两个期权是完全互补的。当一个消失时，另一个就会出现。</p>
+<p>因此，这两个期权加起来必须是一个常规看涨期权。类似地，当 <span>S</span> 达到 <span>H &gt; S_0</span> 时，<b>向上敲出看涨期权</b>(up-and-out
+                                                                                call)用停止存在。另一种选择是<b>向上敲出看涨期权</b>(up-and-in call)。</p>
+<p>下图比较了四种可能的看涨组合的价格路径：</p>
+<figure><img src="https://picx.zhimg.com/v2-691d42cb5ac95048465c0ebeecb3c6ad_1440w.jpg" width="1216"/></figure>
+<p>上图说明了向下敲出看涨期权+向下敲入看涨期权就是普通欧洲看涨期权的常规价格路径。因此，在初始化时，这两个选项的值必须加起来：</p>
+<blockquote><span>c = c_{DO} + c_{DI}</span> </blockquote>
+<p>由于所有这些价值都是正的，或最坏为零，每一个溢价 <span>c_{DO}</span> 和 <span>c_{DI}</span> 的价值必须不大于
+                                                                                <span>c</span> 的价值。类似的推理适用于右边两个期权。有时，如果期权被淘汰，它会提供<b>回扣</b>(rebate)。</p>
+<p>看跌期权也存在类似的组合。当 <span>S</span> 达到 <span>H &gt; S_0</span> 时，<b>向上敲出看跌期权</b>(up-and-out
+                                                                                put)不再存在。当 <span>S</span> 到达 <span>H &lt; S_0</span> 时，<b>向下敲出看跌期权</b>(down-and-out
+                                                                                put)停止存在。与上图的唯一区别是，如果 <span>S &lt; K</span> ，期权在到期时行使。</p>
+<p>障碍期权之所以有吸引力，是因为它们比同等的欧式期权便宜。当然，即与其他期权相比，期权被执行的可能性更小。<u>障碍期权很难对冲</u>，因为当现货价格接近障碍时，会出现不连续。就在门槛上方，期权有正价值。当资产价格出现非常小的波动，跌破障碍时，这个价值就消失了。</p>
+<h3>3、<span>亚式期权</span></h3>
+<p><b>亚式期权</b>(Asian options)，或称<b>平均利率期权</b>(average rate options)，产生的支付取决于期权生命周期内标的现货价格的平均价值，而不是终值。定义这个价值为 <span>S_{AVE}(t, T)</span>                                                                                ，最终的看涨期权的收益为 <span>c_T = Max(S_{AVE}(t, T) − K, 0)</span> 。</p>
+<p>由于在同一时期结束时，平均值比最终值的变动性更小，这种期权由于波动性更低而比常规期权便宜。事实上，期权的价格可以像普通期权的价格一样处理，波动性设置为 <span>\sigma / \sqrt{3}</span> ，然后对股息率调整。由于平均过程，亚式期权比普通期权<u>更容易对冲</u>。</p>
+<h3>4、选择期权</h3>
+<p><b>选择期权</b>(Chooser options)允许持有者选择是看涨期权还是看跌期权。在那个时间点，期权的价值是 <span>f_t = Max(c_t, p_t)</span> 。因此，它是两种期权的组合，一种是常规看涨期权，另一种是转换为看跌期权的期权。因此，选择期权比普通期权更贵。</p>
+<h3>5、复合期权</h3>
+<p>复合期权是期权上的期权。<b>看涨的看涨</b>(call on a call, cacall)，允许持有人在第一个行使日期 <span>T_1</span> 支付固定的执行 <span>K_1</span> 以接收看涨期权，这本身赋予持有人在第二个行使日期 <span>T_2</span> 以固定执行 <span>K_2</span> 购买资产的权利。只有当第二个期权在该日期 <span>c(S, K_2, T_2)</span> 的值大于执行价格 <span>K_1</span> 时，第一个期权才会被执行。</p>
+<p>例如，这些期权用于对可能被接受或可能不被接受且涉及<span>外汇风险</span>的商业项目的投标进行套期保值。如果项目在 <span>T_1</span> 日期被接受，期权更有可能被执行。在开始时，复合期权比普通看涨期权便宜，但如果两个期权都被执行，总成本会更高。复合期权还包括<b>看涨的看跌</b>(calls
+                                                                                        on puts)、<b>看跌的看跌</b>(puts on puts)、<b>看跌的看涨</b>(puts on calls)。</p>
+<h3>6、<span>回望期权</span></h3>
+<p><b>回望期权</b>(lookback options)的收益取决于期权寿命中 <span>S</span> 的极值。定义最大值为 <span>S_{MAX}</span>                                                                                        ，最小值为 <span>S_{MIN}</span> 。固定执行的回望看涨期权(fixed-strike lookback call option)的收益为 <span>Max(S_{MAX} - K, 0)</span> ，浮动执行的回望看涨期权(floating-strike lookback call option)支付 <span>Max(S_T - S_{MIN}, 0)</span>                                                                                        ，这些期权的成本甚至高于常规期权。</p>
+<p>⭐ <b>例8.15</b> Which of the following options is strongly <span>path-dependent</span>?</p>
+<ul>
+<li>a. An Asian option</li>
+<li>b. A binary option</li>
+<li>c. An American option</li>
+<li>d. A European call option</li>
+</ul>
+<p>解析：选 a 。亚式期权的收益取决于S的平均值，因此是路径相关的。</p>
+<p>⭐ <b>例8.16</b> All else being equal, which of the following options would cost more than plain-vanilla options that are currently at-the-money?</p>
+<ul>
+<li>I. Lookback options</li>
+<li>II. Barrier options</li>
+<li>III. Asian options</li>
+<li>IV. Chooser option</li>
+<li>a. I only</li>
+<li>b. I and IV</li>
+<li>c. II and III</li>
+<li>d. I, III, and IV</li>
+</ul>
+<p>解析：选 b 。回望期权(Lookback options)使用这段时间内的最大股票价格，这个价格必须大于最后的价值。因此，它们肯定比普通的欧式期权更有价值。选择期权(Chooser options)在生命周期中包含额外的选择，因此比常规期权更有价值。亚式期权(Asian options)采用均价，均价比最终价格波动小，所以一定比常规期权便宜。最后，障碍期权(Barrier
+                                                                                        options)的结构可以使两个障碍期权的和等于一个常规期权。因为每个溢价都是正的，障碍期权的价值肯定低于常规期权。</p>
+<p>⭐ <b>例8.17</b> Of the following options, which one does not benefit from an increase in the stock price when the current stock price is $100 and the barrier has not yet
+                                                                                        been crossed?</p>
+<ul>
+<li>a. A down-and-out call with barrier at $90 and strike at $110</li>
+<li>b. A down-and-in call with barrier at $90 and strike at $110</li>
+<li>c. An up-and-in put with barrier at $110 and strike at $100</li>
+<li>d. An up-and-in call with barrier at $110 and strike at $100</li>
+</ul>
+<p>解析：选 b 。只有触碰到障碍(barrier)时，向下敲入看涨期权(down-and-in call)才会alive，所以S的增加会使它远离障碍，这是不利的，故选b。a项，当没有触碰到障碍时，向下敲出看涨期权(down-and-out call)仍然alive，因此会受益于S的增加。c项，向上敲入看跌期权(up-and-in put)将受益于S的增加，因为这将使其更接近$110的障碍。d项，如果S离障碍越近，向上敲入看涨期权(up-and-in
+                                                                                        call)会更收益。</p>
+<h2>五、用数值方法评估期权价值</h2>
+<p>有些期权具有<span>解析解</span>，比如针对欧式<span>香草期权</span>的B-S模型。然而，对于更一般的选择，我们需要使用数值方法。</p>
+<p>衍生品的基本估值公式为 <span>f_t = E_{RN}[e^{−r\tau}F (S_T)]</span> ，即现值为预期现金流的折现现值，其中所有资产以无风险率增长，并以相同的无风险率折现。</p>
+<p>可以使用<a href="https://zhuanlan.zhihu.com/p/413000316">第4章</a>中介绍的<span>蒙特卡罗模拟</span>方法来生成样本路径，确定最终的期权值，并将它们折现。这种模拟方法可以用于欧式期权，甚至<u>依赖于路径的期权，如亚式期权</u>。</p>
+<p>下表给出了一个例子。假设参数S = 100, K = 100, T = 1, r = 5%，r∗= 0, σ = 20% 为一个欧洲调用定价。在一年的时间内设置了n = 100步的模拟。</p>
+<table>
+<tbody>
+<tr>
+<th>复制</th>
+<th>S(T)的最终收益</th>
+<th>c(T)的最终收益</th>
+<th>折现价值</th>
+</tr>
+<tr>
+<td>1</td>
+<td>114.06</td>
+<td>14.06</td>
+<td>13.37</td>
+</tr>
+<tr>
+<td>2</td>
+<td>75.83</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>3</td>
+<td>108.76</td>
+<td>8.76</td>
+<td>8.33</td>
+</tr>
+<tr>
+<td>...</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>均值</td>
+<td></td>
+<td></td>
+<td>10.33</td>
+</tr>
+</tbody>
+</table>
+<p>对于每一步，趋势 <span>r/n</span> = 0.05/100；波动率是 <span>\sigma / \sqrt{n}</span>                                                                                                = 0.2 / 100^0.5。每次复制从100美元的价格开始，直到到期。例如，第一次复制给出的最终价格是 <span>S_T</span> = $114.06。该期权是实值期权，价值 <span>c_T</span> = 14.06美元。然后我们把这个数字折现到现在，得到13.37美元。在第二个复制中， <span>S_T</span> = $75.83，并且该选项到期时没有任何价值，
+                                                                                                <span>c_T </span> = 0。在本例中， <span>K</span> 次重复的平均值为10.33美元。这一结果与由 <span>c = SN(d_1) − Ke^{−r\tau} N(d_2)</span>                                                                                                    得到的Black-Scholes模型实际价格$10.45很接近。然而，这种模拟要普遍得多。到期时的支付可能是最终价格甚至中间价格的复杂函数。</p>
+<p>然而，模拟方法不能解释早期锻炼的可能性，因为它们没有考虑中间锻炼的选择。相反，<span>二叉树</span>必须用来评估美国期权。如前所述，该方法包括将时间范围分割成 <span>n</span>                                                                                                个区间 <span>\Delta t</span> ，并建立树，使价格运动特征符合对数正态分布。</p>
+<p>在每个节点上，初始价格 <span>S</span> 可以以 <span>p</span> 的概率上升到 <span>uS</span> ，也可以以 <span>(1 - p)</span> 的概率下降到 <span>dS</span> 。选择参数 <span>u, d, p</span> ，以便在一个小的时间间隔内，期望收益和方差等于<span>连续过程</span>的期望收益和方差。比如说，你可以选择：</p>
+<blockquote><span>u = e^{\sigma \sqrt{\Delta t}}</span> ， <span>d = 1 / u</span> ， <span>p = \frac{e^{\mu \Delta t} - d}{u-d}</span> </blockquote>
+<p>由于这是一个风险中性的过程，总期望收益率必须等于无风险利率 <span>r</span> 。考虑到 <span>r^∗</span>                                                                                                    的收入支付，这将给出 <span>\mu = r−r^∗</span> 。树从当前时间开始构建到到期，从左到右。接下来，从树的末端开始计算导数，并从右向左倒推到初始时间。</p>
+<p>首先考虑欧式看涨期权。在 <span>T</span> (到期日)和节点 <span>j</span> 时，看涨期权值为
+                                                                                                    <span>Max(S_{Tj}−K,0)</span> 。在 <span>T−1</span>                                                                                                    时刻和节点 <span>j</span> 时，看涨期权为该期权在 <span>T</span> 时刻和节点
+                                                                                                    <span>j</span> 、 <span>j + 1</span> 时的贴现期望值为：</p>
+<blockquote><span>c_{T−1, j} = e^{−r\Delta t}[pc_{T, j+1} + (1 − p)c_{T, j} ]</span> </blockquote>
+<p>然后我们通过树逆向操作直到当前时间。</p>
+<p>对于美式期权，程序略有不同。在每个时间点，持有者比较未行使和行使期权的价值。节点 <span>T−1</span> 的美国看涨期权值 <span>j</span> 为：</p>
+<blockquote><span>C_{T−1, j }= Max[(S_{T−1, j }− K), c_{T−1, j} ]</span> </blockquote>
+<p>⭐ <b>例8.18</b> Which one of the following statements about American options is incorrect?</p>
+<ul>
+<li>a. American options can be exercised at any time until maturity.</li>
+<li>b. American options are always worth at least as much as European options.</li>
+<li>c. American options can easily be valued with Monte Carlo simulation.</li>
+<li>d. American options can be valued with binomial trees.</li>
+</ul>
+<p>解析：选 c 。蒙特卡罗模拟是严格后顾(backward-looking)的，不能用于美式期权定价。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

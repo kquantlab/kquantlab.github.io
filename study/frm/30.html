@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C30 对冲基金风险管理 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C30 对冲基金风险管理">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C30 对冲基金风险管理</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>引言</h2>
+<p>1949年，<span>阿尔弗雷德·温斯洛·琼斯</span>（Alfred Winslow Jones）创立了第一只对冲基金。与典型的股票型共同基金不同，该基金持有股票的多头和空头头寸。在随后的几十年里，对冲基金行业经历了指数级增长。截至2009年12月，对冲基金拥有逾1.6万亿美元的权益资本，即<b>管理资产</b>（AUM，assets under management）。</p>
+<p><b>对冲基金</b>（Hedge funds）是以私人合伙的形式组织起来的，因此在许多重要方面与共同基金不同。它们提供了更灵活的投资机会，监管也更少。他们的投资策略几乎没有限制。特别是，他们可以在各种市场上做多做空，并可以使用杠杆。由于这种杠杆作用，他们控制的资产大于他们的资产管理规模。对冲基金已成为金融市场的一支重要力量，在一些市场的交易中占了很大比重。</p>
+<p>与对任何投资者开放的共同基金不同，对冲基金只对合格投资者开放，这可能是由于它们的风险感知。为了控制风险，大多数对冲基金采用基于头寸的风险价值(VAR)型技术进行风险控制。由于某些类型的对冲基金策略与商业银行<span>自营交易</span>部门的策略非常相似，因此对冲基金采用类似的风险管理工具是很自然的。</p>
+<h2>一、对冲基金行业</h2>
+<h3>1、行业发展</h3>
+<p>到2009年，有近9,000名对冲基金经理控制着近1,600亿美元的股本（净资产），高于1990年的400亿美元。这意味着年化增长率超过20%。相比之下，美国共同基金目前管理的资产规模为111,121亿美元，高于1990年的1,065亿美元。这意味着年化增长率为13%。因此，在同一时期，对冲基金的增长速度远快于共同基金。</p>
+<p>这个行业的增长是由许多因素造成的。在投资者方面，对冲基金的表现一直很有吸引力，特别是与2000年至2002年期间股市的糟糕记录相比。对冲基金也声称其<span>贝塔系数</span>很低，这使得它们作为分散投资工具很有用。</p>
+<p>在经理方面，对冲基金提供的报酬高于传统投资基金。共同基金的典型投资管理费固定在资产管理规模的0.5%到2%之间。相比之下，对冲基金通常收取固定管理费，占资产的1%至2%，外加利润的20%的激励费。</p>
+<p>对冲基金对其投资策略的限制通常较少，受到的监管也较少，给投资组合经理提供了更多的回旋余地。更灵活的投资机会包括做空证券、利用投资组合、投资衍生品，以及通常投资于更广泛的资产池。较轻的监管环境创造了设定绩效费、锁定期或其他形式的管理<span>自由裁量权</span>的能力。</p>
+<p>然而，2008年史无前例的动荡对对冲基金行业造成了沉重打击。许多对冲基金业绩不佳，投资者纷纷赎回，导致许多对冲基金倒闭。即便如此，对冲基金总体上只遭受了股票损失的一半。</p>
+<h3><b>2、计算费用</b></h3>
+<p>最常见的费用结构包括</p>
+<ol>
+<li>管理费，管理费是管理资产的固定比例，通常是2%</li>
+<li>激励费，通常是一年盈利的20%。有时是在业绩超过<b>障碍利率</b>（hurdle rate）（如LIBOR）后支付的。</li>
+</ol>
+<p>假设在扣除费用之前的一年里，资产净值(NAV)从100上升到120,LIBOR为5%。费用是通常的2英镑和20英镑。管理费先从期末资产价值中扣除，期末资产价值从120降到118。总费用为100 × 2% +[(118−100)−5% × 100] × 20%。在这种情况下，总回报率为20%，向经理支付的总费用为4.6%，净回报率为15.4%。如果没有障碍，净回报率将达到14.4%。</p>
+<hr/>
+<h2>二、杠杆与多空头寸</h2>
+<p>对冲基金可以通过其<b><span>主经纪商</span></b>（prime broker，PB）实现杠杆和卖空。主经纪商为对冲基金提供各种后台服务，包括贸易对账（清算和结算）、托管服务、风险管理以及记录保存。此外，它们还为融资杠杆和卖空能力提供信贷额度。</p>
+<p>为了理解对冲基金的运作机制，我们需要描述<span>股票借贷</span>和保证金是如何运作的。在典型的公司<span>资产负债表分析</span>中，<b><span>资产负债表杠杆</span></b>（balance sheet leverage）被定义为资产负债表资产与权益的比率。然而，这种简单的衡量方法假定所有的风险都来自于资产，或者负债的未来价值是已知的。这样的定义并不适合对冲基金，也不适用于大多数金融机构。在这种情况下，资产和负债、多头和空头头寸都是有风险的。</p>
+<p>接下来说明在股票中使用多头和空头头寸。然而，这种分析可以扩展到任何可以做空的资产，受制于其自身特定的保证金要求。</p>
+<h3>1、<span>多头头寸</span></h3>
+<p>考虑风险资产的多头头寸。假设一个投资者在一只股票上投资了100美元。这可以用100美元的投资者权益来实现。或者投资者可以借钱。假设经纪商要求50%的保证金存款，这是美国<b>法规T</b>（Regulation T）规定的最低要求。投资者只需要投资50美元，其余的由经纪人提供，经纪人提供50美元的贷款。该头寸的资产负债表如下所示，其中风险条目以【】括起来。将杠杆定义为资产与权益的比率，此头寸的杠杆为2比1。</p>
+<div>
+<pre><code>资产                负债
+$100 【做多股票】   $50 经纪人贷款
+                    $50 权益</code></pre>
+</div>
+<p>风险是股票价值的下降。例如，损失1美元，相当于股票价值的1%，这就意味着权益价值损失1美元，即相对损失2%。因此，资产价值的变动被杠杆因子L放大。如果没有杠杆(L = 1)，当股票价格趋于零时，损失最严重。</p>
+<p><span>权益收益率</span>等于L乘以长期股票的收益率RS减去(L−1)乘以贷款成本RF的总和：</p>
+<blockquote><span>R_E = LR_S - (L- 1)R_F = R_F + L(R_S - R_F )</span> </blockquote>
+<p>因此，股票的波动性将是股票头寸的L倍。同样，贝塔和特殊波动率乘以杠杆：</p>
+<blockquote><span>\beta_E = L\beta_S</span> </blockquote>
+<p>杠杆放大了回报，但也带来了更多风险。</p>
+<p>请注意，杠杆也可以通过使用衍生品而不是现金工具来获得。这包括单一股票期货、差价合约或股票掉期。如果股票期货头寸的保证金只有10%，那么经济上等价的负债将包括90美元的贷款加上10美元的股权。美元敞口仍然不变，为100美元，但隐含杠杆现在比以前高得多，为10比1。</p>
+<h3>2、空头头寸</h3>
+<p>考虑投资者想要做空股票。根据股票贷款协议，股票的所有者将股票借给我们的投资者，以换取现金和未来赎回股票的要求。与此同时，投资者必须将股票的任何现金流（如股息）转移给原所有者。当操作反转时，股票出借人将返还现金加上短期利率减去<b>股票贷款费用</b>（stock loan fee）。对于大多数股票来说，这通常是20个基点（bp），但对于那些难以借入的股票（称为“特殊（on special）”），这一利率可能达到400个基点。与此同时，股票贷方将把现金投资，从而赚取20个基点的净费用。从股票出借人的角度来看，这是一种简单的方法，可以适度地增加股票的回报。</p>
+<p>股票借方预计股价会下跌，现在就会卖出股票。然而，这笔交易将通过经纪人进行，经纪人不允许卖方获得全部销售收益。在美国，根据法规T，经纪人保留销售收入的50%。这一保证金可以作为投资者所持有的任何证券的余额，对投资者的杠杆施加限制。</p>
+<p>因此，投资者收到价值100美元的股票，卖掉它，并保留至少50美元作为经纪人的保证金。他们希望股价下跌，这样以后就可以以更低的价格回购股票。</p>
+<p>所有的现金流都是同时安排的。投资者需要向股票贷方支付100美元，其中一半来自剩余收益，另一半来自投资的股权或投资者自己的资金。空头头寸的资产负债表如下所示，其中风险条目以粗体标示。在这里，杠杆可以定义为空头头寸的绝对值与权益的比率，为2比1。和之前只做多的情况一样，我们将50美元的股票头寸杠杆化为100美元的股票头寸。法规T规定杠杆率上限为2，这与经纪商持有的卖空收益的50%相反。</p>
+<div>
+<pre><code>资产                负债
+$100 现金贷给股东   $100 【做空股票】
+ $50 经纪人保证金    $50 权益</code></pre>
+</div>
+<p>在这里，风险是股票价值的增加。如果股价上涨1美元或1%，股权就会损失1美元，相对而言损失2%。这个比率等于杠杆2。权益的贝塔现在与股票的贝塔负相关：</p>
+<blockquote><span>\beta_E =- L\beta_S</span> </blockquote>
+<p>然而，空头头寸本质上比多头头寸风险更大。这是因为价格的分配是不对称的。价格的下限是零，但上限是无限的，尽管概率是递减的。如果是多头头寸，最多可能损失1亿美元。如果做空，价格可能从1亿美元涨到2亿美元，甚至更高，在这种情况下，损失将超过1亿美元。</p>
+<h3>3、多空头寸</h3>
+<p>考虑一个典型的对冲基金，它同时拥有多头和空头头寸。假设初始资本是100美元。这是权益，或净资产值(NAV)。该基金可以像以前一样买入价值100美元的股票并做空价值100美元的股票。部分多头股票头寸可以用来满足经纪人做空股票的最低保证金要求50美元。多头和空头头寸的资产负债表如下：</p>
+<div>
+<pre><code>资产                负债
+$100 【做多股票】   $100 【做空股票】
+$100 现金贷给股东   $100 权益</code></pre>
+</div>
+<p>现在转向传统的风险衡量标准。将VL、VS和VE分别定义为股票多头头寸、股票空头头寸和股票权益的绝对美元价值。VA是总资产的价值。如果βL和βS是多头和空头股票头寸的贝塔值，则总美元贝塔值为：</p>
+<blockquote><span>\beta_L V_L − \beta_SV_S = \beta_EV_E</span> </blockquote>
+<p>它定义了净资产的净贝塔系数 <span> \beta_E</span> 。然而，这种对系统风险的净衡量忽略了特殊风险。</p>
+<p>传统<b>杠杆</b>（leverage）通常被用作风险度量：</p>
+<ul>
+<li>杠杆 = <span>V_A/V_E</span> = 做多股票加上现金 / 权益</li>
+</ul>
+<p>在例子中，等于(100+100)/(100)= 2。通常，现金被忽略，多头杠杆为1。然而，这忽略了股票空头头寸的对冲作用，因此是不充分的。</p>
+<p>使用总金额，<b>总杠杆</b>（gross leverage）是</p>
+<ul>
+<li>总杠杆 = <span>(V_L+V_S)/V_E</span> = 多头头寸加上空头头寸的绝对值 / 权益</li>
+</ul>
+<p>在例子中，等于(100+100)/(100)= 2。</p>
+<p>总杠杆率通常被用作衡量对冲基金风险的粗略指标。然而，这一措施未能充分捕捉到股权头寸的系统性风险。如果多头和空头头寸具有相同的价值和市场贝塔，则净贝塔为零，因此不存在方向性市场风险。在极限情况下，如果多头和空头头寸都投资于同一只股票，就没有风险。然而，总杠杆率很高。</p>
+<p>另一个经常使用的定义是<b>净杠杆</b>（net leverage）：</p>
+<ul>
+<li>净杠杆 = <span>(V_L-V_S)/V_E</span> = 多头头寸减去空头头寸的绝对值 / 权益</li>
+</ul>
+<p>在例子中，等于(100-100)/(100)= 0。</p>
+<p>净杠杆率也不足以作为一种风险衡量标准。尽管它大致考虑了系统风险，但它未能考虑到多头和空头头寸价值的潜在差异。它只有在限制性的假设下才是合适的。例如，如果多头和空头头寸的贝塔是相同的，那么权益的贝塔是：</p>
+<blockquote><span>\displaystyle \beta_E = \frac{\beta_L (V_L-V_S)}{V_E} = \beta_L \times 净杠杆</span> </blockquote>
+<p>所以这个净杠杆期衡量的是对多头头寸的乘数。然而，这完全忽略了特殊风险，而这正是对冲基金经理应该关注的风险类型。总之，这些杠杆指标应被视为风险的粗略指标。然而，它们是稳健且易于计算的。</p>
+<p>这就是为什么行业已经转向更全面的基于头寸的风险度量。例如，VAR可以解释头寸规模和波动性，以及资产和负债之间的相关性。就其本身而言，这是一种衡量损失风险的优越方法。</p>
+<p>⭐ <b>例30.1</b> A hedge fund is long $315 million in certain stocks and short $225 million in other stocks. The hedge fund’s equity is $185 million. The fund’s overall beta is 0.75. Calculate the gross and net leverage.</p>
+<ul>
+<li>a. 2.91 and 0.48</li>
+<li>b. 2.18 and 0.36</li>
+<li>c. 2.91 and 0.36</li>
+<li>d. 2.18 and 0.48</li>
+</ul>
+<p>解析：选 a 。总杠杆是(315 + 225)/185 = 2.9。净杠杆为(315−225)/185 = 0.5。这个计算不需要beta。</p>
+<p>⭐ <b>例30.2</b> Continuing with the previous question, assume the stock market went up by 20% last year. Ignore the risk-free rate and idiosyncratic risk, and assume the average beta of both long and short positions is 1.
+                                    Over the same period, the return on the fund should be about</p>
+<ul>
+<li>a. 20%</li>
+<li>b. 15%</li>
+<li>c. 10%</li>
+<li>d. 5%</li>
+</ul>
+<p>解析：选 c 。股票投资组合的净回报率为(βL*315 - βS*225)× 20%。贝塔为1时，是$18 million。考虑到股本为$185 million，回报率约为10%。回报率低于市场上的回报率，因为市场上的大部分风险敞口都被对冲了。</p>
+<p>⭐ <b>例30.3</b> A relative value hedge fund manager holds a long position in asset A and a short position in asset B of roughly equal principal amounts. Asset A currently has a correlation with asset B of 0.97. The risk
+                                    manager decides to overwrite this correlation assumption in the variance-covariance-based VAR model to a level of 0.30. What effect will this change have on the resulting VAR measure?</p>
+<ul>
+<li>a. It increases VAR.</li>
+<li>b. It decreases VAR.</li>
+<li>c. It has no effect on VAR, but changes profit or loss of strategy.</li>
+<li>d. There is not enough information to answer.</li>
+</ul>
+<p>解析：选 a 。由于头寸既多又空，高度相关性意味着低风险。相反，降低相关性会增加风险。</p>
+<hr/>
+<h2>三、市场风险</h2>
+<h3>1、类别</h3>
+<p>对冲基金是一个比其他投资经理更加多样化的投资经理群体。他们遵循各种各样的策略，这些策略可以分为不同的风格。更一般地说，它们可以分为承担方向性风险和非方向性风险。</p>
+<p><b>方向性风险</b>（Directional risks）涉及对主要金融市场变量变动方向的风险敞口。这些方向曝光是通过一级或线性近似来测量的，例如：</p>
+<ul>
+<li><b>贝塔</b>（Beta）：对股票市场整体走势的敞口</li>
+<li><b>久期</b>（Duration）：对利率水平的敞口</li>
+<li><b>利差久期</b>（Spread duration）：对信贷利差变动的敞口</li>
+<li><b>德尔塔</b>（Delta）：对标的资产价格的期权的敞口</li>
+</ul>
+<p><b>非方向性风险</b>（Nondirectional risks）包括其他剩余的风险敞口，如非线性风险敞口、对冲头寸风险敞口和波动性风险敞口。这些非定向风险敞口是通过对价格变动差异的风险敞口或二次风险敞口来衡量的：</p>
+<ul>
+<li><b>基差风险</b>（Basis risk）：相关资产的价格差异</li>
+<li><b>凸性风险</b>（Convexity risk）：利率的二次效应</li>
+<li><b>伽马风险</b>（Gamma risk）：期权的二次效应</li>
+<li><b>波动率风险</b>（Volatility risk）：波动率的变动</li>
+</ul>
+<p>方向性交易可以在主要风险因素上做多或做空，比如股票、货币、固定收益工具和大宗商品。因此，方向性头寸比非方向性头寸具有更大的波动性。对于承担方向性风险的基金，总投资组合风险是通过风险来源、交易策略和风险限制的多样化来控制的。</p>
+<p>许多种类的对冲基金都是针对方向风险进行对冲的。因此，他们面临着非方向性风险。这种策略需要在定向交易中建立多头和空头头寸。在上一节中给出的例子是，在一只股票上做多100美元，用在另一只股票上做空100美元来抵消。这种策略对股票市场的方向性风险很小，但会受到两只股票相对价值变化的影响。然而，限制风险也限制了回报。因此，非方向性策略往往被高度杠杆化，以便从非方向性押注中获得成倍的收益。</p>
+<h3>2、风格</h3>
+<p>对冲基金可以分为不同的风格，反映了它们所接触的交易类型和市场。各种对冲基金的风格：</p>
+<p>（1）方向性策略</p>
+<ul>
+<li>多空权益：多头和空头股票头寸组合，净多头倾向</li>
+<li>新兴市场：新兴国家股票和债券头寸，净多头倾向</li>
+<li>全球宏观：所有资产类别的多头、空头头寸</li>
+</ul>
+<p>（2）非方向性策略</p>
+<ul>
+<li>相对价值</li>
+<ul>
+<li>权益市场中性：净贝塔接近于零的多头和空头股票头寸组合</li>
+<li>固定收益套利：抵消固定收益证券的多头和空头头寸</li>
+<li>可转债套利：<span>可转换债券</span>的多头头寸对冲了股票风险和利息风险</li>
+</ul>
+<li>事件驱动（利用特定公司事件的发生）</li>
+<ul>
+<li>并购套利、不良证券、信用对冲：由公司事件（如合并、重组和破产程序）引起的头寸</li>
+</ul>
+</ul>
+<p>（3）基金结构</p>
+<ul>
+<li>管理期货：期货和期权合约（包括CTA）的头寸</li>
+<li>多策略：同一基金中对冲基金策略的组合</li>
+<li>基金中基金：对冲基金的多元化投资组合</li>
+</ul>
+<p>在某种程度上，这种分类是武断的。行业内对类别的定义各不相同。例如，不同的对冲基金指数提供商使用不同的分类，尽管标的对冲基金池是相似的。如果对冲基金经理随着时间的推移改变策略，分类也可能失去意义。</p>
+<h3>1）方向性策略</h3>
+<p><b>多空权益</b>（Long/Short Equity）。多空股票基金是最普遍的策略，这些基金并非市场中性。大多数都有多头偏好（例如，100%的资产净值是多头头寸，50%是空头头寸）。一个相关的类别包括偏向空头的基金，净空头。</p>
+<p><b>新兴市场</b>（Emerging markets）。包括巴西、俄罗斯、印度和中国等新兴国家的股票和债券头寸。除了行业风险和特殊风险外，这些基金还面临一般市场风险因素。由于杠杆作用，波动性很高，所有此类基金的平均波动性为11%。这相当于<span>标准普尔500指数</span>中非杠杆头寸的波动性。</p>
+<p><b>全球宏观</b>（Global Macro）。对全球资产类别、股票、固定收益证券、货币和大宗商品进行定向杠杆押注。由于这些基金横跨如此多的市场，它们的风险状况并不相同。一个例子是乔治·索罗斯（George Soros）的基金在英镑贬值前做空英镑兑德国马克，据报道该对冲基金因此获利10亿美元。这个群体接近全球战术资产配置(GTAA)，这是一个传统的投资经理类别。GTAA经理在全国股票市场、固定收益市场和货币市场建立头寸，以利用短线观点，通常是通过衍生品。</p>
+<p>除了行业风险和特殊风险外，这些基金还面临许多一般市场风险因素。平均波动率为11%。这比前一个类别要小，因为这些基金也投资于其他市场，这些市场的波动性低于股市。</p>
+<h3>2）非方向性策略</h3>
+<p><b>权益市场中性</b>（EMN，Equity Market Neutral）。通过平衡股票市场的多空头寸来维持零贝塔系数。这些基金在其他风险因素（包括行业、风格和国家）中可能是中性的，也可能不是。因此，除了特殊的、特定于股票的风险外，这些基金还面临其他风险因素（行业、风格、国家）。资产负债表上的杠杆率通常是双方的三倍，也就是说多头和空头加起来都是股本的300%。由于空头头寸的对冲作用，平均波动率为6%，远低于股指的波动率。</p>
+<p><b>固定收益套利</b>（Fixed-Income Arbitrage）。涉及固定收益证券和衍生品的一系列策略的通称。对冲基金经理评估各种固定收益工具的相对价值。例如，暂存债券是在期限范围内最近发行的债券，因此流动性最强，否则债券将被取消。如果流通债券相对于流通债券非常昂贵，基金就会买进被低估的债券，卖出价格昂贵的债券。这种头寸的净持续时间接近于零，但暴露于两种证券之间的价差。其他例子还包括在互换价差或资产支持证券的期权调整价差较高时买入。这一组包括抵押贷款套利。这些基金避免了利率的定向风险，但却暴露于其他非定向风险，如价差风险。由于每笔交易的预期利润较小，固定收益套利基金的杠杆率很高，杠杆率在10-25之间。</p>
+<p>例：LTCM的打赌。<span>长期资本管理公司</span>(LTCM)最初是一家固定收益套利基金，持有相对价值交易的头寸，比如长期互换和美国国债的期限匹配头寸。1998年初，该公司拥有47亿美元的股权资本。1998年8月21日，10年期美国国债收益率从5.38%跌至5.32%。相反，掉期利率从6.01%上升至6.05%。这种分歧是极不寻常的。假设名义头寸为500亿美元，修正久期为8年，这导致长期国债头寸的价值变化为-
+                                            8 × (5.32 - 5.38)/100 × 5万= + 2.4亿美元，长期掉期头寸的价值变化为- 8 × (6.05 - 6.01)/100 × 5万= - 1.6亿美元。由于利差头寸是做多掉期和做空美国国债，这导致总共损失4亿美元，接近资本的10%。LTCM也在期权市场建立头寸，在期权被认为昂贵时卖出期权，并动态对冲以维持净差值为零。<span>隐含波动率</span>在8月21日大幅上升，导致期权头寸进一步亏损。当天，LTCM报告的亏损为5.5亿美元。</p>
+<p>这组股票的平均波动率为6%。然而，收益的分配通常是不对称的。例如，掉期息差不能缩小到零以下，但可以扩大到非常大的值，而且已经这样做了。利差分布的这种不对称反映在利润分布上。这类对冲基金对分配造成了负面影响。当他们赔钱时，他们可能会损失很多钱。</p>
+<p><b>可转债套利</b>（Convertible Arbitrage）。用专有期权定价模型评估可转换债券的相对价值。如果可转换债券价格便宜，对冲基金就会购买该债券，同时对冲主要风险。由于可转换债券涉及看涨期权的多头头寸，它相对于标的股票有正的增量。因此，经理应该做空股票，使头寸的净增量接近于零。通常，利率风险是通过做空国债或<span>国债期货</span>来对冲的。有时，通过购买信用违约互换来对冲信用利差风险。这些基金避免了利率的定向风险，但却暴露于其他非定向风险，如价差风险。作为典型的多头可转换债券，多头期权头寸创造了正的gamma和vega（多头隐含波动率）。除非债券是可调用的，否则债券的位置会产生正凸性。这种策略也暴露于公司事件风险，如违约（如果没有对冲）和收购。杠杆率适中。通常情况下，长期可转债头寸不超过股本的3倍。这类股票的平均波动率为5%，这是相当低的，部分原因是流动性不足。</p>
+<p><b>并购套利</b>（Merger Arbitrage）。并购套利基金也被称为风险套利基金。<span>兼并和收购</span>是将两个公司合并成一个新公司的交易。双方可以分为发起要约的收购公司或投标人，以及接受要约的目标公司或被收购公司。收购者以收购溢价收购目标公司，收购溢价是收购价与收购前目标公司股价的差额。这一溢价通常很高，平均为初始股价的50%。</p>
+<p>在宣布合并后，目标公司的股价反应强烈，比如上涨40%。由于交易是否会发生的不确定性，这仍然低于收购价格。平均完成率为83%，因此始终存在交易失败的可能性。当这种情况发生时，目标公司的股价通常会大幅下跌。因此，重要的是通过将投资组合分散到许多交易中来实现多样化。</p>
+<p>报价的形式可以是现金或投标公司的股票。对于现金交易，风险套利头寸只包括买入目标公司的股票，并希望股价最终会跌至收购价格。对于股票交易，竞标者提出以每股目标股换取竞标者的Δ股。风险套利头寸由目标股票的多头头寸和投标人股票的空头头寸Δ组成。这些头寸的平均年化超额回报率为10%。</p>
+<p>这类基金的波动性相对较低。由于目标股票公告后的股价变化具有随机过程，传统的基于仓位的风险度量不适合作为风险度量。</p>
+<p>例：埃克森-美孚合并。1998年12月1日，埃克森公司证实，它已同意以850亿美元的价格收购另一家大型石油公司<span>美孚公司</span>，这是有史以来最大的一笔收购。这笔交易创造了世界上最大的石油交易公司，市值达2500亿美元。根据协议条款，美孚的每位股东将获得Δ = 1.32015股埃克森美孚股票作为交换。在宣布之前，美孚和埃克森的初始价格分别为78.4美元和72.7美元，这意味着适度的溢价为(1.32016
+                                                            × 72.7美元)/ 78.4美元−1 = 22%。在消息公布的三天内，美孚的股价上涨了6.9%，至84.2美元，而埃克森的股价下跌了1.5%，至71.6美元。这种股价反应是收购公告的典型表现。1999年11月30日，经过监管部门和股东的批准，交易完成。当天，美孚和埃克森的股价分别为104.4美元和79.3美元。将后者乘以1.32015，我们得到104.7美元，这接近于美孚的最终股价。因此，两个价格收敛到相同的转换值。风险套利交易的利润为(104.4
+                                                            - 84.2)- 1.32016(79.3 - 71.6) = 每股10.0美元。</p>
+<p><b>不良证券</b>（Distressed Securities）。不良证券基金持有财务困难公司的证券、债券或股票头寸。在这种情况下，对冲基金经理需要评估重组或破产程序对证券市场价格的影响。这需要对公司的财务状况进行评估，以及对所涉及的法律问题有很好的理解。例如，如果一家破产公司的债务以面值的40%进行交易，那么如果重组后的总支付额为50%，对冲基金将受益。这些基金也积极参与破产程序和重组计划。这些资金面临事件风险，即收购或重组失败。他们也可能暴露于股票市场风险和利率风险，如果这些风险没有对冲。由于不良证券交易并不活跃，因此也存在流动性风险。</p>
+<p>事件驱动型基金的杠杆率为低至中等，不超过两倍。事件驱动型基金的平均波动率为6%，相当低。然而，这掩盖了一个事实，即收益分配是不对称的。通常情况下，如果收购或重组失败，利大于弊。因此，这些基金做空波动性，或暴露于罕见事件。由于事件的不寻常性质，基于历史回报的风险度量对于预测风险可能是不准确的。</p>
+<h3>3）基金结构</h3>
+<p><b>管理<span>期货基金</span></b>（Managed Futures Funds）。管理期货基金由使用在有组织的交易所交易的商品和金融期货和期权的经理组成。交易策略通常涉及技术交易，其中头寸取决于价格历史的模式。杠杆率高，导致波动性高。这些基金对所有上市期货合约的市场都有定向敞口。它们的风险因素与全球<span>宏观基金</span>重叠。例如，GTAA策略通常涉及股指和货币期货。这组股票的平均波动率为17%，相当高。</p>
+<p><b>多策略基金</b>（Multistrategy Funds）。涵盖前面描述的基金策略组合的对冲基金。这类基金的一个优势是，可以迅速将资本从一种策略重新配置到另一种策略。它们还提供跨策略的自动多样化。这组股票的平均波动率为9%。然而，多策略基金往往更集中于一种策略，不像下面描述的基金的基金那样提供多样化。例如，Amaranth最初是一家专注于可转换债券套利的多策略基金，后来演变成一家天然气交易公司，最终破产。因为所有的策略都是在同一个基金中运行的，一个策略的巨大损失可能会影响其他策略的资金。换句话说，与基金的基金结构不同，策略没有防火墙。</p>
+<p><b>基金中基金</b>（FOF，Funds of Funds）。也称为多重经理人基金，是对冲基金的投资组合。这些投资通过精心选择风格和投资经理来增加价值。他们还履行基本职能，例如在评估新经理及其持续监督时的尽职调查过程。基金的基金可以考虑策略，增加对预期表现更好的策略的配置。</p>
+<p>基金的基金在基础基金收取管理费的基础上收取额外管理费，通常在1%左右。然而，由于其规模，基金的基金可以从对冲基金经理那里协商较低的费用。相对于多策略基金，基金的基金有更高的费用。然而，这种成本差异被这样一个事实所抵消，即基金的基金可以接触到最好的经理，这些经理通常希望管理自己的基金，从而创造更好的业绩。</p>
+<p>此外，基金的基金比多策略基金损失的风险更低，多策略基金可能会像Amaranth那样损失全部投资。这有两个原因。</p>
+<ul>
+<li>首先，基金的基金通常比多策略基金更能分散投资策略。</li>
+<li>其次，基金的基金池中的对冲基金在法律上是相互分离的（即防火墙）。</li>
+</ul>
+<p>因此，一只对冲基金的崩溃不会影响到投资组合的其他部分，这与多策略基金可能发生的情况不同。基金的基金为对冲基金的多元化投资组合提供了便利。由于对冲基金的投资金额最低，对于分配给对冲基金的小额委托，很难实现这种分散。例如，1亿美元的对冲基金实际上最多只能投资10只对冲基金。相比之下，一只典型的基金的基金将投资50只基金。基金的基金在尽职调查和风险监控过程中提供规模经济。基金的基金也可以谈判比其他投资者更大的能力和更好的流动性。</p>
+<p>以上讨论表明，对冲基金是一个非常多元化的群体。他们面临各种各样的风险因素，遵循不同的交易规则，并具有不同水平的杠杆和风险。然而，共同的因素是需要管理风险。</p>
+<p>⭐ <b>例30.4 </b>A fund of hedge funds combines a mix of strategy sectors, managers, and styles, and therefore fund of funds risk managers need to understand the common attributes of
+                                                                            hedge fund strategies. Which of the following statements is incorrect?</p>
+<ul>
+<li>a. Equity market neutral funds aim to generate returns that have low correlation to the overall equity market and to insulate their portfolios from broad market risk factors.</li>
+<li>b. Convertible arbitrage funds typically purchase securities that are convertible into the issuer’s stock and simultaneously short the underlying stock. These funds earn returns
+                                                                                in part from gamma trading on the stock’s volatility.</li>
+<li>c. Merger arbitrage funds buy the stock of an acquisition target company and simultaneously short the bidding company’s stock. These funds have large exposure to deal risk.</li>
+<li>d. Equity short-selling funds sell stocks not currently owned by the seller in order to take a directional bet that the stock price will decline.These funds tend to be uncorrelated
+                                                                                    with traditional long-only equity portfolios.</li>
+</ul>
+<p>解析：选 d 。做空的基金与只做多的投资组合呈负相关。它们不可能互不相关。</p>
+<p>⭐ <b>例30.5</b> Identify the risks in a fixed-income arbitrage strategy that takes long positions in interest rate swaps hedged with short positions in Treasuries.</p>
+<ul>
+<li>a. The strategy could lose from decreases in the swap-Treasury spread.</li>
+<li>b. The strategy could lose from increases in the Treasury rate, all else fixed.</li>
+<li>c. The payoff in the strategy has negative skewness.</li>
+<li>d. The payoff in the strategy has positive skewness.</li>
+</ul>
+<p>解析：选 c 。该策略不受利率水平的影响，但受掉期-国债利差扩大的影响。例如，假设掉期利率和国债利率最初分别为5.5%和5%。例如，如果这些利率变化到5.3%和4.5%，掉期和国债的价值都会增加。然而，由于国债利率的下降幅度更大，国债价格的下降幅度将超过掉期，导致头寸净损失。该策略应该从掉期-国债息差的下降中获益，所以a是错误的。在其他条件不变的情况下，该策略应该从国债利率的上升中获益，所以b是错误的。最后，偿付的分布取决于掉期国债息差的分布。因为这个值不能低于零，所以上行空间是有限的。这个位置有负偏度，所以c是正确的。</p>
+<p>⭐ <b>例30.6</b> Identify the risk in a convertible arbitrage strategy that takes long positions in convertible bonds hedged with short positions in Treasuries and the underlying stock.</p>
+<ul>
+<li>a. Short implied volatility</li>
+<li>b. Long duration</li>
+<li>c. Long stock delta</li>
+<li>d. Positive gamma</li>
+</ul>
+<p>解析：选 d 。这个头寸对冲了利率风险，所以b是错的。它还对冲了股票的定向波动，所以c是错误的。这个头寸是多头期权（将债券转换为股票的期权），所以多头隐含波动率也是，所以a是错误的。多头期权头寸的<span>伽玛值</span>为正。</p>
+<p>⭐ <b>例30.7</b> A major acquisition has just been announced, targeting company B. The bid from company A is an exchange offer with a ratio of 2. Just after the announcement, the
+                                                                                prices of A and B are $50 and $90, respectively. A hedge fund takes a long position in company B hedged with A’s stock. After the acquisition goes through, the prices move
+                                                                                to $60 and $120. For each share of B, the gain is</p>
+<ul>
+<li>a. $30</li>
+<li>b. $20</li>
+<li>c. $10</li>
+<li>d. $0 since the acquisition is successful</li>
+</ul>
+<p>解析：选 c 。该头寸是一股公司B的多头头寸被两股公司A的空头头寸抵消。收益为(120 - 90)- 2(60 - 50)= 30 - 20 = 10。</p>
+<p>⭐ <b>例30.8</b> Suppose the payoff from a merger arbitrage operation is $5 million if successful, −$20 million if not. The probability of success is 83%. The expected payoff on
+                                                                                on the operation is</p>
+<ul>
+<li>a. $5 million</li>
+<li>b. $0.75 million</li>
+<li>c. $0 since markets are efficient</li>
+<li>d. Symmetrically distributed</li>
+</ul>
+<p>解析：选 b 。预期收益是概率乘以世界各个状态的收益之和，即83% × 5 + 17% ×(- 20)= 4.15 - 3.40 = 0.75。注意，分布是高度不对称的，出现大损失的概率很小。</p>
+<p>⭐ <b>例30.9</b> The Big Bucks hedge fund has the following description of its activities. It uses simultaneous long and short positions in equity with a net beta close to zero.
+                                                                                Which of the following statements about Big Bucks is/are correct?</p>
+<ol>
+<li>I. It uses a directional strategy.</li>
+<li>II. It is a relative value hedge fund.</li>
+<li>III. This fund is exposed to idiosyncratic risks.</li>
+</ol>
+<ul>
+<li>a. I and II</li>
+<li>b. II and III</li>
+<li>c. I and III</li>
+<li>d. II only</li>
+</ul>
+<p>解析：选 b 。这只基金的贝塔系数为零，也是相对价值基金。然而，它面临着特殊的、特定于股票的风险。</p>
+<hr/>
+<h2>四、特定风险</h2>
+<h3>1、代理风险</h3>
+<p>对冲基金经理充当投资者的代理人。然而，这可能导致激励机制的错位。激励费用是利润的一小部分，如果是正数的话。因此，对冲基金经理是一个多头期权。由于期权的价值随着波动性的增加而增加，基金经理可能有动机增加基金的风险。</p>
+<p>另一个潜在问题是<b>风格漂移</b>（style drift），当经理人改变投资模式或误入新市场时，就会出现这种情况。这种行为可以通过多种方式最小化。最重要的是，对冲基金经理应该将很大一部分个人财富投资于他们所管理的基金。这减少了承担过多风险的动机。</p>
+<p>一些风险监控发生在主经纪商（PB）层面。然而，由于主经纪商主要关心的是向对冲基金提供贷款的损失风险，因此它的利益与基金投资者的利益并不一致。例如，贷款人可以使用<span>追加保证金</span>的手段，迫使基金资产以低价变现。只要有多余的抵押品，放贷机构就会得到保护，但代价是投资者的损失。</p>
+<p>在<b>高水位线</b>（high-water marks）（也称为亏损结转准备金（loss carryforward provisions））的情况下，承担风险的动机也会降低。经理只有在当前资产净值（NAV）超过以前达到的最高资产净值时才能获得绩效费。例如，假设资产净值连续四年从100美元变为130美元，从120美元变为140美元。资产净值每年为130美元，绩效费为30美元。第二年，因为基金亏损，所以没有绩效费。最后一年，业绩费只适用于超过130美元的140美元部分，这是以往NAV的最高水平。但是，如果水位过高，这种机制可能无法提供完全的保护。在这种情况下，基金经理可以选择关闭基金，并开始一个新的基金（如果能找到投资者）。</p>
+<h3>2、流动性和杠杆风险</h3>
+<p>对冲基金利用杠杆头寸来提高回报，尤其是固定收益套利等非定向交易，此类交易的预期回报通常较低。相反，这会产生其他类型的风险，包括流动性风险。这一策略对于长期资本管理公司(LTCM)来说确实失败了，这是一家高杠杆对冲基金，旨在避免方向性风险。LTCM的杠杆率为25比1。它的资产规模已经增长到1250亿美元，是第二大对冲基金资产规模的四倍。一旦该基金开始累积亏损，考虑到其规模，就很难削减头寸。长期资本管理公司还必须满足经纪商的追加保证金要求。该基金最终损失了44亿美元，占其股本的92%。</p>
+<p>将流动性风险的来源与对冲基金资产负债表联系起来：</p>
+<ul>
+<li>资产：头寸规模、价格影响</li>
+<li>负债：提供资金、盯市、折扣（haircuts）</li>
+<li>权益：投资者赎回</li>
+</ul>
+<p>流动性风险出现在资产方面，是头寸规模和交易价格影响的函数。在负债方面，当对冲基金无法展期其经纪商提供的资金，或者当按市值计价的头寸出现亏损或折价增加导致现金流出时，融资风险就会出现。这通常是对冲基金的主要风险来源，因为未能满足追加保证金要求可能导致贷款机构没收抵押品，迫使对冲基金进行清算。最后，当基金面临投资者赎回时，也会产生融资风险。</p>
+<p>价格影响函数是特定于工具的。例如，主要货币、大宗股票、<span>国库券</span>和国库券的流动性很强，这意味着大量交易不会对价格产生太大影响。其他市场本质上流动性较差。例如，小额货币、小额股票和大多数公司债务工具通常是非流动性的。</p>
+<p>长期资本管理公司主要处理流动性工具，但由于其头寸的庞大规模，面临流动性风险。这就是为什么对冲基金经常说他们有<b>最大能力</b>（maximum capacity）。在最佳规模之外，由于市场影响，交易变得困难。</p>
+<p>另一种因杠杆作用而加剧的风险是<b>模型风险</b>（model risk）。当投资策略依赖于有缺陷的估值或风险模型时，就会出现这种情况。由于杠杆作用，模型中的小错误可能会在风险度量中产生大错误。事实上，长期资本管理公司的风险测量系统存在缺陷，导致对支持其头寸所需资本的严重低估。</p>
+<p>某些类别的对冲基金存在内在流动性风险，因为这些工具的交易清淡，这意味着对大多数交易的价格影响很大。可转换债券就是这种情况，问题证券尤其如此。由于这些基金投资于交易清淡的证券，即使是小型基金也会出现流动性风险。</p>
+<p>流动性风险较大的基金通常<b>锁定期</b>（lockup period）和<b>赎回通知期</b>（redemption notice period）较长。前者是指投资者资金在基金中持有的最短期限。后者是指将拟赎回通知基金所需的期限。禁售期平均为3个月，可延长至5年。提前通知期平均为30天。基金通常还设有<b>闸门</b>（gates），将提款金额限制在净资产的一小部分。在极端情况下，基金可能会完全<b>暂停</b>（suspension）赎回。</p>
+<p>工具流动性风险是衡量工具流动性风险的一大难题。通常，基金在每个月底报告其<b>资产净值</b>（net asset value）。如果在月底没有观察到交易价格，则可能使用月中发生的交易价格进行估值。这个价格被称为<b>过期价格</b>（stale price），因为它是旧的，不反映在报告当天的市场清算交易。不幸的是，这将扭曲报告的资产净值以及风险度量。</p>
+<p>第一个影响是，<b>报告的月度波动率将小于真实波动率</b>。这是因为价格是基于当月的交易，这与平均过程类似。平均值比期末值波动小。</p>
+<p>第二个影响是，<b>月度变化呈现正自相关</b>。一个方向的变动只能部分地用该月的价格来衡量。下个月，同样的运动的一部分将在回归中出现。这种正的自相关性大大增加了长期的风险。例如，考虑一下将一个月的波动率外推到两个月。通常的调整因子是根号2，即1.41。当自相关为ρ = 0.5时，调整因子变为(1 +
+                                                                                                        1 + 2ρ)^0.5 = 1.75。真实风险被低估为(1.73−1.41)/1.73 = 18%。这种效应随着视界的长度而增加。因此，年化波动率使用时间的平方根来推断月度波动率，可能低估了真实的年度风险。风险的长期测量必须特别考虑观察到的自相关性。</p>
+<p>第三个影响是，<b>衡量系统性风险的指标将系统性地向下倾斜</b>。如果市场在一个月内上涨，那么只有一小部分涨幅会反映在资产净值中，导致贝塔指标过低。对贝塔的修正包括测量投资组合的贝塔，用同期市场回报加上相对于一个月滞后回报的贝塔加上相对于一个月未来回报的贝塔。在交易清淡的情况下，这三个贝塔的总和应该高于同期贝塔，也更接近真实的系统风险。</p>
+<p>杠杆还会产生其他问题，这些问题可以归类为<b>拥挤交易风险</b>（crowded trade risk）。当许多杠杆投资者处于同一交易方时，就会出现这种情况。如果他们的投资组合出现亏损，他们可能需要支付额外的保证金，这可能会由几家基金同时出售类似的资产来满足，这可能会造成市场混乱。显然，这解释了为什么许多由量化模型驱动的权益市场中性（EMN）策略的量化基金在2007年8月遭受了重大损失。故事是这样的:一家大型多策略基金在信贷交易中亏损，然后清算了其股票头寸，因为这些头寸比其他头寸更具流动性。这给新兴市场国家的投资组合造成了巨大损失，无论是多头还是空头，这是极不寻常的。</p>
+<p>然而，这不仅仅是杠杆的问题。如果供需不平衡，任何涉及在发生亏损后削减头寸的机械交易规则都可能产生类似的效果。例如，这包括止损，相当于在期权中综合复制多头头寸。</p>
+<h3>3、杠杆和<span>交易对手风险</span></h3>
+<p>杠杆还会产生<b>交易对手风险</b>（counterparty risk）。使用杠杆的对冲基金向机构经纪商提供抵押品。<b>抵押</b>（Hypothecation）是指将客户拥有的证券在<span>保证金账户</span>中进行抵押，以获得贷款。然后，经纪人有权将证券<b>再抵押</b>（rehypothecate）给另一方。但是，如果经纪人破产，再抵押的资产就成为对经纪人的索赔的一部分。在雷曼破产的案例中，雷曼欧洲主要经纪公司持有的400亿美元资产中有220亿美元被重新抵押。其结果是，试图收回这些资产的对冲基金发现自己已成为对雷曼提出索赔的普通债权人。</p>
+<h3>4、欺诈风险</h3>
+<p>最后一个问题，特别是对于复杂或非流动性资产，是<b>对资产的不当估值</b>（improper valuation of assets）。当资产在报告期末没有<span>市场出清价格</span>，以及基金经理自己计算资产净值时，就会出现这个问题。因此，一些无良的对冲基金经理忍不住虚报基金资产的价值，以掩盖自己的交易损失。其他人甚至窃取了投资者的资产。</p>
+<p>一项研究表明，估值问题在35%的对冲基金失败中发挥了作用，其中57%的估值问题是由欺诈或虚假陈述引起的。对冲基金行业的发展，以及广泛报道的欺诈事件，解释了要求基金在美国证券交易委员会(SEC)注册的趋势。注册赋予SEC对对冲基金活动进行审查的权力。目标是帮助在早期阶段识别遵从性问题，并提供对欺诈的威慑。注册还要求对冲基金指定一名<b>首席合规官</b>（chief
+                                                                                                                    compliance officer）。但实际上，大多数美国对冲基金都自愿注册为投资顾问。投资者通常要求注册作为投资的先决条件。</p>
+<ul>
+<li>如果基金有一个独立的<b>管理人</b>（administrator），欺诈的可能性就会降低。管理人执行与基金运作有关的日常管理职责，特别是财务和税务报告。他们计算资产净值，维护法定账簿和记录，并提供股东服务。</li>
+<li>外部<b>审计师</b>（auditor）提供重要的附加信息。审计员就基金财务报表的公平列报发表书面意见，通常以年度为基础。</li>
+<li>为了防止被盗，投资者应该坚持外部<b>托管人</b>（custodian），即持有基金资产的银行或<span>信托公司</span>等金融机构。通常，基金的主要经纪人将扮演托管人的角色。</li>
+</ul>
+<p>例：<b>庞氏骗局</b>（Ponzi Scheme）。庞氏骗局一词源于查尔斯·庞齐(Charles Ponzi)，他在1919年建立了一个创造性的金字塔骗局，利用新的投资者资金偿还早期投资者。这项投资基于一种相对价值交易，即在海外以相当于1美分的价格购买邮政券，再以6张1美分的美国邮票转售。然而，考虑到交易成本，这笔交易是无利可图的。尽管如此，还是有成千上万的人在90天内回报50%的承诺的诱惑下投资了他。最终，以今天的美元计算，他损失了1.4亿美元的投资者资金，并因欺诈而入狱。</p>
+<p>自那以后，最著名的庞氏骗局是伯纳德•麦道夫(Bernard Madoff)犯下的。2008年12月，他承认通过他的经纪公司伯纳德•麦道夫投资证券(BMIS)诈骗投资者约500亿美元，随后被捕。BMIS成立于1960年，到2007年底管理着约170亿美元的对冲基金投资。最初投资者的回报是用新的投资支付的。2008年，当投资者寻求约70亿美元的赎回时，该计划失败了，因为无法满足这一要求。只要有新资金流入，庞氏骗局就会奏效。</p>
+<p>投资者被麦道夫基金的高而稳定的回报所吸引，而这些回报后来被证明是捏造的。然而，许多主要的基金的基金已经对麦道夫进行了尽职调查，并发现了足够多的警告信号，以远离他。BMIS担任投资者资产的托管人，没有外部管理人，并依赖一家不知名的三人审计公司。此外，一些分析过期权交易策略的人得出结论，认为这是不可行的，因为这意味着交易量将远远超过交易所的交易量。这说明了彻底的尽职调查过程的价值。</p>
+<h3>5、监管风险</h3>
+<p>对冲基金还面临<b>监管风险</b>（regulatory risks）。这是由于监管变化造成的损失风险。例如，2008年9月，许多国家颁布了全面禁止卖空股票的禁令。这一禁令对依赖卖空对冲的策略造成了严重破坏。例如，可转换债券套利领域在这几个月遭受了巨大损失。持有股票多头和空头头寸的统计套利基金不得不从许多市场撤出。然而，人们普遍认为，此类禁令在阻止价格下跌方面是无效的。这样的禁令还会产生深远的影响。以可转债为例，市场冻结使许多传统上
+                                                                                                                                    <span>发行可转债</span>的机构（包括银行）无法筹集新资金。此外，此类禁令导致投资者撤出市场，削弱流动性，实际上增加了波动性。卖空禁令取消了对冲基金风险管理的主要机制，导致在市场最需要资金的时候，资金加速撤出。</p>
+<p>⭐ <b>例30.10</b> Asset liquidity risk is most pronounced for</p>
+<ul>
+<li>a. A $10 million position in distressed securities</li>
+<li>b. A $10 million position in Treasury bonds</li>
+<li>c. A $100 million position in distressed securities</li>
+<li>d. A $100 million position in Treasury bonds</li>
+</ul>
+<p>解析：选 c 。资产流动性风险是头寸规模和工具内在流动性的函数。不良证券的交易量远小于国债，因此具有更大的流动性风险。在同一工具中，1亿美元的头寸比1000万美元的头寸流动性更差。</p>
+<p>⭐ <b>例30.11</b> For a portfolio of illiquid assets, hedge fund managers often have considerable discretion in portfolio valuation
+                                                                                                                                    at the end of each month and may have incentives to smooth returns by marking values below actual, in high-return months
+                                                                                                                                    and above actual, in low-return months. Which of the following is not a consequence of return smoothing over time?</p>
+<ul>
+<li>a. Higher Sharpe ratio</li>
+<li>b. Lower volatility</li>
+<li>c. Higher serial correlation</li>
+<li>d. Higher market beta</li>
+</ul>
+<p>解析：选 d 。流动性不足导致对总风险指标的低估;因此，<span>夏普比率</span>将被人为推高。由于一个月的市场冲击将在连续两个月内部分记录，流动性不足造成回报趋势(更高的<span>序列相关性</span>)。然而，流动性不足会使市场贝塔向下倾斜。</p>
+<p>⭐ <b>例30.12</b> You are asked to estimate the exposure of a hedge fund to the S&amp;P 500. Though the fund claims to mark to
+                                                                                                                                    market weekly, it does not do so and merely marks to market once a month. The fund also does not tell investors that it
+                                                                                                                                    simply holds an exchange-traded fund (ETF) indexed to the S&amp;P 500. Because of the claims of the hedge fund, you decide
+                                                                                                                                    to estimate the market exposure by regressing weekly returns of the fund on the weekly return of the S&amp;P 500. Which
+                                                                                                                                    of the following correctly describes a property of your regression estimates?</p>
+<ul>
+<li>a. The intercept of your regression will be positive, showing that the fund has a positive alpha when estimated using
+                                                                                                                                            an ordinary least squares (OLS) regression.</li>
+<li>b. The beta will be misestimated because hedge fund exposures are nonlinear.</li>
+<li>c. The beta of your regression will be one because the fund holds the S&amp;P 500.</li>
+<li>d. The beta of your regression will be zero because the fund returns are not synchronous with the S&amp;P 500 returns.</li>
+</ul>
+<p>解析：选 b 。每周回报与标准普尔指数不同步。因此，每周数据对贝塔的估计将为零。</p>
+<hr/>
+<h2>五、应对风险</h2>
+<p>由于存在这些风险，对冲基金需要受到密切监控。首先是<b>尽职调查</b>（due diligence），即在投资前对基金进行系统调查的过程。在业务方面，这涉及以下分析</p>
+<ul>
+<li>基金文件</li>
+<li>关键人员（包括背景调查）</li>
+<li>基金服务提供者（管理人、主要经纪人、法律顾问、审计师）</li>
+<li>监管注册</li>
+<li>操作和估值程序</li>
+</ul>
+<p>在投资方面，这包括对投资策略、风险因素和风险控制系统的分析。一旦聘请了对冲基金经理，尽职调查过程的某些部分需要定期核实。</p>
+<h3>1、透明度问题</h3>
+<p>对冲基金通常不愿透露自己的头寸信息。缺乏透明度对投资者来说是非常不利的。信息披露允许对对冲基金进行风险监控，这对活跃交易尤其有用。这可以帮助投资者避免对冲基金经理意外增加杠杆或改变风格的情况。对基金进行更密切的监控还可以减少欺诈或资产估值错误的可能性。信息披露对风险聚合也很重要。投资者应该知道对冲基金如何与投资组合中的其他资产相互作用。对冲基金是否与投资组合的其他部分呈正相关或负相关，影响投资组合的总风险。</p>
+<p>为何风险聚合？头寸汇总对于识别个人名称(公司)的潜在集中度很重要。这个故事讲的是一家大型养老基金，该基金将资产分配给投资于公司债券、成长型股票和价值型股票的外部经理。2000年，安然被评为投资级，并被视为成长型股票，反映出其90美元的高股价。该基金持有安然公司债券，并通过成长型经理持有安然股票。由于第二年的负面消息不断，到2001年10月，股价跌至15美元。许多人认为这次下跌是买入该股的绝佳机会。养老基金的价值经理们开始购买这只股票。与此同时，它的其他经理也没有自律出售。到2001年12月，股价跌至0.03美元。养老基金最终持有大量安然股票和债券，由于未能识别这种集中风险而蒙受巨额损失。</p>
+<p>更多的信息披露往往受到抵制，理由是这会泄露专有信息，导致第三方与对冲基金进行交易的可能性。然而，这种威胁来自经纪自营商群体，而非投资者。如果这是一个问题，保密协议应该防止敏感信息的泄露。对冲基金通常更愿意将此类信息发布给自己没有交易业务的投资者，无论是直接还是通过关联公司，因为这些投资者无法从这些信息中获利。有时提出的另一个论点是投资者缺乏经验。换句话说，披露头寸会向投资者提供过多信息，而这些投资者可能无法使用这些信息。</p>
+<h3>2、透明度解决方案</h3>
+<p>第一，<b>外部风险度量服务</b>。这些公司在签订了适当的保密协议后，可以接触到对冲基金的个别头寸，并向投资者提供综合风险指标。它们只发布汇总信息，如总杠杆和净杠杆、资产、行业和地理分配，以及要素暴露。这解决了风险聚集问题。</p>
+<p>第二，<b>通过拥有职位级别信息的基金的基金</b>。基金的基金可以利用这些信息来监控基金经理，并向投资者提供汇总统计数据。因此，该方法既解决了风险监测问题，又解决了风险聚合问题。</p>
+<p>⭐ <b>例30.13</b> Investors should insist on learning about the positions of hedge funds because</p>
+<ul>
+<li>a. They want to trade ahead of the hedge fund.</li>
+<li>b. They do not understand the trading strategies behind the positions.</li>
+<li>c. They want to aggregate the risk of hedge funds with the rest of their portfolio.</li>
+<li>d. They receive the information from the prime broker anyway.</li>
+</ul>
+<p>解析：选 c 。风险集聚是投资者了解对冲基金投资头寸的一个重要原因。答案a是错误的，因为领先对冲基金是不披露头寸信息的一个理由。答案b是错误的，因为误解交易策略是不需要持仓信息的一个理由。答案d是不正确的，因为他们不从主经纪人那里接收头寸信息。</p>
+<p>⭐ <b>例30.14</b> Risk management of hedge funds has challenges not generally faced in traditional investment
+                                                                                                                                                        management companies. Which of the following statements are correct about hedge fund risk management?</p>
+<ol>
+<li>I. Because hedge funds can hold long and short positions, and can use derivatives and leverage,
+                                                                                                                                                                their exposure to market risks can experience large and rapid changes that make it difficult
+                                                                                                                                                                to assess these exposures using only monthly returns.</li>
+<li>II. Many hedge funds use over-the-counter derivatives, which are valued by models or quoted prices
+                                                                                                                                                                and often hold illiquid assets; as a result, the returns of these strategies generally exhibit
+                                                                                                                                                                much lower serial correlation than mutual fund returns.</li>
+<li>III. For hedge fund strategies that use leverage to amplify returns and rely on their ability to
+                                                                                                                                                                move out of trades quickly when they turn against them, liquidity risk must be closely monitored
+                                                                                                                                                                and managed.</li>
+<li>IV. Hedge fund returns are often similar to the return of a basket of exotic derivatives with nonlinear
+                                                                                                                                                                payoffs, and therefore assessing risk based on past performance can be misleading.</li>
+</ol>
+<ul>
+<li>a. I, II, III, and IV</li>
+<li>b. I, III, and IV</li>
+<li>c. I and III</li>
+<li>d. II and IV</li>
+</ul>
+<p>解析：选 b 。非流动性资产产生较高的序列相关性。</p>
+<p>（完）</p>
+<h2>返回目录</h2>
+<p>（FRM全系列完，感谢大家的持续关注！）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

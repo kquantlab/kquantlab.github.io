@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C19 信用风险导论 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C19 信用风险导论">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C19 信用风险导论</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、结算<b>风险</b></h2>
+<h3>1、预结算与结算风险</h3>
+<ul>
+<li>本文采用<code>\displaystyle</code>排版</li>
+</ul>
+<p>交易对手信用风险包括<span>预结算风险</span>和结算风险（又称清算风险、<span>交割风险</span>）。</p>
+<ul>
+<li><b>预结算风险</b>(Presettlement risk)是指交易对手在交易期间未能履行义务而造成损失的风险。这包括贷款或<span>债券违约</span>，或未能在<span>衍生品</span>交易中支付所需款项。预结算风险从签约到结算存在很长时间。</li>
+<li><b>结算风险</b>(Settlement risk)是由于<span>现金流</span>的交换，并且具有更短的性质。这种风险在机构支付所需款项后立即产生，并一直存在到收到抵消款项为止。当付款发生在不同的时区时，这种风险最大，特别是对于以不同<span>货币兑换</span>名义货币的外汇交易。交易对手违约、流动性限制或操作问题可能导致未能履行结算。</li>
+</ul>
+<p>大多数情况下，由于操作问题导致的结算失败会导致轻微的经济损失，例如额外的利息支付。然而，在某些情况下，损失可能相当大，延伸到转移付款的全部金额。主要<span>结算风险</span>的一个例子是1974年<span>赫施塔特银行</span>的倒闭。在该银行破产的当天，它已经收到了一些交易对手方的付款，但在交易的其他部分付款之前就违约了。</p>
+<h3>2、管理结算风险</h3>
+<p>1996年3月，国际清算银行(BIS)发布了一份报告，警告<span>私营部门</span>应设法减少每天1.2万亿美元的全球<span>外汇市场</span>的结算风险报告指出，各国央行“对当前外汇交易结算安排所带来的风险深感担忧”。它解释说，“即使是单个交易对手的风险金额也可能超过银行的资本”，这会产生<b><span>系统风险</span></b>(systemic
+                                        risk)。监管行动的威胁导致了对结算风险的重新审视。考察交易的各个阶段，它的状态可以分为五类：</p>
+<ol>
+<li>可撤销(Revocable)：机构在未经交易对手同意的情况下仍可撤销转让</li>
+<li><span>不可撤销</span>(Irrevocable)：在付款发出之后，在另一方付款到期之前</li>
+<li>不确定(Uncertain)：在另一方的付款到期之后，但在实际收到付款之前</li>
+<li>结算(Settled)：在收到对方付款后</li>
+<li>失败(Failed)：在确定交易对手未付款后</li>
+</ol>
+<p>结算风险发生在不可撤销和不确定状态期间，可能需要一到三天的时间。</p>
+<p>虽然这类信用风险可能导致巨大的经济损失，但结算风险的短期性质使其与预结算风险有着根本的区别。管理结算风险需要独特的工具，例如<b><span>实时全额结算</span></b>(RTGS, real-time gross settlement)系统。这些系统旨在缩短机构无法停止付款和从交易对手处收到资金之间的时间间隔。</p>
+<p>结算风险可以通过结算协议进一步管理。其中一种形式是<b><span>双边净额结算</span></b>(bilateral netting)，涉及两家银行。银行之间不是以总金额相互支付，而是将余额加起来，并以每种货币结算未偿净余额。在金融工具的层面上，<b><span>差价合约</span></b>(CFD, contracts for
+                                        differences)也会产生净额。这些合约在合约期限结束时以美元结算，而不是以不同的货币交换本金。【注：这与<b><span>无本金交割远期</span></b>(nondeliverable forwards)类似，无本金交割远期用于在<span>新兴市场</span>制度管辖范围之外交易新兴市场货币，同样以美元结算。】</p>
+<p>下一步是一个<b><span>多边净额结算系统</span></b>(multilateral netting system)，也被称为<b>连续关联结算</b>(continuous-linked settlements)，在这个系统中，一组银行的支付是净额结算。当CLS银行在2002年9月9日开始运营时，这个想法变成了现实。<b>CLS银行</b>成立于1998年，有60家银行参与。CLS银行每天晚上提供一份付款时间表，供会员银行在第二天遵循。在收到资金并确认所有交易之前，付款不会被释放。现在，风险已降至净额机构的水平。除了降低结算风险外，净额结算系统的优势在于减少了参与者之间的交易次数，最多可减少90%，从而降低了
+                                        <span>交易成本</span>。</p>
+<p>⭐ <b>例19.1</b> Settlement risk in foreign exchange is generally due to</p>
+<ul>
+<li>a. Notionals being exchanged</li>
+<li>b. Net value being exchanged</li>
+<li>c. Multiple currencies and countries involved</li>
+<li>d. High volatility of exchange rates</li>
+</ul>
+<p>解析：选 a 。结算风险是由于在不同的时间点以不同的货币交换<span>名义本金</span>，这使得交易对手一方在付款后违约。净支付的风险会更小。</p>
+<p>⭐ <b>例19.2</b> Which one of the following statements about multilateral netting systems is not accurate?</p>
+<ul>
+<li>a. Systemic risks can actually increase because they concentrate risks on the central <span>counterparty</span>, the failure of which exposes all participants to risk.</li>
+<li>b. The concentration of risks on the central counterparty eliminates risk because of the high quality of the central counterparty.</li>
+<li>c. By altering settlement costs and credit exposures, multilateral netting systems for foreign exchange contracts could alter the structure of credit relations and affect competition in the foreign exchange
+                                                    markets.</li>
+<li>d. In payment netting systems, participants with net debit positions will be obligated to make a net settlement payment to the central counterparty that, in turn, is obligated to pay those participants with
+                                                    net credit positions.</li>
+</ul>
+<p>解析：选 b 。答案c和d都是正确的。答案a和b是相互矛盾的。多边净额结算系统将信用风险集中到一个机构。如果这家机构破产，这可能会造成很大的损害。</p>
+<hr/>
+<h2>二、信用风险概述</h2>
+<h3>1、信用风险驱动因素</h3>
+<p>传统上，信用风险被定义为预结算风险。<span>信用风险度量</span>系统试图量化交易对手违约造成的损失风险。信用风险的分布可以看作是一个由以下变量驱动的复合过程：</p>
+<ul>
+<li><b>违约</b>(Default)：交易对手的离散状态，是否处于违约状态</li>
+<ul>
+<li>这种情况有一定的<b><span>违约概率</span></b>(PD, probability of default)</li>
+</ul>
+<li><b><span>信用敞口</span></b>(CE, Credit exposure)：对交易对手的索赔的经济或<span>市场价值</span></li>
+<ul>
+<li>在违约时也称为<b><span>违约风险敞口</span></b>(EAD, exposure at default)</li>
+</ul>
+<li><b><span>违约损失率</span></b>(LGD, Loss given default)：表示由于违约而导致的部分损失</li>
+<ul>
+<li>假设违约只导致30%的<b>部分<span>回收率</span></b>(fractional recovery rate)，则LGD为敞口的70%</li>
+</ul>
+</ul>
+<p>一个长期的信贷头寸包含了一个内嵌的空头期权头寸。这表示<span>借款人</span>可以选择违约。例如，考虑一下常规的信用敏感债券。这种债券的收益率高于<span>无风险债券</span>，但如果借款人违约，则以资本损失为代价。这种支付模式，以潜在的未来资本损失作为交换，获得定期的溢价，与<span>期权</span>的空头头寸完全相同。</p>
+<p>传统上，信用风险是在资产的风险敞口或经济价值接近其名义或面值的贷款或债券的背景下衡量的。对于债券来说，这是一个可以接受的<span>近似值</span>，但对于衍生品来说，肯定不是这样，因为衍生品可能有正值或负值。信用敞口定义为资产的正价值：</p>
+<blockquote><span>CE_t = \max(V_t, 0)</span> </blockquote>
+<p>这是因为如果交易对手拖欠所欠的钱，就必须全额支付。相反，如果对方欠钱，只有一小部分可以收回。这种不对称可以用以下事实来解释：大多数合同现在都有不免责条款(no walk-away clauses)，这些条款可以防止欠破产实体钱的一方从合同中免责。因此，只有当合约的重置成本对机构来说是正值（即价内ITM）时，预结算风险才会出现。</p>
+<h3>2、信用风险度量</h3>
+<p>信用风险度量工具的演变经历了以下四个步骤：</p>
+<ol>
+<li><b>名义金额</b>(Notional amounts)，加上简单的风险敞口</li>
+<li><b>风险加权金额</b>(Risk-weighted amounts)，将风险敞口加起来，并对风险进行粗略调整</li>
+<li><b>名义上的金额加上<span>信用评级</span></b>(Notional amounts combined with credit ratings)，加上根据违约概率调整的风险敞口</li>
+<li><b>内部组合信用模型</b>(Internal portfolio credit models)，整合信用风险的各个维度</li>
+</ol>
+<p>最初，风险度量是基于名义总额。一个<span>乘数</span>（比如8%）被应用于这个数额，以确定作为信用风险准备金的所需资本数额。这种方法的问题在于，它忽略了违约概率的变化。1988年，<span>巴塞尔</span>委员会按<span>风险等级</span>对信用风险进行了粗略分类，提供了将名义金额相乘的
+                                                    <span>风险权重</span>。这是第一次试图迫使银行根据所承担的风险携带资本。</p>
+<p>然而，事实证明，这些风险权重过于简单，会激励银行改变其投资组合，以便在遵守巴塞尔资本要求的情况下实现股东回报最大化。这产生了将更多风险引入<span>商业银行资产负债表</span>的反常效果，而这肯定不是1988年规则的预期目的。例如，AAA级和C级企业信用之间没有区别。由于低质量信贷的贷款通常比高质量信贷的贷款更有利可图，但需要相同数量的监管资本，一些银行的反应是将
+                                                    <span>贷款组合</span>转向低评级信贷。这导致了<span>巴塞尔协议II</span>的出台，该协议允许银行使用自己的内部或外部信用评级。这些信用评级提供了更精确的信用风险表示。</p>
+<p>即使有了这些改进，信用风险费用仍然是针对所有风险单独计算的，然后再加起来。与内部投资组合信贷模型不同，这种方法可能无法恰当地解释多样化效应。然而，这种模式带来了特殊的挑战，因此不被巴塞尔委员会接受为<span>资本充足率</span>要求。</p>
+<h3>3、信用风险与<span>市场风险</span></h3>
+<p>最近开发的衡量市场风险的工具已被证明在评估<span>信贷风险</span>方面是无价的。即便如此，市场风险和信用风险之间仍存在一些主要差异：</p>
+<ul>
+<li><b>风险来源</b></li>
+<ul>
+<li>市场风险：只是市场风险</li>
+<li>信用风险：违约风险，回收风险，市场风险</li>
+</ul>
+<li><b>分布</b></li>
+<ul>
+<li>市场风险：大多数情况对称，可能有肥尾</li>
+<li>信用风险：左偏。信用风险产生于具有三种类型风险的复合过程。与大多数市场风险因素不同，这种风险的本质造成了一种极其左偏的分布。这是因为信用风险类似于期权的空头头寸。最好的情况是，交易对手支付了所需的款项，没有损失。在最坏的情况下，所有到期的款项都丢失了</li>
+</ul>
+<li><b>时间跨度</b></li>
+<ul>
+<li>市场风险：短期（天），<span>纠正行动</span>所需的时间相对较短</li>
+<li>信用风险：长期（年），纠正行动所需的时间要长得多。尽管信用衍生品的出现使得对冲信用风险变得更加容易，但信用风险的头寸周转速度也比市场风险慢得多</li>
+</ul>
+<li><b>聚合程度</b></li>
+<ul>
+<li>市场风险：业务或交易单位。对市场风险的限制可能适用于交易部门、业务部门，最终适用于整个公司</li>
+<li>信用风险：整个公司与交易对手。必须在交易对手层面为机构持有的所有头寸定义信用风险限制</li>
+</ul>
+<li><b>法律问题</b></li>
+<ul>
+<li>市场风险：不适用</li>
+<li>信用风险：非常重要。敞口可以通过净值合约来控制；违约事件必然会启动法律程序</li>
+</ul>
+</ul>
+<hr/>
+<h2>三、信用风险度量</h2>
+<h3>1、信用损失</h3>
+<p>为了发展信用模型的直觉，从一个简单的例子开始，其中损失仅是由于违约的影响。换句话说，没有中间市场。这个例子是典型的银行账户上的贷款，而不是<span>交易账户</span>上的债券。由不同债务人发行的N个工具组合的信用损失(CL)的分布可以描述为：</p>
+<blockquote><span>\displaystyle CL = \sum_{i=1}^N b_i \times CE_i \times (1-f_i)</span> </blockquote>
+<ul>
+<li><span>b_i</span> ：一个伯努利<span>随机变量</span>，如果发生违约，则取1，否则取0，概率为 <span>p_i</span>                                                        ，使得 <span>E[b_i] = p_i</span> </li>
+<li><span>CE_i</span> ：违约时的信用风险敞口</li>
+<li><span>f_i</span> ：回收率，进而违约损失率为 <span>LGD_i = (1 - f_i )</span> </li>
+</ul>
+<p>理论上，所有这些都可以是随机变量。如果它们独立，则预期信用损失为：</p>
+<blockquote><span>\displaystyle  E[CL] =  \sum_{i=1}^N E[b_i] \times E[CE_i] \times E[LGD_i] = \sum_{i=1}^N p_i \times E[CE_i] \times E[LGD_i] </span> </blockquote>
+<p>为了理解信用分配的驱动因素，考虑一个简单的情况，即所有<span>债权人</span>的违约和违约损失分布相同。风险敞口不变，固定为1美元。实际的信用损失是</p>
+<blockquote><span>\displaystyle CL  = \sum_{i=1}^n LGD_i</span> </blockquote>
+<p>其中n为实际损失数，介于0到N之间。这是随机数的随机和，每个随机数由实际LGD组成。如前所述，信用损失的期望值为：</p>
+<blockquote><span>E[CL] = E[n]E[LGD] = NpE[LGD]</span> </blockquote>
+<p>在其他条件相同的情况下，预期信用损失与违约概率p呈线性关系。现在考虑用<span>标准差</span>衡量的CL的离散度。根据总方差定律，得到：</p>
+<blockquote><span>V[CL] = E{V[CL|n]} + V{E[CL|n]}</span> </blockquote>
+<p>得到：</p>
+<blockquote><span>V[CL] = E{nV(LGD]} + V{nE[LGD]}</span> </blockquote>
+<p>其中，第一项是因为<span>自变量</span>和的方差等于方差之和。然后：</p>
+<blockquote><span>V[CL] = E[n]V[LGD] + V[n]{E[LGD]}^2 = NpV[LGD] + Np(1 − p){E[LGD]}^2</span> </blockquote>
+<p>当N = 1时，得到：</p>
+<blockquote><span>SD[CL] = \sqrt{pV[LGD] + p(1 − p){E[LGD]}^2}</span> </blockquote>
+<p>这里可以看到，信贷损失的<span>波动性</span>是由LGD的方差和违约指标 <span>V[b] = p(1−p)</span> 的方差共同驱动的。</p>
+<p>然而，与预期信用损失不同，SD[CL]与p之间的关系是<span>非线性</span>的。当p很小时，它近似与 <span>\sqrt p</span> 成正比。因此，SD[CL]随p的增加比E[CL]增加得更快。例如，当p从0到0.01时，它的
+                                                        <span>平方根</span>从0到0.10。因此，在违约率较高的情况下，信贷损失的分散程度往往大于平均损失。</p>
+<p>⭐ <b>例19.3</b> You have granted an unsecured loan to a company. This loan will be paid off by a single payment of $50 million. The company has a 3% chance of defaulting over the life of the transaction
+                                                        and your calculations indicate that if it defaults you would recover 70% of your loan from the bankruptcy courts. If you are required to hold a credit reserve equal to your expected credit loss,
+                                                        how great a reserve should you hold?</p>
+<ul>
+<li>a. $450,000</li>
+<li>b. $750,000</li>
+<li>c. $1,050,000</li>
+<li>d. $1,500,000</li>
+</ul>
+<p>解析：选 a 。ECL = 名义金额 * 违约概率 * 违约损失 = $50,000,000 × 0.03 ×(1 - 70%) = $450,000。</p>
+<p>⭐ <b>例19.4</b> A bank has booked a loan with total commitment of $50,000 of which 80% is currently outstanding. The default probability of the loan is assumed to be 2% for the next year and loss given
+                                                        default (LGD) is estimated at 50%. The standard deviation of LGD is 40%. Drawdown on default (i.e., the fraction of the undrawn loan) is assumed to be 60%. The expected and unexpected losses (standard
+                                                        deviation) for the bank are</p>
+<ul>
+<li>a. Expected loss = $500, unexpected loss = $4,140</li>
+<li>b. Expected loss = $500, unexpected loss = $3,220</li>
+<li>c. Expected loss = $460, unexpected loss = $3,220</li>
+<li>d. Expected loss = $460, unexpected loss = $4,140</li>
+</ul>
+<p>解析：选 d 。首先计算默认情况下的敞口（提现金额），即80% × $50,000 = $40,000加上默认提现金额，即60% × $10,000 = $6,000，总共CE = $46,000。<span>预期损失</span>为该金额乘以p × E[LGD] = 0.02 × 50% = 1%，即EL = 460。然后计算损失的标准差。方差为pV[LGD]
+                                                        + p(1−p){E[LGD]}^2 = 0.02(0.40)^2 + 0.02(1−0.02)(0.50)^2 = 0.00810，开方得0.090。最后乘以46000得到4140。如果忽略V[LGD]，会得到错误答案3220。注意，意外损失比预期损失大得多。</p>
+<p>⭐ <b>例19.5</b> Define unexpected loss (UL) as the standard deviation of losses and expected loss (EL) as the average loss. Further define LGD as loss given default, and EDF as the expected default frequency.
+                                                        Which of the following statements hold(s) true?</p>
+<ol>
+<li>I. EL increases linearly with increasing EDF.</li>
+<li>II. EL is often higher than UL.</li>
+<li>III. With increasing EDF, UL increases at a much faster rate than EL.</li>
+<li>IV. The lower the LGD, the higher the percentage loss for both the EL and UL.</li>
+</ol>
+<ul>
+<li>a. I only</li>
+<li>b. I and II</li>
+<li>c. I and III</li>
+<li>d. II and IV</li>
+</ul>
+<p>解析：选 c 。由式(19.5)可知，EL随p线性增加，故 I 正确。II 是不正确的，对于集中的投资组合来说肯定是这样。由式(19.7)可知，UL随p线性增长快于EL，故 III 是正确的。最后，IV 是不正确的，因为更高(而不是更低)的LGD将导致更高的信贷损失。</p>
+<h3>2、联合事件</h3>
+<p>更一般地，在大量信贷的情况下，信贷损失的分散程度严重依赖于违约事件之间的相关性。当默认事件在统计上独立时，可以很容易地推导出封闭解。这大大简化了分析，因为任何联合事件的概率只是单个事件概率的乘积：</p>
+<blockquote><span>p(A \ {\rm and} \  B) = p(A) × p(B)</span> </blockquote>
+<p>在另一个极端，如果这两个事件完全相关，也就是说，如果B总是在A违约时违约，有：</p>
+<blockquote><span>p(A \ {\rm and}  \  B) = p(B | A) × p(A) = 1 × p(A) = p(A)</span> </blockquote>
+<p>当边际概率相等时，p(A) = p(B)。例如，假设边际概率是p(A) = p(B) = 1%。那么联合事件的概率在独立情况下为0.01%，在完全相关情况下为1%。更一般地可以证明，共同违约的概率取决于边际概率和相关性。乘积的期望可以与<span>协方差</span>相关：</p>
+<blockquote><span>E[b_A × b_B] = Cov[b_A, b_B] + E[b_A]E[b_B] =\rho \sigma_A \sigma_B + p(A)p(B)</span> </blockquote>
+<p>假设 <span>b_A</span> 是一个伯努利变量，其标准差是 <span>a = p(a)[1−p(a)]</span> ， <span>b_B</span> 也是如此。然后有：</p>
+<blockquote><span>p(A \ {\rm and}  \  B) =  {\rm Corr} (A, B) \sqrt {p(A)[1 − p(A)]} \sqrt {p(B)[1 − p(B)]} + p(A)p(B)</span> </blockquote>
+<p>如果相关性是1，p(A) = p(B) = p，有：</p>
+<blockquote><span>p(A \ {\rm and}  \  B) = 1 × [p(1 − p)]^{1/2} × [p(1 − p)]^{1/2 }+ p^2 = [p(1 − p)] + p^2 = p</span> </blockquote>
+<p>如果相关性为0.5，p(A) = p(B) = 0.01，那么我们得到p(A and B) = 0.00505，这只是边际概率的一半。这个例子完整的<span>联合分布</span>如下：</p>
+<div>
+<pre><code>                          B
+             违约       不违约       边际
+   违约      0.00505    0.00495      0.01
+A  不违约    0.00495    0.98505      0.99
+   边际      0.01       0.99</code></pre>
+</div>
+<p>注意每一行和每一列的概率如何与边际概率相加。从这些信息中，我们可以推断出所有剩余的概率。例如，当A违约时，B不违约的概率为0.01−0.00505 = 0.00495。用联合概率填满整个表。</p>
+<h3>3、例子</h3>
+<p>考虑一个$100 million的投资组合，其中有ABC三种债券，违约概率不同。为了简化，假设(1)风险敞口是恒定的，(2)违约情况下的恢复为零，(3)违约事件在三个<span>发行人</span>之间是独立的。下表显示了风险敞口和违约概率。</p>
+<div>
+<pre><code>******面板1******
+发行方 敞口  概率
+A      $25   0.05
+B      $30   0.10
+C      $45   0.20</code></pre>
+</div>
+<p>对于面板1，可以很容易地计算期望损失为E[CL] = Σ pi × CEi = 0.05 × 25 + 0.10 × 30 + 0.20 × 45 = 13.25 million。这是许多重复的假设样本的平均信用损失。这种计算非常简单，除了违约概率外，不需要任何关于分布的信息。还要注意，通常约定损失为正数。</p>
+<div>
+<pre><code>**************************面板2*****************************
+违约     损失   概率     累积概率  预期     方差
+i        Li     p(Li)              Lip(Li)  (Li-ELi)^2 p(Li)
+无       $0     0.6840   0.6840    0.000    120.08
+A        $25    0.0360   0.7200    0.900    4.97
+B        $30    0.0760   0.7960    2.280    21.32
+C        $45    0.1710   0.9670    7.695    172.38
+A, B     $55    0.0040   0.9710    0.220    6.97
+A, C     $70    0.0090   0.9800    0.630    28.99
+B, C     $75    0.0190   0.9990    1.425    72.45
+A, B, C  $100   0.0010   1.0000    0.100    7.53</code></pre>
+</div>
+<p>相反，我们确实需要描述整个分布来得出最坏损失度量。这是在面板2中完成的，其中列出了所有可能的状态。在状态1中，不存在违约，其概率为(1−p1)(1−p2)(1−p3) =(1−0.05)(1−0.10)(1−0.20)= 0.684，给定独立性。在状态2中，债券A违约而其他状态不违约，概率为p1(1−p2)(1−p3) = 0.05(1−0.10)(1−0.20)= 0.036。其他状态以此类推。</p>
+<p>下图为信贷损失的频率分布图。</p>
+<figure><img src="https://picx.zhimg.com/v2-1804c8ffcd59b3b1100dc199f96c48cb_1440w.jpg" width="1236"/>
+<figcaption>信贷损失分布图</figcaption>
+</figure>
+<ul>
+<li>预期损失：Expected loss</li>
+<li>意外损失：Unexpected loss，或称<span>非预期损失</span></li>
+</ul>
+<p>该图还显示了方差的计算，为：</p>
+<blockquote><span>\displaystyle  V[CL] = \sum_{i=1}^N (L_i - E[CL])^2 p(L_i)</span> </blockquote>
+<p>求解得到434.7。开方得到标准差为20.9。或者可以用95%的<span>分位数</span>表示损失的范围，得到最小CLi：</p>
+<blockquote><span>P(CL ≤ CL_i ) ≥ 0.95</span> </blockquote>
+<p>由于损失记录为正数，分位数是最低损失，因此较低损失的累积概率等于或略高于95%。从面板2中可以看到，第四行的累积概率为0.9670，略高于0.95，对应于$45 million的损失。</p>
+<div>
+<pre><code>**************************面板2*****************************
+违约     损失   概率     累积概率  预期     方差
+i        Li     p(Li)              Lip(Li)  (Li-ELi)^2 p(Li)
+无       $0     0.6840   0.6840    0.000    120.08
+A        $25    0.0360   0.7200    0.900    4.97
+B        $30    0.0760   0.7960    2.280    21.32
+C        $45    0.1710   0.9670    7.695    172.38
+A, B     $55    0.0040   0.9710    0.220    6.97
+A, C     $70    0.0090   0.9800    0.630    28.99
+B, C     $75    0.0190   0.9990    1.425    72.45
+A, B, C  $100   0.0010   1.0000    0.100    7.53</code></pre>
+</div>
+<p>下图绘制了<span>累积分布函数</span>，显示95%分位数为$45 million。</p>
+<figure><img src="https://pic1.zhimg.com/v2-2c3ae2f5c477a6377fb6b143123e4f60_1440w.jpg" width="1238"/>
+<figcaption>信用损失的累积分布</figcaption>
+</figure>
+<p>从偏离平均值的角度来看，这是45 - 13.2 ≈ $32 million的意外损失。这是<b>信用风险价值</b>(credit VAR)的一种衡量方法。然而，有时信用风险是用总损失来衡量的，在这种情况下是$45 million。这个非常简单的三债券组合为衡量信用风险分布提供了一个有用的例子。它表明分布是左偏的，且分布具有与违约事件相对应的不规则凸起。</p>
+<p>注意，<b>预期信用损失取决于违约概率，而不取决于违约相关性。而违约相关性越高，意外信用损失越高</b>。</p>
+<p>⭐ <b>例19.6</b> An investor holds a portfolio of $100 million. This portfolio consists of A-rated bonds ($40 million) and BBB-rated bonds ($60 million). Assume that the one-year probabilities of default
+                                                            for A-rated and BBB-rated bonds are 3% and 5%, respectively, and that they are independent. If the recovery value for A-rated bonds in the event of default is 70% and the recovery value for BBB-rated
+                                                            bonds is 45%, what is the one-year expected credit loss from this portfolio?</p>
+<ul>
+<li>a. $1,672,000</li>
+<li>b. $1,842,000</li>
+<li>c. $2,010,000</li>
+<li>d. $2,218,000</li>
+</ul>
+<p>解析：选 c 。预期损失为Σ pi × CEi ×(1−fi) = $40,000,000 × 0.03(1 - 0.70)+ $60,000,000 × 0.05(1 - 0.45)= $2,010,000。</p>
+<p>⭐ <b>例19.7</b> A portfolio consists of two bonds. The credit VAR is defined as the maximum loss due to defaults at a confidence level of 98% over a one-year horizon. The probability of joint default
+                                                            of the two bonds is 1.27%, and the default correlation is 30%. The bond value, default probability, and recovery rate are USD 1,000,000, 3%, and 60% for one bond, and USD 600,000, 5%, and 40%
+                                                            for the other. What is the expected credit loss of the portfolio?</p>
+<ul>
+<li>a. USD 0</li>
+<li>b. USD 9,652</li>
+<li>c. USD 20,348</li>
+<li>d. USD 30,000</li>
+</ul>
+<p>解析：选 d 。第一个债券的ECL为1,000,000 × 3% ×(1−60%)= 12,000，第二个债券的ECL为600,000 × 5% ×(1−40%)= 18,000。加起来是$30,000。注意，这个数字不依赖于默认的相关性。</p>
+<p>⭐ <b>例19.8</b> Continuing with the previous question（例19.7）, what is the best estimate of the unexpected credit loss (away from the ECL), or credit VAR, for this portfolio?</p>
+<ul>
+<li>a. USD 570,000</li>
+<li>b. USD 400,000</li>
+<li>c. USD 360,000</li>
+<li>d. USD 370,000</li>
+</ul>
+<p>解析：选 d 。本题中，联合违约概率很重要。如果两个债券违约，损失为$1,000,000 ×(1−40%)+ $600,000 ×(1−60%)= $400,000 + $360,000 = $760,000。这发生的概率是1.27%。第二大损失是400,000，其概率为3.00 - 1.27 = 1.73%。其累计概率为100.00−1.17 = 98.73%。这略高于98%，因此400,000是98%或更高
+                                                            <span>置信水平</span>的分位数。减去平均值得到370,000。</p>
+<p>⭐ <b>例19.9</b> Suppose Bank Z lends EUR 1 million to X and EUR 5 million to Y. Over the next year, the PD for X is 0.2 and for Y is 0.3. The PD of joint default is 0.1. The loss given default is
+                                                            40% for X and 60% for Y. What is the expected loss of default in one year for the bank?</p>
+<ul>
+<li>a. EUR 0.72 million</li>
+<li>b. EUR 0.98 million</li>
+<li>c. EUR 0.46 million</li>
+<li>d. EUR 0.64 million</li>
+</ul>
+<p>解析：选 b 。联合PD对ECL不重要。ECL = 1 × 20% × 40% + 5 × 30% × 60% = 0.08 + 0.90 = 0.98。</p>
+<p>⭐ <b>例19.10</b> Consider an A-rated bond and a BBB-rated bond. Assume that the one-year probabilities of default for the A- and BBB-rated bonds are 2% and 4%, respectively, and that the joint probability
+                                                            of default of the two bonds is 0.15%. What is the default correlation between the two bonds?</p>
+<ul>
+<li>a. 0.07%</li>
+<li>b. 2.6%</li>
+<li>c. 93.0%</li>
+<li>d. The default correlation cannot be calculated with the information provided.</li>
+</ul>
+<p>解析：选 b 。Corr = [0.0015 − 0.02 × 0.04]/ {(0.02[1 − 0.02])^0.5 * (0.04[1 − 0.04])^0.5} = 0.025516.</p>
+<hr/>
+<h2>四、信用风险分散</h2>
+<p>现代<span>银行业</span>建立在一个明智的观念之上，即贷款组合的风险低于单个贷款。与市场风险一样，信用风险管理最重要的特征是在违约情况下分散风险的能力。为了说明这一点，下图给出了$100 million贷款组合的损失分布。违约的概率固定为1%。如果发生违约，回收为零。</p>
+<figure><img src="https://pica.zhimg.com/v2-2d6db8c4cf303f11576de6678fdc9fca_1440w.jpg" width="1752"/>
+<figcaption>不同设定下的信贷损失分布图（1）</figcaption>
+</figure>
+<ul>
+<li><b>左上角</b>：只有一个贷款，可以选择不违约的概率为99%，或损失1亿美元的概率为1%预期损失为EL = 0.01 × $100 + 0.99 × 0 = $1 million。问题在于，如果发生违约，将对底线造成重大打击，可能导致贷款银行破产。基本上，这就是百富勤投资(Peregrine Investments Holdings)的遭遇。百富勤投资是香港主要的
+                                                                <span>投资银行</span>之一，由于1997年的亚洲<span>金融危机</span>而倒闭。该行破产的主要原因是，它向印尼出租车运营商PT Steady Safe提供了一笔2.35亿美元的贷款，占该行股本的四分之一。在单笔贷款的情况下，分布的价差相当大，方差为99，这意味着标准差(SD)约为$10 million。然而，仅仅关注
+                                                                    <span>标准偏差</span>就忽略了分布中严重的偏态。</li>
+<li><b>左下角</b>：考虑10笔贷款，每笔$10 million。总概念和以前一样。我们假设默认值是独立的。预计损失仍为$1 million，即10 × 0.01 × $10 million。然而，SD现在是$3 million，比以前少了很多。</li>
+<li><b>右上角</b>：考虑100笔贷款，每笔$1 million。预期损失仍然是$1 million，但SD现在是$1 million，甚至更低。</li>
+<li><b>右下角</b>：考虑1000笔贷款，每笔$100,000。这将产生$0.3 million的SD。</li>
+</ul>
+<p>为了便于比较，所有这些图表都使用相同的垂直和水平<span>比例尺</span>。然而，这并不能完全揭示分布情况。这就是为什么下图扩大了1000个交易对手的分布，看起来类似于<span>正态分布</span>。这反映了<span>中心极限定理</span>(CLT)，该定理指出自变量和的分布趋向于正态分布。值得注意的是，即使从一个高度偏斜的分布开始，由于多样化的影响，最终也会得到一个正态分布。</p>
+<figure><img src="https://pic3.zhimg.com/v2-896a9d00776c0dd936e014c98890765e_1440w.jpg" width="1134"/>
+<figcaption>不同设定下的信贷损失分布图（2）</figcaption>
+</figure>
+<p>此外，分布的spread变得非常小。这就解释了为什么分散在大量信贷上的<span>消费贷款</span>组合比典型的企业贷款组合风险更低。对于以相同概率p发生的N个事件，定义变量 X = Σ bi 为违约数量，bi = 1 表示违约发生。投资组合的预期信贷损失是 </p>
+<ul>
+<li>E[CL] = E[X] × $100/N = pN× $100/N = p × $100。</li>
+</ul>
+<p>这取决于n，而是取决于违约的平均概率和总风险敞口的$100 million。当事件是独立的，这个变量的方差是，使用<span>二项分布</span>的结果，可得：</p>
+<ul>
+<li>V[CL] = V[X] × ($100/N)^2 = p(1 − p)N× ($100/N)^2</li>
+</ul>
+<p>开方得到标准差：</p>
+<ul>
+<li>SD[CL] = [p(1-p)]^0.5 * 100 / N^0.5 </li>
+</ul>
+<p>对于一个恒定的总本金，它随着N的增加而缩小到零。</p>
+<p>应该注意到，信用是独立的这一关键假设。如果不是这种情况，分布将更慢地失去其不对称性。即使有大量的消费贷款，离散度也不会趋向于零，因为总体经济状况是<span>消费信贷</span>背后的一个共同因素。事实上，在<span>经济衰退</span>时期发生的违约要比在<span>经济扩张</span>时期多得多。这是对在扩张时期校准的信贷风险模型持怀疑态度的原因之一。</p>
+<p>机构松散地试图通过<b>限制集中度</b>(concentration limits)来实现多样化。换句话说，它们限制了特定行业或地区部门的敞口程度，比如贷款。这背后的理由是，行业内违约的相关性高于行业间违约的相关性。相反，<b>集中风险</b>(concentration risk)是同时可能发生过多违约的风险。</p>
+<p>本节中的分布是使用封闭解推导出来的，它假设同质性或相同的违约概率p和独立性。在这种情况下，世界上所有可能的状态都可以用二项展开来描述。这个一般定理说明：</p>
+<blockquote><span>(x + y)^N = a_0x^N + a_1x^{N−1}y^1 + a_2x^{N−2}y^2 +· · ·+a_{N−1}x^1y^{N−1} + a_Ny^N</span> </blockquote>
+<p>其中，组合数 <span>a_i</span> 可以表示为：</p>
+<blockquote><span>\displaystyle a_i = \binom{N}{i} = \frac{N!}{i!(N-i)!}</span> </blockquote>
+<p>如果定义x = p和y = 1−p，展开式的和必然是1，并且每一项都给出这两个事件组合的概率。</p>
+<blockquote><span>\displaystyle 1=p^N + Np^{N−1}(1 − p)^1 + \frac{N(N-1)}{2} p^{N-2} (1-p)^2 + ...+Np^1(1 − p)^{N−1} +(1 − p)^N</span> </blockquote>
+<p>例如，当N = 3时，有：</p>
+<blockquote><span>1 = p^3 + 3p^2(1 − p) + 3p(1 − p)^2 + (1 − p)^3</span> </blockquote>
+<p>第一项给出三次违约的概率。第二个是恰好发生两次违约的概率，其中涉及三个事件：</p>
+<ol>
+<li>债券1与债券2和债券3不违约</li>
+<li>债券2与其他债券不违约</li>
+<li>债券3与其他债券不违约</li>
+</ol>
+<p>最后一项给出无违约的概率。这是一种方便的分解，但只有在违约值独立时才有效。</p>
+<p>⭐ <b>例19.11</b> A portfolio of bonds consists of five bonds whose default correlation is zero. The one-year probabilities of default of the bonds are: 1%, 2%, 5%, 10%, and 15%. What is the
+                                                                    one-year probability of no default within the portfolio?</p>
+<ul>
+<li>a. 71%</li>
+<li>b. 67%</li>
+<li>c. 85%</li>
+<li>d. 99%</li>
+</ul>
+<p>解析：选 a 。(1 − 1%)(1 − 2%)(1 − 5%)(1 − 10%)(1 − 20%) = 70.51%</p>
+<p>⭐ <b>例19.12</b> There are 10 bonds in a credit default swap basket. The probability of default for each of the bonds is 5%. The probability of any one bond defaulting is completely independent
+                                                                    of what happens to the other bonds in the basket. What is the probability that exactly one bond defaults?</p>
+<ul>
+<li>a. 5%</li>
+<li>b. 50%</li>
+<li>c. 32%</li>
+<li>d. 3%</li>
+</ul>
+<p>解析：选 c 。a1 =(10/1) = 10，概率为10p^1*(1−p)^9 = 10 × 0.05 ×(1−0.05)^9 = 0.315。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C15 单变量模型 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C15 单变量模型">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C15 单变量模型</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、回测</h2>
+<h3>1、度量异常</h3>
+<p>任何风险模型都应该检查是否与现实相符。<b>回测</b>(Backtesting)是系统地比较VAR预测与<span>实际回报</span>的过程。这个过程对风险管理者来说是独一无二的信息。它应该发现模型中的弱点并指出需要改进的地方。</p>
+<p>回溯测试也很重要，因为这是银行监管机构允许银行使用内部风险指标来确定支持其交易组合所需的监管资本金数额的原因之一。因此，本节还涵盖了巴塞尔委员会在 Basel I Capital Accord 市场风险修正案中实施的回测框架。</p>
+<p>回测将每日的VAR预测与第二天的实现损益进行比较。如果实际损失比VAR更严重，则将事件记录为<b>异常</b>(exception)。然后，风险管理人员在一个带有 <span>T</span> 观察值的窗口上计算异常的数量 <span>x</span>                                    。</p>
+<p>但首先，必须定义<b>交易结果</b>(trading outcome)。一种定义是<b>实际投资组合</b>(actual portfolio)在第二天的损益。但是，这种收益率与前一天的VAR并不完全一致。所有的VAR指标都假设从交易日结束到下一个交易日的投资组合处于冻结(frozen)状态，而忽略了手续费收入。在实践中，交易组合确实会发生变化。日内交易通常会增加风险。手续费收入更稳定，降低风险。虽然这些影响可能相互抵消，但实际投资组合的波动性可能比VAR预测的要大或小。</p>
+<p>这就是为什么建议构建<b>假设的投资组合</b>(hypothetical portfolios)，以便与VAR度量精确匹配。他们的收益来自于所有证券的实际价格变化的固定头寸，从接近收盘时衡量。</p>
+<p>巴塞尔框架建议在回溯测试中同时使用假设和实际的交易结果。这两种方法可能提供关于<span>风险管理系统</span>质量的互补信息。例如，假设用实际而非假设的投资组合进行的回测失败。这表明模型是健全的，但实际交易增加了波动性。相反，如果使用假设模型的回测失败，那么结论应该是风险模型有缺陷。</p>
+<h3>2、<span>二项分布</span></h3>
+<p>考虑在99%置信水平 <span>c</span> 下定义的每日水平上的VAR度量。这意味着对于每日例外情况， <span>p = 1−c </span> = 1%的概率。回测的窗口时间是 <span>T</span> = 250天。</p>
+<p>异常的数量是一个<span>随机变量</span> <span>X</span> ，它是 <span>T</span> 次独立<span>伯努利试验</span>的结果，每次试验的结果是
+                                        <span>y = 0</span> 或 <span>y = 1</span> ，通过或失败。因此， <span>X</span>                                        具有二项分布，具有<span>密度函数</span>：</p>
+<blockquote><span>f(x) = \begin{pmatrix} T  \\ x \end{pmatrix} p^x (1-p)^{T-x} \quad</span>， <span>x = 0, 1, . . . , n</span> </blockquote>
+<p>其中 <span> \begin{pmatrix} T  \\ x \end{pmatrix}  = \frac{T!}{x!(T − x)!}</span> ，参数 <span>p</span> 是异常发生的概率，在0和1之间。二项变量的均值和<span>方差</span>为 <span>E[X] = pT</span> , <span>V[X] = p(1−p)T</span> 。</p>
+<p>例如，我们想知道在T = 250的样本中，当真实概率为1%时，观察到x = 0异常的概率是多少。我们应该期望在许多这样的样本中观察到平均p × T = 2.5的异常。然而，由于运气的原因，会有一些完全没有例外的样品。这个概率是：</p>
+<blockquote><span>f(X=0) = \frac{T!}{x!(T-x)!} p^x (1-p)^{T-x}  = \frac{250!}{0!(250)!} 0.01^0 0.99^{250}  = 0.081 </span> </blockquote>
+<p>因此，我们期望在<span>零假设</span>下观察到8.1%的样本。我们可以用不同的 <span>x</span> 值重复这个计算。例如，观察到8个异常的概率是：</p>
+<blockquote><span>f(X=8) = \frac{T!}{x!(T-x)!} p^x (1-p)^{T-x}  = \frac{250!}{8!(242)!} 0.01^8 0.99^{242}  = 0.02\% </span> </blockquote>
+<p>因为这个概率如此之低，所以这个结果应该会引发这样的问题：真实概率是否为1%。</p>
+<p>⭐ <b>Q15.1 </b>Based on a 90% confidence level, how many exceptions in back-testing a VAR would be expected over a 250-day trading year?</p>
+<ul>
+<li>a. 10</li>
+<li>b. 15</li>
+<li>c. 25</li>
+<li>d. 50</li>
+</ul>
+<p>解析：选 c 。p × T = 10% × 250 = 25。</p>
+<p>⭐ <b>Q15.2 </b>A large, international bank has a trading book whose size depends on the opportunities perceived by its traders. The market risk manager estimates the one-day VAR, at the 95% confidence level, to be USD
+                                        50 million. You are asked to evaluate how good a job the manager is doing in estimating the one-day VAR. Which of the following would be the most convincing evidence that the manager is doing a poor job, assuming
+                                        that losses are identical and independently distributed (i.i.d.)?</p>
+<ul>
+<li>a. Over the past 250 days, there are eight exceptions.</li>
+<li>b. Over the past 250 days, the largest loss is USD 500 million.</li>
+<li>c. Over the past 250 days, the mean loss is USD 60 million.</li>
+<li>d. Over the past 250 days, there is no exception.</li>
+</ul>
+<p>解析：选 d 。应该预期(1 − 95%)250 = 12.5个例外(exceptions)。有8个例外是太少了，但这种差异可能是由于运气。然而，没有例外是非常不寻常的，概率为1 - (1 - 5%)^250，这是非常低的。这意味着风险管理人员提供的VAR估值过高。否则，如果没有更多关于利润分配的信息，最大损失或平均损失就没有直接用处。</p>
+<h3>3、<span>正态近似</span></h3>
+<p>当 <span>T</span> 较大时，我们可以利用<span>中心极限定理</span>，用正态分布近似二项分布：</p>
+<blockquote><span>z = \frac{x − pT}{\sqrt{p(1 − p)T}} \approx N(0,1)</span> </blockquote>
+<p>如果决策规则在双尾95%测试<span>置信水平</span>下定义，那么 <span>|z|</span> 的截断值是1.96。例如，观察8个异常的<span>z值</span>是z =(8-2.5)/ 1.573 = 3.50，这是非常高的。因此，一个经过良好校准、置信水平为99%的模型不太可能产生8个异常。</p>
+<h3>4、回测的决策规则</h3>
+<p>平均而言，我们预计在过去的一年里，250例中的1%，或2.5例例外。太多的例外表明，要么是模型低估了VAR，要么是交易者不走运。我们如何决定哪种解释更有可能？这种<span>统计测试</span>框架必须考虑到两种类型的错误：</p>
+<ul>
+<li><b>第一类错误</b>，描述了由于运气不好而拒绝正确模型的概率</li>
+<li><b><span>第二类错误</span></b>，它描述了不拒绝错误模型的概率</li>
+</ul>
+<p>理想情况下，人们希望创建具有低第一类和第二类错误率的决策规则。在实践中，人们必须权衡一种错误类型与另一种错误类型。大多数统计测试固定第一类的错误率，比如在5%，并结构测试以最小化第二类的错误率，或最大限度地提高测试的能力。下表显示了如何使用<span>累积分布</span>来计算异常数量的截止值，作为第一类错误率的函数。</p>
+<table>
+<tbody>
+<tr>
+<th>异常数量</th>
+<th>概率</th>
+<th><span>累积概率</span></th>
+<th>第一类错误率</th>
+</tr>
+<tr>
+<td>0</td>
+<td>0.0811</td>
+<td>0.0811</td>
+<td>100.00%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.2047</td>
+<td>0.2858</td>
+<td>91.89%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.2574</td>
+<td>0.5432</td>
+<td>71.42%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.2150</td>
+<td>0.7581</td>
+<td>45.68%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.1341</td>
+<td>0.8922</td>
+<td>24.19%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.0666</td>
+<td>0.9588</td>
+<td>10.78%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.0275</td>
+<td>0.9863</td>
+<td>4.12%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0.0097</td>
+<td>0.9960</td>
+<td>1.37%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.0030</td>
+<td>0.9989</td>
+<td>0.40%</td>
+</tr>
+<tr>
+<td>9</td>
+<td>0.0008</td>
+<td>0.9998</td>
+<td>0.10%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0.0002</td>
+<td>0.9999</td>
+<td>0.03%</td>
+</tr>
+</tbody>
+</table>
+<p>例如，观察到5个或5个以上异常的累积概率是10.78%。这是1减去最多4次观测的累积概率，即从中间列开始的0.8922。使用这个分界点将惩罚在大约11%的情况下是正确的VAR模型。较高的截止点可以降低这种1型错误率。例如，假设在10个或更多的例外之后，决策规则被更改为拒绝。这将把类型1的错误率从10.78%降低到0.03%。所以，我们几乎不会拒绝正确的模型。</p>
+<p>然而，这将使我们更有可能错过被错误指定的VAR模型。假设，例如，交易员试图故意低估VAR，使用96%而不是99%的置信水平。这导致预期的例外数量为4% × 250 = 10。因此，第二类错误率非常高，约为50%。</p>
+<h3>5、回测的巴塞尔规则</h3>
+<p>巴塞尔委员会建立了一个基于每日风险价值回测试的框架，最多有4个异常是可以接受的，这定义了一个绿色区域。如果有5个或5个以上的例外，银行就会被划入黄色或红色区域，并受到累进性罚款(progressive penalty)，这将伴随着更高的资本金要求。粗略地说，<span>资本费用</span>表示为在99%的置信水平下10天VAR的乘数。标准乘数k是3。进入黄色区域后，因子k从3增加到4，或根据下面的巴塞尔罚款区域(Basel
+                                            Penalty Zones)表格形成<b><span>附加因子</span></b>(plus factor)：</p>
+<table>
+<tbody>
+<tr>
+<th>区域</th>
+<th>异常数量</th>
+<th>k潜在增加</th>
+</tr>
+<tr>
+<td>绿色区域</td>
+<td>0到4</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>黄色区域</td>
+<td>5</td>
+<td>0.40</td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>0.50</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>0.65</td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td></td>
+<td>9</td>
+<td>0.85</td>
+</tr>
+<tr>
+<td>红色区域</td>
+<td>≥10</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<p>进入红色区域会自动产生不可裁量的处罚。这是因为，如果模型确实是正确的，那么几乎不可能观察到10个或更多的异常。如果异常的数量在黄色区域内，主管有权根据异常的原因进行处罚。巴塞尔委员会使用这些类别：</p>
+<ul>
+<li><b>模型基本完整性</b>(Basic integrity of the model)：发生偏差是因为位置报告不正确或因为程序代码中的错误。这是一个非常严重的缺陷。在这种情况下，应施加惩罚并采取<span>纠正行动</span>。</li>
+<li><b>模型精度不足</b>(Deficient model accuracy)：偏差的发生是因为模型没有以足够的精度度量风险，例如没有足够的风险因素。这也是一个严重的缺陷。应该采取惩罚措施，并对这种模式进行审查。</li>
+<li><b><span>日内交易</span></b>(Intraday trading)：一天内的<span>头寸</span>发生变化。在这里，“应该考虑”惩罚。如果异常随着假设回报消失，问题就不在银行的VAR模型中。</li>
+<li><b>坏运气</b>：市场尤其不稳定或相关性发生了变化。这些异常情况“至少在某些时候应该会发生”，可能并不意味着模型有缺陷，而只是运气不好。</li>
+</ul>
+<h3>6、回测的评价</h3>
+<p>最后，我们应该注意<span>异常测试</span>只关注异常出现的频率。这与VAR只是一个<span>分位数</span>的观点是一致的。然而，这种计算方法完全忽略了损失的大小。这是基于VAR的<span>风险度量</span>的一个普遍缺陷，可以用风险条件值(CVAR)来补救。</p>
+<p>传统回测方法的另一个问题是，它忽略了损失的时间模式。理想情况下，异常应该在这段时间内一致出现。相反，异常在短时间内聚集(bunch)的模式表明风险度量的弱点。因此，<span>风险模型</span>应该考虑风险的时变，例如使用 GARCH模型。例如，即使回测在过去一年中只产生了4个异常（通过了<span>巴塞尔协议</span>的要求），这4个异常发生在上个月的事实也应该引起关注，因为投资组合在未来几天更有可能遭受巨大损失。</p>
+<p>⭐ <b>Q15.3 </b>Which of the following procedures is essential in validating the VAR estimates?</p>
+<ul>
+<li>a. Stress-testing</li>
+<li>b. Scenario analysis</li>
+<li>c. Back-testing</li>
+<li>d. Once approved by <span>regulators</span>, no further <span>validation</span> is required.</li>
+</ul>
+<p>解析：选 c 。VAR估计需要与实际损益结果进行比较以进行验证，这称为<span>回测</span>。</p>
+<p>⭐ <b>Q15.4 </b>The Market Risk Amendment to the Basel Capital Accord defines the yellow zone as the following range of exceptions out of 250 observations:</p>
+<ul>
+<li>a. 3 to 7</li>
+<li>b. 5 to 9</li>
+<li>c. 6 to 9</li>
+<li>d. 6 to 10</li>
+</ul>
+<p>解析：选 b 。参见巴塞尔罚款区域表。</p>
+<p>⭐ <b>Q15.5 </b>Back-testing routinely compares daily profits and losses with model-generated risk measures to gauge the quality and accuracy of their risk measurement systems. The 1996 Market Risk Amendment
+                                                    describes the back-testing framework that is to accompany the internal models capital requirement. This back-testing framework involves</p>
+<ul>
+<li>I. The size of outliers</li>
+<li>II. The use of risk measure calibrated to a one-day holding period</li>
+<li>III. The size of outliers for a risk measure calibrated to a 10-day holding period</li>
+<li>IV. Number of outliers<br/></li>
+<li>a. II and III</li>
+<li>b. II only</li>
+<li>c. I and II</li>
+<li>d. II and IV</li>
+</ul>
+<p>解析：选 d 。IMA中的回测框架只计算每天发生异常的次数，例如比VAR更糟糕的损失。这涉及到异常值(outliers)的数量和每日VAR测量。</p>
+<p>⭐ <b>Q15.6 </b>Tycoon Bank announced that there were eight days in the previous year for which losses exceeded the daily 99% VAR. As a result, concerns emerged about the accuracy of the VAR implementation.
+                                                    Assuming that there are 250days in the year, which of the following statements is/are correct?</p>
+<ul>
+<li>I. Using a two-tailed 99% confidence level z-score test, the current VAR implementation understates the actual risk in the bank’s portfolio.</li>
+<li>II. Using a two-tailed 99% confidence level z-score test, the current VAR implementation overstates the actual risk in the bank’s portfolio.</li>
+<li>III. The bank’s exception rates for VAR may be inaccurate if the bank’s portfolio changes incorporate the returns from low-risk but highly profitable intraday market making activities.</li>
+<li>IV. If these eight exceptions all happened in the previous month, the model should be reexamined for faulty assumptions and invalid parameters.<br/></li>
+<li>a. I and III</li>
+<li>b. I, III, and IV</li>
+<li>c. III only</li>
+<li>d. I, II, and IV </li>
+</ul>
+<p>解析：选 b 。z-score为 <span>\left(8-2.5\right)/\sqrt{250\times0.01\times0.99}=3.5</span> 。太高了(大于2)，导致拒绝零的VAR模型是很好的校准。因此，VAR太低，陈述I是正确的。表述II是不正确的。然而，这可能是由于日内交易，因此III也是正确的。最后，如果所有8个异常都是在上个月发生的，那么就存在聚集(bunching)，应该重新检查模型，因此IV是正确的。</p>
+<h2>二、<span>极值理论</span></h2>
+<p>正如<b><a href="https://zhuanlan.zhihu.com/p/416164855">第12章</a></b>所言，VAR度量可以使用两种方法中的一种来计算。第一个是非参数的，依赖于对近期收益历史的模拟。第二种是参数化的，因为它为回报强加了一个分析密度函数，比如常态，它概括为一个<span>标准偏差</span>(参数)，VAR由此计算出来。
+                                                        <span>非参数方法</span>更一般，但不是很强大，这是通常情况下，很少作出假设。因此，由于抽样变化的影响，VAR估计可能非常不精确，特别是在高置信水平时。</p>
+<p>相反，本节转向第三种方法，它可以描述为半参数(semi-parametric)。<b>极值理论</b>(EVT, Extreme value theory)可用于拟合分析分布，但仅适用于左尾。这将导致更精确的VAR估计。此外，分析函数可用于外推VAR到其他置信水平。</p>
+<h3>1、极值理论的分布</h3>
+<p>极值理论可以看作是中心极限定理的扩展，该定理表明独立随机变量的平均值趋向于正态分布，而与原始分布无关。这涉及到分布的均值或中心。分布的尾部是值得关注的。根据极值理论， <span>x</span> 在截断点 <span>u</span>                                                        以外的<span>极限分布</span>属于以下一类：</p>
+<blockquote><span>F(y) =\left\{\begin{align}      1-(1+\xi y)^{-1/\xi}, \xi \ne 0     \\1-exp(-y), \xi = 0     \end{align}     \right. </span> </blockquote>
+<p>其中， <span>y = (x − u)/\beta</span> 。为了简化，定义损失 <span>x</span> 为正数，所以 <span>y</span> 也是正数。这种分布的特征是 <span>\beta&gt;0</span> ，一个比例参数，以及 <span>\xi</span>                                                        ，一个决定尾巴消失的速度的形状参数。这种方法称为<b>峰值过阈值</b>(POT, peaks over threshold)，其中 <span>u</span> 是固定的阈值。请注意，这是一个极限定理，这意味着EVT分布仅是渐近有效的（即当 <span>u</span> 增大时）。</p>
+<p>这种分布被称为<b><span>广义帕雷托分布</span></b>(GP, generalized Pareto)，因为它包含了其他分布作为特殊情况。例如，正态分布对应于 <span>\xi = 0</span> ，在这种情况下，尾巴以指数速度消失。典型的财务数据有
+                                                        <span>\xi&gt;0</span> ，意味着肥尾。这类分布包括 <span>\xi \rightarrow 0</span> 的耿贝尔(Gumbel)分布、
+                                                        <span>\xi&gt;0</span> 的弗雷歇(Frechet)分布、 <span>\xi&lt;0</span> 的威布尔(Weibull)分布。其中，<u>弗雷歇分布是最相关的金融风险管理</u>，因为大多数财务风险因素有比正态曲线更肥的尾部。<u>弗雷歇分布包括学生 t 分布和帕雷托分布</u>。</p>
+<p>另一种方法是<b><span>分块最大值</span></b>(block maxima)法，将样本分组成连续的块，从中确定每个最大值。在这种情况下，标准化极值的极限分布为<b>广义<span>极值分布</span></b>(GEV, generalized extreme value)。下图比较了分块最大值和峰值过阈值法：</p>
+<figure><img src="https://pic1.zhimg.com/v2-77962e1d76b90b880486a40c7597c824_1440w.jpg" width="1500"/></figure>
+<p>左侧选择的观察值是每个块中的最大值。右侧选择的观察值是大于 <span>u</span> 的。分块最大值忽略了极端值 <span>x_9</span> 、 <span>x_1</span> 和 <span>x_8</span> ，因为它们出现在一个已经有一个<span>离群值</span>的块中。在实践中，峰值过阈值方法得到了更广泛的应用，因为它更有效地利用数据，尽管它需要选择阈值。峰值过阈值更适合于尾部损失的风险度量，因为它侧重于超过阈值的分布。</p>
+<p>下图显示了使用广义帕雷托分布的美国股市数据的密度函数形状。正态密度下降得很快。当 <span>\xi = 0.2</span> 时，极值理论密度具有比正态密度更粗的尾部，这意味着遭受较大损失的可能性更高。对于风险管理而言，这是一个重要的观察结果。</p>
+<figure><img src="https://pica.zhimg.com/v2-2739a64e9ad1808f3fbe3ad49b129e06_1440w.jpg" width="1468"/></figure>
+<p>注意，极值理论密度仅定义在尾部，即当损失 <span>x</span> 超过任意截止点时，本例中取2。没有提到分布的其他部分。</p>
+<h3><b>2、VAR与极值理论</b></h3>
+<p>VAR和CVAR都可以上面的 <span>F(y) </span> 的解析分布得到封闭解。这需要估计尾部参数 <span>\xi</span> 和离散参数 <span>\beta</span> 。可以使用多种<span>统计方法</span>来实现：</p>
+<p>一是<b>最大似然法</b>(maximum likelihood)。首先定义一个分界点 <span>u</span> 。这个分界点的选择需要使尾部有足够数量的观测值。然而，这一理论在尾部的远处是最有效的。一个好的选择是选择 <span>u</span> ，以便在尾部包含5%的数据。例如，如果有T = 1000个观察值，将只考虑左尾的50个。其次，只考虑超过 <span>u</span> 的损失，然后最大化两个参数 <span>\xi</span> 和 <span>\beta</span> 的观测的可能性。</p>
+<p>二是<b><span>矩估计法</span></b>(method of moments)。需要拟合参数使广义帕雷托分布的矩等于观测的矩。这种方法更容易实现，但效率较低。</p>
+<p>三是<b>希尔估计法</b>(Hill’s estimator)，广泛使用。第一步是将所有观测结果从高到低进行排序。估计尾部指数：</p>
+<blockquote><span>\hat{\xi} = \frac{1}{k} \sum_{i=1}^{k} ln X_i - ln X_{k+1}</span> </blockquote>
+<p>换句话说，这是观测对数的平均值从1到 <span>k</span> 减去下一个观测的对数。但没有理论可以帮助我们选择 <span>k</span> 。在实践中可以绘制 <span>\xi</span> 与 <span>k</span> 的关系图，然后在一个平坦的区域中选择这个值，在这个区域中，估计值对截断点的选择并不太敏感。</p>
+<p>极值理论的一个问题是它仍然依赖于尾部的少量观测。因此，估计数对样本的变化很敏感，尽管不像非参数VAR那么敏感。更一般地说，极值理论的结果也取决于假设和估计方法。最后，它仍然依赖于历史数据，而这些数据可能无法提供所有金融风险的完整图景。</p>
+<p>⭐ <b>Q15.7 </b>Extreme value theory (EVT) provides valuable insight about the tails of return distributions. Which of the following statements about EVT and its applications is incorrect?</p>
+<ul>
+<li>a. The peaks over threshold (POT) approach requires the selection of a reasonable threshold, which then determines the number of observed exceedances; the threshold must be sufficiently
+                                                                            high to apply the theory, but sufficiently low so that the number of observed exceedances is a reliable estimate.</li>
+<li>b. EVT highlights that distributions justified by the central limit theorem (e.g., normal) can be used for extreme value estimation.</li>
+<li>c. EVT estimates are subject to considerable model risk, and EVT results are often very sensitive to the precise assumptions made.</li>
+<li>d. Because observed data in the tails of distribution is limited, EV estimates can be very sensitive to small sample effects and other biases.</li>
+</ul>
+<p>解析：选 b 。EVT估计受估计风险(estimation risk)影响，因此陈述c和d是正确的。然而，EVT并不适用中心极限定理(CLT)，该定理指出<span>独立同分布</span>随机变量的平均值（而不是尾部）是正态的。</p>
+<p>⭐ <b>Q15.8 </b>Which of the following statements regarding extreme value theory (EVT) is incorrect?</p>
+<ul>
+<li>a. In contrast to conventional approaches for estimating VAR, EVT considers only the tail behavior of the distribution.</li>
+<li>b. Conventional approaches for estimating VAR that assume that the distribution of returns follows a unique distribution for the entire range of values may fail to properly account
+                                                                            for the fat tails of the distribution of returns.</li>
+<li>c. EVT attempts to find the optimal point beyond which all values belong to the tail and then models the distribution of the tail separately.</li>
+<li>d. By smoothing the tail of the distribution, EVT effectively ignores extreme events and losses that can generally be labeled outliers.</li>
+</ul>
+<p>解析：选 d 。EVT只使用尾部的信息，所以a是正确的。传统的方法，如 <span>\Delta</span> -正态VAR，对整个分布假定一个固定的<span>概率密度函数</span>，可能低估了肥尾的程度，因此b是正确的。EVT的第一步是为尾部选择一个截止点，然后估计尾部分布的参数，因此c是正确的。最后，EVT不会忽略极端事件，只要它们在样本中。</p>
+<h2>三、一致性风险度量</h2>
+<h3>1、风险度量的理想性质</h3>
+<p>风险度量的目的是用一个数字 <span>\rho(X)</span> 来概括美元回报 <span>X</span> 的整个分布。Artzner等(1999)列出了
+                                                                            <span>资本充足率</span>目的的风险措施的四种可取性质：</p>
+<ul>
+<li>一是<b>单调性</b>(Monotonicity)：若 <span>X_1 ≤ X_2</span> ，则 <span>\rho(X_1) ≥ \rho(X_2)</span>                                                                                。如果一个投资组合的价值系统性地低于另一个投资组合，那么它的风险一定更大。</li>
+<li>二是<b>变换不变性</b>(Translation invariance)： <span>\rho (X+ k) = \rho (X) − k</span> 。在一个投资组合中增加现金 <span>k</span> 应该会减少 <span>k</span> 的风险。这降低了最低的投资组合价值。和 <span>X</span>                                                                                一样， <span>k</span> 用美元来衡量。</li>
+<li>三是<b>同质性</b>(Homogeneity)： <span>\rho(bX) = b\rho(X)</span> 。将投资组合的规模增加一个因子 <span>b</span> ，就应该用相同的因子 <span>b</span> 来衡量其风险。这个性质适用于标准差。</li>
+<li>四是<b><span>次可加性</span></b>(Subadditivity)： <span>\rho(X_1 + X_2) ≤ \rho(X_1) + \rho(X_2)</span>                                                                                。一个投资组合的风险必须小于，或者在最坏的情况下等于独立风险的总和。合并投资组合不会增加风险。</li>
+</ul>
+<p>这些标准是风险度量的理想性质，使人考虑简化风险度量的潜在问题。例如，在大多数情况下，同质性似乎是合理的。然而，对于那些无法在没有对市场产生重大影响的情况下进行清算的巨额投资组合，这种做法值得怀疑。在这种情况下，风险与投资组合的规模成比例地增加。因此，这种资产忽视了流动性风险。在实践中，几乎所有的风险措施都存在这个问题，这是非常难以处理的。</p>
+<p>其次，次可加性意味着一个投资组合的风险必须小于投资组合各组成部分的风险之和。但基于分位数的VAR度量不能满足这个特性。然而，假设是正态分布，基于标准差的VAR满足次可加性。这是因为投资组合的波动性小于，或者最坏情况下等于，波动性之和，即： <span>\sigma (X_1 + X_2) ≤\sigma(X_1) + \sigma(X_2)</span>                                                                            。次加性适用于<b>椭圆分布</b>(elliptical distributions)，其中等密度的等高线(contour)是椭球(ellipsoid)，如Student 's t。</p>
+<h3>2、VAR和次可加性</h3>
+<p>现在给出一个VAR不满足次可加性的例子。假设一个交易员投资了面值为10万美元、违约概率为0.5%的公司债券。在接下来的一段时间里，我们要么不违约，返回0，要么违约，损失10万美元。因此，收益是100,000美元，概率为0.5% + 0美元，概率为99.5%。因为得到$0的概率大于99%，所以在不考虑均值的情况下，99%置信水平下的VAR是$0。这与VAR是最小损失的定义是一致的，右尾概率至少是99%。</p>
+<p>现在，考虑一个投资于具有相同特征和独立收益的三种债券的投资组合。VAR数字加起来等于0，收益和概率如下表所示：</p>
+<table>
+<tbody>
+<tr>
+<th>情况</th>
+<th>债券</th>
+<th>概率</th>
+<th>收益</th>
+</tr>
+<tr>
+<td>0次违约</td>
+<td></td>
+<td>0.995×0.995×0.995<br/>=0.98507490</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1次违约</td>
+<td>A, B 或 C</td>
+<td>3×0.005×0.995×0.995<br/>=0.0148504</td>
+<td>-$100,000</td>
+</tr>
+<tr>
+<td>2次违约</td>
+<td>AB, AC 或 BC</td>
+<td>3×0.005×0.005×0.995<br/>=0.0000746</td>
+<td>-$200,000</td>
+</tr>
+<tr>
+<td>3次违约</td>
+<td>A, B 与 C</td>
+<td>0.005×0.005×0.005<br/>=0.0000001</td>
+<td>-$300,000</td>
+</tr>
+</tbody>
+</table>
+<p> 这里，零违约的概率是0.9851，小于99%。因此，投资组合的VAR是$100,000，这是概率超过99%的最低数字。因此，投资组合的VAR大于单个VAR的总和，后者为零。在本例中，VAR不是次加法。这是一种不受欢迎的性质，因为它产生了聚集投资组合的抑制因素，因为它似乎具有更高的风险。这个例子说明了将VAR作为唯一的风险衡量标准是危险的。</p>
+<h3>3、<span>预期损失</span></h3>
+<p>相比之下，<b>条件VAR </b>(CVAR)，也被称为<b>预期短缺</b>(expected shortfall)或<b>预期尾部损失</b>(expected tail loss)，确实满足次加性性质。CVAR是超过VAR的平均损失，即 <span>CVAR = E[−X | X &lt; −VAR]</span>                                                                                    。</p>
+<p>对于每一个单独的债券，在尾部只有一个观察值，这导致 <span>{CVAR}_i</span> = $100,000。总金额为 <span>{CVAR}_S</span>                                                                                    = $300,000。现在计算投资组合的CVAR。这是10万美元以下损失的概率加权平均值，或者(0.0000746 * 200,000 + 0.0000001 * 300,000)/ 0.0000747 = 200,167。这小于 <span>{CVAR}_S</span>                                                                                    ，因此表明CVAR是一种次加性风险度量。</p>
+<p>在<span>决策理论</span>方面，CVAR比VAR更具有合理性。假设一个投资者必须在两个投资组合A和B中做出选择。决策规则可以基于随机优势的各种定义。一个例子是<b><span>一阶随机占优</span></b>(FSD, first-order
+                                                                                    stochastic dominance)。这就要求A的<span>累积分布函数</span>系统地低于B，所以B出现坏结果的概率更高。然而，这是一个非常严格的规则。另一个例子是<b>二阶随机占优</b>(SSD, second-order stochastic dominance)。如果组合A的均值较高，风险较低，那么组合A就会优于组合B。这是一个比第一个更现实的规则。使用CVAR作为风险度量是与二阶随机占优一致的，而VAR需要一阶随机占优，这是不太现实的。</p>
+<p>在实践中，金融行业很少报告CVAR。它在保险业中更常用，因为保险业传统上更关注尾部损失。此外，死亡率和自然灾害事件的统计分布有很长的历史，更经得起预期的短缺分析。即便如此，风险管理人员也需要意识到用一个数字(如VAR)来总结整个分布的缺点。交易员可能会决定创建一个低VAR但很高CVAR的投资组合，这会造成很少但非常大的损失。这是不对称头寸的问题，比如对信贷风险敞口的期权空头头寸或单一投资组合。</p>
+<p>⭐ <b>Q15.9 </b>A market risk manager uses historical information on 1,000 days of profit/loss information to calculate a daily VAR at the 99th percentile, or $8 million.
+                                                                                        Loss observations beyond the 99th percentile are then used to estimate the conditional VAR. If the losses beyond the VAR level, in millions, are $9,$10, $11, $13,
+                                                                                        $15, $18, $21, $24, and $32, then what is the CVAR?</p>
+<ul>
+<li>a. $9 million</li>
+<li>b. $32 million</li>
+<li>c. $15 million</li>
+<li>d. $17 million</li>
+</ul>
+<p>解析：选 d 。CVAR是在VAR之外的观察值的平均值，即$17 million。</p>
+<p>⭐ <b>Q15.10 </b>Greg Lawrence is a risk analyst at ES Bank. After estimating the 99%, one-day VAR of the bank’s portfolio using historical simulation with 1,200 past
+                                                                                            days, he is concerned that the VAR measure is not providing enough information about tail losses. He decides to reexamine the simulation results. Sorting the simulated
+                                                                                            daily P&amp;L from worst to best gives the following results:</p>
+<table>
+<tbody>
+<tr>
+<th>Rank</th>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<th>P&amp;L</th>
+<td>-2,833</td>
+<td>-2,333</td>
+<td>-2,228</td>
+<td>-2,084</td>
+<td>-1,960</td>
+<td>-1,751</td>
+</tr>
+<tr>
+<th>Rank</th>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+</tr>
+<tr>
+<th>P&amp;L</th>
+<td>-1,679</td>
+<td>-1,558</td>
+<td>-1,542</td>
+<td>-1,484</td>
+<td>-1,450</td>
+<td>-1,428</td>
+</tr>
+<tr>
+<th>Rank</th>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>P&amp;L</th>
+<td>-1,368</td>
+<td>-1,347</td>
+<td>-1,319</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>What is the 99%, one-day expected shortfall (ES) of the portfolio?</p>
+<ul>
+<li>a. USD 433</li>
+<li>b. USD 1,428</li>
+<li>c. USD 1,861</li>
+<li>d. USD 2,259</li>
+</ul>
+<p>解析：选 c 。可以通过判断来回答本题。T = 1200的1% 左尾是12个观察值，所以VAR = 1428。这就排除了答案a和b。ES是观察值1到11的平均值。用simple rank，中间的点是观察6，也就是1751。最接近的是1861，答案是c。</p>
+<p>⭐ <b>Q15.11 </b>Which of the following statements about expected shortfall (ES) is incorrect?</p>
+<ul>
+<li>a. ES provides a consistent risk measure across different positions and takes account of correlations.</li>
+<li>b. ES tells what to expect in bad states: It gives an idea of how bad the portfolio payoff can be expected to be if the portfolio has a bad outcome.</li>
+<li>c. ES-based rule is consistent with expected utility maximization if risks are ranked by a second-order stochastic dominance rule.</li>
+<li>d. Like VAR, ES does not always satisfy subadditivity (i.e., the risk of a portfolio must be less than or equal to the sum of the risks of its individual positions).</li>
+</ul>
+<p>解析：选 d 。ES和VAR一样，确实提供了一种将多样化考虑在内的一致的风险度量，因此陈述a是正确的。然而，与VAR不同的是，CVAR是次加性风险度量。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

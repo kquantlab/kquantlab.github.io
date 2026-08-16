@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C10 固收衍生品 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C10 固收衍生品">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C10 固收衍生品</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>远期合约</span></h2>
+<p><b><span>远期利率协议</span></b>(Forward rate agreements, FRAs)是场外交易(OTC)金融合约，允许交易对手锁定未来某个时间开始的利率。FRA的买方锁定一个<span>借款利率</span>，而卖方锁定一个<span>贷款利率</span>。换句话说，利率上升带来的长期利益和利率下降带来的短期利益。</p>
+<p>例如，考虑一个在一个月内以三个月LIBOR结算的FRA。这样的FRA被称为1 × 4。第一个数字对应第一个结算日期，第二个数字对应最后到期日。称 <span>\tau</span> 为LIBOR适用的期限，在这里是三个月。在一个月的结算日，支付给多头的款项涉及<span>即期利率</span> <span>S_T</span> （当时的3个月LIBOR利率）和锁定远期利率 <span>F</span> 之间的差额净值。支付是 <span>S_T - F</span>                                    ，与其他<span>远期合同</span>一样，现值为第一个结算日。可得：</p>
+<blockquote><span>V_T = (S_T − F ) × \tau × Notional × PV($1)</span> </blockquote>
+<p>其中， <span>PV($1) = $1/(1 + S_T\tau)</span> ，这笔钱是以现金结算的。即：</p>
+<blockquote><span>V_T = \frac{(S_T − F ) × \tau × Notional}{1 + S_T\tau}</span> </blockquote>
+<p>如下图，FRA中的空头头寸相当于借短期资金进行<span>长期投资</span>。在这两种情况下，都没有预先投资。久期等于两条腿(leg)久期之差。短期FRA的持续时间为 <span>\tau</span> ，其美元持续时间为 <span>DD = \tau ×Notional× PV($1)</span> 。</p>
+<figure><img src="https://pic1.zhimg.com/v2-14708c602a5ffa723f8e4802a07de588_1440w.jpg" width="925"/></figure>
+<p>因此，<b>FRA的多头头寸将受益于利率的提高。FRA的空头头寸类似于债券的多头头寸。它的久期为正数，等于两个到期期限之间的差额</b>。</p>
+<p>⭐ <b>例10.1</b> A long position in a 2 × 5 FRA is equivalent to the following positions in the spot market:</p>
+<ul>
+<li>a. Borrowing in two months to finance a five-month investment</li>
+<li>b. Borrowing in five months to finance a two-month investment</li>
+<li>c. Borrowing half a loan amount at two months and the remainder at five months</li>
+<li>d. Borrowing in two months to finance a three-month investment</li>
+</ul>
+<p>解析：选 b 。FRA定义为 <span>t_1 × t_2</span> ，包含 <span>t_1</span> ~ <span>t_2</span>                                        的远期利率。FRA的买家会锁定3到5个月的借款利率。这相当于借款5个月，然后头两个月再投资。</p>
+<p>⭐ <b>例10.2</b> ABC, Inc., entered a forward rate agreement (FRA) to receive a rate of 3.75% with continuous compounding on a principal of USD 1 million between the end of year 1 and the end of year 2. The zero rates
+                                        are 3.25% and 3.50%for one and two years. What is the value of the FRA when the deal is just entered?</p>
+<ul>
+<li>a. USD 35,629</li>
+<li>b. USD 34,965</li>
+<li>c. USD 664</li>
+<li>d. USD 0</li>
+</ul>
+<p>解析：选 d 。隐含的市场远期利率为 <span>exp(−R_2 × 2) = exp(−R_1 × 1 − F_{1,2 }× 1)</span> ，即 <span>F_{1,2}</span>                                        = 2 × 3.50 − 1 × 3.25 = 3.75%. 假定这恰好等于<span>报价利率</span>，则该值必须为0。如果利率是3.50%，那么价值为V = $1,000,000 × (3.75% − 3.50%) × (2 − 1) exp(−3.50% × 2) = 2,331。</p>
+<p>⭐ <b>例10.3</b> Consider the buyer of a 6 × 9 FRA. The contract rate is 6.35% on a notional amount of $10 million. Calculate the settlement amount of the seller if the settlement rate is 6.85%. Assume a 30/360-day count
+                                        basis.</p>
+<ul>
+<li>a. −12,500</li>
+<li>b. −12,290</li>
+<li>c. +12,500</li>
+<li>d. +12,290</li>
+</ul>
+<p>解析：选 b 。FRA的卖家同意接收固定现金流。由于现在的利率高于合同利率，所以合同上必须注明卖方的损失。当支付欠款(paid in arrears)时（超过九个月），损失为$10,000,000 × (6.85% − 6.35%) × (90/360) = $12,500。在清算日(settlement date)，也就是提前三个月brought forward，损失为$12,500/(1 + 6.85% × 0.25) =
+                                        $12,290。</p>
+<hr/>
+<h2>二、<span>期货合约</span></h2>
+<h3><b>1、<span>欧洲美元期货</span></b></h3>
+<p><b>欧洲美元期货</b>(Eurodollar futures)是与远期LIBOR利率挂钩的期货合约。自从欧洲美元在<span>芝加哥商品交易所</span>(Chicago Mercantile Exchange)创立以来，欧洲美元期货已经扩展到类似的合约，如欧元<span>银行间同业拆借利率</span>(EURIBOR)期货(以欧元计价)、1欧元日元期货(以
+                                        <span>日元</span>计价)等等。这些合约类似于涉及三个月远期利率的联邦铁路局，从较宽的日期开始，最长可至未来10年。</p>
+<p>计算一份合同价值的公式为： <span>P_t</span> = 10,000 × [100 − 0.25(100 − <span>FQ_t</span> )] = 10,000 × [100 − 0.25 <span>F_t</span> ]。其中 <span>FQ_t</span> 是欧洲美元期货报价。报价为100.00减去利率 <span>F_t</span> ，用百分比表示，即
+                                        <span>FQ_t = 100- F_t</span> 。0.25因子表示三个月或0.25年的期限。例如，如果市场报价为 <span>FQ_t = 94.47</span> ，则
+                                        <span>F_t = 100 − 94.47 = 5.53</span> ，合同价值为 P = 10,000[100 − 0.25 × 5.53] = $986,175。到期时，合同价值为 <span> P_T</span> = 10,000 × [100 − 0.25 <span>S_T</span> ]，其中 <span>S_T</span> 是在 <span>T</span> 点的三个月欧洲<span>美元即期汇率</span>。支付方式为现金结算。</p>
+<p>因此， <span>F_t</span> 可以被视为期货合约到期时开始的3个月期远期利率。合同价格的公式可能看起来很复杂，但实际上其结构是这样的，利率的上升会导致合同价格的下降，这是固定收益工具的常见做法。此外，由于价格变化与利率的关系为0.25，该合同的持续时间为三个月。记住DV01是$10,000 × 0.25 × 0.01
+                                        = $25是很有用的。即使名义上的金额是100万美元，情况也是如此。在这种情况下，即使在最坏的情况下，名义金额也远不及合同可能损失的金额。即使利率变动100个基点，损失也只是2500美元。</p>
+<p>除了期货合约的价值与<span>再投资率</span>强相关外，远期的定价与期货的定价相似。欧洲美元期货就是这样。<span>利率期货</span>合约被设计成像债券一样移动，也就是说，当利率上升时就会贬值。相关性是负的。这意味着，当利率上升时，期货合约就会贬值，而且必须在借款成本或<span>再投资利率</span>较高的时候提供资金。相反，当利率下降时，合同增值，利润可以提取，但现在可以以较低的利率进行再投资。相对于远期合约，这种
+                                            <span>按市值计价</span>的特点对做多<span>期货头寸</span>不利。这将被较低的期货合约价值所抵消。由于该值与<span>期货利率</span>负相关， <span>P_t = 10,000 [100 -0.25× F_t]</span>                                                ，这意味着较高的欧洲美元期货利率 <span>F_t</span> 。</p>
+<p> 这种差异称为<b>凸性调整</b>(convexity adjustment)，可以描述为：</p>
+<blockquote><span>Futures·Rate = Forward ·Rate + \frac{1}{2}\sigma^2t_1t_2</span> </blockquote>
+<p>其中 <span>\sigma</span> 为<span>短期利率</span>变化的<span>波动率</span>， <span>t_1</span>                                            为期货合约到期时间， <span>t_2</span> 为期货合约利率到期时间。</p>
+<h3><b>2、<span>国债期货</span></b></h3>
+<p><b>国债期货</b>(T-bond futures)是与美国国债池绑定的期货合约，由剩余期限大于15年的所有债券组成，且15年不可赎回。类似的<span>短期国债</span>合约也存在，包括2年期、5年期和10年期国债。政府<span>债券期货</span>也存在于其他市场，包括加拿大、英国、欧元区和日本。</p>
+<p>期货合约的报价与<span>美国国债</span>类似，比如97-02，百分比加32，名义价值为10万美元。因此合同价格为P = $100,000(97 + 2/32)/100 = $ 97062.50。第二天，如果<span>收益率</span>上升，报价跌至96-0，新值是9.6万美元，多头头寸的损失是 <span>P_2 - P_1</span> = 1,062.50美元。</p>
+<p>需要注意的是，国债期货合约是以<span>实物交割</span>方式结算的。为了确保可交割债券之间的可<span>互换性</span>，期货合约采用了一个<b><span>转换系数</span></b>(conversion factor, CF)进行交割。这个因素乘以期货价格，以支付空头。CF的目标是试图平衡交付各种合格债券的净成本。</p>
+<p>转换系数是必要的，因为债券的交易价格相差很大。高息<span>债券溢价</span>交易，低息<span>债券折价</span>交易。如果没有这种调整，做空方（空头）将始终交付同样廉价的债券，债券之间将几乎没有可交换性。然而，<span>可交换性</span>是一个重要的特征，因为它最大限度地减少了市场挤压的可能性。当空头头寸的持有者无法获得或借入合约条款下交割所需的证券时，就会发生挤兑。</p>
+<p>因此，卖空者购买债券，交付它，然后收到报价的期货价格乘以特定于交付债券的转换因子(加上<span>应计利息</span>)。卖空者应该理性地选择使净成本最小化的债券：</p>
+<blockquote><span>Cost = Price − Futures ·Quote × CF</span> </blockquote>
+<p>净成本最低的债券被称为<b>最便宜可交割债券</b>(cheapest to deliver, CTD)。</p>
+<p>在实践中，CF是由交易所在每份债券的合约开始时设定的。它的计算方法是假设一个固定的期限结构，以6%的名义利率<span>贴现债券</span>的现金流。以2025年的(7+5/8)%为例。CF的计算为</p>
+<blockquote><span>CF = \sum_{i=1}^{T-1}{\frac{7.625\%/2}{(1 + 6\%/2)^i}} + \frac{1+7.625\%/2}{(1 + 6\%/2)^T}</span> </blockquote>
+<p>得到CF = 1.1717。高息票债券的CFs较高。同样，由于优惠券大于6%，CF大于1。</p>
+<p>三种债券的净成本计算见下表。表中第一种债券的净成本是$104.375 - 110.8438 - 0.9116 = $3.330。对于6%息票债券，CF等于1。表格中第三个债券的净成本是1.874美元。因为这是最低的条目，所以这个债券就是这个组合的CTD。注意，CF调整如何使所有债券的成本比它们的原始价格更接近。</p>
+<table>
+<tbody>
+<tr>
+<th>债券</th>
+<th>价格</th>
+<th>期货价格</th>
+<th>转换系数</th>
+<th>成本</th>
+</tr>
+<tr>
+<td>(5+1/4) % Nov. 2028</td>
+<td>104.375</td>
+<td>110.8438</td>
+<td>0.9116</td>
+<td>3.33</td>
+</tr>
+<tr>
+<td>6% Feb. 2026</td>
+<td>112.9063</td>
+<td>110.8438</td>
+<td>1</td>
+<td>2.063</td>
+</tr>
+<tr>
+<td>(7+5/8) % Feb. 2025</td>
+<td>131.75</td>
+<td>110.8438</td>
+<td>1.1717</td>
+<td>1.874</td>
+</tr>
+</tbody>
+</table>
+<p><span>当前收益率</span>远低于6%，或者期限结构不平坦、债券交易不以<span>理论价格</span>进行时，这种调整并不完美。例如，假设收益率为5%，所有债券都以票面价格定价。6%的折扣率将产生CF因子低于1；债券期限越长，差额越大。<span>长期债券</span>的净成本将会更高。这往往有利于
+                                                    <span>短期债券</span>的交付。当期限结构向上倾斜时，则相反，有长期债券交付的趋势。</p>
+<p>作为第一个近似，这种CTD债券驱动了期货合约的特征。如前所述，均衡期货价格为</p>
+<blockquote><span>F_te^{−r\tau }= S_t − PV(D)</span> </blockquote>
+<p>其中 <span>S_t</span> 是CTD的总价格， <span>PV(D)</span> 是息票支付的现值。这个还要除以这个债券的转换系数。期货合约的期限也由CTD的期限给出。</p>
+<p>事实上，这种关系只是近似的，因为空头可以选择交付一组债券中最便宜的。这种交割期权的价值会压低期货价格，因为做多期货的一方同时也做空期权。因此，这需要较低的收购价格。此外，空头还有一个<b>时机期权</b>(timing option)，允许在交割月的任何一天交割。不幸的是，这些复杂的期权并不容易评估。</p>
+<p>⭐ <b>Q10.4 </b>The yield curve is upward sloping. You have a short T-bond futures position. The following bonds are eligible for delivery:</p>
+<table>
+<tbody>
+<tr>
+<th>Bond</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+</tr>
+<tr>
+<td>Spot price</td>
+<td>102-14/32</td>
+<td>106-19/32</td>
+<td>98-12/32</td>
+</tr>
+<tr>
+<td>Coupon</td>
+<td>4%</td>
+<td>5%</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>Conversion factor</td>
+<td>0.98</td>
+<td>1.03</td>
+<td>0.952</td>
+</tr>
+</tbody>
+</table>
+<p>The futures price is 103-17/32 and the maturity date of the contract is September 1. The bonds pay their coupon semiannually on June 30 and December 31. The cheapest to deliver bond is:</p>
+<ul>
+<li>a. Bond A</li>
+<li>b. Bond B</li>
+<li>c. Bond C</li>
+<li>d. Insufficient information</li>
+</ul>
+<p>解析：选 b 。每个债券的交付成本(cost of delivering)是价格除以转换系数(conversion factor)。例如第一个债券列式为(102 + 14/32)/0.98，三个债券分别可以算得104.53, 103.49, 103.55。因此CTD是债券B。其他信息都是多余的。</p>
+<p>⭐ <b>Q10.5 </b>Which of the following statements related to forward and futures prices is true?</p>
+<ul>
+<li>a. If the forward price does not equal the futures price, arbitragers will exploit this arbitrage opportunity.</li>
+<li>b. The level of interest rates determines whether the forward price is higher or lower than the futures price.</li>
+<li>c. The volatility of interest rates determines whether the forward price is higher or lower than the futures price.</li>
+<li>d. Whether the forward price will be higher or lower than the futures price depends on correlation between interest rate and futures price.</li>
+</ul>
+<p>解析：选 d 。由于利率或再投资率与期货合约利润之间的相关性，远期利率可能不等于期货利率。根据凸性调整(convexity adjustment)公式，Futures Rate = Forward Rate + <span>\left(1/2\right)\sigma^2t_1t_2</span>                                                    ，<span>波动性</span>决定了偏差的大小，而不是方向。</p>
+<p>⭐ <b>Q10.6 </b>Consider a forward rate agreement (FRA) with the same maturity and compounding frequency as a Eurodollar futures contract. The FRA has a LIBOR underlying. Which of the following statements
+                                                    is true about the relationship between the forward rate and the futures rate?</p>
+<ul>
+<li>a. The forward rate is normally higher than the futures rate.</li>
+<li>b. They have no fixed relationship.</li>
+<li>c. The forward rate is normally lower than the futures rate.</li>
+<li>d. They should be exactly the same.</li>
+</ul>
+<p>解析：选 c 。根据Futures Rate = Forward Rate + <span>\left(1/2\right)\sigma^2t_1t_2</span> ，Futures Rate &gt; Forward Rate</p>
+<hr/>
+<h2>三、互换</h2>
+<h3><b>1、互换工具</b></h3>
+<p>互换(Swap)交易是双方根据预先安排好的公式在未来交换现金流的协议。利率互换的支付与利率挂钩。最常见的互换是<b>固定换浮动</b>(fixed-for-floating)的互换，其中一方承诺支付固定比例的名义收益，而收益与浮动利率挂钩，通常是LIBOR。风险在于利率水平的变化。</p>
+<p>其他类型的互换是<b>基差互换</b>(basis swaps)，即两种支付都与浮动汇率挂钩。例如，该互换可能涉及将三个月期伦敦银行同业拆息(LIBOR)与三个月期<span>国库券</span>利率挂钩的付款进行交换。风险在于参考利率之间的利差会发生变化。</p>
+<p>考虑两个交易对手A和B，可以以固定利率或浮动利率筹集资金，在10年内筹集$100 million。A想升浮动利率，B想升固定利率。下表显示了资本费用：</p>
+<table>
+<tbody>
+<tr>
+<th>公司</th>
+<th>固定利率</th>
+<th>浮动利率</th>
+</tr>
+<tr>
+<td>A</td>
+<td>10.00%</td>
+<td>LIBOR + 0.30%</td>
+</tr>
+<tr>
+<td>B</td>
+<td>11.20%</td>
+<td>LIBOR + 1.00%</td>
+</tr>
+</tbody>
+</table>
+<p>A公司在这两个市场具有<b>绝对优势</b>，因为它可以以比B公司更低的利率筹集资金。而A公司在提高固定利率方面具有<span>比较优势</span>，其成本比B公司低1.2%。相反，B公司在提高浮动利率方面具有<b>比较优势</b>，其成本只比B公司低0.70%。</p>
+<p>互换有利于双方的共同利益。如果两家公司都直接在他们最终想要的市场发行基金，总成本将是LIBOR + 0.30%（A）和11.20%（B），总共是LIBOR + 11.50%。相比之下，各有比较优势的融资总成本为10.00%（A）和LIBOR + 1.00%（B），总共为LIBOR + 11.00%。互换得益为11.50% − 11.00% = 0.50%。</p>
+<p>公司A以10.00%的利率发行固定债务，然后进入互换，承诺支付LIBOR + 0.05%，换取10.00%的固定支付。因此，其净有效融资成本为LIBOR + 0.05%，比直接成本低25个基点。</p>
+<p>公司B以LIBOR + 1.00%的利率发行浮动债务，然后进入互换，以固定利率支付10.00%的利率换取LIBOR + 0.05%的利率。因此，其净有效融资成本为11.00% 0.05% = 10.95%，比直接成本少25个基点。</p>
+<p>双方都从交换中受益了。在实际现金流方面，互换支付通常是相互抵消的。例如，假设第一次LIBOR利率为9%，公司A将被拖欠10% * 100美元= 100万美元，并必须支付LIBOR + 0.05%，即9.05% * 100美元= 90.5万美元。这样净收入为95,000美元。由于两者涉及的金额相同，因此不需要交换本金。</p>
+<h3><b>2、互换报价</b></h3>
+<p>互换的报价可以是相对于类似期限的<span>国债收益率</span>的利差。例如，一个交易商可能会对LIBOR提出31/34个基点的10年期互换息差。如果当前票据收益率为6.72，这意味着交易商愿意支付6.72 + 0.31 = 7.03%来换取LIBOR，或者交易商愿意支付6.72 + 0.34 = 7.06%来换取LIBOR。当然，交易商可以从价差中获利，价差很小，只有3个基点。同样，互换的直接报价(outright
+                                                    quote)是7.03/7.06。</p>
+<p>注意，互换与美国国债的<span>信用利差</span>应该为正。这是因为另一个 leg 是与LIBOR相关的，这也有信用风险。更准确地说，互换利率对应于AA级交易对手的信用风险。</p>
+<p>利率互换市场是迄今为止名义上最大的<span>衍生品市场</span>。由于市场流动性非常强，市场报价为固定利率段已成为<span>基准利率</span>。因此，互换利率形成了<b><span>互换曲线</span></b>(swap curve)的基础，也被称为票面曲线(par
+                                                    curve)，因为它等同于以票面价格出售的债券的收益率。因为浮动利率是与 LIBOR 挂钩的，而LIBOR会带来信用风险，因此互换曲线通常高于相同货币的政府债券的票面利率曲线。</p>
+<h3><b>3、互换定价</b></h3>
+<p>考虑一项 $100 million 的3年期<span>互换交易</span>，得到的固定息票是LIBOR的5.50%。每年支付，忽略信贷息差。我们可以使用两种方法中的任何一种来为互换定价：利用两种债券价格之间的差值，或者评估一系列远期合约。如下图：</p>
+<figure><img src="https://pic3.zhimg.com/v2-94ac4c8e7412f1e6e1bc318ca7bb58a4_1440w.jpg" width="1704"/>
+<figcaption>两种互换现金流的拆分方法</figcaption>
+</figure>
+<p>图的顶部显示，互换相当于持有3年期5.5%<span>固定利率债券</span>的多头头寸，持有3年期<span>浮动利率债券</span>(FRN)的空头头寸。如果 <span>B_F</span> 为固定利率债券的值，
+                                                    <span>B_f</span> 为FRN的值，则互换的值为 <span>V = B_F−B_f</span> 。</p>
+<p>FRN的值应该接近票面价值。就在重置之前， <span>B_f</span> 将表现得完全像<span>现金投资</span>，因为下一个时期的息票将设置为现行利率。因此，其<span>市场价值</span>应接近票面价值。在重置之后，FRN将表现得像一年期债券。但总体而言，
+                                                    <span>B_f</span> 的市场价值波动应小。</p>
+<p>现在考虑互换的值。如果在开始时互换息票被设定为现行的票面收益，<span>B_F</span> 等于面值， <span>B_F = 100</span> 。因为 <span>B_f = 100</span> 就在浮动部分(leg) 重置之前，互换的值为零，即 <span>V = B_F - B_f = 0</span> 。这就像一份远期合约。</p>
+<p>互换完成后，其价值会受到利率的影响。如果利率下降，互换交易将向价内移动(move in-the-money)，因为它获得的息票高于当前市场的收益率。<span>B_F</span> 将增加，而 <span>B_f</span>                                                    几乎不会改变。</p>
+<p>固定收益互换的久期与固定利率债券的久期相似，包括到期时的固定息票和本金。这是因为浮动 leg 的久期接近于零。没有交换主体这一事实，并不意味着久期计算不应该包括主体。久期应被视为一种利率敏感性。</p>
+<p>因此：<b>固定收益掉期的头寸相当于类似票面特征的债券的多头头寸，到期时由 FRN 的空头头寸抵消。它的久期接近 FRN 的久期</b>。</p>
+<p>用<b><a href="https://zhuanlan.zhihu.com/p/413002307">第9章</a></b>中的期限结构数据来评估三年互换。时间刚好在重置之前，所以 <span>B_f</span> = $100 million。可以得到：</p>
+<blockquote><span>B_F = \frac{5.5}{1+4.000\%} + \frac{5.5}{(1+4.000\%)^2} + \frac{105.5}{(1+5.192\%)^3}  = 100.95</span> </blockquote>
+<p>因此，互换交易的未偿付价值为 V = $100.95 − $100 = $0.95 million。</p>
+<p>互换可以被视为一系列远期合约。在远期合约中单位仓位的价值是由下式给出：</p>
+<blockquote><span>V_i = (F_i − K)exp(−r_i \tau_i )</span> </blockquote>
+<p>其中 <span>F_i</span> 是当前的远期汇率， <span>K</span> 是预定的汇率， <span>r_i</span>                                                        是时间 <span>\tau_i</span> 的即期汇率。将此扩展到多种到期日，以及使用 <span>R_i</span> 进行离散复利，互换估值可以为：</p>
+<blockquote><span>V = \sum_{i}\frac{n_i(F_i - K)}{(1 + R_i )^{\tau_i}} </span> </blockquote>
+<p>其中 <span>n_i</span> 是到期 <span>i</span> 的名义金额。</p>
+<p>如果利率上升，远期利率协议将受益。的确，由 <span>V_i = (F_i − K)exp(−r_i \tau_i )</span> 可以看出，随着 <span>F_i</span>                                                            的增加，值也会增加。在互换交易中，我们得到的是固定利率 <span>K </span> ，所以如果利率上升，头寸就会赔钱，因为我们本可以得到更高的利率。此时公式就变为：</p>
+<blockquote><span>V = \sum_{i}{n_i}(K-F_i ) / (1 + R_i )^{\tau_i}</span> </blockquote>
+<p>因此，利率互换可以使用一系列远期利率进行定价和对冲，比如欧洲美元合约中隐含的利率。期货日标市场的做法导致期货利率有轻微的凸性偏差，必须向下调整才能得到远期利率。下图比较了一系列季度远期利率与同期流行的五年互换利率。</p>
+<figure><img src="https://picx.zhimg.com/v2-d5351c054b63c84b20317619c0ed3e83_1440w.jpg" width="1116"/></figure>
+<p>因为短期远期利率低于掉期利率，所以近期支付是货币化的。相比之下，越远的支付就越不值钱。该掉期的当前市场价值为零，这意味着所有近期的正值都必须被远期的负值抵消。</p>
+<p>⭐ <b>Q10.7 </b>Consider the following information about an interest rate swap: two-year term, semiannual payment, fixed rate = 6%, floating rate = LIBOR + 50basis points, notional USD 10 million.
+                                                            Calculate the net coupon exchange for the first period if LIBOR is 5% at the beginning of the period and 5.5%at the end of the period.</p>
+<ul>
+<li>a. Fixed-rate payer pays USD 0.</li>
+<li>b. Fixed-rate payer pays USD 25,000.</li>
+<li>c. Fixed-rate payer pays USD 50,000.</li>
+<li>d. Fixed-rate payer receives USD 25,000.</li>
+</ul>
+<p>解析：选 b 。浮动部分(floating leg)在本期开始时使用LIBOR，再加50个基点，即5.5%。支付额为$10,000,000 × (0.06 − 0.055) × 0.5 = 25,000。</p>
+<p>⭐ <b>Q10.8 </b>Bank XYZ enters into a five-year swap contract with ABC Co. to pay LIBOR in return for a fixed 8% rate on a principal of $100 million. Two years from now, the market rate on three-year
+                                                            swaps at LIBOR is 7%. At this time ABC Co. declares bankruptcy and defaults on its swap obligation. Assume that the net payment is made only at the end of each year for the swap contract period.
+                                                            What is the market value of the loss incurred by Bank XYZ as a result of the default?</p>
+<ul>
+<li>a. $1.927 million</li>
+<li>b. $2.245 million</li>
+<li>c. $2.624 million</li>
+<li>d. $3.011 million</li>
+</ul>
+<p>解析：选 c 。在剩下的三个时期，用：</p>
+<blockquote><span>V = \sum_{i}{n_i}(F_i - K) / (1 + R_i )^{\tau_i}</span> </blockquote>
+<p>得到净利息支付的贴现值(8% − 7%)$100m = $1m，净利息支付的以7%的折现值，为$934,579 + $873,439 + $816,298 = $2,624,316。</p>
+<p>⭐ <b>Q10.9 </b>A bank entered into a three-year interest rate swap for a notional amount of USD 250 million, paying a fixed rate of 7.5% and receiving LIBOR annually. Just after the payment was made
+                                                            at the end of the first year, the continuously compounded spot one-year and two-year LIBOR rates are 8% and 8.5%, respectively. The value of the swap at that time is closest to</p>
+<ul>
+<li>a. USD 14 million</li>
+<li>b. USD −6 million</li>
+<li>c. USD −14 million</li>
+<li>d. USD 6 million</li>
+</ul>
+<p>解析：选 d 。这个问题不同于之前给出<span>掉期率</span>的<b>Q10.8</b>。这里有一年期和两年的即期利率。息票是7.5。支付额的NPV为 $18.75 exp(−1 × 8%) + ($250 + $18.75)exp(−2 × 8.5%) = $244 million。重置之后，FRN的价值是$250 million，导致了$6
+                                                            million的收益。这是收益，因为银行支付固定利率，但当前利率更高。</p>
+<hr/>
+<h2>四、期权</h2>
+<h3><b>1、上限和下限</b></h3>
+<p><b>上限</b>(cap)是一种单位价值的利率<span>看涨期权</span>：</p>
+<blockquote><span>C_T = Max[i_T − K, 0]</span> </blockquote>
+<p>其中 <span>K = i_C</span> 是上限利率(cap rate)， <span>i_T</span> 是到期时的利率。在实践中，上限是与浮动利率票据(FRN)的发行一起购买的，浮动利率票据支付
+                                                            LIBOR 外加票据期限内的定期利差。通过购买上限，发行人可以确保<span>资金成本</span>不会超过上限利率。<u>这种上限实际上是单个期权的组合，称为<b>caplet</b></u>。</p>
+<p>每个 caplet 的支付是由 <span>C_T</span> 、名义因素和应计因素决定的。<u>付款是拖欠的</u>(in arrear)，即在该期间结束时付款。例如，假设一年期上限为100万美元，六个月LIBOR上限为5%。协议期为1月15日至次年1月，重置日期为7月15日。假设7月15日LIBOR为5.5%。在接下来的一月，付款是
+                                                            $1 Million × (0.055 − 0.05)(184/360) = $2,555.56。使用 Actual/360 应计利息。如果上限用于对冲FRN，这将有助于抵消较高的息票支付，目前为5.5%。</p>
+<p><b>下限</b>(floor)是一种有价值的利率看跌期权：</p>
+<blockquote><span>P_T = Max[K − i_T, 0]</span> </blockquote>
+<p>其中 <span>K = i_F</span> 为下限价格。<u><b>领子期权</b>(collar) 是购买上限和出售下限的组合</u>，这一组合降低了购买上限保护的净成本。下图显示了一个价格路径的例子：</p>
+<figure><img src="https://picx.zhimg.com/v2-8490d0c1521e6136ea00a3cd1d30fd55_1440w.jpg" width="1564"/></figure>
+<p>其中，上限利率为3.5%，下限利率为2%。有三种情况执行上限，收到付款。有一种情况利率低于下限，需要支付。当上限利率和下限利率收敛到相同的值 <span>K = i_C = i_F</span> 时，总债务成本就变成固定的，而不是浮动的。这个套期就相当于固定支付互换，也就是等价的看涨期权交易：</p>
+<blockquote>做多上限 ( <span>i_C = K</span> ) + 做空下限 ( <span>i_F = K</span> ) = 做多固定支付互换</blockquote>
+<p>上限通常使用 Black 模型的一个变体来定价，假设利率变化是对数正态的。这个上限的价值被设定为 <span>N</span> 个caplet的投资组合，不同利率、定期到期日的单个欧式期权：</p>
+<blockquote><span>c = \sum_{j=1}^{N}{c_j}</span> </blockquote>
+<p>每个 caplet 的单位价格为：</p>
+<blockquote><span>c _j = [FN(d_1) − KN(d_2)]PV($1)</span> </blockquote>
+<p>其中 <span>F</span> 是当前 <span>t_j</span> 到 <span>t_{j+1}</span>                                                                的远期汇率， <span>K</span> 是上限汇率， <span>PV($1)</span> 是对时间<span>t_{j+1}</span>的贴现因子。为了获得金额，我们必须对名义金额和应计期的长度进行调整。</p>
+<p>进入定价模型的波动率 <span>\sigma</span> ，是指从现在到期权合约到期的远期利率 <span>t_j</span> 。通常，波动率被报价为一个上限内所有caplet
+                                                                的一个数字。这被称为<b>水平波动率</b>(flat volatilities)， <span>\sigma_j = \sigma</span> 。也可以为每个远期汇率单独报价，这被称为<b>即期波动率</b>(spot volatilities)。</p>
+<p>那么，计算上限值呢？考虑之前设定的 $1 million 的上限，上限利率为5%。假设期限结构为5.5%，波动率为20%。重置日期是181天后的7月15日。应计期为184天。由于期限结构是平稳的，六个月后开始的6个月远期利率也为5.5%。首先，计算现值因子 PV($1) = 1/(1 + 0.055 × 365/360) = 0.9472，可得波动率：</p>
+<blockquote><span>\sigma \sqrt{\tau} = 0.20  \sqrt{181/360}= 0.1418</span> </blockquote>
+<p>然后计算：</p>
+<blockquote><span>d_1 = ln[F/K]/ \sigma \sqrt{\tau} +  \sigma \sqrt{\tau}  /2</span> = ln[0.055/0.05]
+                                                                        / 0.1418 + 0.1418/2 = 0.7430<br/><span>d_2 = d_1 - \sigma \sqrt{\tau}</span> = 0.7430 − 0.1418 = 0.6012</blockquote>
+<p>可得 <span> N(d_1)</span> = 0.7713、 <span>N(d_2) </span> = 0.7261。上限的单位价值为：</p>
+<blockquote><span>c  = [FN(d_1) − KN(d_2)]PV($1)</span> = 0.5789%</blockquote>
+<p>最后，该上限的总价格为 $1 million × 0.5789% × (184/360) = $2,959。</p>
+<p>如果上限利率与现行互换利率相同，那么这个上限就被称为平价(at-the-money)。<br/>接近 caplet 的属于价外(out-of-the-money)，因为 <span>F_i &lt; K</span> 。<br/>远离 caplet
+                                                                                的属于价内(in-the-money)。</p>
+<p>⭐ <b>Q10.10 </b>An interest rate cap runs for 12 months based on three-month LIBOR with a strike price of 4%. Which of the following is generally true?</p>
+<ul>
+<li>a. The cap consists of three caplet options with maturities of three months, the first one starting today based on three-month LIBOR set in advance and paid in arrears.</li>
+<li>b. The cap consists of four caplets starting today, based on LIBOR set in advance and paid in arrears.</li>
+<li>c. The implied volatility of each caplet will be identical no matter how the yield curve moves.</li>
+<li>d. Rate caps have only a single option based on the maturity of the structure.</li>
+</ul>
+<p>解析：选 a 。上限(caps)涉及多重期权，或称caplets。第一个期限是三个月，锁定在Max[R(t + 3) − 4%, 0]，6个月后拖欠付款。第二个是Max[R(t + 6) − 4%, 0]。第三个是Max[R(t + 9) − 4%, 0]，于t + 12支付。然后序列停止，因为上限只有12个月的期限。这意味着有3个caplets。</p>
+<p>⭐ <b>Q10.11 </b>The payoff to a swap where the investor receives fixed and pays floating can be replicated by all of the following except</p>
+<ul>
+<li>a. A short position in a portfolio of FRAs </li>
+<li>b. A long position in a fixed-rate bond and a short position in a floating-rate bond </li>
+<li>c. A short position in an interest rate cap and a long position in a floor </li>
+<li>d. A long position in a floating-rate note and a short position in a floor</li>
+</ul>
+<p>解析：选 d 。receive-fixed的互换头寸相当于做多固定利率债券，相当于做空FRA（利率下降时获利），相当于以相同的执行价卖出cap、买入floor （利率上升时获利）。如果利率下降，floor的空头头寸不会产生收益，它是不对称的。</p>
+<p>⭐ <b>Q10.12 </b>A portfolio management firm manages the fixed-rate corporate bond portfolio owned by a defined-benefit pension fund. The duration of the bond portfolio is
+                                                                                    five years; the duration of the pension fund’s liabilities is seven years. Assume that the fund sponsor strongly believes that rates will decline over the next six months
+                                                                                    and is concerned about the duration mismatch between portfolio assets and pension liabilities. Which of the following strategies would be the best way to eliminate the
+                                                                                    duration mismatch?</p>
+<ul>
+<li>a. Enter into a swap transaction in which the firm pays fixed and receives floating.</li>
+<li>b. Enter into a swap transaction in which the firm receives fixed and pays floating.</li>
+<li>c. Purchase an interest rate cap expiring in six months.</li>
+<li>d. Sell Eurodollar futures contracts.</li>
+</ul>
+<p>解析：选 b 。应增加资产的久期，或者购买付息债券。可以通过进入receive-fixed互换来实现，因此b正确、a错误。如果利率下降，购买cap并不能提供保护，卖出欧洲美元期货(Eurodollar futures)将赔钱。</p>
+<h3><b>2、互换期权</b></h3>
+<p><b>互换期权</b>(Swaption)是一种场外(OTC)期权，买方有权在特定时间按特定条款（包括固定票面利率）进行互换。</p>
+<p>互换期权有多种形式。<b>欧式互换期权</b>(European swaption)可在未来某个时间点的某一个日期执行。在那一天，所有者有权按照特定的利率和期限进行互换交易。例如，1Y × 5Y的互换可以让持有者有权在一年内买入5年期互换的多头或空头头寸。</p>
+<p>定期的<b>美式互换期权</b>(American swaption)可在行权期间的任何日期进行。例如，如果在6个月后行使期权，那么期权互换将在5年零6个月后终止。因此，互换的终止日期取决于行权日期。相比之下，<b>或有美式互换期权</b>(contingent American swaption)有一个预先指定的终止日期，比如正好从现在起6年之后。最后，<b><span>百慕大期权</span></b>(Bermudan
+                                                                                    option)赋予持有人在期权有效期内在一组特定日期行使的权利。</p>
+<p>假设有一家公司将在一年内发行五年期浮动利率债券。该公司希望拥有将浮动支付转换为固定支付的期权。该公司可以购买一种互换，这将使它有权以8%的利率创建一个5年期固定支付互换。如果一年内现行互换利率高于8%，公司将行权互换期权，否则不行权互换期权。期权到期日的价值为：</p>
+<blockquote><span>P_T = Max[V(i_T) − V(K), 0]</span> </blockquote>
+<p>其中 <span>V(i)</span> 为互换支付固定利率 <span>i</span> 的价值， <span>i_T</span> 为掉期到期日的普遍掉期利率(prevailing swap rate)， <span>K</span> 为锁定掉期利率(locked-in swap rate)。这种合同被称为<u>欧式6/1看跌互换期权</u>(European
+                                                                                    6/1 put swaption)，1进5年期支付人期权(one into five-year payer option)。</p>
+<p>这种互换相当于债券的期权。由于这种互换在利率上升时会产生利润，它类似于6年期债券的一年期看跌期权。当债券价值下跌时，看跌期权就会受益，而这种情况发生在利率上升时。相反，一种给予固定收益权的互换类似于债券的看涨期权。下表总结了互换、上限下限、互换期权的术语：</p>
+<table>
+<tbody>
+<tr>
+<th>产品</th>
+<th>多头方（买方）</th>
+<th>空头方（卖方）</th>
+</tr>
+<tr>
+<td>固定浮动互换</td>
+<td>支付固定、收到浮动</td>
+<td>支付浮动、收到固定</td>
+</tr>
+<tr>
+<td>上限</td>
+<td>支付<span>保险金</span>、<br/>收到 Max(i − i_C, 0)</td>
+<td>收到保险金、<br/>支付 Max(i − i_C, 0)</td>
+</tr>
+<tr>
+<td>下限</td>
+<td>支付保险金、<br/>收到 Max(i_F − i, 0)</td>
+<td>收到保险金、<br/>支付 Max(i_F − i, 0)</td>
+</tr>
+<tr>
+<td>看跌互换期权</td>
+<td>支付保险金。<br/>有权利支付浮动、收到固定</td>
+<td>收到保险金。<br/>如果行权，支付固定、收到浮动</td>
+</tr>
+<tr>
+<td>看涨互换期权</td>
+<td>支付保险金。<br/>有权利支付固定、收到浮动</td>
+<td>收到保险金。<br/>如果行权，支付浮动、收到固定</td>
+</tr>
+</tbody>
+</table>
+<p>互换期权可以用于多种目的。考虑一个<span>抵押贷款支持证券</span>(MBS)的投资者。如果<span>长期利率</span>下降，提前支付将增加，导致债券价格升值的缺口。这种风险可以通过购买接收者互换(receiver swaption)来对冲。如果利率下降，买方将行使期权，从而产生利润来抵消MBS的损失。也可以通过发行
+                                                                                    <span>可赎回债券</span>来对冲这种风险。这就形成了一个期权多头头寸，如果利率下降就会产生利润。例如，<span>房利美</span>(Fannie Mae)，一家政府支持的企业，大量投资于抵押贷款，使用这些技术来对冲其提前还款风险。</p>
+<p>在假设利率为<span>对数正态分布</span>的情况下，互换交易通常使用 Black 模型的一个变体来定价。互换的价值就等于一个不同利率、期限相同的期权组合。在实践中，互换交易是根据波动率而不是期权溢价进行的。适用的远期汇率与期权同时开始，期限与期权相同。</p>
+<p>⭐ <b>Q10.13 </b>As your company’s risk manager, you are looking for protection against adverse interest rate changes in five years. Using Black’s model for options on futures
+                                                                                    to price a European swap option (swaption) that gives the option holder the right to cancel a seven-year swap after five years, which of the following would you use in
+                                                                                    the model?</p>
+<ul>
+<li>a. The two-year forward par swap rate starting in five years’ time</li>
+<li>b. The five-year forward par swap rate starting in two years’ time</li>
+<li>c. The two-year par swap rate</li>
+<li>d. The five-year par swap rate</li>
+</ul>
+<p>解析：选 a 。远期利率应该从期权开始的5年开始，期限应该与期权的久期相等，即2年。</p>
+<h3><b>3、场内期权</b></h3>
+<p><b>欧洲美元期货期权</b>(Options on Eurodollar futures)给持有者以一个固定的价格进入欧洲美元期货的多头或空头的权利。例如，看跌期权的回报是：</p>
+<blockquote><span>P_T = Notional × Max[K − FQ_T, 0] × (90/360)</span> </blockquote>
+<p>其中 <span>K</span> 为<span>行权价</span>， <span>FQ_T</span>                                                                                    为到期时现行期货报价。除了现金支付，期权持有人在标的期货中建立头寸。由于这是一种看跌期权，它会在操作后创建一个空头头寸，由交易对手持有相反的头寸。注意，由于期货是每天结算的，所以合约的价值为零。</p>
+<p>由于期货价格也可以写成 <span>FQ_T = 100-i_T</span> ，<span>行权价格</span>也可以写成 <span>K = 100-i_C</span> ，所以收益也为：</p>
+<blockquote><span>P_T = Notional × Max[i_T − i_C, 0] × (90/360)</span> </blockquote>
+<p>这相当于上限利率。因此，欧洲美元期货的看跌期权相当于 LIBOR 的 caplet。</p>
+<p>在实践中，合同中有一些细微的差别。欧洲美元期货期权是美式而不是欧式的。此外，付款是在欧洲美元期货期权的到期日，而不会拖欠。</p>
+<p><b>国库券期货期权</b>(Options on T-bond futures)赋予持有人以固定价格在期货中建立多头或空头头寸的权利。例如，看涨期权的回报是：</p>
+<blockquote><span>C_T = Notional × Max[F_T − K, 0]</span> </blockquote>
+<p>一个认为利率会下降，或者债券市场会反弹的投资者可以购买国债期货。参与上行，而没有下行风险。</p>
+<p>⭐ <b>Q10.14 </b>To hedge against future, unanticipated, and significant increases in borrowing rates, which of the following alternatives offers the greatest flexibility for
+                                                                                    the borrower?</p>
+<ul>
+<li>a. Interest rate collar</li>
+<li>b. Fixed for floating swap</li>
+<li>c. Call swaption</li>
+<li>d. Interest rate floor</li>
+</ul>
+<p>解析：选 c 。 互换期权(swaption)给了借款人锁定低利率的灵活性。常规的互换并不提供期权的灵活性。领子期权可以固定一个价格范围，但没有太大的灵活性。如果利率下降（不是上升），下限就会提供保护。注意，购买上限也是一个不错的选择。</p>
+<p>⭐ <b>Q10.15 </b>The yield curve is upward sloping and a portfolio manager has a long position in 10-year Treasury notes funded through overnight repurchase agreements. The
+                                                                                    risk manager is concerned with the risk that market rates may increase further and reduce the market value of the position. What hedge could be put on to reduce the position’s
+                                                                                    exposure to rising rates?</p>
+<ul>
+<li>a. Enter into a 10-year pay-fixed and receive-floating interest rate swap.</li>
+<li>b. Enter into a 10-year receive-fixed and pay-floating interest rate swap.</li>
+<li>c. Establish a long position in 10-year Treasury note futures.</li>
+<li>d. Buy a call option on 10-year Treasury note futures.</li>
+</ul>
+<p>解析：选 a 。 债券头寸的久期为正。如果利率上升，进入pay-fixed互换会获利；这种负久期可以为原始头寸提供对冲，因此选项b错误。选项c与原始头寸相同，不是对冲。选项d，如果利率上升，call on futures将不会产生利润，在这种情况下，期货就会下跌。购买看跌期权是正确的。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

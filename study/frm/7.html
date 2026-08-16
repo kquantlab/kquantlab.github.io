@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C07 衍生品导论 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C07 衍生品导论">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C07 衍生品导论</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>衍生品市场</span></h2>
+<h3><b>1、衍生品的定义</b></h3>
+<p><b><span>衍生工具</span></b>(derivative instrument)是一种私人合同，其价值来自于某些标的资产价格、参考利率或指数，如股票、债券、货币或商品。此外，合同还规定了本金或<b>名义金额</b>(notional amount)，以货币、股份、<span>蒲式耳</span>或其他单位来定义。衍生品价值的变动取决于名义价格和潜在价格或指数。</p>
+<p>与股票和债券等为筹集资金而发行的<b>证券</b>不同，衍生品是合约或双方之间的私人<b>协议</b>(contracts)。因此，衍生品合约的损益总和必为0。一方获得的利益与另一方遭受的损失相同。</p>
+<h3><b>2、衍生品的市场规模</b></h3>
+<p>衍生品市场可以根据标的工具以及交易类型进行分类。利率合约，尤其是<span>互换合约</span>，是最广泛使用的衍生品类型。在场外交易市场，外汇合约也被广泛使用，尤其是直接远期合约和<b><span>外汇互换</span></b>(forex swaps)合约，它们是现货和短期远期交易的结合。在交易所交易工具中，<span>利率期货</span>和期权是最常见的。</p>
+<p>名义金额表明了现金市场中相同的头寸。例如，一份名义价值为100万美元的<span>股票指数期货</span>合约，相当于在股票市场上持有同等规模的现金头寸。它们之所以重要，还因为它们推动了金融行业的费用，而这些费用通常被设定为名义费用的一小部分。然而，名义金额并没有提供关于头寸风险的太多信息。衍生品的风险最好是通过观测区间内市值的潜在变化来衡量，通过VAR来衡量。</p>
+<h3><b>3、交易机制</b></h3>
+<p>衍生品可以在私人分散市场进行交易，称为<b>场外交易</b>(OTC)市场，也可以在<b>有组织的交易所</b>(organized exchanges)交易。场外交易通常由<b>衍生品交易商</b>(derivatives dealer)进行。衍生品交易商是专门组织的公司，通常与主要金融机构有关联，从事衍生品的买卖。</p>
+<p>交易衍生品的一个主要问题是<b>交易对手风险</b>(counterparty risk)。交易对手是指金融交易的对方。假设A银行与<span>对冲基金</span>B签订了一份衍生品合约，A同意以1.3美元的固定价格卖出美元来购买欧元。如果欧元走高，A的合约就会收钱。然而，这意味着B蒙受损失。如果损失足够大，B可能违约。因此，该合同产生了信用风险。</p>
+<p>衍生品交易商通过多种方式管理对手方风险。即便如此，这些潜在风险敞口仍是一个主要问题。这就是美国政府救助美国国际集团(AIG)的原因。AIG已经向许多其他机构出售了<span>信用违约互换</span>(CDS)，它的破产可能会对其他银行造成多米诺骨牌效应。</p>
+<p>交易对手风险可以通过<b>清算所</b>(clearinghouse)来解决。清算所是为在有组织的交易所或场外交易中发生的金融交易提供结算和清算服务的金融机构。</p>
+<p>清算所的目的是通过介入买方和卖方之间，从而确保合同的支付，从而减少交易对手风险。这就是清算所提供<b>中央对手方</b>(central counterparty, CCP)清算的原因。这是通过一个叫做<b>债券更新</b>(novation)的过程来完成的，指用剩下的一方和第三方之间的合同来替换两个交易对手之间的合同。不过，清算所也可能提供CCP结算以外的其他服务。</p>
+<p>清算所通过多种手段降低交易对手风险。首先，由于合同的可替代性，它们允许在交易对手之间进行净额或抵销交易。例如，假设A银行从B银行购买了价值1亿美元的欧元，同时，它向C银行出售了一份价值8000万美元的完全相同的合同。如果这两笔交易是通过同一家清算所进行的，A银行的净敞口将仅为2000万美元。</p>
+<p>第二，清算所有适当的程序来管理他们的信用风险。它们要求<b>抵押存款</b>(collateral deposits)，或称保证金(margins)，而保证金必须每天或更频繁地进行调整。他们根据交易的独立估值对合约进行市值计价。如果<b>清算成员</b>(clearing member)在需要时没有增加抵押物，清算所有权平仓。此外，清算所通常依赖清算成员提供的<span>担保基金</span>，可用于弥补
+                                                    <span>违约事件</span>中的损失。</p>
+<p><b>交易所</b>(organized exchange, bourse)是一个高度有组织的市场，进行金融工具的买卖。交易可以在实体地点进行，也可以通过电子方式进行。世界上最活跃的股票市场是<b>纽约证券交易所</b>(NYSE)。另一个例子是<b><span>芝加哥商品交易所集团</span></b>(CME Group)，它是世界上最大的衍生品市场。芝加哥商品交易所的交易以公开叫价的形式进行，或者通过Globex进行电子交易。</p>
+<p>大多数交易所是<b>公开的</b>，交易公开的证券，并要求在当地监管机构注册，如证券交易委员会(SEC)。相比之下，<b>私人的</b>交易所没有注册，允许交易未经注册的证券，例如私募。</p>
+<p>所有的交易所都有一个清算所。一个清算所可能是专门为一个或几个交易所服务的。作为<b><span>纵向集成</span></b>(vertical integration)的一个例子，芝加哥商品交易所清算是芝加哥商品交易所集团的内部清算机构。相比之下，<b><span>期权结算公司</span></b>(Options
+                                                        Clearing Corporation, OCC)支持14个交易所和平台，包括<span>芝加哥期权</span>交易所和纽约证券交易所。LCH Clearnet Group负责欧洲主要金融交易所的许多交易。这个模型称为<b>水平集成</b>(horizontal integration)。</p>
+<p>场外交易不需要清算所。然而，这种情况正在缓慢改变。目前约有25%的利率掉期是通过清算所进行的。同样，总部位于美国的电子期货交易所ICE Trust也已开始清算CDS<span>指数合约</span>。立法肯定会推动更多交易转向CCP。然而，<span>场外衍生品</span>交易商普遍反对CCP，因为这将削减他们的业务和利润。</p>
+<p>CCP还有其他优势。它们创造了金融市场的<b>透明度</b>(transparency)。由于交易信息现在是集中存储的，CCP可以传播有关交易、价格和头寸的信息。这是AIG的主要问题，因为监管当局不知道AIG的CDS空头规模。因此CCP可以用于交易<b>报告</b>(reporting)。目前，大多数信用衍生品的电子交易都报告给托管信托公司。<b><span>存管信托结算公司</span></b>(Depository
+                                                        Trust &amp; Clearing Corporation, DTCC)是在美国结算绝大多数证券交易的金融机构。</p>
+<p>然而，清算所也有缺点。它们并没有消除金融体系中的交易对手风险，而是将风险集中在它们自己之间。即使CCP比大多数其他机构更有信誉，CCP的失败也可能造成系统性风险。CCP通常有很高的信用评级，例如，OCC的信用评级为AAA。CCP的失败极为罕见，但有可能再次发生。</p>
+<p>监管机构正在考虑CCP是否应该获得央行的贷款便利。当然，这造成了道德风险的问题，在这种情况下，清算人将没有动力创建一个健全的结构，因为他们知道央行无论如何都会出手相助。</p>
+<p>第二，头寸的风险管理是非常重要的。CCP已经能够处理简单的、标准化的合同，这很容易定价。迫使清算所使用更复杂的工具，增加了出现操作问题的可能性。即使是标准化的工具也可能不是很具有流动性，这可能会在强制清算的情况下造成巨大损失。</p>
+<p>第三，现有的CCP过多会使CCP的净收益被击败。在我们的银行A与客户B和C的例子中，如果两笔交易被路由到两个不同的CCP，则不存在净额。此外，对不同产品采用CCP会降低<span>国际互换和衍生品协会</span>(ISDA)协议的有效性，因为这些协议允许在许多不同产品之间进行净额计算。这种协议被称为<b><span>双边协议</span></b>(bilateral)，因为它们只涵盖了双方之间的各种贸易。</p>
+<p>CCP的建立造成了一个全球协调问题。美国、英国和欧洲大陆都想要自己的CCP，因为他们的CCP可能需要当地央行的支持。或许还需要监管，以避免CCP通过设定低利润率而相互竞争，这将使它们不那么安全。</p>
+<p>⭐ <b>例7.1</b> Novation is the process of:</p>
+<ul>
+<li>a. Creating a new trade between two counterparties</li>
+<li>b. Terminating an existing trade between two counterparties</li>
+<li>c. Discharging a contract between the original counterparties and creating two new contracts, each with a central counterparty</li>
+<li>d. Assigning a trade to another party</li>
+</ul>
+<p>解析：选 c 。<b>债券更新</b>(Novation)涉及到交易对手的替代，<span>票据交换</span>所利用这个过程在买卖双方之间进行干预。与转让(<span>assignment</span>)不同，这需要各方的同意。</p>
+<p>⭐ <b>例7.2  </b>Which of the following is not an advantage of establishing CCPs?</p>
+<ul>
+<li>a. CCPs allow netting of contracts.</li>
+<li>b. CCPs can be applied to some types of OTC trades.</li>
+<li>c. CCPs can create more transparency in trading.</li>
+<li>d. CCPs eliminate all counterparty risk in the financial system.</li>
+</ul>
+<p>解析：选 d 。CCP通常可以降低交易对手风险，但不能说消除所有的交易对手风险。</p>
+<h2>二、远期合约</h2>
+<h3><b>1、回顾</b></h3>
+<p>金融工具中最常见的交易是<b>现货交易</b>(spot transactions)，即在实际操作中尽快进行实物交割。历史上，农民会去集市与买家见面。随着市场的发展，农民们意识到在未来某个日期进行交易将是有益的。这使他们能够对冲价格波动，以便销售他们预期的产品。这就产生了远期合约，一种在未来固定时间内将给定资产与现金（有时是另一种资产）进行交换的私人协议。合同的条款是交易的数量、日期和价格。买入该资产的头寸被称为<b>多头</b>(long)。要卖出的头寸被称为<b>空头</b>(short)。一方得到的必然是另一方的损失。</p>
+<p>这些工具代表合同义务，因为无论中间价格发生什么，交换都必须发生，除非发生违约。不像期权合同，没有选择是否接受交货。为了避免可能的损失，农民可以以美元的价格进行谷物的远期销售。这样农民就锁定了未来交割的价格，农民对价格的变动进行了<b>对冲</b>(hedge)。</p>
+<p>采用符号如下：</p>
+<ul>
+<li>当前时间为 <span>t</span> </li>
+<li>交货时间为 <span>T</span> </li>
+<li>到期时间为 <span>\tau =  T − t</span> </li>
+<li>资产以美元计价的当前现货价格为 <span>S_t</span> </li>
+<li>以 <span>T</span> 交割的资产的当前远期价格为 <span>F_t(T) =  F_t =  F</span> </li>
+<li>合同现值为 <span>V_t</span> </li>
+<li>以 <span>T</span> 交割的现行国内无风险利率为 <span>r</span> </li>
+<li>合同中的数量或单位数为 <span>n</span> </li>
+</ul>
+<p>合同的<b>面值</b>(face amount)或<b>本金价值</b>(principal value)被定义为在到期时支付的 <span>nF</span> ，就像债券一样。这也被称为<b>名义金额</b>(notional amount)。假设利率是连续复利的，到期时支付的一美元的现值是
+                                                                    <span>PV($1) = e^{−r\tau}</span> 。</p>
+<p>假设初始远期价格是 <span>F_t </span> = 100美元。为 <span>F_t </span>，投机者同意以 <span>T</span> 的价格购买 <span>n</span> = 500单位。到期时，远期合约的收益通过以下两个步骤确定：</p>
+<ul>
+<li>投机者支付 <span>nF = $50,000</span> 现金，并获得500单位的标的股票。</li>
+<li>然后，投机者可以以当前现货价格 <span>S_T</span> 出售标的，获得 <span>n(S_T−F)</span> 的利润。例如，如果现货价格是
+                                                                        <span>S_T</span> = $120，那么利润就是500 ×($120 - $100) = $10,000。这也是合约到期时的市值。</li>
+</ul>
+<p>综上所述，对于标的资产的一个单位，远期合约到期日价值为 <span>V_T = S_T − F</span> 。合同到期时的价值来自标的资产的购买和<b>实物交付</b>(physical delivery)。以现金交换实际资产。另一种结算方式是<b>现金结算</b>(cash
+                                                                    settlement)。这涉及到简单地测量资产到期时的市场价值 <span>S_T</span> ，并同意多头接收 <span>nV_T = n(S_T−F)</span>                                                                    。这个金额可以是正的，也可以是负的，包括利润或亏损。</p>
+<p>支付在潜在的现货价格中是线性的，相反头寸围绕水平轴对称的。对于给定的现货价格，多头和空头的利润或亏损之和为零，因为这是私人合约。</p>
+<h3><b>2、远期合约定价</b></h3>
+<p>在评估远期合约时，会出现两个重要的问题。首先，当前的远期价格 <span>F_t</span> 是如何确定的? 第二，未交割远期合约的现值 <span>V_t</span> 是多少?</p>
+<p>最初，我们假设相关资产不支付收入。下一节将对此进行概括。我们还假设没有交易成本，即现货和远期报价的买卖价差为零，以及能够以相同的无风险利率借贷。</p>
+<p>一般情况下，远期合约的初始价值为零。这是通过在现货市场和远期市场之间建立<b>无套利关系</b>，适当地设定远期价格 <span>F_t</span> 来实现的。无套利是指具有相同收益的头寸具有相同价格。这就排除了套利利润可能存在的情况。套利是一种零风险、零净投资策略，但仍能产生利润。</p>
+<p>考虑以下策略：</p>
+<ul>
+<li>以现货价格 <span>S_t</span> 买入一股/单位标的资产，并持有至时间 <span>T</span> 。</li>
+<li>签订远期合约，以远期价格 <span>F_t</span> 购买一股/单位相同标的资产。为了在到期时有足够资金支付<span>F_t</span>，我们将
+                                                                                <span>F_t</span>的现值投资于一个有息账户。现值为 <span>F_t e^{−r\tau}</span> 。远期价格 <span>F_t</span>                                                                                    的设定使得远期合约的初始成本 <span>V_t</span> 为零。</li>
+</ul>
+<p>这两种投资组合在经济上是等价的，因为它们在到期时是相同的。每一份都包含一份资产。因此，它们的前期成本必须相同。为了避免套利，必须使得 <span>S_t = F_t e^{−r\tau}</span> 成立。这个等式定义了公平远期价格
+                                                                            <span>F_t</span> ，使得合约的初始价值为零。</p>
+<p>可以看到，远期汇率高于即期汇率。这反映了远期合约不像现金头寸那样需要预付定金。因此，远期价格必须高于现货价格，才能反映货币的时间价值。</p>
+<p>从交易成本中抽象化，任何偏差都会产生套利机会。这可以通过购买便宜的资产和出售昂贵的资产来利用。例如，假设F = $110。确定公允价值是 <span>S_t  e^{r\tau}</span> = $105.13。运用的原则是在105.13美元的低位买进，在110美元的高位卖出。我们可以两步走锁定一定的利润：</p>
+<ul>
+<li>现在以100美元的价格买进现货资产</li>
+<li>现在以110美元的价格卖出远期资产</li>
+</ul>
+<p>这可以通过现在借100美元来购买资产来实现。到期时，我们将欠本金加利息，即105.13美元，但得到110美元，利润4.87美元。这将是一个明显的套利机会。</p>
+<p>现在考虑一个错误定价，F = 102美元。我们运用的原则是在102美元的低位买进，在105.13美元的高位卖出。我们可以通过以下两个步骤锁定一定的利润：</p>
+<ul>
+<li>现在卖空资产，其现货价格为100美元</li>
+<li>现在以102美元的价格买入远期资产</li>
+</ul>
+<p>通过卖空，我们将现金进行投资，这将增加到105.13美元。到期时，我们必须交付股票，但这将通过远期购买获得。我们为此支付102美元，剩下的利润是3.13美元。</p>
+<p>这项交易涉及卖空资产，这比直接购买涉及的更多。当购买时，我们支付100美元，并获得一份资产。当卖空时，我们借入一股资产，并承诺在未来的某一天归还;在此期间，我们以100美元出售。</p>
+<h3><b>3、场外远期合约定价</b></h3>
+<p>可以用同样的推理来评估锁定交割价格为 <span>K</span> 的未交割远期合约。一般这种合约的价值是非零的，因为 <span>K</span> 与现行的远期汇率不同。这样的合同被称为<b>场外合约</b>(off-market)。考虑这些策略：</p>
+<ul>
+<li>以现货价格 <span>S_t</span> 购买1单位的标的资产，并持有到时间 <span>T</span> 。</li>
+<li>签订远期合约，以 <span>K</span> 价购买1单位相同标的资产。为了在到期时有足够的资金支付 <span>K</span> ，我们将 <span>K</span> 的现值投资于一个计息账户。现值为 <span>K e^{−r\tau}</span> 。此外，我们还必须支付远期合同的市场价值 <span>V_t</span> 。</li>
+</ul>
+<p>两个投资组合的前期成本相同。因此有 <span>V_t + K e^{−r\tau} = S_t</span> ，其中 <span>V_t </span>                                                                            定义了未偿付多头头寸的市场价值。当标的 <span>S</span> 的价值增加时，它就会增值。空头头寸的符号则相反。稍后将通过考虑潜在风险因素 <span>S_t</span>                                                                            和 <span>r</span> 的分布，将这种关系扩展到风险的度量。</p>
+<p>例如，假设仍然持有之前的远期合约 <span>F_t</span> = 105.13美元，一个月后现货价格移动到 <span>S_t</span> = 110美元。在整个合约期内，固定利率为
+                                                                            <span>K</span> = $105.13。利率<span>r </span> = 5%不变，但期限缩短了一个月， <span>\tau</span> = 11/12。合同的新价值是 <span>V_t = S_t - K e^{−r\tau} </span> = $110
+                                                                            − $105.13 exp(−0.05 × 11/12) = $110 − $100.42 = $9.58。由于现货价格上涨，合同现在比以前更有价值了。</p>
+<h3><b>4、有收入支付的远期合约定价</b></h3>
+<p>之前考虑过资产不产生收益支付的情况。在实践中，资产可能是</p>
+<ul>
+<li>定期派息的股票</li>
+<li>定期派息的债券</li>
+<li>以连续收益率近似股息流的股票指数</li>
+<li>一种支付外币利率的外币</li>
+</ul>
+<p>无论哪一项收入是支付在资产上的，我们都可以有效地将支付分为<b>离散</b>的（即在固定时间点的固定美元数额）或<b>连续</b>的（即按资产持有时间的比例应计）。我们必须假设收入支付是固定的或确定的。更普遍地说，存储成本相当于负股息。定义 <span>D</span>                                                                            为不连续的(美元)股息或息票支付，<span>r^∗_t(T)</span>为国外交割无风险费率， <span>q_t(T)</span>                                                                            为股息率。</p>
+<p>无论支付的是股息还是外国利率，原则都是一样的。我们可以减少对资产的投资，在到期时得到一个单位。这是因为收益支付可以再投资到资产中。或者，我们可以以收入支付的价值为抵押借款，以增加我们对资产的持有。</p>
+<p>所有价格 <span>(S, F)</span> 都是以本国货币衡量的。例如， <span>S</span> 可以用欧元的美元价格表示，在这种情况下，
+                                                                            <span>r</span> 是美国利率，<span>r^*</span>是欧元利率。相反，如果 <span>S</span> 是美元的日元价格， <span>r</span> 代表日本利率， <span>r^*</span> 代表美国利率。</p>
+<p>将公式 <span>S_t = F_t e^{−r\tau}</span> 推广为 <span>F_t e^{−r\tau}=S_t -PV(D)</span>                                                                            ，其中 <span>PV(D)</span> 是息票支付的现值。如果有多个支付， <span>PV(D)</span> 表示每一个支付的现值之和，以适当的无风险率折现。对于存储成本，我们需要将存储成本现值
+                                                                            <span>PV(C)</span> 加到右边，即：</p>
+<blockquote><span>F_t e^{−r\tau}=S_t -PV(D)+PV(C)</span> （离散股息）</blockquote>
+<p>这种方法同样适用于按时间单位支付连续收入的资产，而不是按离散金额。例如，持有外币应该通过计息账户来支付随时间累积的利息。在期限 <span>\tau</span> 内，为了在到期时获得一个单位，我们可以承担较少的前期投资 <span>S_t e^{−r^*\tau}</span> 。公式变化为：</p>
+<blockquote><span>F_t e^{−r\tau}= S_t e^{−r^*\tau}</span> （连续股息）</blockquote>
+<p>若利率是每年复利，化简可得：</p>
+<blockquote><span>\frac{F_t - S_t}{S_t} = exp(r - r^*)\tau \approx (r - r^*)\tau</span>                                                                            ⭐ （溢价与折价判定公式）</blockquote>
+<p>若 <span>r &gt; r^*</span> ， <span>F_t &gt; S_t</span> ，则资产以<b>远期溢价</b>(forward
+                                                                            premium)进行交易。<br/>若 <span>r &lt; r^*</span> ， <span>F_t &lt; S_t</span>                                                                            ，则资产以<b>远期折价</b>(forward discount)进行交易。</p>
+<p>因此，<b>远期价格是否高于现货价格，取决于国内无风险利率是否高于资产收益率</b>。</p>
+<p><span>F_t = S_t e^{−r^*\tau} / e^{−r\tau}</span> 在处理货币时也被称为<b><span>利率平价</span></b>(interest
+                                                                            rate parity)。当国内货币利率为 <span>r</span> 时，即期和远期价格必须以每单位外币的美元表示。例如，美元/欧元或美元/英镑的汇率就是这样。然而，如果汇率是以外币对美元的汇率表示的，那么 <span>r</span> 必须是外币的汇率。例如，对于日元/美元的汇率， <span>S</span> 是日元/美元， <span>r</span>                                                                            是日元利率， <span>r^*</span> 是美元利率。</p>
+<p>有了收入支付，<u>未交割远期合约</u>的价值是：</p>
+<blockquote><span>V_t = F_t e^{−r\tau} - K  e^{−r\tau}  = (F_t  - K) e^{−r\tau}</span>                                                                            ⭐</blockquote>
+<p>这为远期合约的估值提供了一个有用的替代公式，可以通过以当前的远期汇率进入反向头寸来平仓未兑现的远期合约。即，<b>未交割远期合约的现值可以通过进入抵消远期合约的头寸，并在到期时将净现金流折现来计算</b>。</p>
+<p>⭐ <b>例7.3</b> The one-year U.S. dollar interest rate is 2.75% and one-year Canadian dollar interest rate is 4.25%. The current USD/CAD spot exchange rate is 1.0221–1.0225. Calculate
+                                                                            the one-year USD/CAD forward rate. Assume annual compounding.</p>
+<ul>
+<li>a. 1.0076</li>
+<li>b. 1.0074</li>
+<li>c. 1.0075</li>
+<li>d. 1.03722</li>
+</ul>
+<p>解析：选 a 。现货价格是中间价 $1.0223。用年复利公式， <span>F = S(1 + r )/(1 + R^∗)</span> = 1.0223(1.0275)/ (1.0425) = 1.0076。</p>
+<p>⭐ <b>例7.4</b> Suppose that U.S. interest rates rise from 3% to 4% this year. The spot exchange rate quotes at 112.5 JPY/USD and the forward rate for a one-year contract is at 110.5.
+                                                                            What is the Japanese interest rate?</p>
+<ul>
+<li>a. 1.81%</li>
+<li>b. 2.15%</li>
+<li>c. 3.84%</li>
+<li>d. 5.88%</li>
+</ul>
+<p>解析：选 b 。按照货币市场的惯例，汇率被定义为日元对美元的价格，美元是外汇。外币利率是最新的美元利率，即4%。假设离散复利，远期合约的定价公式为</p>
+<blockquote><span>F (JPY/USD)/(1 + rT) = S(JPY/USD)/(1 + r ^∗T)</span> </blockquote>
+<p>因此， <span>(1 + rT) = (F/S)(1 + r ^∗T)</span> = (110.5/112.5)(1.04) = 1.0215，得到 r = 2.15%。使用连续复利也会得到类似的结果。另一种方法是考虑美元远期贴现，即
+                                                                                (F − S)/S = −1.8%，因此，美元远期比现货便宜1.8%，这意味着日本利率肯定比美国利率低1.8%左右，这样也可以近似得到 b 项。</p>
+<p>⭐ <b>例7.5</b> Consider a forward contract on a stock market index. Identify the false statement. Everything else being constant,</p>
+<ul>
+<li>a. The forward price depends directly on the level of the stock market index.</li>
+<li>b. The forward price will fall if underlying stocks increase the level of dividend payments over the life of the contract.</li>
+<li>c. The forward price will rise if time to maturity is increased.</li>
+<li>d. The forward price will fall if the interest rate is raised.</li>
+</ul>
+<p>解析：选 d 。将股息收益率定义为q，根据 <span>F exp(−rT) = S exp(−qT)</span> ，远期价格取决于现金价格。一般r &gt; q。a项正确，F直接依赖于S。b项正确，更高的q减少了(r
+                                                                                − q)，因此减少了F。c项正确，r - q是正的，导致(r − q)随着到期时间T的增加而增大。d项不正确，r的增加使得远期合约更有吸引力，F增加。</p>
+<p>⭐ <b>例7.6</b> A three-month futures contract on an equity index is currently priced at USD1,000. The underlying index stocks are valued at USD 990 and pay dividends at a continuously
+                                                                                compounded rate of 2%. The current continuously compounded risk-free rate is 4%. The potential arbitrage profit per contract,given this set of data, is closest to</p>
+<ul>
+<li>a. USD 10.00</li>
+<li>b. USD 7.50</li>
+<li>c. USD 5.00</li>
+<li>d. USD 1.50</li>
+</ul>
+<p>解析：选 c 。期货的公允价值为 <span>F=Sexp\left(-r^\ast T\right)/exp\left(-rT\right)</span> ，代入数字有
+                                                                                990×exp(−0.02 × 3/12)/exp(−0.04 × 3/12) = 994.96. 因此实际期货价格高了(1,000 − 995) = 5。</p>
+<h2>三、期货合约</h2>
+<h3><b>1、回顾</b></h3>
+<p>远期合约允许用户建立在经济上等同于基础现货市场的头寸。然而，与现金市场不同的是，它们不涉及大量的预付款项。因此，远期合约可以被解释为具有杠杆作用。杠杆是有效的，因为它使我们的钱更努力工作。</p>
+<p>然而，杠杆会给交易对手带来信用风险。现金交易不存在杠杆。当一个投机者以100美元的价格买了一只股票，交易对手就得到了现金，没有信用风险。相反，当投机者以105美元的价格签订远期合约购买一项资产时，并不需要预先支付。实际上，投机者从交易对手那里借钱投资于资产。如果对投机者来说，合同的价值跌得足够厉害，就有违约的风险。作为回应，期货合约的结构使所有交易对手的信用风险降到最低。否则，从市场风险的角度来看，期货合约与远期合约基本相同。</p>
+<p><b>期货合约</b>(Futures contracts)是买卖标的资产的标准化、可转让和交易所交易的合约。它们与远期合同的区别如下：</p>
+<ul>
+<li><b>在有组织的交易所进行交易</b>(Trading on organized exchanges)。远期是为客户量身定制的场外合约，而期货是在有组织的交易所进行交易。</li>
+<li><b>标准化</b>(Standardization)。期货合约提供有限的到期日选择。他们以固定的合约规模进行交易。这种标准化确保了许多期货合约活跃的二级市场，这些合约可以很容易地交易、购买或转售。大多数期货合约具有良好的流动性。交易是期货不太适合一些<span>套期保值者</span>的需要，这就产生了基差风险。</li>
+<li><b>清算所</b>(Clearinghouse)。期货合约也根据交易对手而标准化。在每一笔交易确认后，票据交换所基本上处于买卖双方之间，以保证合同的履行。因此，与远期合约不同，交易对手不必担心交易另一方的信用风险。</li>
+<li><b>盯市</b>(Marking to market)。由于清算所现在要处理两个原始交易对手的信用风险，因此必须对信用风险进行密切监控。这是通过每日盯市来实现的，这涉及每天结算合约的收益和损失。这将避免随着时间的推移积累巨额损失，可能导致代价高昂的违约。</li>
+<li><b>保证金</b>(Margins)。虽然每天的结算账户是针对过去的损失，但它不能为未来的损失提供缓冲。这就是保证金的目标，保证金代表的是如果对方违约，可以扣押的抵押品。<b>初始保证金</b>(initial margin)必须在建仓时提交。如果账户中的权益低于<b><span>维持保证金</span></b>(maintenance
+                                                                                            margin)，客户需要提供额外的资金来弥补初始保证金。请注意，填满的金额不是维持保证金，而是初始保证金。保证金水平取决于交易工具和头寸类型;一般来说，波动性较小的工具或对冲头寸要求的利润率较低。</li>
+</ul>
+<p>例子：假设有一份价值100美元的1000单位资产的期货合约。多头期货头寸相当于直接持有价值10万美元的资产。例如，要进入期货头寸，投机者只需提供5000美元的保证金。这笔钱存入经纪人的权益账户。第二天，期货价格下跌了3美元，投机者损失了3000美元。从权益账户中减去损失，使其降为$5,000 - $3,000 = $2,000。然后，投机者会收到经纪人的<b><span>追加保证金</span>通知</b>(margin
+                                                                                    call)，要求在账户中再存入3000美元。如果未能满足追加保证金的要求，经纪人有权平仓。</p>
+<p>由于期货交易是集中在交易所进行的，因此很容易收集和报告汇总的交易数据。<b>成交量</b>(Volume)是当天交易的合约数量，这是一个浮动项目(flow item)。<b>未平仓合约</b>(Open interest)代表当天收盘时未清的合约数量，这是一个固有项目(stock item)。</p>
+<h3><b>2、期货合约定价</b></h3>
+<p>期货合约的估值原则与远期合约的估值原则非常相似。这两种合约的主要区别在于，任何盈利或亏损都是在期货合约的有效期内产生的，而不是在到期日立即产生。</p>
+<p>假设利率为常数或确定性时，远期和期货价格必须相等。在随机利率下，可能会有一个小的差异，取决于资产价值和利率之间的相关性。</p>
+<p>如果相关性为零，那么早收到还是晚收到都没有区别。期货价格必须与远期价格相同。相反，考虑价格与利率正相关的合约。如果合同价值上升，利率很可能也会上升。这意味着利润可以以更高的利率提取和再投资。相对于远期合约，这种按市价计价的特点有利于做多期货头寸。因此，在均衡状态下，期货价格必然较高。</p>
+<p>在实践中，这一效应仅在利率期货合约中可见，其价值与利率呈负相关。因为这个特性对多头没有吸引力，期货价格必须低于远期价格。<a href="https://zhuanlan.zhihu.com/p/416164316">第8章</a>解释如何计算调整，称为<b>凸性效应</b>(convexity
+                                                                                    effect)。</p>
+<p>⭐ <b>例7.7</b> An investor enters into a short position in a gold futures contract at USD 294.20. Each futures contract controls 100 troy ounces. The initial margin is USD
+                                                                                    3,200, and the maintenance margin is USD 2,900. At the end of the first day, the futures price drops to USD 286.6. Which of the following is the amount of the variation
+                                                                                    margin at the end of the first day?</p>
+<ul>
+<li>a. 0</li>
+<li>b. USD 34</li>
+<li>c. USD 334</li>
+<li>d. USD 760</li>
+</ul>
+<p>解析：选 a 。因为投资者做空，价格下跌，头寸创造了利润，没有<span>变动保证金</span>(variation margin)。然而，对于长期的损失是760，这将使权益为3200 - 760 = 2440。由于这低于维持保证金2 900，因此需要额外支付760，使股本回到初始保证金(initial
+                                                                                    margin)。</p>
+<p>⭐ <b>例7.8</b> Which one of the following statements is incorrect regarding the margining of exchange-traded futures contracts?</p>
+<ul>
+<li>a. Day trades and spread transactions require lower margin levels.</li>
+<li>b. If an investor fails to deposit variation margin in a timely manner, the positions may be liquidated by the carrying broker.</li>
+<li>c. Initial margin is the amount of money that must be deposited when a futures contract is opened.</li>
+<li>d. A margin call will be issued only if the investor’s margin account balance becomes negative.</li>
+</ul>
+<p>解析：选 d 。如果<span>保证金账户</span>余额低于维持保证金（不是0），则会发出保证金通知。</p>
+<h2><b>四、互换合约</b></h2>
+<p><b>互换合约</b>(Swap contracts)是指按照预先约定的条款交换一系列现金流的场外交易协议。标的资产可以是利率、汇率、股票、商品价格或任何其他指数。通常，<span>互换交易</span>的期限比远期和期货交易的期限长。</p>
+<p>例如，一项10年期的货币互换协议可能包括在未来10年内每年将500万美元兑换300万英镑，以及在到期时将1亿美元兑换5000万英镑的本金。这里的本金也称为<b>名义本金</b>(notional principal)。</p>
+<p>另一个例子是五年期利率互换，其中一方支付1亿美元本金的8%，以换取与浮动利率挂钩的利息支付。在这种情况下，由于两次支付的金额是相同的货币，因此在到期时不需要交换本金。</p>
+<p>互换可以被视为远期合约的组合。它们可以用远期估值公式定价。例如，货币互换可以看作是10个不同面值、到期日和汇率的远期合约的组合。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

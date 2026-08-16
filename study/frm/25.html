@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C25 操作风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C25 操作风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C25 操作风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、操作风险的重要性</h2>
+<h3>1、实例</h3>
+<ul>
+<li>2008年1月：<span>法国兴业银行</span>(亏损49亿欧元)。<span>交易员</span>Jerome Kerviel系统性地欺骗系统，在未经授权的情况下建立了价值高达490亿欧元的股指<span>期货头寸</span>。这家银行有足够的资本来吸收损失，但它的声誉受到了损害。</li>
+<li>2002年2月：爱尔兰联合银行(损失6.91亿美元)。交易员John Rusnack在这家美国子公司隐瞒了三年的日元/<span>美元汇率</span>交易亏损。银行的声誉受损。</li>
+<li>1997年3月：国民西敏寺银行(亏损1.27亿美元)。<span>互换交易</span>员Kyriacos Papouis通过错误定价和高估期权合约，故意掩盖损失。银行的声誉受损。<span>国民西敏寺银行</span>最终被<span>苏格兰皇家银行</span>收购。</li>
+<li>1996年9月：摩根格伦费尔<span>资产管理公司</span>(亏损7.2亿美元)。<span>基金经理</span>Peter Young超出了他的指导方针，导致了巨大的损失。摩根格伦费尔的德国所有者德意志银行同意赔偿该基金的投资者。</li>
+<li>1996年6月：日本<span>住友商事</span>(损失26亿美元)。一名铜交易商在三年内积累了未报告的损失。被称为“百分之五先生”的<span>滨中泰男</span>(Yasuo Hamanaka)因伪造和欺诈罪被判入狱。银行的声誉严重受损。</li>
+<li>1995年9月：日本大和银行(损失11亿美元)。债券交易员井口俊英(Toshihide Igushi)在这家美国子公司积累了11年未报告的亏损。这家银行被宣布破产。</li>
+<li>1995年2月：<span>巴林银行</span>(损失13亿美元)。衍生品交易员Nick Leeson在两年多的时间里积累了未报告的损失。巴林银行破产。</li>
+<li>1994年10月：<span>美国信孚银行</span>(损失1.5亿美元)。这家银行卷入了一场备受瞩目的诉讼，一位客户指控该行有不当销售行为。银行家和解了，但它的声誉严重受损。后来被德意志银行收购。</li>
+</ul>
+<p>这些惊人的损失中有许多可以追溯到<b>流氓交易员</b>(rogue trader)或内部欺诈案件。这些失败包括市场风险和操作风险(即未能适当监管)。有时，这些事件的代价相当高。它们导致了巨大的<span>直接经济损失</span>，有时甚至导致破产。除了这些直接成本外，银行还经常因声誉受损而遭受巨大的<span>间接损失</span>。在宣布经营亏损后，由于外部事件，股票市场价值与亏损成正比。然而，当损失是由内部欺诈引起时，股价会下跌得更多，因为这是控制不力的征兆，可能导致进一步的损失。</p>
+<h3>2、启示</h3>
+<p>这些失败发生在各种业务线中。一些银行比其他银行更容易受到市场风险或信用风险的影响。不过，它们都存在一定的操作风险。</p>
+<ul>
+<li><b>商业银行</b>(Commercial banks)面临的风险主要是<span>信贷风险</span>，操作风险较小，市场风险最小</li>
+<li><b>投资银行</b>(Investment banks)、<b><span>自营交易</span></b>(proprietary trading)和<b>财资管理</b>(treasury management)面临的市场风险更大</li>
+<li>相比之下，零售经纪和资产管理等业务线主要面临操作风险。<b>资产管理公司</b>(Asset managers)不承担直接的市场风险，因为他们是投资者的代理人。然而，如果他们的行为违反了指导方针，他们可能要对客户的损失负责，这代表了操作风险</li>
+</ul>
+<p>因此，金融机构现在已经建立了一个正式的结构来评估和衡量操作风险。他们现在试图衡量覆盖操作风险所需的<span>经济资本</span>(EC, economic capital)。数额不小，这反映了这种风险类型的重要性。例如，截至2009年，<span>摩根大通</span>估计需要85亿美元来应对操作风险，占其总风险的11%。德意志银行的估计为35亿欧元，占其总风险的17%。正如我们将在第28章看到的那样，这种衡量努力也受到了
+                                        <span>巴塞尔</span>委员会的推动，该委员会现在对操作风险征收资本费用。这估计占总资本的12%，这与这里给出的例子一致。</p>
+<hr/>
+<h2>二、识别操作风险</h2>
+<p>巴塞尔委员会将<b>操作风险</b>定义为：<b>因内部流程、人员、系统的不充分或失灵，或因外部事件而造成损失的风险</b>。包括常见的内部业务事件，也包括外部事件，如外部欺诈、安全漏洞、监管影响或自然灾害。包括法律风险，当一笔交易在法律上被证明无法执行时，就会产生法律风险。然而，这一定义不包括战略和声誉风险，而这两项风险无论如何都很难衡量。</p>
+<p>英国银行家协会提供了更多细节。以下将操作风险分解为人员风险、流程风险、<span>系统风险</span>和外部风险。其中，复杂产品的一个显著风险是模型风险，这是由于使用错误的模型进行估值和风险管理。这是一种内部风险，它将缺乏知识（人）与产品复杂性/评估错误（过程）以及可能的编程错误（系统）结合在一起。</p>
+<p><b><span>内部风险</span></b>：</p>
+<ul>
+<li><b>人员</b>：员工共谋欺诈、员工错误、员工做错事、雇主责任、<span>劳动法</span>、健康与安全、<span>工业行动</span>、缺乏知识技能、关键人员流失</li>
+<li><b>流程</b>：会计错误、产能风险、合同风险、不当销售/不适合、产品复杂性、项目风险、报告错误、交割/付款错误、交易错误、估值错误</li>
+<li><b>系统</b>：<span>数据质量</span>、编程错误、<span>安全漏洞</span>、战略风险（平台/供应商）、系统容量、<span>系统兼容性</span>、系统交付、系统错误、系统不适合</li>
+</ul>
+<p><b>外部风险</b>：</p>
+<ul>
+<li>外部：法律、洗钱、外包、政治、监管、供应商风险、税</li>
+<li>物理：火灾、自然灾害、物理安全、恐怖主义、失窃</li>
+</ul>
+<p>巴塞尔委员会将风险事件进一步划分为七种事件类型。</p>
+<ol>
+<li><b><span>内部欺诈</span></b>(IF, Internal fraud)：旨在欺诈、挪用财产或规避法规或公司政策的事件，涉及至少一个内部方，可归类为未经授权的活动和内部盗窃和欺诈。</li>
+<li><b>外部欺诈</b>(EF, External fraud)：由第三方意图欺诈、挪用财产或规避法律的事件，分为盗窃、欺诈和破坏系统安全。</li>
+<li><b><span>就业实践和工作场所安全</span></b>(EPWS, Employment practices and workplace safety)：不符合就业、健康或安全法律或协议的行为，分为雇员关系、<span>环境安全</span>、多样性和歧视。</li>
+<li><b><span>客户、产品和业务实践</span></b>(CPBP, Clients, products, and business practices)：由于未能履行对客户的专业义务，或由于产品的性质或设计而引起的事件，包括披露和<span>信托</span>、不当的业务和市场实践、<span>产品缺陷</span>和咨询活动。</li>
+<li><b><span>实物资产损失</span></b>(DPA, Damage to physical assets)：由于自然灾害或恐怖主义等其他事件导致实物资产损失或损坏的事件。</li>
+<li><b><span>业务中断和系统故障</span></b>(BDSF, Business disruption and system failures)：导致业务中断或系统故障的事件。</li>
+<li><b><span>执行、交付和流程管理</span></b>(EDPM, Execution, delivery, and process management)：由于交易处理或流程管理失败而发生的事件，这些事件发生在与交易对手方和供应商的关系中，分为事务执行和维护、客户接收和文档以及帐户管理等类别。</li>
+</ol>
+<p><span>《巴塞尔协议II》</span>还根据八个业务线对损失事件进行了分类：(1)<span>公司融资</span>，(2)交易和销售，(3)<span>零售银行</span>，(4)商业银行，(5)支付和结算，(6)<span>代理服务</span>和托管，(7)资产管理，(8)零售经纪。</p>
+<p>这些定义建立了操作<span>风险事件</span>分类的行业标准。现在根据<b><span>矩阵分类</span></b>(matrix classification)（按事件类型和业务线）在内部和外部收集这些风险事件。这有助于在公共数据库中收集业务损失。一个例子是<span>操作风险数据交换协会</span>(ORX,
+                                        Operational Riskdata eXchange Association)，它提供了一个匿名交换操作风险损失数据的平台，这些数据收集在ORX全球损失数据库中。</p>
+<p>⭐ <b>例25.1</b> Which of the following is not a type of operational risk as defined by Basel II?</p>
+<ul>
+<li>a. Human error and internal fraud</li>
+<li>b. Destruction by fire or other external <span>catastrophes</span></li>
+<li>c. Damaged reputation due to a failed merger</li>
+<li>d. Failure or breakdown in internal control processes</li>
+</ul>
+<p>解析：选 c 。由于合并失败而导致的声誉受损是一种<span>商业风险</span>。此外，<span>声誉风险</span>不是一种<span>经营损失</span>。</p>
+<p>⭐ <b>例25.2</b> Which of these outcomes is not associated with an operational risk process?</p>
+<ul>
+<li>a. The sale of call options is booked as a purchase.</li>
+<li>b. A monthly volatility is inputted in a model that requires a daily <span>volatility</span>.</li>
+<li>c. A loss is incurred on an option <span>portfolio</span> because ex post volatility exceeded expected volatility.</li>
+<li>d. A volatility estimate is based on a time series that includes a price that exceeds the other prices by a factor of 100.</li>
+</ul>
+<p>解析：选 c 。选项a、b和d是操作损失。c是押注<span>波动性</span>的结果，即市场风险。</p>
+<p>⭐ <b>例25.3 </b>All the following are operational risk loss events, except:</p>
+<ul>
+<li>a. An individual shows up at a branch presenting a check written by a customer for an amount substantially exceeding the customer’s low checking account balance. When the bank calls the customer to ask him for
+                                                the funds, the phone is disconnected and the bank cannot recover the funds.</li>
+<li>b. A bank, acting as a trustee for a loan pool, receives less than the projected funds due to delayed repayment of certain loans.</li>
+<li>c. During an adverse market movement, the computer network system becomes overwhelmed, and only intermittent pricing information is available to the bank’s trading desk, leading to large losses as traders become
+                                                unable to alter their hedges in response to falling prices.</li>
+<li>d. A loan officer inaccurately enters client financial information into the bank’s proprietary credit risk model.</li>
+</ul>
+<p>解析：选 b 。a代表外部欺诈，包含在操作风险中。c表示系统故障。d是内部过程中的失败。</p>
+<p>⭐ <b>例25.4 </b>The risk of the occurrence of a significant difference between the markto- model value of a complex instrument and the price at which the same instrument is revealed to have traded in the market is
+                                            referred to as:</p>
+<ul>
+<li>a. Liquidity risk</li>
+<li>b. Dynamic risk</li>
+<li>c. Model risk</li>
+<li>d. Mark-to-market risk</li>
+</ul>
+<p>解析：选 c 。这是模型价格与市场价格显著不同的情况，这是模型风险。流动性风险也可以解释部分差异，但考虑到工具的复杂性，这种情况不太可能发生。</p>
+<hr/>
+<h2>三、评估操作风险</h2>
+<p>确定了操作风险后，应该测量操作风险。如果操作风险不如市场风险或信用风险那样易于精确量化，就应该评估操作风险。各种方法可以大致分为自顶向下模型和<span>自底向上</span>模型。</p>
+<h3>1、方法比较</h3>
+<p><b>自顶向下模型</b>(Top-down models)试图在最广泛的层面上度量操作风险，使用公司范围或行业范围的数据。然后使用结果来确定需要留出的资本数量，作为对这种风险的缓冲。这笔资金分配给业务单位。</p>
+<p><b>自底向上模型</b>(Bottom-up models)从单个业务单元或流程级别开始。然后将结果汇总以确定该机构的风险概况。自底向上模型的主要好处是，它们可以更好地理解操作损失的原因，就像基于风险价值(VAR)的市场风险系统一样。</p>
+<p>用于管理操作风险的工具可分为六类：</p>
+<ol>
+<li><b>审计监督</b>(Audit oversight)。这包括由外部审计部门对业务流程的审查。</li>
+<li><b>关键自我评估</b>(Critical self-assessment)。每个业务单元识别操作风险的性质和程度。这些主观评估包括损失的预期频率和严重程度，以及如何控制风险的描述。用于这类过程的工具包括检查表、调查问卷和便利的研讨会。然后以自底向上的方式汇总结果。</li>
+<li><b><span>关键风险指标</span></b>(Key risk indicators)。这种方法包括一些简单的措施，这些措施提供了风险是否随时间变化的指示。这些早期预警信号可以包括审计分数、员工流动率、贸易量等等。假设当这些指标增加时，操作风险事件更有可能发生。例如，这些客观措施使风险管理人员能够通过应用回归技术来预测损失。</li>
+<li><b>收益波动</b>(Earnings volatility)。这种方法包括在剔除市场和信贷风险的影响后，计算收益的时间序列，并计算其波动性。这种<span>风险度量</span>方法使用简单，但存在许多问题。该措施还包括不属于操作风险的商业和宏观经济风险引起的波动。此外，这种措施是向后的，不能说明控制质量的改善或退化。</li>
+<li><b>因果网络</b>(Causal networks)。网络描述了损失是如何由一连串不同的原因造成的。因果关系通过<span>条件概率</span>联系在一起。然后在网络上进行模拟，生成损失的分布。这种自下而上的模型提高了对损失的理解，因为它们关注风险的驱动因素。因果网络最适用于涉及具有许多活动的复杂工作流的过程。</li>
+<li><b>精算模型</b>(Actuarial models)。这些模型将损失的频率分布与其严重程度分布相结合，得出操作风险损失的客观分布。这些模型可以是自底向上的，也可以是自顶向下的。</li>
+</ol>
+<h3>2、精算模型：损失分布法LDA</h3>
+<p>精算模型从历史数据中估计损失的客观分布，广泛应用于保险业。这些模型结合了两种分布：</p>
+<ul>
+<li><b>损失频率分布</b>(loss frequency distribution)：在固定时间间隔内损耗事件的数量</li>
+<li><b>损失严重程度分布</b>(loss severity distribution)：一旦发生损失的大小 </li>
+</ul>
+<p>这被称为<b>损失分配法</b>(LDA，loss distribution approach)。</p>
+<p>损失严重程度可以根据历史数据制成表格，例如，在时间 <span>k</span> 时的损失严重程度 <span>y_k</span> 的度量。这些度量可以根据<span>通货膨胀</span>和当前业务活动的一些度量进行调整。将
+                                            <span>P_k</span> 定义为时间 <span>k</span> 的消费者<span>价格指数</span>，将 <span>V_k</span> 定义为商业活动度量，例如交易数量。我们可以假设严重程度与企业 <span>V</span> 的数量和价格水平成正比。在时间 <span>t</span>                                            时测量标度损耗：</p>
+<blockquote><span>\displaystyle x_t = y_k × \frac{P_t}{P_k}× \frac{V_t}{V_k}</span> </blockquote>
+<p>损失严重程度分布有长尾，代表了巨大损失的可能性。理想情况下应该包括内部和外部数据。</p>
+<p><b>内部数据</b>代表了机构的实际控制环境。然而，这些数据可能没有足够的数量。这些数据还存在<b>生存偏差</b>(survivorship bias)，因为银行还活着。因此，数据将没有足够的尾部事件，而尾部事件对于模拟极端损失至关重要。</p>
+<p>为了缓解这个问题，监管机构要求使用<b>外部数据</b>。这些方法也有缺点。其他银行的规模和控制系统可能无法与使用数据的银行提供良好的匹配。此外，向<span>外部数据库</span>报告运营损失可能是不完整的，因为一些银行可能不愿透露其弱点的程度。此外，巨额亏损更难隐藏。这就产生了<b>数据捕获偏差</b>(data capture bias)。另一个缺点是数据库只记录超过最低限度的损失，最高可达100万美元。这在频率和严重性分布中产生了<b>截断偏差</b>(truncation
+                                            bias)。</p>
+<p>最后，这些数据源可以通过情景加以补充，这些情景代表可能不会出现在内部或外部数据中的合理且通常较大的损失。接下来，用变量n定义损耗频率分布，它表示在一段时间内损耗发生的次数。密度函数为：</p>
+<blockquote>损失频率分布的<span>概率密度函数</span> = f (n), n = 0, 1, 2, . . .</blockquote>
+<p>可以用几种解析密度来描述，例如<span>二项式</span>密度、泊松密度、负二项式密度或几何密度，所有这些密度都要求n为整数且正。如果x表示损失发生时的损失严重程度，则其密度为：</p>
+<blockquote>损失严重程度分布的概率密度函数 = g(x | n = 1), x ≥ 0</blockquote>
+<p>可以用<span>对数正态分布</span>、威布尔分布、<span>伽马分布</span>或指数分布等密度来描述，所有这些都要求x为正。最常见的组合是泊松和对数正态。</p>
+<p>最后，这段时间内的总损失由随机发生的个别损失的总和给出：</p>
+<blockquote><span>\displaystyle S_n= \sum_{i=1}^n X_i</span> </blockquote>
+<p>下表提供了两个这样的分布的简单示例。现在的任务是把这两种分布合二为一，即这一时期的总损失。</p>
+<div>
+<pre><code>频率分布      损失程度分布
+概率   频率   概率   损失程度
+0.6    0      0.5      $1,000
+0.3    1      0.3     $10,000
+0.1    2      0.2    $100,000
+预期   0.5    预期    $23,500</code></pre>
+</div>
+<p>假设损失的频率和严重程度是独立的，这两个分布可以通过一个称为<b>卷积</b>（Convolution）的过程组合成一个总损失的分布。例如，可以通过<b>制表</b>（Tabulation）来实现卷积。制表包括系统地记录所有可能的组合及其相关概率，如下表所示。通常，卷积必须通过数值方法实现，因为对于系统的制表来说，变量的组合太多了。</p>
+<figure><img src="https://pic1.zhimg.com/v2-30890dd892f5308d5069174f8a86b1d2_1440w.jpg" width="1569"/>
+<figcaption>损失分布制表</figcaption>
+</figure>
+<p>从最明显的情况开始，没有损失，概率为0.6。接下来只讨论一种损失的所有可能实现。</p>
+<p>上表左侧可以看到，发生1,000美元损失的总概率为P(n = 1) × P(x = 1,000)= 0.3 × 0.5 = 0.15。同样，对于一次性损失1万和10万，概率分别为0.09和0.06。然后遍历两种损失的所有发生情况，这可能是由许多不同的组合造成的。例如，1000的损失可以发生两次，总共损失2000，概率为0.1 × 0.5 × 0.5 = 0.025。可以损失1000和10000，总共损失11000，概率为0.1
+                                            × 0.5 × 0.3 = 0.015。重复这些步骤，直到用尽所有的组合。结果分布下图和上表右侧所示。</p>
+<figure><img src="https://pic4.zhimg.com/v2-fcbb08fd1df3b8b0ea3d478c29cb0cbb_1440w.jpg" width="1211"/>
+<figcaption>损失分布的构建</figcaption>
+</figure>
+<p>与通常的操作风险一样，损失被记录为正值。值得注意的是，表中非常简单的分布（只有三种实现）创建了一个复杂的损失分布。期望损失就是两个分布的期望值的乘积，即E[S] = E[N] × E[X] = 0.5 × $23,500 = $11,750。然而，风险管理是关于意外的。因此，风险管理者也应该报告概率大于95%的最低数字：100,000，概率是96.4%。因此意外损失为$100,000 - $11,750 = $ 88250。如果<b>运营风险价值</b>（operational
+                                            VAR）必须包括<span>预期损失</span>，则只需10万。这是巴塞尔协议II的默认衡量标准，该标准在一年内以99.9%的置信度衡量VAR。</p>
+<h3>3、实现LDA</h3>
+<p>本节演示德意志银行LDA的实现。下表给出了银行定义的事件类型-业务线矩阵（Event Type/Business Line Matrix）中的单元格。</p>
+<figure><img src="https://pica.zhimg.com/v2-1e4dc49789a93f14ec9c27826758b43e_1440w.jpg" width="1405"/>
+<figcaption>事件类型-业务线矩阵</figcaption>
+</figure>
+<p><b>将估计的损失分配相似的巴塞尔协议类别分类</b>。例如所有基础设施事件类型只有一个类别，共23个单元格。</p>
+<p><b>对每个单元的频率和损耗分布进行建模</b>。该银行使用来自每个单元内部数据的频率分布，并将其拟合为泊松分布。显然，最终的损失分布对该分布的选择并不太敏感。严重程度分布的建模比较困难。它结合了主体的经验数据和尾部的<span>极值理论</span>（EVT），价值超过5000万欧元。该分布适合于内部数据、外部数据和场景的组合。</p>
+<p><b>指定跨事件的依赖关系</b>。在单元格内，这些可能发生在损失发生之间、严重程度之间以及频率和严重程度之间。在单元格之间，频率分布之间和严重性分布之间可能产生依赖性。在单元格中，银行忽略了依赖关系，这显然是一个很好的近似。相反，依赖关系是在频率分布之间的单元间建模的。这简化了计算，看起来与数据一致。频率分布之间的依赖关系使用正态联结来建模。在实践中，相关性是正的，但不是很高。EDPM中的单元格（16至22）之间的相关性最高。</p>
+<p><b><span>蒙特卡罗模拟</span></b>。生成所有这些分布的损失，从而创建下一年的损失分布。该分布可以通过VAR度量来总结，在99.98%的置信度水平下，截至2009年，该度量确实为35亿欧元。这种风险度量可以分为每个业务线的VAR贡献，可用于资本分配目的。最后，通过直接修改分配的风险度量来实现业务和控制环境的变更。该银行选择这种方法是为了简单和透明。</p>
+<p>⭐ <b>例25.5</b> G´erard Kuper is modeling the number of operational risk loss events that could adversely impact Bank ABC in 2010. He expects the number of operational risk loss events for the year to be relatively
+                                                small. Which type of distribution is he least likely to use?</p>
+<ul>
+<li>a. Normal distribution</li>
+<li>b. Binomial distribution</li>
+<li>c. Negative binomial distribution</li>
+<li>d. Poisson distribution</li>
+</ul>
+<p>解析：选 a 。后三个分布要求 <span>n</span> 为正，而正态分布不需要。</p>
+<p>⭐ <b>例25.6</b> The severity distribution of operational losses usually has the following shape:</p>
+<ul>
+<li>a. Symmetrical with short tails</li>
+<li>b. Long-tailed to the right</li>
+<li>c. Uniform</li>
+<li>d. Symmetrical with long tails</li>
+</ul>
+<p>解析：选 b 。损失严重性分布以零为界，但应包括非常大的损失。因此不对称且有长右尾。</p>
+<p>⭐ <b>例25.7</b> Randy Bartell has collected operational loss data to calibrate frequency and severity distributions. Generally, he regards all data points as a sample from an underlying distribution and therefore
+                                                    gives each data point the same weight or probability in the statistical analysis. However, external loss data is inherently biased. Which of the following is not typically associated with external data?</p>
+<ul>
+<li>a. Data capture bias</li>
+<li>b. Scale bias</li>
+<li>c. Truncation bias</li>
+<li>d. Survivorship bias</li>
+</ul>
+<p>解析：选 d 。内部数据肯定存在生存偏差的问题，因为由员工计算操作风险分布的银行仍然存在。这就排除了巨大的、致命的损失历史。</p>
+<p>⭐ <b>例25.8</b> Suppose you are given the following information about the operational risk losses at your bank. What is the estimate of the VAR at the 95% confidence level, including expected loss (EL)?</p>
+<div>
+<pre><code>Frequency Distribution
+Probability  Number
+0.5          0
+0.3          1
+0.2          2
+
+Severity Distribution
+Probability  Loss
+0.6          USD 1,000
+0.3          USD 10,000
+0.1          USD 100,000</code></pre>
+</div>
+<ul>
+<li>a. USD 100,000</li>
+<li>b. USD 101,000</li>
+<li>c. USD 200,000</li>
+<li>d. USD 110,000</li>
+</ul>
+<p>解析：选 a 。因为VAR应该包含EL，所以不需要单独计算EL。下表显示，累积概率为95%或以上的最小损失为100,000。</p>
+<figure><img src="https://pica.zhimg.com/v2-fb8cbf2318738e402d961a0a9e42c28a_1440w.jpg" width="1273"/></figure>
+<hr/>
+<h2>四、管理操作风险</h2>
+<h3>1、资本配置与保险</h3>
+<p>与市场VAR一样，经营损失的分布可以用来估计预期损失以及支持这种金融风险所需的资金量。下图突出了操作风险损失分布的重要属性。</p>
+<figure><img src="https://pic4.zhimg.com/v2-68c677d1dc0dc26eae096fc4d2b09159_1440w.jpg" width="1001"/>
+<figcaption>操作损失分布</figcaption>
+</figure>
+<p><b>预期损失</b>（EL，expected loss）表示预计会发生的操作损失的大小。通常，这是由高频、低严重程度的事件主导的。这类损失一般作为持续成本加以吸收，并通过内部控制加以管理。此类损失很少被披露。</p>
+<p><b><span>非预期损失</span></b>（UL，unexpected loss）表示在某个<span>置信水平</span>上的分位数损失与预期损失之间的偏差。通常，这表示频率较低、严重程度较高的事件。这类损失通常从<span>资本准备金</span>中抵销，或在可能的情况下转移到外部保险公司。可以很容易地修改LDA方法，以考虑保险的风险缓解效果。</p>
+<p><b>压力损失</b>（stress loss）表示超出预期损失的损失。这种损失非常罕见，但对机构的损害极大。例如，巴林银行的破产在很大程度上可归因于操作风险。这种类型的损失不能轻易地通过资本配置来抵消，因为它需要太多的资本。理想情况下，它应该被转移到一家保险公司。由于损失严重，这些损失会被公开披露。</p>
+<p>然而，购买保险并不是万灵药。保险金必须很快全额支付。银行可能在等待付款或争论赔偿数额时倒闭。此外，保费可能会很高。这是因为一旦购买了保险，购买者控制损失的动力就会减少。这个问题被称为<b><span>道德风险</span></b>（moral hazard）。保险公司会意识到这一点，并相应提高保险费。由于<b><span>逆向选择</span></b>（adverse
+                                selection）问题，溢价也可能很高。这描述了银行控制质量参差不齐的情况。控制不佳的银行比控制良好的银行更有可能购买保险。因为保险公司不知道与之打交道的是什么类型的银行，所以会增加平均保费。有可扣除金额（deductible amount）的保险（即银行必须分担第一层损失）只能部分解决这些问题。</p>
+<h3>2、缓解操作风险</h3>
+<p>迄今为止的方法是将操作风险视为给定的，并试图对其进行衡量。这些信息非常有用，因为它突出了操作风险造成的损失程度。有了这些信息，机构就可以决定是否值得投入资源来降低运营风险。</p>
+<p>假设一家银行正在考虑是否安装一个<b>直通式处理</b>（straight-through processing）系统，该系统可以自动捕获前台的交易并将其传输到后台。这样的系统消除了人工干预和人为错误的可能性，从而减少了由于操作风险造成的损失。如果该系统的成本低于其操作风险收益，则银行应购买该系统。</p>
+<p>更一般地说，可以根据损失的频率、损失发生时的规模来降低操作风险。操作风险也包含在公司范围的风险管理框架中。</p>
+<p>例如，考虑一笔普通的五年期利率掉期交易。这个简单的工具产生大量的现金流，每一个都有可能出错。在启动时，交易需要与交易对手进行预订和确认。必须对其进行估值，以便将损益归因于该交易单位。如果每两年支付一次，互换将产生10次现金流，同时进行10次利率重置和净支付计算。这些付款需要绝对精确地计算，也就是说，精确到最后一分钱。错误可以是小到晚一天付款这样的小问题，也可以是大到没有对冲或交易员估值欺诈这样的大问题。</p>
+<p>互换也会产生一些市场风险，可能需要对冲。头寸需要传送到市场风险管理系统，该系统将监控交易者和整个机构的总头寸和风险。此外，必须定期测量当前和潜在的信贷风险，并将其添加到与同一交易对手的所有其他交易中。这种风险度量过程中的错误可能导致过度暴露于市场和信用风险。</p>
+<p>通过内部和<span>外部控制</span>，可以通过多种方式将操作风险降到最低。</p>
+<p><span>内部控制方法</span>包括：</p>
+<ul>
+<li>职能分离。负责交易的个人不得履行结算和会计职能。</li>
+<li>双条目。条目(输入)应该从两个不同的来源匹配-即，交易票据和后台办公室的确认。</li>
+<li>对账。结果(输出)应该从不同的来源匹配-例如，交易员的利润估计和中间办公室的计算。</li>
+<li>备忘录系统。交易的重要日期(例如，结算和行权日期)应输入日历系统，该日历系统在到期日之前自动生成消息。</li>
+<li>对修订的控制。对原始交易票证的任何修改都应受到与原始交易票证相同的严格控制。</li>
+</ul>
+<p>外部控制方法包括：</p>
+<ul>
+<li><span>询证函</span>。交易票据需要与交易对手方确认，这为交易提供了一个独立的检查。</li>
+<li>核实价格。为了对头寸进行估值，应该从外部来源获得价格。这意味着一个机构在进入交易之前应该有能力在内部评估交易。</li>
+<li>授权。应向交易对手方提供一份被授权进行交易的人员名单，以及一份允许进行的交易清单。</li>
+<li>解决方案。支付过程本身可以表明交易的某些条款是否被错误记录，例如，互换交易的第一次现金支付是否在交易双方之间不匹配。</li>
+<li>内部和外部审计。这些检查提供了关于组织结构或业务流程中潜在弱点领域的有用信息。</li>
+</ul>
+<h3>3、模型风险</h3>
+<p>模型风险是风险管理者特别关注的一种操作风险。<b>模型风险</b>（Model risk）可以定义为由于不适当的定价或风险度量模型而造成损失的风险。从某种意义上说，所有的模型都是错误的。模型只是现实的抽象。模型只是近似值。风险管理人员的关键是了解这些近似产生不可接受的结果的条件。</p>
+<figure><img src="https://pic3.zhimg.com/v2-a26a91acc5c5a9907f8254374288c4aa_1440w.jpg" width="983"/>
+<figcaption>模型风险</figcaption>
+</figure>
+<p>上图显示了模型风险来源的分类。</p>
+<p>第一，<b>输入数据可能是错误的</b>。风险模型依赖于金融时间序列和其他市场数据。观察到的价格可能是错误的，也可能是没有意义的。或者，期权输入(如<span>隐含波动率</span>)可能存在偏差。</p>
+<p>第二，<b>模型的参数可能被错误估计</b>。风险模型需要对风险因素的统计分布进行描述。这些参数从来没有得到精确的估计。因此，诸如VAR度量之类的输出必然受到一些误差的影响。例如，它们可以用<span>置信区间</span>报告，尽管这种情况从未发生过。这些波段应该随着较长的数据序列和较低的VAR置信水平而减少。然而，在某些情况下，由于缺乏数据或结构变化，使用较长的序列可能不可行。</p>
+<p>第三，<b>模型的选择可能不正确</b>。例如，对于固定收益期权，简单的布莱克-斯科尔斯模型可能并不合适。另外，映射过程涉及简化，这在某些情况下可能被证明是致命的错误。一个例子是，该银行将<span>次级贷款</span>支持的<span>债务抵押债券</span>（CDO）的高级部分映射为AAA级公司收益率。这主要是为了方便，因为没有CDO收益率的历史数据。然而，结果是，该银行认为这些证券没有风险，并大量买入，结果后来损失了数十亿美元。另一个例子是将同一信用的公司债券和
+                                <span>信用违约互换</span>映射到同一曲线上的做法。这忽略了<b>基差风险</b>（basis risk），而基差风险在2008年造成了严重损失。</p>
+<p>第四，<b>模型可能被错误地执行</b>。这可能是由于编程错误，选择错误的参数，等等。</p>
+<p>模型风险很难识别，更难以度量。风险管理人员依靠特别的方法来保护自己免受模型风险的影响：</p>
+<ul>
+<li>第一，需要了解不同模式的相对优势和劣势。换句话说，直觉和经验很重要。</li>
+<li>第二，需要不断<span>评估模型</span>的关键假设是否仍然有效。</li>
+<li>第三，应该针对已知答案的简单问题对模型进行测试。例如，可以通过在不同曲线上映射现金工具及其衍生品来扩展模型以考虑基差风险。然后，风险经理将检查模型产生的风险度量是否与具有两个头寸的简单投资组合兼容，其中盈亏是已知的。</li>
+<li>第四，应该对模型进行<span>压力测试</span>，改变输入数据，以检查这是否会实质性地影响输出。</li>
+<li>第五，风险模型应根据实际数据进行回测。这为模型的哪些部分可以改进提供了有价值的指导。</li>
+</ul>
+<p>对于高级管理人员，前面小节中给出的最小化操作风险的建议也适用于模型风险。此外，他们应该意识到新产品市场可能导致模型风险的事实。在这些情况下，由于时间限制或缺乏数据，风险模型可能尚未完全开发。此外，交易员可能会故意操纵风险系统，使他们的投资组合看起来更有利可图，风险更小。这就是为什么职能独立是有效风险管理的基石。</p>
+<h3>4、概念问题</h3>
+<p>即使有了这些进步，操作风险的度量仍然受到概念问题（Conceptual Issues）的困扰。</p>
+<p>首先，与市场风险和信用风险不同，操作风险主要是金融机构的内部风险。由于机构和业务部门不愿意承认自己的错误，因此收集运营损失数据带来了挑战。正如我们所看到的，内部数据可以由外部数据补充，但这些数据也有问题。</p>
+<p>其次，市场和信用风险在概念上可以分为风险暴露和风险因素。曝光可以很容易地测量和控制。相比之下，风险因素与业务损失的可能性和规模之间的联系就不那么容易确定了。在这里，因果关系贯穿内部控制。为了发挥作用，风险度量应该考虑到风险概况或控制过程的质量。</p>
+<p>第三，可能威胁到一家机构稳定的巨额经营亏损相对较少。这导致在尾部观察到的数据非常少。这种细尾问题使得很难在高置信度水平上得出操作风险的可靠值。此外，回溯测试不如验证方法有用。对于市场风险，VAR通常是在每日范围内测量的，并与每日损益进行比较，从而产生许多观察结果来回测风险模型。相比之下，操作风险的时间跨度更长，这为回测提供了更少的数据点。</p>
+<p>因此，对于操作风险是否可以像市场风险和信用风险一样被量化，仍然存在一些怀疑。</p>
+<p>⭐ <b>例25.9</b> Capital is used to protect the bank from which of the following risks?</p>
+<ul>
+<li>a. Risks with an extreme financial impact</li>
+<li>b. High-frequency, low-loss events</li>
+<li>c. Low-frequency risks with significant financial impact</li>
+<li>d. High-frequency uncorrelated events</li>
+</ul>
+<p>解析：选 c 。资本应该用来吸收对公司有重大财务影响的风险。具有极端金融影响的风险，如系统性风险，单靠资本是无法吸收的，因此答案a是错误的。低损失事件不重要，所以b是错的。不相关的事件倾向于多样化，所以d是错误的。</p>
+<p>⭐ <b>例25.10</b> Which of these terms is used in the insurance industry to refer to the effect of a reduction in the control of losses by an individual who is insured because of the protection provided by insurance?</p>
+<ul>
+<li>a. Control trap</li>
+<li>b. Moral hazard</li>
+<li>c. Adverse selection</li>
+<li>d. Control hazard</li>
+</ul>
+<p>解析：选 b 。当被保险人因为被保险而缺乏控制损失的动力时，道德风险就产生了。</p>
+<p>⭐ <b>例25.11</b> Which of the following options does not describe a problem faced by banks when purchasing insurance as a hedge against operational risk?</p>
+<ul>
+<li>a. The fact that the loss reimbursement period can take several years</li>
+<li>b. The credit rating of insurers</li>
+<li>c. The different perspective of operational risk between banks and insurers</li>
+<li>d. Not having an operational VAR</li>
+</ul>
+<p>解析：选 d 。a、b、c描述购买操作风险保险所产生的问题。这与银行是否拥有可操作的VAR模型无关。</p>
+<p>⭐ <b>例25.12</b> Insurance is an effective tool to transfer which of type of operational risk?</p>
+<ul>
+<li>a. High frequency, low severity</li>
+<li>b. Low frequency, high severity</li>
+<li>c. Operational losses whose magnitude is affected by the actions of the company</li>
+<li>d. Operational losses for which insurance companies only sell policies with low limits</li>
+</ul>
+<p>解析：选 b 。保险的目的是补偿重大损失或严重的操作风险事件。c是不正确的，因为这种道德风险应该导致更高的保费。</p>
+<p>⭐ <b>例25.13</b> Which of the following statements are valid about hedging operational risk?</p>
+<ol>
+<li>I. A primary disadvantage of insurance as an operational risk management tool is the limitation of policy coverage.</li>
+<li>II. If an operational risk hedge works properly, a firm will avoid damage to its reputation from a high-severity operational risk event.</li>
+<li>III. While all insurance contracts suffer from the problem of moral hazard, deductibles help reduce this problem.</li>
+<li>IV. Catastrophe (cat) bonds allow a firm to hedge operational risks associated with natural disasters.</li>
+</ol>
+<ul>
+<li>a. I, III, and IV only</li>
+<li>b. I, II, and IV only</li>
+<li>c. II and III only</li>
+<li>d. III and IV only</li>
+</ul>
+<p>解析：选 a 。即使一家公司实施了对冲或购买了保险，巨额经营损失的消息仍然会损害其声誉。</p>
+<p>⭐ <b>例25.14</b> The following statements concern differences between market and operational risk VAR models. Which of the following statements is false?</p>
+<ul>
+<li>a. Market risk models are primarily driven by historical data, whereas operational risk models are more flexible in this regard.</li>
+<li>b. Market risk models typically define VAR as a specific quantile of the loss distribution, whereas operational risk models are more flexible in this regard.</li>
+<li>c. Backtesting is generally a more useful form of validation for market risk models than for operational risk models.</li>
+<li>d. The time horizon over which VAR is evaluated differs between market and operational risk models.</li>
+</ul>
+<p>解析：选 b 。表述a是正确的，因为操作风险模型通常严重依赖情景分析。对操作风险模型进行回测更为困难，因此c为真。VAR通常在较短的期限内进行评估，因此d项为正确。表述b是错误的，因为市场和操作风险模型都使用分布的分位数。</p>
+<hr/>
+<h2>五、巴塞尔操作风险收费</h2>
+<p>2004年敲定的《巴塞尔协议II》(Basel II)中最重要的新增内容之一是操作风险收费（operational risk charge，ORC）。这规定了银行需要持有的最低资本数额，以弥补其操作风险。新规则允许三种方法来计算ORC。</p>
+<h3>1、巴塞尔指标法</h3>
+<p>最简单的方法称为<b>基本指标方法</b>（BIA，basic indicator approach）。这是基于对业务活动的总体衡量。资本费用等于敞口指标的固定百分比，称为<b>阿尔法因子</b>（alpha factor）乘以总收入（GI，gross income）：</p>
+<blockquote><span>ORC^{BIA} = \alpha × GI</span> </blockquote>
+<ul>
+<li><span>\alpha</span> ：设定为15%</li>
+</ul>
+<p>这种方法的优点是简单、透明，并且使用现成的数据。问题在于它没有考虑到控制的质量。因此，这种方法预计将主要由经验不丰富的银行使用。</p>
+<h3>2、标准化方法</h3>
+<p>第二种方法是<b>标准化方法</b>（TSA，standardized approach）。银行的活动分为八个业务线。在每条业务线中，总收入被作为活动规模的一个指标。然后，通过将总收入乘以一个固定的百分比，称为<b>贝塔因子</b>（beta factor），并将各业务线相加，即可获得资本费用：</p>
+<blockquote><span>\displaystyle ORC^{TSA} =\sum_{i=1}^8 \beta_i \times GI_i</span> </blockquote>
+<p>其中，贝塔因子的取值如下：</p>
+<ul>
+<li>公司金融：18%</li>
+<li>交易和销售：18%</li>
+<li>零售银行业务：12%</li>
+<li>商业银行：15%</li>
+<li>支付和交割：18%</li>
+<li>代理服务：15%</li>
+<li>资产管理：12%</li>
+<li>零售经纪：12%</li>
+</ul>
+<p>这种方法仍然很简单，但可以更好地反映跨业务线的不同风险。例如，交易和销售线的权重较高，以反映交易员欺诈造成严重损失的可能性。</p>
+<h3>3、高级衡量方法</h3>
+<p>第三类方法是<b>高级衡量方法</b>（AMA，advanced measurement approach）。这使得银行可以使用自己的内部模型，根据巴塞尔协议设定的定量和定性标准来估计所需的资本。没有规定具体的方法，但只有在银行有效管理和控制操作风险的情况下，才允许AMA。</p>
+<p>定性标准与使用内部市场VAR系统的标准类似。一旦满足这些要求，就可以从一年期的意外损失（UL）中以99.9%的置信度获得风险费用：</p>
+<blockquote><span>ORC^{AMA} = UL(1年, 99.9\% 置信)</span> </blockquote>
+<p>预期损失（EL）必须包括在资本支出中，除非银行能够证明它在其内部业务实践中充分捕获了EL。</p>
+<p>其他量化标准还包括：</p>
+<ol>
+<li>银行必须对至少5年的内部损失数据进行跟踪</li>
+<li>银行必须使用外部数据</li>
+<li>银行必须使用情景分析来评估其对高严重性事件的风险敞口</li>
+<li>银行必须考虑经营环境和内部控制因素</li>
+</ol>
+<p>最后，保险可以用来抵消高达20%的操作风险费用。这种方法提供了最精确的操作风险度量，被更成熟的机构采用。</p>
+<p>⭐ <b>例25.15</b> Which of the following approaches for calculating operational risk capital charges leads to a higher capital charge for a given accounting income as risk increases?</p>
+<ul>
+<li>a. The basic indicator approach</li>
+<li>b. The standardized approach</li>
+<li>c. The advanced measurement approach</li>
+<li>d. All of the above</li>
+</ul>
+<p>解析：选 c 。基本指标方法使用因子a = 15%。标准化方法使用从12%到18%的固定因子，因此对风险不敏感(跨业务线的更改除外)。AMA是对风险最敏感的方法。</p>
+<p>⭐ <b>例25.16</b> Which of the following statements about its methodology for calculating an operational risk capital charge in Basel II is correct?</p>
+<ul>
+<li>a. The basic indicator approach is suitable for institutions with sophisticated operational risk profiles.</li>
+<li>b. Under the standardized approach, the capital requirement is measured for each of the business lines.</li>
+<li>c. Advanced measurement approaches will not allow an institution to adopt its own method of assessment of operational risk.</li>
+<li>d. The AMA is less risk sensitive than the standardized approach.</li>
+</ul>
+<p>解析：选 b 。BIA适用于具有基本风险概况的银行，因此答案a不正确。AMA是一个内部模型，所以答案c不正确。AMA比标准化方法对风险更敏感，因此答案d不正确。</p>
+<p>⭐ <b>例25.17</b> Which of the following statements regarding Basel II nonadvanced approaches is incorrect?</p>
+<ul>
+<li>a. The standardized approach makes it advantageous for a bank to book losses early if doing so reduces this year’s gross income sufficiently to make it negative.</li>
+<li>b. Corporate finance, trading and sales, and payment and settlement are the business lines with the highest regulatory capital requirements.</li>
+<li>c. The standardized approach divides the bank into business lines and uses data from the last three years of a business line’s gross income and a beta factor to obtain the regulatory capital for that business line.</li>
+<li>d. The standardized approach uses data from the last three years of gross income to obtain a bank’s operational risk capital charge.</li>
+</ul>
+<p>解析：选 a 。表述a是不正确的，因为只考虑了正收入。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

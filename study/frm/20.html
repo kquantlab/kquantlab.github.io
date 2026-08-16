@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C20 精算违约风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C20 精算违约风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C20 精算违约风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>信用事件</span></h2>
+<p>信用事件是一个离散状态。要么发生，要么不发生，这取决于事件的定义，而事件的定义必须尽可能精确。</p>
+<p>债券<span>债务违约</span>的定义非常狭隘。<span>债券违约</span>发生在债券未支付时。信用评级机构<span>标准普尔</span>(S&amp;P)将<b>违约</b>状态定义为：任何有评级或未评级的<span>金融债务</span>（但存在善意商业纠纷的金融债务除外）首次发生支付违约；如果在宽限期内错过了到期日的利息支付，则会出现例外情况。</p>
+<p>然而，对某一特定债券的违约通常反映了债权人的财务困境，并且通常伴随着对其他债务的违约。这就是评级机构除了对特定债券进行评级外，还要对<span>发行人</span>进行信用评级的原因。特定债券的评级可以高于或低于发行人的评级，这取决于它们的相对优先级。</p>
+<p><span>信用衍生品</span>的违约需要更精确地定义，因为信用衍生品的收益与信用事件直接相关。信用事件的定义已由国际互换和衍生品协会(<span>ISDA</span>)正式确定，该协会是一个<span>行业组织</span>，负责列出这些事件：</p>
+<ul>
+<li><b>破产</b>，被定义为涉及以下任何一种情况</li>
+<ul>
+<li>债务人的解散(dissolution)，合并除外</li>
+<li><span>资不抵债</span>(insolvency)，无力偿还债务</li>
+<li><span>债权转让</span>(assignment)</li>
+<li><span>破产程序</span>设立</li>
+<li><span>破产管理人</span>(receivership)任命</li>
+<li>由第三方扣押(attachment)全部资产</li>
+</ul>
+<li><b>未支付</b>(Failure to pay)，债权人未能支付到期的款项;这通常是在商定的宽限期之后，当应付款项超过一定数额时触发</li>
+<li><b>债务/<span>交叉违约</span></b>(Obligation/cross default)，任何其他类似债务发生违约（除了未能付款）</li>
+<li><b>债务/交叉加速</b>(Obligation/cross acceleration)，任何其他类似债务发生违约（除了未能付款），导致该债务立即到期</li>
+<li><b>拒绝/暂停</b>(Repudiation/moratorium)，这意味着交易对手拒绝或质疑债务的有效性</li>
+<li><b>重组</b>(Restructuring)，放弃、推迟或重新安排债务，其结果是条款比以前更不利</li>
+</ul>
+<p>值得注意的是，2008年发生的信贷事件包括<span>房利美</span>(Fannie Mae)和房地美(Freddie Mac)(破产)、<span>雷曼兄弟</span>(Lehman Brothers Holdings)和<span>华盛顿互惠银行</span>(Washington
+                                        Mutual)(破产)，以及<span>厄瓜多尔</span>(拖欠债务)。此外，有时还包括其他事件：</p>
+<ul>
+<li><b>降级</b>，信用评级低于以前，或被撤销</li>
+<li><b>货币不可兑换</b>(Currency inconvertibility)，指政府或有关当局实施外汇管制或其他货币限制</li>
+<li>政府行为，指:</li>
+<ul>
+<li>1)政府或监管机构作出的损害义务有效性的声明或行为</li>
+<li>2)发生战争或者其他武装冲突，损害政府职能或者金融活动的</li>
+</ul>
+</ul>
+<p>理想情况下，整个行业应该就一套定义信用事件的共同因素达成一致，以最大限度地减少分歧的可能性，以及为每个人带来不确定性的代价高昂的法律纠纷。ISDA的定义旨在通过精确地表述信用事件的定义来最大限度地降低<b><span>法律风险</span></b>(legal risk)。</p>
+<p>即便如此，不可预见的情况有时也会出现。例如，关于银行<span>债务重组</span>是否构成信用事件，就像涉及Conseco、Xerox和Marconi的案例一样，一直存在意见分歧。</p>
+<p>另一个值得注意的情况是<span>阿根廷</span>，就外债而言，阿根廷是迄今有记录以来最大的主权违约国。2001年11月，阿根廷宣布对地方债务进行更有利的重组。一些<span>信用违约掉期</span>的持有者辩称，这是一个信用事件，因为交易是被迫的，他们有权获得支付。掉期卖家不同意。然而，当阿根廷在12月宣布将停止支付其1350亿美元外债的利息时，这就变成了明确的违约。尽管如此，对于在官方违约之前到期的信用掉期持有者来说，情况仍未得到解决。</p>
+<p>⭐ <b>例20.1</b> Which of the following events is not a credit event?</p>
+<ul>
+<li>a. Bankruptcy</li>
+<li>b. Calling back a bond</li>
+<li>c. Downgrading</li>
+<li>d. Default on payments</li>
+</ul>
+<p>解析：选 b 。当借款人希望以较低的成本为其债务再融资时，就会收回债券，这不是信用事件。</p>
+<hr/>
+<h2>二、违约率</h2>
+<h3>1、信用评级</h3>
+<p>信用评级是由信用评级机构(CRA)发布的<span>信用评估</span>。美国主要的债券评级机构是<span>穆迪投资者服务公司</span>、标准普尔和惠誉评级。信用评级被穆迪定义为“对债券发行者或其他债务人的未来能力、<span>法律义务</span>和意愿的意见，以全额和及时支付投资者的本金和利息。”</p>
+<p>下表给出了穆迪和标准普尔发布的各种信用评级的解释。这些评级对应于<span>长期债务</span>，其他评级适用于<span>短期债务</span>。一般来说，这两家机构对同一发行人提供类似的评级。</p>
+<div>
+<pre><code>              标普    穆迪
+投资级：
+最高级        AAA     Aaa
+高级          AA      Aa
+中上级        A       A
+中级          BBB     Baa
+*
+投机级：
+中下级        BB      Ba
+投机          B       B
+不良          CCC     Caa
+高度投机      CC      Ca
+质量最低      C       C
+违约          D
+*
+修正等级：A+, A, A− 以及 A1, A2, A3</code></pre>
+</div>
+<p>评级分为两类：</p>
+<ul>
+<li><b>投资级</b>：即标普评级为BBB以上，<span>穆迪评级</span>为Baa以上</li>
+<li><b><span>投机级</span></b>：低于投资级</li>
+</ul>
+<p>每个字母被称为一个类(class)。此外，评级机构还使用修正等级，也称为缺口(notches)。例如，标普将BBB类别细分为BBB+， BBB和BBB -。穆迪给出的等效评级分别是Baa1、Baa2和Baa3。</p>
+<p>这些评级代表了违约的客观(或精算)概率。【注：实际上，评级衡量的是标普的<span>违约概率</span>(PD)和穆迪的PD × LGD的联合效应，其中LGD是违约情况下的比例损失。】事实上，这些评级机构已经发布了追踪债券违约频率的研究报告，并根据不同级别的初始评级进行了分类。这些频率可用于将评级转换为违约概率。</p>
+<p>评级机构使用一系列标准来决定信用评级，包括各种<span>会计比率</span>。下表给出了美国工业公司选定会计比率的中位数。</p>
+<div>
+<pre><code>        杠杆（%）              现金流覆盖（%）
+等级    总债务/资本    EBITDA/利息      EBIT/利息
+AAA     12             32.0             26.2
+AA      35             19.5             16.4
+A       37             13.5             11.2
+BBB     45              7.8              5.8
+BB      53              4.8              3.4
+B       73              2.3              1.4
+CCC     99              1.1              0.4</code></pre>
+</div>
+<p>第一栏（<span>杠杆</span>）显示了总债务与总资本(债务加上账面权益或资产)的比率在不同评级中有系统地变化。高评级公司的<span>杠杆率</span>较低，AAA级公司的杠杆率为12%。相比之下，BB级(略低于投资级)公司的杠杆率为53%。这意味着资本股本杠杆率为2.1比1。右边的面板（<span>现金流</span>覆盖范围）也显示了
+                                                <span>自由现金流</span>除以利息支付的系统性变化。这表示现金流可以支付利息的次数。关注息税前收益(EBIT)， AAA级公司有26.2的安全缓冲，而BB级公司只有3.4。</p>
+<p>与破产预测相关的一个模型是<b>多元判别分析</b>(MDA)，如Altman开发的z-score模型。MDA构建会计数据的<span>线性组合</span>，该组合提供了与样本公司的违约和非违约观察状态的最佳拟合。z-score中使用的变量是：</p>
+<ul>
+<li>(1)营运资本除以总资产</li>
+<li>(2)<span>留存收益</span>除以总资产</li>
+<li>(3)<span>息税前利润</span>除以总资产</li>
+<li>(4)权益市值除以总负债</li>
+<li>(5)净销售额除以总资产</li>
+</ul>
+<p>分数越低表明违约的可能性越高。每个变量都以正号进入，这意味着每个变量的增加都会降低破产的可能性。</p>
+<p>⭐ <b>例20.2</b> What is the lowest tier of an investment-grade credit rating by Moody’s?</p>
+<ul>
+<li>a. Baa1</li>
+<li>b. Ba1</li>
+<li>c. Baa3</li>
+<li>d. Ba3</li>
+</ul>
+<p>解析：选 c 。Baa3是穆迪给出的最低投资级评级。</p>
+<p>⭐ <b>例20.3</b> You are considering an investment in one of three different bonds. Your investment guidelines require that any bond you invest in carry an investmentgrade rating from at least two recognized bond
+                                                rating agencies. Which, if any, of the bonds listed would meet your investment guidelines?</p>
+<ul>
+<li>a. Bond A carries an S&amp;P rating of BB and a Moody’s rating of Baa</li>
+<li>b. Bond B carries an S&amp;P rating of BBB and a Moody’s rating of Ba</li>
+<li>c. Bond C carries an S&amp;P rating of BBB and a Moody’s rating of Baa</li>
+<li>d. None of the above</li>
+</ul>
+<p>解析：选 c 。最低的投资级评级是BBB和Baa。</p>
+<p>⭐ <b>例20.4</b> If Moody’s and S&amp;P are equally good at rating bonds, the average default rate on BB bonds by S&amp;P will be lower than the average default rate on bonds rated by Moody’s as</p>
+<ul>
+<li>a. Baa3</li>
+<li>b. Ba1</li>
+<li>c. Ba</li>
+<li>d. Ba3</li>
+</ul>
+<p>解析：选 d 。标普给出的BB评级与穆迪给出的Ba评级相似。BB级债券的违约率低于评级较低的债券。因此，答案是穆迪的下一个更低的评级类别。</p>
+<h3>2、历史违约率</h3>
+<p>下表分别显示了穆迪和标准普尔报告的历史违约率。</p>
+<figure><img src="https://pica.zhimg.com/v2-bc0a4f64f14c503d9e38042df3e93946_1440w.jpg" width="1838"/>
+<figcaption>穆迪和标普测算的累计违约率</figcaption>
+</figure>
+<p>这些描述了违约公司的比例 <span>\bar{X}</span> ，这是对真实违约概率的<span>统计估计</span>：</p>
+<blockquote><span>E( \bar{X}) = p</span> </blockquote>
+<p>例如，穆迪最初评级为Baa的借款人在接下来的一年里平均违约率为0.29%。标准普尔的bbb级信用也有类似的违约率，在接下来的一年里，这些信用的平均违约率为0.23%。未来一年，a级公司的违约率将在0.07%左右。Caa或Caa以下的公司违约率为13.73%。评级越高，违约率越低。因此，该信息可用于对初始评级类的违约概率进行估计。</p>
+<p>此外，表格显示，对于给定的初始信用评级，累积违约率随着时间的推移而急剧上升。Baa公司的违约率从1年内的0.29%上升到10年内的7.06%。因为这些都是累积的违约率，这个数字必然会随着时间的推移而增加。然而，对于投资级信贷而言，这一增长与未来的时间跨度不成比例。baa级信用的比率为7.06/0.29 = 24，超过了10。b级信用的比率为33.93/4.05 = 8。对于投机级信贷，其增长幅度与区间不成比例。</p>
+<p>然而，这种历史信息的一个问题是，某些<span>单元格</span>中的数据相对缺乏。在一年内，评级高的公司很少出现违约。例如，Aa级公司的一年期违约率为0.06%。这对应于很少的默认值。从1939年到2007年，只有两家最初被评为Aa级的公司在接下来的一年违约，那就是1989年。改变样本周期或增加违约数量可能会对平均违约率产生重大影响。</p>
+<p>此外，<span>样本量</span>随区间的延长而减小。以1981年至2007年期间标准普尔公布的违约率为例。一年期违约率是27个时期的平均值，即1981年、1982年等至2007年。然而，从15年的角度来看，第一个阶段是1981年至1995年，第二个阶段是1982年至1996年，以此类推，直到最后一个阶段1993年至2007年。在这种情况下，平均值因此只使用13个周期，这是一个更短的样本。这些数据也是重叠的，因此不是独立的。因此，遗漏或增加一些借款人可以大大改变报告的违约率。</p>
+<p>这可能导致表中的不一致。例如，从14年到15年，CCC债务人的违约率是相同的，为52.50%。这意味着14年后没有进一步的违约风险，这是一个不现实的暗示。此外，当类别进一步分解为修饰符时，违约率有时不会随着评级的增加而单调下降，这可能是小样本效应。</p>
+<p>我们可以通过计算这些违约率的<span>标准误差</span>来评估它们的准确性。例如，考虑一下第一年aa级信用的违约率，在这个标准普尔样本中平均为 <span>\bar{X}</span> = 0.01%。假设这是从大约N = 10,000个独立观察中抽取出来的。均值的方差是，从二项过程的分布来看，</p>
+<blockquote><span>\displaystyle V( \bar{X}) =\frac{p(1 − p)}{N}</span> </blockquote>
+<p>其标准误差约为0.01%。这与0.01%的平均值大致相同，表明这个平均违约率存在很大的不精确性。所以我们无法区分AA信用和AAA信用。</p>
+<p>在非美国市场或真实p值随时间变化的情况下，样本量越小，问题就越严重。例如，如果我们在100个观测值中观察到5%的违约率，则标准误差变为2.2%，这是非常大的。因此，信用风险的一个主要问题是，对低概率事件的违约率的估计可能非常不精确。</p>
+<h3>3、累积和边际违约率</h3>
+<p>穆迪和标普测算的是初始信用评级的累积违约率，即测量了从开始日期到T年之间任何时间的违约总频率。还可以测量边际违约率，即T年的违约频率。如图所示：</p>
+<figure><img src="https://pic1.zhimg.com/v2-c80b6a776f8e0be6947c78e948a88866_1440w.jpg" width="1858"/>
+<figcaption>顺序违约过程</figcaption>
+</figure>
+<p>其中，d1是第一年的边际违约率，d2是第二年的边际违约率。要在第二年违约，该公司必须在第一年存活下来，并在第二年违约。因此，第二年的违约概率，由(1 - d1)d2给出。到第2年的累积违约概率是C2 = d1 + (1 - d1)d2。即C2 = 1 - (1 - d1)(1 - d2)。这可能有一个更直观的解释，因为这是1减去存活整个时期的概率。</p>
+<p>更正式地：</p>
+<ul>
+<li><span>m[t + N | R(t)]</span> ：t年末评级为R的发行人在t = t + N年违约的数量</li>
+<li><span>n[t + N | R(t)]</span> ：t年末评级为R的发行人在t + n年初未违约的数量</li>
+</ul>
+<p><b>T年边际违约率</b>：在初始时间T初始评级为R的发行人在T年违约的比例，与同年T年初剩余数量的比值</p>
+<blockquote><span>\displaystyle  d_N(R) = \frac{m[t + N | R(t)]}{n[t + N | R(t)]}</span> </blockquote>
+<p><b><span>存活率</span></b>：最初评级为R的发行人到T时不会违约的比例</p>
+<blockquote><span>S_N(R) = \Pi ^N_{i=1}(1 − d_i (R))</span> </blockquote>
+<p><b>起始至T年的边际违约率</b>：初始评级为R的发行人在T年违约的比例，相对于初始评级为T年的数量。发行人必须存活到第t + N - 1年，然后在下一年违约</p>
+<blockquote><span>k_N(R) = S_{N−1}(R)d_N(R)</span> </blockquote>
+<p><b>累积违约率</b>：评级为R的发行人在第T年之前的任何时间点违约的比例</p>
+<blockquote><span>C_N(R) = k_1(R) + k_2(R)+· · ·+k_N(R) = 1 − S_N(R)</span> </blockquote>
+<p><b>平均违约率</b>：将总累积违约率表示为每个周期的平均违约率d</p>
+<blockquote><span>C_N = 1 − \Pi ^N_{i=1}(1 − d_i ) = 1 − (1 − d)^N</span> </blockquote>
+<p>从每年一次变为每半年一次，并最终连续复利，平均违约率变成</p>
+<blockquote><span>C_N = 1 − (1 − d^a)^N = 1 − (1 − d^s/2)^{2N} → 1 − e^{−d^cN}</span> </blockquote>
+<p>其中 <span>d^a, d^s, d^c</span> 是使用年度、半年度和连续复利的违约利率。这相当于复利的各种定义。</p>
+<p>例如，考虑一家b级公司，其违约率d1 = 5%， d2 = 7%。计算累积违约概率为：</p>
+<ul>
+<li>第1年，k1 = d1 = 5%</li>
+<li>1年后存活率S1 = 0.95</li>
+<li>第2年违约的概率是k2 = S1 × d2 = 0.95 × 0.07 = 6.65%</li>
+<li>2年后存活率为(1−d1)(1−d2) = 0.95 × 0.93 = 0.8835</li>
+<li>因此，第1年和第2年的累计违约概率为5% + 6.65% = 11.65%</li>
+</ul>
+<p>基于这些信息，我们可以从各种信用评级的累积违约率中映射出这些边际违约率。</p>
+<figure><img src="https://pic2.zhimg.com/v2-84ca4de51540731ddf36abc4542eac2b_1440w.jpg" width="2052"/>
+<figcaption>穆迪累计违约率和边际违约率</figcaption>
+</figure>
+<p>有趣的是，对于初始的高信用评级，违约的边际概率随着期限的增加而增加，而对于初始的低信用评级，违约的边际概率则减少。这一增长是由于<span>均值回归</span>效应。aaa级公司的命运最多只能保持不变，而且往往会随着时间的推移而恶化。相比之下，一家b级公司在头几年幸存下来，随着时间的推移，违约的可能性必然会降低。这是一种生存效应。</p>
+<p>⭐ <b>例20.5</b> Company ABC was incorporated on January 1, 2004. It has an expected annual default rate of 10%. Assuming a constant quarterly default rate, what is the probability that company
+                                                                    ABC will not have defaulted by April 1, 2004?</p>
+<ul>
+<li>a. 2.40%</li>
+<li>b. 2.50%</li>
+<li>c. 97.40%</li>
+<li>d. 97.50%</li>
+</ul>
+<p>解析：选 c 。1年生存率为S1 =(1−d) =(1−dQ)^4。这给出了存活第1/4的概率(1−dQ) =(1−0.10)^(1/4) = 0.974。</p>
+<p>⭐ <b>例20.6</b> If the default probability for an A-rated company over a three-year period is 0.3%, the most likely probability of default for this company over a six-year period is:</p>
+<ul>
+<li>a. 0.30%</li>
+<li>b. Between 0.30% and 0.60%</li>
+<li>c. 0.60%</li>
+<li>d. Greater than 0.60%</li>
+</ul>
+<p>解析：选 d 。边际违约率随着期限的延长而增加。例如，这可以是6年期间的最后3年的0.50%。这使得累积违约概率大于0.60%。</p>
+<p>⭐ <b>例20.7</b> What is the survival rate at the end of three years if the annual default probabilities are 8%, 12%, and 15% in the first, second, and third years, respectively?</p>
+<ul>
+<li>a. 68.8%</li>
+<li>b. 39.1%</li>
+<li>c. 99.9%</li>
+<li>d. 65.0%</li>
+</ul>
+<p>解析：选 a 。存活率S3 =(1−d1)(1−d2)(1−d3) =(1−0.08)(1−0.12)(1−0.15)= 68.8%。</p>
+<p>⭐ <b>例20.8</b> The marginal default probabilities for an A-rated issue are, respectively, for years 1, 2, and 3: 0.300%, 0.450%, and 0.550%. Assume that defaults, if they take place,
+                                                                        happen only at the end of the year. Calculate the cumulative default rate at the end of each of the next three years.</p>
+<ul>
+<li>a. 0.300%, 0.750%, 1.300%</li>
+<li>b. 0.300%, 0.150%, 0.250%</li>
+<li>c. 0.300%, 0.749%, 1.295%</li>
+<li>d. 0.300%, 0.449%, 0.548%</li>
+</ul>
+<p>解析：选 c 。到第2年末的违约率=第1年的存活期乘以第2年的违约率，(1−d1)d2 =(1−0.003)0.0045 = 0.449%。因此，第2年累计违约率为0.300 + 0.449 = 0.749%。第3年末的违约率为(1−d1)(1−d2)d3 =(1−0.003)(1−0.0045)0.0055 = 0.546%。因此，第三年累计违约率为0.749
+                                                                        + 0.546 = 1.295%。</p>
+<p>⭐ <b>例20.9</b> What is the difference between the marginal default probability and the cumulative default probability?</p>
+<ul>
+<li>a. Marginal default probability is the probability that a borrower will default in any given year, whereas the cumulative default probability is over a specified multiyear period.</li>
+<li>b. Marginal default probability is the probability that a borrower will default due to a particular credit event, whereas the cumulative default probability is for all possible credit
+                                                                            events.</li>
+<li>c. Marginal default probability is the minimum probability that a borrower will default, whereas the cumulative default probability is the maximum probability.</li>
+<li>d. Both a. and c. are correct.</li>
+</ul>
+<p>解析：选 a 。边际违约率是指未来一年违约的概率，前提是债务能撑到明年年初。</p>
+<h3>4、<span>转移概率</span></h3>
+<p>在样本量小的情况下，长期违约率的测量可能存在问题。这些违约率的计算可以通过假设评级迁移的马尔可夫过程来简化，该过程由转移矩阵描述。转移(Migration)是一个离散的过程，包括信用评级从一个时期到下一个时期的变化。</p>
+<p><b>转移矩阵</b>给出了以周期开始时的评级为条件移动到一个评级的概率。通常的假设是，这些迁移遵循<b>马尔可夫过程</b>，或者跨越迁移从一个时期到下一个时期是独立的（然而，有一些<span>经验证据</span>表明，信用评级下调并不是独立的，而是呈现出一种<span>动量效应</span>）。这种类型的过程没有结转效应(carry-over
+                                                                        effect)。更正式地说，<span>马尔可夫链</span>描述了一个<span>随机过程</span>，在这个过程中，给定今天的值，条件分布随时间不变。只有现值是相关的。</p>
+<p>下表给出了A、B、C、D四种状态的简化转换矩阵示例，其中D表示违约。</p>
+<div>
+<pre><code>From/To   A      B      C      D      总概率
+A         0.97   0.03   0.00   0.00   1.00
+B         0.02   0.93   0.02   0.03   1.00
+C         0.01   0.12   0.64   0.23   1.00
+D         0      0      0      1.00   1.00</code></pre>
+</div>
+<p>考虑一家公司在第0年的B。公司可能：</p>
+<ul>
+<li>第1年违约，概率为D[t1 | B(t0)] = P(D1 | B0) = 3%</li>
+<li>第2年违约，第一年从B到A，第二年从A到D；或者从B到B，再到D</li>
+<ul>
+<li>违约概率为P(D2 | A1)P(A1) +P(D2 | B1)P(B1) +P(D2 | C1)P(C1) = 0.00 × 0.02+ 0.03 × 0.93 + 0.23 × 0.02 = 3.25%。</li>
+</ul>
+</ul>
+<p>两年内的累积违约概率为3%+3.25%= 6.25%。下图说明了第1、2和3年的各种违约路径。</p>
+<figure><img src="https://pic2.zhimg.com/v2-4204ab1228ad0e86a5aafec18b0d40a1_1440w.jpg" width="1880"/>
+<figcaption>违约路径</figcaption>
+</figure>
+<p>使用这种方法的优点是生成的数据更加稳健和一致。例如，用这种方法得到的15年累计违约率总是大于14年违约率。</p>
+<p>⭐ <b>例20.10</b> A rating transition table includes sufficient information to find all but which of the following items?</p>
+<ul>
+<li>a. The likelihood that an AA-rated firm will fall to a BB rating over five years</li>
+<li>b. The price of a bond that has been downgraded to BB from BBB</li>
+<li>c. The probability of default on a B-rated bond</li>
+<li>d. The probability that a high-yield bond will be upgraded to investment grade</li>
+</ul>
+<p>解析：选 b 。转移矩阵没有关于价格的信息。评级转换表具有在一年内从一种评级转变为另一种评级的概率，这可以在几年内推断出来(表述A)。这也包括违约(表述c)。概率可用于对评级进行分组(表述d)。</p>
+<p>⭐ <b>例20.11</b> Fitch Ratings provides a table indicating that the number of A-rated issuers migrating to AAA is 2, to AA is 5, staying at A is 40, migrating to BBB is 2, and going into
+                                                                        default is 3. Based on this information, what is the probability that an issue with a rating of A at the beginning of the year will be downgraded by the end of the year?</p>
+<ul>
+<li>a. 13.46%</li>
+<li>b. 13.44%</li>
+<li>c. 9.62%</li>
+<li>d. 3.85%</li>
+</ul>
+<p>解析：选 c 。这是由条目与BBB和D的比率给出的，即2 + 3除以总数52，即0.096。</p>
+<p>⭐ <b>例20.12</b> A two-year zero-coupon bond issued by ABC Co. is currently rated A. The market expects that one year from now the probability that the rating of ABC remains at A, is downgraded
+                                                                        to BBB, or is upgraded to AA are, respectively, 80%, 15%, and 5%. Suppose that the risk-free rate is flat at 1% and that credit spreads for AA-, A-, and BBB-rated debt are flat at
+                                                                        80, 150, and 280 basis points, respectively. All rates are compounded annually. What is the best approximation of the expected value of the zero-coupon bond one year from now?</p>
+<ul>
+<li>a. 97.41</li>
+<li>b. 97.37</li>
+<li>c. 94.89</li>
+<li>d. 92.44</li>
+</ul>
+<p>解析：选 a 。一年后，债券变成一年期零息债券。AA、A、BBB的PAA = 100/(1 + 0.0180) = 98.23、97.56、96.34。请注意，评级越低，价格越低。5%*98.23 + 80%*97.56 + 15%*96.34 = 97.41</p>
+<p>⭐ <b>例20.13</b> As a result of the credit crunch, a small retail bank wants to better predict and model the likelihood that its larger commercial loans might default. It is developing
+                                                                        an internal ratings-based approach to assess its commercial customers. Given this one-year transition matrix, what is the probability that a loan currently rated at B will default
+                                                                        over a two-year period?</p>
+<div>
+<pre><code>From/To  A      B      C      Default
+A        0.90   0.10   0.00   0.00
+B        0.00   0.75   0.15   0.10
+C        0.00   0.05   0.55   0.40</code></pre>
+</div>
+<ul>
+<li>a. 17.5%</li>
+<li>b. 20.0%</li>
+<li>c. 21.1%</li>
+<li>d. 23.5%</li>
+</ul>
+<p>解析：选 d 。B可以在第一年违约，概率是0.10。或者先到A，再到D，概率是0.00 × 0.00 = 0。或者先到B，再到D，概率是0.75 × 0.10 = 0.075。或者先到C，再到D，概率是0.15 × 0.40 = 0.060。总数是0.235。</p>
+<h3>5、违约概率的时间变化</h3>
+<p>违约也与经济活动相关。例如，穆迪将自1920年以来的年度违约率与工业生产水平进行了比较。穆迪报告称，在上世纪30年代<span>大萧条</span>时期和最近几次<span>经济衰退</span>期间，违约率显著上升。然而，这些违约率并不能控制信贷质量的结构性变化。近年来，许多发行人以低于过去的初始信用评级进入市场。即使经济环境稳定，这也会导致更多的违约。</p>
+<figure><img src="https://picx.zhimg.com/v2-7dc95211d368816eb56f4d3e1ebe5eb3_1440w.jpg" width="1822"/></figure>
+<p>为了控制这种影响，上图绘制了1981年至2009年间投资级信贷和投机信贷的违约率。正如预期的那样，投资级债券的违约率非常低。然而，更有趣的是，随着时间的推移，它显示出最小的变化。然而，我们确实观察到，投机级信贷违约率的显著变化，在1981年、1990年、2001年和2007年开始的衰退期间达到峰值。因此，经济活动显著影响违约频率。这种效应在投机级债券上表现得最为明显。</p>
+<hr/>
+<h2>三、<span>回收率</span></h2>
+<p>信用风险还取决于<b>违约<span>损失率</span></b>(LGD)，可以用1减去<b>回收率</b>(recovery rate)，或违约后回收的比重来衡量。</p>
+<h3>1、破产流程</h3>
+<p>通常情况下，违约是一种平等影响发行人所有义务的状态，尤其是在伴有<span>破产申请</span>的情况下。在大多数国家，正式的破产程序为解决针对公司的所有索赔提供了一个集中的论坛。破产程序为公司的债权人建立了一个<b>啄序</b>(pecking order)。这阐明了债权人获得偿付的顺序，从而造成了债权人之间的回收率差异。然而，在每个类别中，债权人应该得到平等对待。在美国，无法支付所需款项的公司可以根据破产法第7章申请破产，这将导致公司资产的清算，或者根据破产法第11章申请破产，这将导致
+                                                                            <span>公司重组</span>，在此期间公司继续在法院监督下运作。</p>
+<p>根据破产法第7章，清算所得款项应按照绝对优先规则分配，该规则规定应首先支付给具有最高优先权的索赔人。以下描述了破产程序中的等级顺序。</p>
+<ul>
+<li>1. <span>有担保债权人</span>（以有担保的抵押品为限）</li>
+<li>2. <span>优先债权人</span></li>
+<ul>
+<li>破产期间的资金提供者（借款方）</li>
+<li>破产期间的货物和服务提供者（例如雇员，律师，供应商）</li>
+<li>税</li>
+</ul>
+<li>3. 一般债权人</li>
+<ul>
+<li>破产前的无担保债权人</li>
+<li>股东</li>
+</ul>
+</ul>
+<p>排在最前面的是有担保债权人，由于他们的财产权，他们得到了抵押品价值的最大限度的支付。其次是优先债权人，主要由破产后债权人组成。最后，如果资金在分配给其他人后仍然存在，一般债权人可以得到偿还。</p>
+<p>类似的规则适用于破产法第11章。在这种情况下，公司必须提交一份重组计划，其中规定了对公司资产的新的财务债权。然而，在破产法第11章的和解中，绝对优先权规则经常被违反。初级债务持有人和股东经常收到一些收益，即使高级股东没有全额支付。这有利于及时解决破产问题，避免未来的诉讼。即便如此，不同层的人在回收率上仍然存在巨大差异。</p>
+<h3>2、估计回收率</h3>
+<p>回收率通常是根据违约后不久违约债务的市场价格来估计的。这被视为对未来复苏的最佳估计，并考虑到公司资产的价值，破产程序的估计成本，以及各种支付方式(例如，使用股权支付<span>债券持有人</span>)，贴现到现在。回收率取决于许多因素：</p>
+<ul>
+<li>债务人的地位或资历。理赔年资越高，赔偿率越高。更普遍的是，更大的<b>债务缓冲</b>(debt cushion)，或公司总债务低于工具的百分比，也会导致更高的回收率</li>
+<li>经济状况。<span>经济扩张</span>时，回收率往往较高，衰退时则较低</li>
+<li>债务人的特征。当借款人的资产是有形的，且之前的评级较高时，回收率往往更高。公用事业拥有比其他行业更多的<span>有形资产</span>，例如发电厂，因此具有更高的回收率。此外，利息覆盖范围更大、信用评级更高的公司通常具有更高的回收率</li>
+<li>违约类型。与破产程序不同，陷入困境的交易所通常会带来更高的回收率。与导致所有债务违约的破产程序不同，不良交易只涉及违约的金融工具。</li>
+</ul>
+<p>评级还可以包括违约造成的损失。同一借款人可能有不同类别的债务，由于不同的保护水平，这些债务可能有不同的信用评级。如果是这样，优先级较低的债务应该获得较低的评级。下表显示了<span>穆迪公司</span>的企业债务回收率：</p>
+<figure><img src="https://pic3.zhimg.com/v2-9235e20ea51aec9b8b5546ca20f0fba2_1440w.jpg" width="2052"/></figure>
+<p>优先无担保债务的平均回收率约为f = 37%。<span>衍生工具</span>被列为高级无担保债权人，应具有与高级无担保债务相同的回收率。银行贷款通常有担保，因此回收率较高，通常在60%左右。正如预期的那样，次级债券的回收率最低，通常在20%至30%左右。然而，平均回收率存在很大差异。该表不仅报告了平均值，还报告了
+                                                                            <span>标准差</span>、最小值、最大值以及第10和第90个<span>百分位数</span>。回收率差别很大。此外，回收率与违约率呈负相关。在债券违约较多的年份，违约后的价格比平时更低。这种相关性造成了更大的损失，从而扩大了信贷损失分布的尾部。在实践中，回收率的分布通常用beta分布建模，其参数范围从0到1。</p>
+<p><span>法律环境</span>也是回收率的主要驱动因素。各国司法管辖区的差异导致了回收率的差异。下表比较了欧洲和北美的平均回收率，美国的回收率明显高于欧洲：</p>
+<figure><img src="https://pic3.zhimg.com/v2-ba25c1c9a8b43bd7c9ab5f457cc294b6_1440w.jpg" width="1754"/></figure>
+<p>使用违约后不久的债务交易价格来估计恢复情况是很方便的，因为破产过程可能很慢，通常需要数年时间。计算支付给债务持有人的总价值也可能很复杂，应该考虑到货币的时间价值。然而，证据是交易价格平均低于贴现回收率，如下表所示：</p>
+<figure><img src="https://pic3.zhimg.com/v2-b6e4457f7689af43c6f64063d5746a6c_1440w.jpg" width="2052"/></figure>
+<p>平均贴现回收率系统性地高于交易价格给出的指标。这可能是由于两个市场的客户不同，或者交易价格存在风险溢价。换句话说，交易价格可能被人为压低，因为投资者希望摆脱其投资组合中的违约证券。如果是这样，这就创造了一个有趣的交易机会。购买违约债务并完成恢复过程应该会创造价值。事实上，这在很大程度上解释了被称为<b>不良证券基金</b>(distressed securities
+                                                                                funds)的<span>对冲基金</span>类别的存在。这类基金投资于选定的不良证券，并从其随后的增值中获利。</p>
+<p>⭐ <b>例20.14</b> Moody’s estimates the average recovery rate for senior unsecured debt to be nearest to</p>
+<ul>
+<li>a. 20%</li>
+<li>b. 40%</li>
+<li>c. 60%</li>
+<li>d. 80%</li>
+</ul>
+<p>解析：选 b 。高级无担保债务的典型回收率接近40%。</p>
+<p>⭐ <b>例20.15</b> The recovery rate on credit instruments is defined as 1 minus the loss rate. The loss rate can be significantly influenced by the volatility of the value of a
+                                                                                firm’s assets before default. All other things being equal, in the event of a default, which type of company would we expect to have the highest recovery rate?</p>
+<ul>
+<li>a. A trading company active in volatile markets</li>
+<li>b. An Internet merchant of trendy consumer products</li>
+<li>c. An asset-intensive manufacturing company</li>
+<li>d. A highly leveraged hedge fund</li>
+</ul>
+<p>解析：选 c 。当违约企业的资产中包含易于转售的有形资产时，回收率会更高。更不稳定的资产意味着在清算时市场价值下跌的可能性更大。因此，制造公司的有形资产是最好的答案。</p>
+<hr/>
+<h2>四、评估公司和主权评级</h2>
+<h3>1、公司评级</h3>
+<p>评级机构花费了大量的精力和财力来提供公开的信用评级。信用评级过程的主要输入是会计变量，如资产负债表杠杆率和债务覆盖率。如果这些变量的信息量随时间而变化（即如果怀疑存在盈余管理），则赋予这些变量的权重可能会发生变化。</p>
+<p>然而，<span>会计信息</span>本质上是后瞻性的(backward looking)。企业的经济前景对评估信用风险也至关重要。这些因素包括增长潜力、市场竞争和<span>金融风险</span>因素。评级机构还可以获得私人信息，包括与管理层会面，在会面期间，评级机构可能会获得机密信息。</p>
+<p>评级机构还需要考虑到各国之间的结构性差异。这些可能是由以下几个因素引起的：</p>
+<ul>
+<li><b>各国金融稳定性的差异</b>。各国在<span>金融市场</span>结构和政府政策方面存在差异。例如，<span>经济政策</span>处理不当可能会把本应是小幅贬值的货币变成一个大问题，导致经济衰退。</li>
+<li><b><span>法律制度</span>的差异</b>。各国对债权人的保护可能差别很大，其中一些国家尚未建立破产程序。</li>
+</ul>
+<p>理论上，信用评级机构提供的评级应该在不同国家和不同行业保持一致。换句话说，它们应该考虑到这些变化，并代表相同的违约概率。</p>
+<p>最后，信用评级应该贯穿整个周期，而一个<span>商业周期</span>通常持续数年。这意味着评级不应取决于当前在商业周期中的位置。如果一家正处于繁荣顶峰的公司的业绩预计是暂时的，比如由于消费者需求旺盛，很快就会恢复到长期平均水平，那么给这家公司高评级是没有意义的。下图说明了公司绩效如何依赖于周期。从理论上讲，评分应该随时间保持不变。</p>
+<figure><img src="https://pic1.zhimg.com/v2-af2b9cf71a8fdc7c280516de0d7db930_1440w.jpg" width="1996"/></figure>
+<p>在实践中，低迷周期会对信贷质量产生持久影响，在极端情况下还会导致违约。因此，实际评级可能会受到商业周期的影响，特别是对投机级公司而言。</p>
+<p>随着时间的推移，对周期性因素不那么敏感的评级应该会更加稳定。这应该会减少基于外部信用评级的资本收费的<b>顺周期影响</b>(procyclical effect)。在经济衰退期间，较低的信用评级将导致更高的资本费用，这恰恰是在银行遭受信贷损失之后，这将迫使它们筹集额外的股本并减少贷款，而这将加剧经济衰退。这种影响将在第28章进一步讨论。相比之下，在整个周期中进行评级的做法意味着，信用评级可能会在衰退期间低估违约的可能性，而在扩张期间反过来高估违约的可能性。</p>
+<h3>2、主权评级</h3>
+<p>评级机构直到最近才开始对主权债券进行评级。1975年，标准普尔仅对7个国家进行了评级，而且都是投资级。到1990年，该基金已扩展到31个国家，其中只有9个来自新兴市场。现在，标准普尔对大约120个国家进行评级。然而，违约的历史更加稀少。因此，很难从很小的样本中进行推广。</p>
+<p>评估主权国家的信用风险要比评估企业的复杂得多。当公司借款人违约时，债权人可以采取法律行动。例如，无担保债权人可以对债务人提起诉讼，并根据扣押令状扣押被告的资产。这就产生了对其资产的<span>留置权</span>，或者对其资产的索取权，作为支付债务的担保。相比之下，不可能附加一个主权国家的国内资产。因此，主权债务的回收率通常低于
+                                                                                            <span>公司债务</span>的回收率。因此，主权信用评估不仅涉及<b>经济风险</b>(economic risk)(到期偿还债务的能力)，还涉及<b>政治风险</b>(political risk)(支付意愿)。一些国家单方面拒付其债务(即，即使在它们有能力支付时也拒绝支付)。</p>
+<p>国家信用等级也根据是本币债务还是外币债务而有所不同。下表显示了本币和外币评级所涉及的因素。</p>
+<div>
+<pre><code>类别             本币   外币
+1 -------------------------
+政治风险         √     √
+2 -------------------------
+收入与<span>经济结构</span>   √     √
+经济增长前景     √     √   
+3 -------------------------  
+财政灵活性       √     √ 
+公共债务负担     √     √  
+或有债务         √     √  
+4 -------------------------
+货币灵活性       √     √   
+5 -------------------------
+外部流动性              √ 
+外部债务负担            √</code></pre>
+</div>
+<ul>
+<li>政治风险因素（如政治共识程度、<span>全球贸易</span>和金融体系一体化程度、内部或外部安全风险等）在主权信用风险中发挥着重要作用。政治越稳定的国家，信用评级越高。</li>
+<li>第二组因素包括收入和经济结构，以及经济增长前景。更富裕或增长更快的国家往往拥有更高的信用评级。</li>
+<li>第三组因素包括财政灵活性、公共债务负担和<span>或有负债</span>。相对于经济规模而言，预算赤字和债务数额较低的国家往往拥有较高的信用评级。不过，对债务的评估还必须包括<span>公共部门</span>企业和金融部门，前者违约需要政府提供资金，后者可能需要政府注入资金以确保稳定。</li>
+<li>第四个方面包括货币灵活性。高<span>通货膨胀</span>率通常反映了经济管理不善，并与政治不稳定有关。通货膨胀率高的国家往往有较低的信用评级。</li>
+</ul>
+<p>上述所有因素都影响本币债务和外币债务。外币债务还受到外部流动性和外债负担的影响。外部流动性是通过<span>国际收支</span>流量来评估的。拥有巨额经常账户赤字（反映进口过剩）的国家往往信用评级较低，尤其是在由波动较大的资本流入提供资金的情况下。特别是，对外利息支付与出口的比率受到密切关注。流的成熟度概况也很重要。在1997年亚洲金融危机的例子中，评级机构似乎忽视了信用的其他重要方面，比如国家债务的货币和期限结构。太多的亚洲债权人借入短期美元以投资于本币，这在
+                                                                                            <span>本币贬值</span>时造成了严重的流动性问题。最后，外债负担是根据一个国家的<span>国际投资</span>状况（即公共和私人外债）以及<span>外汇储备</span>存量来评估的。</p>
+<p>由于本币债务有政府的征税权作为后盾，本币债务被认为比外币债务具有更小的信用风险。下表显示了一些国家样本的本币和外币债务评级。外币债务的评级与本币债务相同，或通常仅低一级。同样，在同一个国家，主权债务的评级通常高于公司债务。例如，政府可以通过控制资本流动或扣押外汇储备来偿还外币债务。</p>
+<figure><img src="https://pic2.zhimg.com/v2-d5ddd312eb1591afc99e9b862f58a559_1440w.jpg" width="1048"/></figure>
+<p>总体而言，主权债务评级被认为不如公司评级可靠。实际上，主权债券的利差通常大于<span>公司债券</span>的利差。不同评级机构之间的主权评级差异也大于企业之间的差异。因此，相对于企业而言，主权信用风险的评估是一个更加主观的过程。</p>
+<p>⭐ <b>例20.16</b> In the context of evaluating sovereign risk, which of the following statements is incorrect?</p>
+<ul>
+<li>a. Bankruptcy law does not typically protect investors from sovereign risk.</li>
+<li>b. Debt repudiation is a postponement of all current and future foreign debt obligations of a borrower.</li>
+<li>c. Debt rescheduling occurs when a group of creditors declares a moratorium on debt obligations and seeks to reschedule terms.</li>
+<li>d. Sovereign risk can be a cause of default in a nongovernmental borrower of high credit quality.</li>
+</ul>
+<p>解析：选 b 。债务拒绝是一种取消，而不是延期。</p>
+<p>⭐ <b>例20.17</b> Rating agencies typically assign two ratings to debt-issuing countries. The first is the local currency debt rating and the second is the foreign currency
+                                                                                            debt rating. Historically, defaults have been more frequent on foreigncurrency-denominated debt than on local-currency-denominated debt. What is the main reason
+                                                                                            behind this difference?</p>
+<ul>
+<li>a. This is a statistical anomaly, as the default rate theoretically should be the same in both cases.</li>
+<li>b. Foreign-currency-denominated debt is usually less collateralized than local-currency-denominated debt.</li>
+<li>c. Local-currency-denominated debt obligations could be met through monetary expansion.</li>
+<li>d. In distressed situations, governments tend to default on their foreigncurrency-denominated debt first for political reasons.</li>
+</ul>
+<p>解析：选 c 。外币计价债务的较高违约率与信用评级较低的观察结果是一致的。因此，这不是统计异常（a项）。主要原因是政府可以迫使中央银行印更多的钱，造成通货膨胀，降低<span>当地货币</span>的实际价值。这种选择对于外币计价的债务是不可能的。</p>
+<hr/>
+<h2>五、信用评级机构监管</h2>
+<h3>1、信用评级机构的作用</h3>
+<p>信用评级机构在金融市场中扮演着重要的角色。它们提供了广泛可用的关于各种工具和债务人信用风险的摘要信息。它们有助于缓解借款人和投资者之间的信息不对称。这对小投资者尤其有用，因为他们没有时间或资源进行详细的信贷分析。</p>
+<p>投资者使用这些信用评级来评估信用风险，并遵守投资准则和法规。像经纪<span>自营商</span>这样的卖方公司用它们来决定要持有多少抵押品来抵御<span>信贷风险</span>。</p>
+<p>信用评级的作用也得到了官方认可。事实上，在证券交易委员会(SEC)注册的信用评级机构被称为国家认可的统计评级组织(NRSRO)。联邦和州一级的一些法规明确使用了NRSRO的评级。例如，针对<span>商业银行</span>的Basel II规定包括了取决于外部信用评级的资本费用。</p>
+<h3>2、利益冲突</h3>
+<p>然而，信用评级机构受到利益冲突的困扰。尽管他们的评级被视为读者的意见，但他们是直接由评级公司支付报酬的。这是因为依靠投资者付费的模式在经济上是不可行的。</p>
+<p>然而，债务发行人支付的模式产生了相互矛盾的目标。一方面，评级机构可能有动机通过向许多客户公司提供简单的评级来实现<span>利润最大化</span>。另一方面，作为提供独立客观建议的中立第三方，它们有一种与之相抗衡的动机，即保护自己的声誉。如果他们的收视率变得一文不值，他们很快就会失去商业特许
+                                                                                                <span>经营权</span>。</p>
+<p>信用评级机构认为，没有强烈的动机去迎合债券发行人的偏好，因为每个单独的发行人只占收入的一小部分。长期以来，这些相互抵消的激励措施得到了微妙的平衡，整个体系似乎运转良好。</p>
+<h3>3、结构化产品</h3>
+<p>然而，近年来，信用评级机构已扩展到对不同级别的结构性信贷产品进行评级。这是一个蓬勃发展的市场，其复杂的产品将在后面描述。对结构性产品进行评级的业务利润丰厚，比以前高得多，而且在发行人之间的分散程度有所降低。信用评级机构也参与了产品的设计，例如，就不同级别的宽度提供建议，以达到预期的评级。这与对公司实体发行的债券的违约风险发表意见相差甚远。设计这些结构性产品的银行也可以在三大主要信用评级机构之间货比三家，把业务交给最通融的一家。这些压力似乎导致了信贷标准的明显放松。信用评级机构给了那些在2007年次级抵押贷款开始违约时迅速变成坏账的证券很高的评级。</p>
+<p>受到这些损失打击的投资者对信用评级的质量失去了信心，并从信贷市场撤出，有时是突然撤出。这引发了导致最近信贷危机的一系列事件。</p>
+<h3>4、监管响应</h3>
+<p>由于人们普遍认为信用评级机构在这场危机中发挥了作用，因此对它们的监管已经收紧。</p>
+<p>2010年，《多德-弗兰克<span>华尔街</span>改革与消费者保护法案》(Dodd-Frank Wall Street Reform and Consumer Protection Act)通过赋予SEC更多的监管权力，加强了对评级机构的监管。现在，评级机构可能不会同时提供评级和如何构建证券的建议。现在要求各机构提供更多关于其方法和跟踪记录的资料。该法案还扩大了它们的潜在责任，使针对评级机构的诉讼变得更容易。该法案取消了他们对监管公平披露(FD)的豁免，该规定允许他们获得未向公众发布的公司信息。最后，该法案要求评级机构改善其内部控制和治理。这使得它们的核心模式——即债券发行者为评级付费——保持不变，但有望改善对利益冲突的管理。</p>
+<p>此外，欧盟监管机构将创建一个泛欧洲监管机构，负责欧洲信用评级机构的注册和监督。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C26 流动性风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C26 流动性风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C26 流动性风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、流动性风险的来源</h2>
+<p>缺乏流动性可能导致一家机构破产，即使这家机构在技术上是有偿付能力（即资产价值超过负债）。商业银行的资产（<span>长期贷款</span>）和负债（零售存款和资本市场债务）之间存在固有的流动性失衡。因此，一场信任危机可能会导致存款人立即要求取钱。即使银行有足够的资产来支付存款，它也可能无法足够快地或以合理的价格清算其资产，以满足赎回要求。同样，<span>对冲基金</span>需要谨慎管理某些资产负债表中固有的流动性风险。</p>
+<p><b>流动性风险</b>（Liquidity risk）包括资产流动性风险和资金流动性风险。欧洲银行监管委员会（<span>CEBS</span>）定义：</p>
+<ul>
+<li><b>资产流动性风险</b>（Asset liquidity risk）：也称为市场/产品流动性风险（market/product liquidity risk），是指由于市场深度不足或市场中断而无法在短时间内轻松<span>平仓</span>或抵消头寸而不会对市场价格产生重大影响的风险。</li>
+<li><b>资金流动性风险</b>（Funding liquidity risk）：机构在债务到期时无法在不发生不可接受的损失的情况下履行其债务和义务所产生的当前或未来风险。</li>
+</ul>
+<p>如果投资组合包含必须以低价出售以满足资金需求的非流动性资产，这两种类型的风险就会相互作用。</p>
+<hr/>
+<h2>二、资产流动性风险</h2>
+<h3>1、<span>资产流动性</span>风险评估</h3>
+<p>为了评估资产流动性风险，我们首先描述要交易的资产的市场条件。<b>买卖价差</b>（bid-ask spread）衡量的是在<b>正常市场规模</b>（NMS，normal market size）范围内买卖的往返交易成本。定义：</p>
+<ul>
+<li>卖出价：P(ask)</li>
+<li>买入价：P(bid)</li>
+<li>中间价：P(mid) = [P(ask) + P(bid)]/2</li>
+</ul>
+<p>价差的相对定义为：</p>
+<blockquote><span>\displaystyle S = \frac{P(ask) − P(bid)}{P(mid)}</span> </blockquote>
+<p>流动性好的资产买卖价差较小。<b>紧度</b>（Tightness）是衡量实际交易价格与中间市场报价之间差异的指标。流动性资产还具有良好的<b>深度</b>（depth），这是在不太影响价格（例如，在买卖价格）的情况下可能进行的交易量的衡量标准。这与<b>薄度</b>（thinness）形成对比。</p>
+<p>对于较大的交易，资产流动性可以通过价格-数量函数来评估，称为<b><span>市场影响</span></b>（market impact），它描述了价格如何受到交易数量的影响。有时，这被称为<b>内生流动性</b>（endogenous liquidity），这意味着价格下跌取决于头寸的大小。相比之下，正常市场规模内的头寸以<b>外生流动性</b>（exogenous liquidity）为特征。</p>
+<p>当在流动性强的市场上出售大量资产时，价格可能会暂时下跌，但应该会迅速回升。<b><span>回弹性</span></b>（Resiliency）是衡量交易价格波动消散的速度。</p>
+<p>对于流动性资产，如国债市场，这一函数相当平缓，这意味着大量交易不会对价格产生太大影响。例如，一个人通常以0.10%的买卖价差的一半的成本交易1,000万元的国债，成本为1,000万元× 0.10%/2 = 5,000元，这是非常低的。</p>
+<p>相比之下，<span>非流动性资产</span>是指利差较大、交易可以迅速影响价格的资产。例如，银行贷款是通过场外交易（OTC）进行交易的，其价差可能高达10%。1000万元的销售将使价格下降5%，即成本为1000万元× 10%/2 = 50万元，这比之前的例子要高得多。如果销售量是这个数字的两倍，可能会导致更大幅度的降价（比如8%）来<span>市场出清</span>。因此，非流动性资产的价格更多地受到当前需求和供给条件的影响。因此，如果交易发生，它们通常比流动资产更不稳定。</p>
+<p>后一个例子也表明流动性是<b>时间范围</b>（time horizon）的函数。如果价格-<span>数量函数</span>很陡，立即出售将迫使价格大幅下降。相比之下，耐心的投资者可以通过在几天内分批出售，从而获得更好的价格，从而减少对市场的影响。</p>
+<figure><img src="https://pic2.zhimg.com/v2-bd23a02f4d3e0d05a232556d27e8053f_1440w.jpg" width="1283"/>
+<figcaption>流动资产和非流动资产的比较</figcaption>
+</figure>
+<p>上图比较了流动资产和非流动资产的价格-数量函数。对于流动性资产：</p>
+<ul>
+<li>买卖价差很窄</li>
+<li>市场更有深度，意味着更大的正常市场规模</li>
+<li>代表市场影响的线条斜率较低</li>
+</ul>
+<p>一般来说，交易量越大的资产流动性越强。交易量反映了投资者之间的意见分歧，但也取决于活跃投机者的存在。尤其是对冲基金，它们在许多市场上活跃交易，这增加了市场流动性。</p>
+<p>易于定价的资产流动性也更强。一个极端是有固定息票的国债，这是一种简单的工具，因此很容易评估。另一个极端是收益复杂的<span>结构性票据</span>，参与者更难对其进行评估和对冲。因此，这类票据的息差将远远大于<span>美国国债</span>。</p>
+<p>流动性因资产类别而异，可能是特定于<span>证券</span>的。未偿金额较大或最近发行的证券通常流动性更强。<b>新发行证券</b>（On-the-run securities）是指最近发行的证券，因此更活跃，流动性更强。其他证券被称为<b>非新发行证券</b>（off-the-run）。以最新发行的<span>30年期国债</span>为例。在另一只30年期债券发行之前，这只债券一直处于运行状态，到那个时候，它就会进入运行状态。这两种证券具有相同的
+                                                <span>信用风险</span>（即政府违约的风险）和<span>市场风险</span>（即两者的到期日都接近30年）。由于它们如此相似，它们的<span>收益率</span>差一定是<b><span>流动性溢价</span></b>（liquidity premium）。</p>
+<p>资产清算成本还取决于<b>资产可替代性</b>（asset fungibility）。在集中交易所交易的合约，如<span>期货</span>或普通股，可以很容易地转售给出价最高的人，因此是可替代的。相比之下，私下谈判的衍生品需要原始交易对手同意解除交易。在这种情况下，交易对手可以要求折扣来取消头寸。</p>
+<p>总之，资产流动性风险取决于几个因素：</p>
+<ol>
+<li>市场条件：买卖价差和市场影响</li>
+<li>清算时间范围</li>
+<li>资产和证券类型</li>
+<li>资产可替代性</li>
+</ol>
+<p>流动性不足也可能是市场范围的和时变的。市场流动性的大规模变化似乎是定期发生的，包括1994年的<span>债券市场崩盘</span>、1998年的<span>俄罗斯</span>/长期资本管理（LTCM）危机以及2007年开始的信贷危机。这类危机的特点是<b>向优质资产外逃</b>（flight to quality），当需求从低评级证券转向高评级证券，尤其是
+                                                    <span>政府债券</span>时，就会发生这种情况。低档市场因此变得缺乏流动性，价格低迷。这反映在公司债和政府债收益率差的扩大上。</p>
+<h3>2、流动性调整VaR</h3>
+<p>与传统市场风险相比，资产流动性风险不太适合正式计量。非流动性可以通过增加视界或选择性地增加<span>波动性</span>来松散地计入VAR指标。然而，这些调整主要是临时的。</p>
+<p>我们可以尝试将<span>买卖价差</span>的影响纳入<span>风险度量</span>。当利差S固定时，<b>流动性调整VAR</b>（LVAR，liquidity-adjusted VAR）可定义为：</p>
+<blockquote><span>\displaystyle LVAR = VAR + L_1 = W[\alpha \sigma +\frac 1 2 (S)]</span> </blockquote>
+<ul>
+<li><span>W</span> ：初始财富，或投资组合价值</li>
+</ul>
+<p>如果要从0（相对于初始投资组合价值）开始测量VAR，而不是远离平均值，需要从 <span>\alpha\sigma</span> 减去 <span>\mu</span> 。</p>
+<p>例如，假设有1,000万元投资于30年期国债，日波动率 <span>\sigma</span> 为1%，利差 <span>S</span> 为0.10%。95%<span>置信水平</span>下的单日LVAR为$10,000,000[(1.645
+                                                    × 0.01) +(1/2)(0.0010)] = $164,500 + $5,000 = $169,500。这里这个修正项很小。相反，在前面的例子中，银行贷款的修正期限为50万元。</p>
+<p>如果买卖价差变化很大，可以调整公式，以在某种置信水平上解释价差的最差增长。价差的分布可以用它的均值 <span>\bar S</span> 和标准差 <span>\sigma_S</span>                                                    来描述，最坏情况下的LVAR为：</p>
+<blockquote><span>\displaystyle LVAR = VAR + L_2 = W[\alpha \sigma +\frac 1 2 (\bar S+\alpha' \sigma_S)]</span> </blockquote>
+<p>通过将市场风险和流动性风险的最坏情况损失加起来，这有效地假设了这两个风险驱动因素之间的高度相关性。</p>
+<p>在实践中，估计价差的分布是一个挑战。利差往往在很长一段时间内保持稳定，然后在危机时期爆发。因此，价差的分布是非正态的。为了在最高水平上衡量风险，风险经理还需要估计价差之间的相关性。此外，该分析假设交易数量在正常市场规模范围内。否则，立即大量强制出售也会对市场造成影响。</p>
+<h3>3、非流动性和风险度量</h3>
+<p>资产的非流动性给风险度量带来了特殊的问题。在流动性较差的市场，交易较少意味着价格变动不大。因此，报告期结束时的价格通常不能代表市场结算交易，而且在没有正常交易的情况下往往会疲软。这导致波动性指标以及与其他资产类别的相关性出现向下的偏差。此外，新闻缓慢地影响价格，在回报中产生正的自相关，这使得在将VAR外推到更长远的范围时，时间的平方根规则无效。</p>
+<p>⭐ <b>例26.1</b> Which of the following statements regarding liquidity risk is correct?</p>
+<ul>
+<li>a. Asset liquidity risk arises when a financial institution cannot meet payment obligations.</li>
+<li>b. Flight to quality is usually reflected in a decrease in the yield spread between corporate and government issues.</li>
+<li>c. Yield spread between on-the-run and off-the-run securities mainly captures the liquidity premium, and not the market and credit risk premium.</li>
+<li>d. Funding liquidity risk can be managed by setting limits on certain asset markets or products and by means of diversification.</li>
+</ul>
+<p>解析：选 c 。新发行证券和非新发行证券之间的收益率差反映了流动性溢价，因为这两种债券在其他方面几乎是相同的。在答案a和d中，<span>资产风险</span>和资金风险应该互换。最后，对b.来说，向优质资产的转移增加了收益率差。</p>
+<p>⭐ <b>例26.2</b> The following statements compare a highly liquid asset against an (otherwise similar) illiquid asset. Which statement is most likely to be false?</p>
+<ul>
+<li>a. It is possible to trade a larger quantity of the liquid asset without affecting the price.</li>
+<li>b. The liquid asset has a smaller bid-ask spread.</li>
+<li>c. The liquid asset has higher price volatility since it trades more often.</li>
+<li>d. The liquid asset has higher trading volume.</li>
+</ul>
+<p>解析：选 c 。比较两只股票。流动性强的股票通常有较高的交易量和较小的买卖价差，因此b和d是正确的。它还具有更大的深度，这意味着可以在不太影响价格的情况下进行大量交易，因此a.为正确。因此，剩下的答案c一定是错的。交易活动和波动性之间没有必然的关系。</p>
+<p>⭐ <b>例26.3</b> A mutual fund investing in common stocks has adopted a liquidity risk measure limiting each of its holdings to a maximum of 30% of its 30-day average value traded. If the fund size is USD
+                                                    3 billion, what is the maximum weight that the fund can hold in a stock with a 30-day average value traded of USD 2.4 million?</p>
+<ul>
+<li>a. 24.00%</li>
+<li>b. 0.08%</li>
+<li>c. 0.024%</li>
+<li>d. 80.0%</li>
+</ul>
+<p>解析：选 c 。最大权重w为$3,000 × w = 30% × $2.4，即w = 0.024%。</p>
+<p>⭐ <b>例26.4</b> In a market crash, which the following are usually true?</p>
+<ol>
+<li>I. Fixed-income portfolios hedged with short Treasury bonds and futures lose less than those hedged with interest rate swaps given equivalent durations.</li>
+<li>II. Bid-offer spreads widen because of lower liquidity.</li>
+<li>III. The spreads between off-the-run bonds and benchmark issues widen.</li>
+</ol>
+<ul>
+<li>a. I, II, and III</li>
+<li>b. II and III</li>
+<li>c. I and III</li>
+<li>d. None of the above</li>
+</ul>
+<p>解析：选 b 。在崩盘中，买卖价差会扩大，流动性价差也会扩大。表述1是不正确的，因为国债通常比互换上涨得更快，这导致做空国债的投资组合损失大于掉期。</p>
+<p>⭐ <b>例26.5</b> You are holding 100 Wheelbarrow Company shares with a current price of $50. The daily mean and volatility of the stock return is 1% and 2%, respectively. VAR should be measured relative to
+                                                    the initial wealth. The bid-ask spread of the stock varies over time. The daily mean and volatility of the spread are 0.5% and 1%, respectively. Both the return and spread are normally distributed. Calculate
+                                                    the daily liquidity-adjusted VAR (LVAR) at a 99% confidence level.</p>
+<ul>
+<li>a. USD 254</li>
+<li>b. USD 229</li>
+<li>c. USD 325</li>
+<li>d. USD 275</li>
+</ul>
+<p>解析：选 a 。相对于初始投资组合价值的常规VAR为 VAR = W(ασ− μ) = $5,000(2.33 × 2% − 1%) = $183。这个平均值的<span>估计值</span>异常高。所以必须加上 L2 = (1/2)W( <span>\bar{S}</span>                                                    + α' <span>\sigma_S</span> ) = (1/2) $5,000(0.5% + 2.33 × 1%) = $70.75，合计254。</p>
+<p>⭐ <b>例26.6</b> You are a manager of a renowned hedge fund and are analyzing a 1,000-share position in an undervalued but illiquid stock BNA, which has a current stock price of USD 72 (expressed as the midpoint
+                                                    of the current bid-ask spread). Daily return for BNA has an estimated volatility of 1.24%. The average bid-ask spread is USD 0.16. Assuming returns of BNA are normally distributed, what is the estimated
+                                                    liquidity-adjusted daily 95% VAR, using the constant spread approach?</p>
+<ul>
+<li>a. USD 1,389</li>
+<li>b. USD 1,469</li>
+<li>c. USD 1,549</li>
+<li>d. USD 1,629</li>
+</ul>
+<p>解析：选 c 。传统的VAR是72 × 1000 × 1.24% × 1.645 = 1469。差价效应为0.16 × 1000 = 80，共计1549。</p>
+<hr/>
+<h2>三、资金流动性风险</h2>
+<h3>1、指标</h3>
+<p>流动性风险一直是2007年开始的信贷危机的一个主要风险因素。随着商业银行和投资银行开始累积亏损（最初是由于次级资产支持证券），由于担心交易对手违约，银行不愿放贷。</p>
+<p>例如，可以通过比较三个月期<span>国库券</span>利率、三个月期伦敦银行同业拆借利率(LIBOR)和隔夜<b><span>联邦基金利率</span></b>（federal funds rate）来衡量<span>货币市场</span>的状况。为确保可比性，所有汇率均以美元计算。国库券利率不存在信用风险，除了美国国债。相比之下，LIBOR和联邦基金是针对无担保贷款的。</p>
+<p>伦敦银行同业拆借利率和联邦基金之间的差别是期限价差。它可以被看作是赎回贷款的<span>期权价格</span>。如果坏消息来袭，隔夜放贷的银行可以选择不续贷；相反，承诺提供3个月贷款的银行则没有这样的选择。通常，期权的价值在不确定时期会增加，这就解释了为什么这个术语的价差会急剧增加。</p>
+<p><span>欧洲美元</span>LIBOR和美国国债之间的<span>信用利差</span>被称为<b><span>TED利差</span></b>（TED spread），反映了预期的信贷损失以及流动性风险溢价。</p>
+<figure><img src="https://pic3.zhimg.com/v2-5b8ede7cc00d84c3fb8da66dd297b9bc_1440w.jpg" width="1117"/></figure>
+<p>上图描述了这些利率在2007年和2008年的变化。联邦基金利率的大幅下调表明，美联储已经大举放松了货币政策。美国国债收益率也相应下降。然而，伦敦银行同业拆借利率一直居高不下，反映了信贷市场的紧张状况。特别是通常在25个基点左右的TED息差，在2008年9月15日<span>雷曼兄弟</span>破产后急剧扩大，超过了500个基点。<span>信用评级</span>更不稳定的公司不得不面对更高的利率，也就是说，当他们能够获得任何资金的时候。</p>
+<h3>2、评估</h3>
+<p><span>巴塞尔</span>委员会对这种风险提供了一个全面的定义：<b>资金流动性风险</b>（Funding liquidity risk）是指企业在不影响日常经营或企业财务状况的情况下，无法有效满足当前和未来预期和意外的现金流和抵押品需求的风险。</p>
+<p>管理银行流动性风险时，可以划分为以下部分：</p>
+<p>表内：</p>
+<ul>
+<li><b>资产</b></li>
+<ul>
+<li>高流动性：如现金</li>
+<li>其他，无负担（unencumbered）：可作抵押品</li>
+<li>其他，有负担（encumbered）</li>
+</ul>
+<li><b>负债</b></li>
+<ul>
+<li>无担保融资：小额零星存款、资本市场</li>
+<li>有担保融资</li>
+</ul>
+<li><b>权益</b>：<span>新股发行</span></li>
+</ul>
+<p>表外：</p>
+<ul>
+<li><b>资产</b>：衍生品、购买的信用额度</li>
+<li><b>负债</b>：衍生品、提供的担保、承诺、<span>SPV</span></li>
+</ul>
+<p>以上提供了评估流动性风险的一般框架。资金流动性风险来自负债方面，无论是表内项目还是表外项目。负债可分为稳定型和不稳定型，这些术语指的是<span>现金流量</span>的可预测性。</p>
+<p>对于一家上市公司来说，股权是稳定的。金融机构可以通过<span>股息政策</span>、股票回购和新股发行来管理其股权流动性。</p>
+<p>债务可以分为无担保和有担保的资金。投资者应该更愿意提供有资产担保的资金。相比之下，无担保融资受制于发行人的违约风险。</p>
+<p>在无担保融资类别中，零售存款比<span>资本市场工具</span>更稳定。例如，在压力条件下，货币市场工具的投资者可能会要求更高的<span>风险补偿</span>，或者要求将其投资展期为更短的期限，甚至根本拒绝延长融资。</p>
+<p>在表外负债中，银行提供的贷款承诺、<span>信用证</span>和金融担保，一旦提取，将产生对流动性的<span>或有索取权</span>。如果交易对手要求更多的抵押品，或者如果合约包含信用触发条款，在降级的情况下需要额外的抵押品，衍生品也可能产生现金流需求。事实上，<b>特殊目的载体</b>（SPV，special-purpose
+                                                            vehicles）也可能产生或有流动性风险。一些结构，如银行赞助的管道，有<span>发行银行</span>的明确支持，如果特殊目的机构无法对其债务进行展期，可以利用流动性额度。其他结构，如<b>结构性投资工具</b>（<span>SIV</span>，structured investment
+                                                            vehicles），可能没有明确的支持，但银行可能出于业务或声誉原因选择提供流动性支持。</p>
+<p>对于资产负债表的资产方面，<b>资金缺口</b>（funding gaps）可以通过出售资产来弥补。现金或流动资产提供了可以立即使用的缓冲。无抵押证券，定义为对其没有索取权的证券，可以出售，也许可以以反映资产流动性风险的折扣出售。或者，如果允许，它们可以通过回购协议作为现金抵押品出售给私人对手方或央行。</p>
+<p>此外，现金可以从在货币中移动的衍生品头寸中获得。各机构还可以设立银行信贷额度，以便在需要流动资金时提取。</p>
+<p>这些表内和表外信息应该与现金流量相结合。银行系统扩大了证券化，作为减少资产负债表上资产的一种手段。然而，在最近的信贷危机中，银行被迫推迟了一些证券化，导致大量贷款库存的积累，这些库存必须融资。</p>
+<p>⭐ <b>例26.7</b> You are a risk manager for a hedge fund. You are told that the TED spread increased sharply. Which of the following statements best describes the change in your situation?</p>
+<ul>
+<li>a. An increase in the TED spread indicates that the Federal Reserve will push interest rates up, so the duration of the portfolios should be reduced. </li>
+<li>b. An increase in the TED spread indicates a bigger gap between the fed funds rate and Treasuries, so that the Fed will choose to increase liquidity in the markets, which will increase prices
+                                                                of securities as demand will increase.</li>
+<li>c. An increase in the TED spread could indicate greater concerns about bank solvency, so that you should review your counterparty exposures and possibly hedge some exposure to banks.</li>
+<li>d. An increase in the TED spread could indicate more willingness of banks to lend since they get paid more for lending, so we should use the opportunity to renegotiate lines of credit.</li>
+</ul>
+<p>解析：选 c 。表述a是不正确的，因为TED利差扩大与美联储降息是一致的。表述b不正确，因为联邦基金利率是针对抵押贷款的，而欧洲美元利率是针对无抵押存款的。表述d是不正确的，因为更大的TED价差意味着银行借贷成本上升，而不是下降。</p>
+<hr/>
+<h2>四、管理流动性风险</h2>
+<h3>1、管理步骤</h3>
+<p>流动性风险管理需要强有力的内部治理，通过适当的工具来识别、测量、监测和管理流动性风险。董事会对该机构的流动性策略负有最终责任。虽然没有单一的流动性风险衡量标准，但可以使用一系列指标来评估流动性风险。</p>
+<p><b>第一，运营流动性</b>（operational liquidity）。列出了每天的支付队列，预测所有现金流入和流出。然而，这不是一件简单的事情。近年来，支付和结算<span>系统设计</span>的改进（例如，实时全额结算系统和CLS银行对外币支付进行<span>净额结算</span>）缩短了支付间隔时间。虽然这些系统降低了信用风险和操作风险，但它们确实给流动性管理带来了更大的压力。</p>
+<p><b>第二，战术管理</b>（tactical management）。评估获得无担保资金来源和资产库存的流动性特征，包括对资产流动性风险的评估。</p>
+<p><b>第三，资金矩阵</b>（funding matrix）。从流动资产和负债以及表外项目开始，从战略角度整合这些信息，构建的资金矩阵详细说明了不同期限的资金需求。任何<b>资金缺口</b>（funding gap）都应该通过筹集额外资金的计划来弥补，要么通过借款，要么通过出售资产。</p>
+<h3>2、资金缺口</h3>
+<figure><img src="https://pic3.zhimg.com/v2-b1bfc0afffef7cc2c9587010b471cf9a_1440w.jpg" width="1509"/>
+<figcaption>资金缺口分析的例子</figcaption>
+</figure>
+<p>上表给出了一个没有新业务或资金展期（称为pure run-off mode）的假设示例。资金矩阵从资产负债表项目、贷款、小额存款、其他短期债务和长期债务开始。</p>
+<p>这些项目的现金流量要么是固定的，要么是随机的，期限要么是固定的，要么是随机的。例如，固定利率债务的票息和摊销付款既有固定的现金流量，也有固定的到期日。第二类是诸如浮动利率贷款和债券之类的项目，这些项目的现金流量是随机的，但期限是确定的。第三类是<span>可赎回债券</span>或赎回期限灵活的贷款，这些债券的到期日是随机的，但现金流量是确定的。最后一类是具有随机现金流量和到期日的项目，如零售存款、承诺信用额度的提取和
+                                                                <span>循环贷款</span>。随机现金流量或到期日需要基于市场经验和产品知识进行建模。</p>
+<p>贷款的初始余额为100。下表列出了不同期限段的现金流入。这些贷款的一部分通常会在明年偿还。接下来是零售存款、短期和长期债务，预计这些领域将出现现金流出。所有短期债务预计将在一年内偿还。这一总数创造了资金缺口的时间配置。在这种情况下，一年的累计资金缺口为-30。</p>
+<p>下一部分列出了缺口填充。例如，现金可以立即用于弥补<span>资金流出</span>。无抵押证券可以随着时间的推移出售，这是其资产流动性风险的函数。资金缺口和缺口填补项目的总和产生预期的净资金缺口。正流量持续的时间越长，银行就越安全。生存期（即累积净资金缺口变为负数之前的时间）是一个月。</p>
+<h3>3、<span>压力测试</span></h3>
+<p>风险管理是关于处理意外事件的。因此，机构还应评估现金流偏离预期路径和资金来源意外切断的压力情景。机构应考虑广泛的情景，包括机构特定的、国家特定的和市场范围的情景。针对特定国家的一个例子是突然限制<span>货币兑换</span>。</p>
+<p>此外，在极端压力的情况下，资金流动性风险可能与资产流动性风险负向互动，因为在这种情况下出售资产可能变得更加困难。由于声誉风险的自我实现性质，机构感知到的流动性问题可能会削弱其以合理成本出售资产的能力。</p>
+<h3>4、控制风险</h3>
+<p>流动性风险可以通过多种手段加以控制，包括依赖更稳定的资金来源，以及在资金来源、地理位置和债务到期日之间实现多样化。同样，资产流动性风险也可以通过对某些市场或产品设限和分散投资来控制。资金缺口也应受到不同范围的限制。一些监管机构确实要求流动性资产的最低水平，限制期限错配，或限制对特定资金来源的依赖。</p>
+<p>控制流动性风险的另一个工具是惩罚可能产生流动性债权的业务单位或工具。根据高级监管小组（SSG）2008年的报告，在危机期间表现比其他机构更好的机构采用了明确考虑流动性风险的全公司视角。这些公司对建立或有流动性风险的业务线收取了适当的费用，以反映在更困难的市场环境中获得流动性的成本。表现良好的机构还对资金流动性、资本和资产负债表进行了有效管理。</p>
+<h3>5、应急资金计划</h3>
+<p><b>应急资金计划</b>（CFP，contingency funding plans）的目标是建立一个行动计划，以应对流动性压力情景之一的发展。在危机情况下，管理层通常没有太多时间做出反应，这就是为什么预先制定计划是有用的。CFP应该定义触发事件，明确实施的责任线，并制定替代资金来源的计划。它还应考虑到宣布执行筹资计划对声誉的影响。</p>
+<p>一般来说，公开披露流动性风险管理程序应有助于使投资者确信，机构已制定了处理流动性风险的流程。一家被认为具有流动性的银行不太可能失去资金提供者的信心。</p>
+<p>⭐ <b>例26.8</b> You have been asked to review a memo on how market liquidity is affected by shocks to the financial system. Which of the following observations made in the memo is incorrect?</p>
+<ul>
+<li>a. In periods of acute market stress, market liquidity typically increases in the most liquid markets, creating a self-correcting loop that will ultimately remove downward pressure on asset
+                                                                    prices.</li>
+<li>b. Evaporation of market liquidity is an important factor in determining whether and at what speed financial disturbances become financial shocks with potentially systemic threats.</li>
+<li>c. Market shocks may not be reflected in mark-to-market portfolio values immediately for portfolios with illiquid assets. As a result, it is possible for market shocks to have delayed effects
+                                                                    on financial institutions.</li>
+<li>d. The impact of a market shock on the liquidity of a specific asset depends on the characteristics of the investors who own the asset.</li>
+</ul>
+<p>解析：选 a 。正如2007年发生的事件所证明的那样，表述b是正确的。表述c正确地指出，非流动性资产的价格反映了对事件的延迟反应。表述d解释了资产流动性取决于投资者的头寸，这是正确的;一项主要由杠杆投资者持有的资产，如果投资者被迫出售，其价格可能出现大幅波动。</p>
+<p>⭐ <b>例26.9</b> Your CRO asks you to prepare a list of early warning indicators for liquidity problems for your bank. Which of the following are early warning indicators of a potential liquidity
+                                                                problem?</p>
+<ol>
+<li>I. Rapid asset growth, especially when funded with potentially volatile liabilities</li>
+<li>II. Growing concentrations in assets or liabilities</li>
+<li>III. An increase of the weighted average maturity of liabilities</li>
+<li>IV. Reduction in the frequency of positions approaching or breaching internal or regulatory limits</li>
+<li>V. Narrowing debt or credit default swap spreads</li>
+<li>VI. Counterparties that request additional collateral for credit exposures</li>
+<li>VII. Increasing redemptions of CDs before maturity</li>
+</ol>
+<ul>
+<li>a. I, II, VI, and VII</li>
+<li>b. I, III, V, and VI</li>
+<li>c. II, IV, V, and VII</li>
+<li>d. I, V, VI, and VII</li>
+</ul>
+<p>解析：选 a 。</p>
+<ul>
+<li>I：这是北岩银行（Northern Rock）的故事</li>
+<li>II：这意味着资产或融资风险的可能性更高</li>
+<li>III：较长的负债减少了<span>短期融资</span>问题的可能性</li>
+<li>VI：这是市场风险</li>
+<li>V：扩大而不是缩小息差会产生问题</li>
+<li>VI：抵押品要求产生了对流动性的要求</li>
+<li>VII：这需要现金来偿还</li>
+</ul>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

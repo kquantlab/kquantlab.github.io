@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C09 固定收益证券 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C09 固定收益证券">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C09 固定收益证券</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>债务市场</span>概述</h2>
+<p><b>国内债券</b>(domestic bonds)是由居民实体发行并以本币计价的债券。<b><span>外国债券</span></b>(foreign bonds)是由外国<span>发行人</span>以本国货币发行并受本国规定约束的债券。<b><span>欧洲债券</span></b>(Eurobonds)主要放在货币所在国以外，由国际金融机构银团出售。欧洲债券不等同于以欧元计价的债券。</p>
+<p>国内<span>债券市场</span>可进一步分为以下几类：</p>
+<ul>
+<li>中央政府发行的<b><span>政府债券</span></b>(Government bonds)，又称<b>主权债券</b>(sovereign bonds)</li>
+<li><b>政府机构和担保债券</b>(Government agency and guaranteed bonds)，由机构发行或由中央政府担保（如美国政府机构<span>房利美</span>），属于公共金融机构</li>
+<li><b>州和<span>地方债券</span></b>(State and local bonds)，由地方政府而不是中央政府发行的，又称<b><span>市政债券</span></b>(municipal bonds)</li>
+<li>由银行、保险公司等私人金融机构(financial institutions)或<span>资产支持证券</span>(ABS)发行人发行的债券</li>
+<li>由私人非金融公司发行的<b>公司债券</b>(Corporate bonds)，包括工业和公用事业公司</li>
+</ul>
+<p>世界债务证券市场包括债券市场和短期<span>货币市场</span>。<b>债券市场</b>(bond markets)传统上被定义为剩余期限在一年以上的<span>固定收益证券</span>，而短期<b>货币市场</b>(money markets)期限在一年以下。</p>
+<p>国内<span>政府债务</span>是最大的部门。<b><span>抵押贷款支持证券</span></b>(Mortgage-backed securities, MBS)是与以特定房地产为担保的抵押贷款一起发行的证券。抵押贷款支持证券的支付是由业主支付的抵押贷款支持的重新打包的<span>现金流</span>。担保证券不仅可以由民间金融公司发行，还可以由政府机关发行。<b>资产支持证券</b>(asset-backed
+                                        securities, ABS)是指现金流由信用卡应收账款或汽车贷款支付等资产支持的证券。</p>
+<hr/>
+<h2>二、固定收益证券</h2>
+<h3><b>1、</b>固定收益证券的<b>类型</b></h3>
+<p>债券定期支付利息。<span>美国国债</span>和公司债券每半年支付一次，欧洲债券则是每年支付一次，其他债券则是每季度支付一次。主要的债券类型包括：</p>
+<ul>
+<li><b><span>固定息票债券</span></b>(Fixed-coupon bonds)，每一时期按固定比例支付本金，到期时以<b>气球</b>（一次性）形式支付本金。</li>
+<li><b>零息债券</b>(Zero-coupon bonds)，只支付本金而不支付息票;它们的回报仅来自价格升值。</li>
+<li><b>年金</b>(Annuities)，一段时间内支付固定数额的年金，包括利息加上本金的摊销或逐步偿还。</li>
+<li><b><span>永续债券</span></b>(Perpetual bonds, consols)，没有固定的赎回日期，其价值仅来自利息支付。</li>
+<li><b>浮动息票债券</b>(Floating-coupon bonds)，支付的利息等于参考利率（如LIBOR）加上<span>保证金</span>，定期重新设定，这些债券通常被称为<b><span>浮动利率债券</span></b>(floating-rate notes, FRN)。到期时，发行人支付最后的息票加上本金。息票支付随当前利率浮动。</li>
+<li><b><span>结构性票据</span></b>(Structured notes)，即有更复杂的息票模式以满足投资者需求的票据。</li>
+<li><b><span>通货膨胀</span>保值票据</b>(Inflation-protected notes)，其本金与<b><span>消费者价格指数</span></b>(CPI)挂钩，因此可以防范通货膨胀率的上升。</li>
+</ul>
+<p>债券有许多变体。例如，<b>升息债券</b>(step-up bonds)有固定息票，开始时利率较低，随着时间推移而增加。在结构性债券中，还有<b>逆浮动债券</b>(inverse floaters, reverse floaters)，其息票支付与利率水平成反比，在利率下降的环境下表现最好。</p>
+<p>债券也可以带有期权的特征。主要分为三类：</p>
+<ul>
+<li><b><span>可赎回债券</span></b>(Callable <span>bonds</span>)，发行者有权在固定日期以固定价格赎回债券，其目的是在发行新债券的成本低于债券当前支付的息票时赎回债券。</li>
+<li><b>可出售债券</b>(Puttable bonds)，投资者有权在固定日期以固定价格将债券归还发行者，目的是在债券价格恶化时将其出售。</li>
+<li><b><span>可转换债券</span></b>(Convertible bonds)，即债券可以在一定的日期以一定的价格转换为<span>发行公司</span>的普通股，其目的是分享公司的财富</li>
+</ul>
+<p>分析这些债券的关键是识别和定价期权特征。例如，可赎回债券可以分解为<span>直接债券</span>的多头头寸减去债券价格的<span>看涨期权</span>。看涨特性不利于投资者以较低的价格购买债券，从而提高收益率。相反，看跌期权将使债券更具吸引力，从而提高其价格，降低其收益率。类似地，可转换债券允许公司以较低的收益率发行债券。</p>
+<p>⭐ <b>例9.1</b> With any other factors remaining unchanged, which of the following statements regarding bonds is not valid?</p>
+<ul>
+<li>a. The price of a callable bond increases when interest rates increase.</li>
+<li>b. Issuance of a callable bond is equivalent to a short position in a straight bond plus a long call option on the bond price.</li>
+<li>c. The put feature in a puttable bond lowers its yield compared with the yield of an equivalent straight bond.</li>
+<li>d. The price of an inverse floater decreases as interest rates increase.</li>
+</ul>
+<p>解析：选 a 。a项，可赎回债券的价格和利率呈反方向变动，因此叙述错误。b项，可赎回债券的空头头寸等同于直接债券的空头头寸加上看涨债券的多头头寸，发行人可以赎回债券。c项，因为看跌期权对投资者有利，所以它降低了收益率。d项，逆浮动有较长久期。</p>
+<h3><b>2、报价理论</b></h3>
+<p>大多数债券的报价都是在<b>净价</b>(clean price)基础上进行的，没有考虑最后一张息票的<span>应计收入</span>。在美国，净价以债券面值的32分数表示，例如，对于2030年5月发行的6.25%的美国国债，可以用104-12表示，即104 + 12/32。交易以单位数表示，例如，面值$20 million。</p>
+<p>实际支付必须考虑到利息的累积，被计入<b>毛价</b>(gross price)，也称为<b>脏价</b>(dirty price)，等于净价加上<span>应计利息</span>。在美国<span>国债市场</span>，应计利息(AI)是以 actual/actual 为基础计算的：</p>
+<blockquote>AI = Coupon × Actual number of days since last coupon / Actual number of days between last and next coupon</blockquote>
+<p>分子和分母都包含实际的天数。例如，6.25%的2030年5月美国国债在11月15日支付了最后一张息票，将在5月15日支付下一张息票。分母是 15 + 31 + 31 + 29 + 31 + 30 + 15 = 182天。如果交易在4月26日结算，有15 + 31 + 31 + 29 + 31 + 26 = 163天。应计利息由$3.125息票计算，$3.125 × 163 / 182 = $2.798763。</p>
+<p>这笔交易的总毛价是：($20,000,000/100) × [(104 + 12/32) + 2.798763] = $21,434,753</p>
+<p>不同的市场有不同的日计数惯例。例如，30/360 约定假设所有月份都是30天。LIBOR市场的应计利息是基于 actual/360。例如，一笔6%的100万美元贷款在92天内的利息是 1,000,000 × 0.06 × 92/360 = 15,333.33。</p>
+<p>对于<span>国库券</span>的贴现基础，按照面值的年折现率(DR)报价，定义为：</p>
+<blockquote><span>DR = (Face −P)/Face × (360/t)</span> </blockquote>
+<p>其中 <span>P</span> 是价格， <span>t</span> 是实际天数。可以得到价格位：</p>
+<blockquote><span>P = Face × [1 − DR × (t/360)]</span> </blockquote>
+<p>这个价格可以转化为传统的<span>到期收益率</span>：</p>
+<blockquote><span>F/P = (1 + y × t/365)</span> </blockquote>
+<p>收益率大于<span>贴现率</span>，因为它是基于初始价格的回报率。因为价格低于面值，收益率必须大于贴现率。</p>
+<h3><b>3、<span>久期与凸性</span></b></h3>
+<p><a href="https://zhuanlan.zhihu.com/p/413001834">第6章</a>已经讲过，<b>久期</b>代表债券回报率对收益率变动的线性敏感性。<b>凸性</b>是二次效应。当现金流是固定的，期限可以精确地计算为每次支付的加权期限，其中权重与现金流的现值成比例。在许多其他情况下，我们可以从对证券的经济分析中推断出持续时间。考虑无信用风险的
+                                                <span>浮动利率票据</span>(floating-rate note, FRN)，就在重置日期之前，知道息票将被设定为当时的利率。FRN类似于现金或货币市场工具，没有利率风险，因此以面值出售，期限为零。就在重置日期之后，投资者在应计期间锁定了固定的息票。FRN在经济上相当于到期时间等于下一个重置日期的零息债券。</p>
+<p>固定息票或零息票的债券具有正凸性。然而，可赎回债券的投资者已给予该公司以固定价格回购该债券的权利。假设利率下降，不可赎回债券的价格将从100美元上升到110美元。有权利以105美元赎回债券的公司会行使这一权利，因为它可以低价购买债券。这会造成债券的负凸性。相反，投资者做多期权的债券具有更大的正凸性。</p>
+<p>⭐ <b>例9.2  </b>A 10-year zero-coupon bond is callable annually at par (its face value) starting at the beginning of year 6. Assume a flat yield curve of 10%. What is the bond duration?</p>
+<ul>
+<li>a. 5 years</li>
+<li>b. 7.5 years</li>
+<li>c. 10 years</li>
+<li>d. Cannot be determined based on the data given</li>
+</ul>
+<p>解析：选 c 。因为这是一种零息债券，它的交易价格永远低于票面价值，而且这种看涨期权永远不应该被执行。因此久期是10年。</p>
+<p>⭐ <b>例9.3  </b>A money markets desk holds a floating-rate note with an eight-year maturity. The interest rate is floating at the three-month LIBOR rate, reset quarterly. The next reset is in one week. What is
+                                                the approximate duration of the floating-rate note?</p>
+<ul>
+<li>a. 8 years</li>
+<li>b. 4 years</li>
+<li>c. 3 months</li>
+<li>d. 1 week</li>
+</ul>
+<p>解析：选 d 。当息票在投资的整个生命周期中不固定时，久期就与到期无关。在下一次重置时，FRN的<span>息票率</span>将被设定为现行利率。届时该票据的<span>市场价值</span>将等于票面价值。久期或价格风险只与下一次重置的时间有关，这里是一周。</p>
+<p>⭐ <b>例9.4  </b>From the time of issuance until the bond matures, which of the following bonds is most likely to exhibit negative convexity?</p>
+<ul>
+<li>a. A puttable bond</li>
+<li>b. A callable bond</li>
+<li>c. An option-free bond selling at a discount</li>
+<li>d. A zero-coupon bond</li>
+</ul>
+<p>解析：选 b 。可赎回债券是做空期权，在某些利率水平上产生负凸性。</p>
+<hr/>
+<h2>三、固定收益证券的定价</h2>
+<h3><b>1、<span>净现值方法</span></b></h3>
+<p>固定收益证券的价值可以通过以下两种方式进行评估：首先，列出它们的现金流；其次，使用适当的贴现率计算净现值(NPV)。将债券 <span>P</span> 的市场价值写成未来现金流的现值：</p>
+<blockquote><span>P = \sum_{t=1}^{T}\frac{C_t}{(1+y)^t}</span> </blockquote>
+<p>对于面值为 <span>F</span> 的<span>固定利率债券</span>，每个时期的现金流 <span>C_t</span> 是 <span>cF</span> ，其中 <span>c</span> 是票面利率，加上到期时的 <span>F</span> 。然而，其他的现金流模式也是可能的，比如年金和零息债券。只要现金流是预先确定的，估值就很简单。</p>
+<p>给定市场价格，解 <span>y</span> 得到到期收益率。这种收益率是表示债券价格的另一种方式，在比较各种债券时更为方便。收益率也是债券的预期回报率，前提是所有息票以相同的利率再投资。然而，当现金流是随机的，或者当债券的寿命由于类似期权的特性而改变时，这种解释就不成立了。利率变动也会带来再投资风险。再投资风险只有通过投资不进行中间支付的零息债券才能避免。</p>
+<p>⭐ <b>例9.5  </b>Your boss wants to devise a fixed-income strategy such that there is no reinvestment risk over five years. Reinvestment risk will not occur if:</p>
+<ul>
+<li>I. Interest rates remain constant over the time period the bonds are held.</li>
+<li>II. The bonds purchased are callable.</li>
+<li>III. The bonds purchased are issued at par.</li>
+<li>IV. Only zero-coupon bonds with a five-year maturity are purchased.<br/><br/></li>
+<li>a. I only</li>
+<li>b. I and II only</li>
+<li>c. III only</li>
+<li>d. I and IV</li>
+</ul>
+<p>解析：选 d 。当中间息票支付的<span>再投资利率</span>与初始利率不同时，就会产生再投资风险。如果利率保持不变，或者是零息债券，这种情况就不会发生。可赎回债券可以提前赎回，这为本金带来了更大的再投资风险。</p>
+<h3><b>2、定价</b></h3>
+<p>也可以利用来自固定收益市场的信息来评估债券的公允价值。假设观察到可比债券的到期收益率为 <span>y_T</span> 。然后可以使用相同的、市场决定的收益率对现金流进行折现。这给了债券一个合理的价值：</p>
+<blockquote><span>\hat{P} = \sum_{t=1}^{T}\frac{C_t}{(1+y_T)^t}</span> </blockquote>
+<p>其中贴现率 <span>y_T</span> 不依赖于 <span>t</span> ，但对该债券的所有支付都是固定的。</p>
+<p>然而，这种方法忽略了<span>利率期限结构</span>的形状。例如，<span>短期债券</span>的利率可能会低得多，使用相同的收益率是不合适的。应该用对应于每个时间段的零息票息率来折现每个现金流。这个利率 <span>R_t</span>                                                        称为期限为 <span>t</span> 的<span>即期利率</span>，此时债券的公允价值就是：</p>
+<blockquote><span>\hat{P} = \sum_{t=1}^{T}\frac{C_t}{(1+R_t)^t}</span> </blockquote>
+<p>然后可以检查市场价格是高还是低。如果期限结构是平的，那么这两种方法将是相同的。</p>
+<p>注意，即期汇率应用于贴现同一风险类别的现金流，即同一货币和信用风险。例如，美国国债的定价应采用与美国政府具有相同风险的利率。对于高质量的企业信贷，经常使用<b>互换曲线</b>(swap curve)。互换利率对应于AA级交易对手的信用风险。</p>
+<p>另一种评估债券是否便宜的方法是，在即期利率上增加一个固定的数额，称为<b>静态利差</b>(static spread, SS)，使NPV等于当前价格：</p>
+<blockquote><span>P= \sum_{t=1}^{T}\frac{C_t}{(1+R_t + SS)^t}</span> </blockquote>
+<p>其他一定，静态利差较大的债券更好，意味着债券更便宜，或者有更高的预期回报率。</p>
+<p>使用到期收益率计算<b>收益率差价</b>(yield spread, YS)比较简单，但不太准确：</p>
+<blockquote><span>P= \sum_{t=1}^{T}\frac{C_t}{(1+y_T + YS)^t}</span> </blockquote>
+<p>出于风险管理的目的，最好将即期汇率视为风险因素，而不是价格回报率。这更直观，使用的变量更可能是平稳的。相比之下，使用债券价格的历史是不太有用的，因为债券的期限是随着时间的推移而变化的，这系统地改变了它的特征。</p>
+<p>⭐ <b>例9.6  </b>Consider a bond with par value of EUR 1,000 and maturity in three years, and that pays a coupon of 5% annually. The spot rate curve is as follows:1-year, 6%; 2-year, 7%; and 3-year, 8%.
+                                                        The value of the bond is closest to:</p>
+<ul>
+<li>a. 904</li>
+<li>b. 924</li>
+<li>c. 930</li>
+<li>d. 950</li>
+</ul>
+<p>解析：选 b 。50/(1 + 6%) + 50/(1 + 7%)^2 + 1,050/(1 + 8%)^3 = 924.36。</p>
+<h3><b>3、即期和远期</b>利<b>率</b></h3>
+<p>固定收益定价依赖<b>即期利率</b>，即从当前开始的零息投资率。根据即期利率可以推出<b>远期利率</b>(forward rates)，即从未来某一天开始的利率。两者都是债券定价的基本组成部分。此外，远期利率可以被视为市场对未来即期利率的预测。只有当预测与远期利率不同时，利率预测才能增加价值。</p>
+<p>考虑一年开始的一年期利率(one-year rate that starts in one year)，这个远期利率定义为 <span>F_{1,2}</span> ，可以一年期和两年期的即期利率 <span>R_1</span>                                                        和 <span>R_2</span> 推导出来。远期利率是对不同期限投资回报的未来利率的平衡。</p>
+<p>例如，有一个具有两种选择的投资者。第一种是以两年期利率锁定两年期投资。第二种方法是投资期限为一年，并以 one-to-two-year 的远期利率展期(roll over)。当未来利率为 <span>F_{1,2}</span> 时，这两个投资组合将有相同的收益：</p>
+<blockquote><span>(1 + R_2)^2 = (1 + R_1)(1 + F_{1,2})</span> </blockquote>
+<p>一般地， <span>T</span> 期即期利率可以写成即期利率和连续一年期远期利率的几何平均值：</p>
+<blockquote><span>(1 + R_T)^T = (1 + R_1)(1 + F_{1,2}) . . . (1 + F_{T−1,T})</span> </blockquote>
+<p>其中， <span>F_{i,i+1}</span> 是 <span>i</span> 到 <span>i+1</span>                                                            范围内 <span>t</span> 时刻的远期利率。</p>
+<p>或者，可以推断出一系列从一年开始的不同期限的远期利率：</p>
+<blockquote><span>(1 + R_3)^3 = (1 + R_1)(1 + F_{1,3})^2, . . . , (1 + R_T)^T = (1 + R_1)(1 + F_{1,T})^{T−1}</span> </blockquote>
+<p>定义了一个一年的期限结构， <span>F_{1,2}, F_{1,3},…F_{1, T}</span> 。</p>
+<p>远期利率可以解释为期限结构的斜率。在忽略叉乘项之后，近似得到：</p>
+<blockquote><span>F_{1,2} ≈ R_2 + (R_2 − R_1)</span> </blockquote>
+<p>对于一个向上倾斜的期限结构， <span>R_2</span> 在 <span>R_1</span> 之上， <span>F_{1,2}</span>                                                            也在 <span>R_2</span> 之上。由于期限结构向上倾斜，即期利率曲线高于票面<span>收益率曲线</span>。考虑一个支付2次的债券。两年期票面收益率 <span>y_2</span> 是隐式定义的：</p>
+<blockquote><span>P = \frac{cF}{1 + y_2} +  \frac{cF+F}{(1 + y_2)^2} = \frac{cF}{1 + R_1} +  \frac{cF+F}{(1 + R_2)^2}</span> </blockquote>
+<p>其中 <span>P</span> 被设为平价 <span>P = F</span> 。票面收益率可以看作是即期汇率的加权平均值。在一个向上倾斜的环境中，票面收益率曲线涉及的票息贴现比最终支付的利率更短，因此更低。因此，票面收益率曲线低于即期利率曲线。向上倾斜的期限结构中，从高到低依次是远期曲线、即期曲线、平价收益率曲线(Par
+                                                            yield curve)。在向下倾斜的期限结构中，三者的顺序反了过来。当即期利率曲线是平的时，三根曲线相同。</p>
+<p>注意，因为利率必须为正，远期利率必须为正，否则就会有套利机会。</p>
+<p>远期利率能够预测依赖于未来利率的未来现金流。例如，<span>F_{1,2}</span> 远期利率是市场对具有年度支付和重置的FRN的第二次息票支付的预期。远期利率的头寸可以很容易地用<span>衍生工具</span>买进。</p>
+<p>因此，远期汇率是对未来即期汇率的预期。根据<b>预期假设</b>(expectations hypothesis)</p>
+<blockquote><span>F^t_{1,2}= E(R^{t+1}_1 )</span> </blockquote>
+<p>这里假设了远期利率中不包含风险溢价。一个向上倾斜的期限结构意味着短期利率将在未来上升。如果这个假设是正确的，那么为投资目的选择哪种期限就无关紧要了。期限较长的债券受益于更高的息票，但由于利率的上升，将遭受资本损失，这恰好抵消了这一好处。</p>
+<p>实际上，远期利率可能包含风险溢价。一般来说，投资者更喜欢安全的短期投资工具。如果期限较长的债券提供正溢价，投资者可以被劝诱购买。这解释了为什么现货或收益率曲线在大多数时间是向上倾斜的。</p>
+<p>即，<b>在一个向上倾斜的期限结构环境中，远期曲线高于即期曲线，即期曲线高于平价收益率曲线。根据预期假设，这意味着对利率上升的预测</b>。</p>
+<p>⭐ <b>例9.7  </b>The price of a three-year zero-coupon government bond is $85.16. The price of a similar four-year bond is $79.81. What is the one-year implied forward rate from year 3 to year
+                                                                4?</p>
+<ul>
+<li>a. 5.4%</li>
+<li>b. 5.5%</li>
+<li>c. 5.8%</li>
+<li>d. 6.7%</li>
+</ul>
+<p>解析：选 d 。根据以下方程，可以得到 <span>F_{3,4}</span> = (85.16/79.81) − 1 = 0.067</p>
+<blockquote><span>(1 + R_4)^4 = (1 +R_3)^3(1 + F_{3,4})</span> </blockquote>
+<p>⭐ <b>例9.8  </b>The term structure of swap rates is: 1-year, 2.50%; 2-year, 3.00%; 3-year, 3.50%; 4-year, 4.00%; 5-year, 4.50%. The two-year forward swap rate starting in three years is closest
+                                                                to</p>
+<ul>
+<li>a. 3.50%</li>
+<li>b. 4.50%</li>
+<li>c. 5.51%</li>
+<li>d. 6.02%</li>
+</ul>
+<p>解析：选 d 。根据以下方程，代入 R3 = 3.50%，R5 = 4.50%，即得 <span>F_{3,5}</span> 为 6.018%</p>
+<blockquote><span>(1 + R_5)^5 = (1 +R_3)^3(1 + F_{3,5})</span> </blockquote>
+<p>⭐ <b>例9.9  </b>Suppose that the yield curve is upward sloping. Which of the following statements is true?</p>
+<ul>
+<li>a. The forward rate yield curve is above the zero-coupon yield curve, which is above the coupon-bearing bond yield curve.</li>
+<li>b. The forward rate yield curve is above the coupon-bearing bond yield curve, which is above the zero-coupon yield curve.</li>
+<li>c. The coupon-bearing bond yield curve is above the zero-coupon yield curve, which is above the forward rate yield curve.</li>
+<li>d. The coupon-bearing bond yield curve is above the forward rate yield curve, which is above the zero-coupon yield curve.</li>
+</ul>
+<p>解析：选 a 。息票收益率曲线是现货、即期曲线的平均值。因此，向上倾斜时，息票收益率曲线必须位于即期曲线之下。远期曲线可以解释为现货曲线加上现货曲线的斜率。向上倾斜时，远期曲线高于现货曲线。</p>
+<p>⭐ <b>例9.10  </b>According to the pure expectations hypothesis, which of the following statements is correct concerning the expectations of market participants in an upward-sloping yield curve
+                                                                environment?</p>
+<ul>
+<li>a. Interest rates will increase and the yield curve will flatten.</li>
+<li>b. Interest rates will increase and the yield curve will steepen.</li>
+<li>c. Interest rates will decrease and the yield curve will flatten.</li>
+<li>d. Interest rates will decrease and the yield curve will steepen.</li>
+</ul>
+<p>解析：选 a 。向上倾斜的期限结构意味着远期利率高于即期利率，或者短期利率将上升。因为短期利率高于长期利率，这意味着收益率曲线趋平。</p>
+<hr/>
+<h2>四、固定收益证券的风险</h2>
+<h3><b>1、价格与收益率波动</b></h3>
+<p><b>固定收益风险</b>(Fixed-income risk)来自于风险因素水平的潜在变动和<span>波动性</span>，通常被认为是债券收益率。使用久期近似，债券<span>价格收益率</span>的波动率可以与收益率变化的波动率相关：</p>
+<blockquote><span>\sigma (\frac{dP}{P}) \approx |D^*| × \sigma(dy)</span> </blockquote>
+<h3><b>2、影响收益率的因素</b></h3>
+<p>收益率的变动反映了经济基本面。利率水平变动的主要决定因素是<b>通胀预期</b>(inflationary expectations)。这是因为投资者关心的是他们投资的扣除通胀因素后的实际回报率。当他们持有支付固定息票的<span>长期债券</span>时，他们对通货膨胀特别敏感。因此，任何被察觉到的通货膨胀率上升，都会降低名义固定息票债券的吸引力，从而提高它们的收益率。</p>
+<p><b>实际利率</b>(real interest rate)是名义利率减去同期通货膨胀率。这通常是积极的，但近年来一直是消极的，因为美联储为了刺激经济活动一直将名义利率保持在非常低的水平。</p>
+<p>尽管不同期限的收益率走势基本平行，但期限结构的斜率也会发生变化。这可以通过考虑两个期限的收益率差异来衡量。一般来说，这两种利率是同步变动的，尽管短期利率表现出更大的波动性。<b>期限价差</b>(term spread)的定义是长期利率和短期利率之间的差额。在衰退时期，期限价差通常会增加。缓慢的经济活动降低了对资本的需求，这反过来降低了短期利率，增加了期限利差。同样，央行降低短期利率以刺激经济。</p>
+<p>⭐ <b>例9.11  </b>A portfolio consists of two zero-coupon bonds, each with a current value of $10. The first bond has a modified duration of one year and the second has a modified duration
+                                                                    of nine years. The yield curve is flat, and all yields are 5%. Assume all moves of the yield curve are parallel shifts. Given that the daily volatility of the yield is 1%, which of the
+                                                                    following is the best estimate of the portfolio’s daily value at risk (VAR) at the 95% confidence level?</p>
+<ul>
+<li>a. USD 1.65</li>
+<li>b. USD 2.33</li>
+<li>c. USD 1.16</li>
+<li>d. USD 0.82</li>
+</ul>
+<p>解析：选 a 。投资组合的<span>美元久期</span>是 1 × $10 + 9 × $10 = $100，再乘以 0.01 和 1.65，得到 1.65。</p>
+<h3><b>3、实际收益风险</b></h3>
+<p>到目前为止，只考虑了<b>名义利率风险</b>(nominal interest rate risk)，因为大多数债券代表名义债务。例如，以美元支付息票和本金。然而，最近许多国家发行了通货膨胀保值债券，这种债券的支付按实际价值固定，但与通货膨胀率挂钩。</p>
+<p>在这种情况下，风险的来源是<b>实际利率风险</b>(real interest rate risk)。这个实际收益率可以被看作是<span>内部收益率</span>，使承诺的实际债券支付的贴现值等于当前的实际价格。这是一个新的风险来源，因为实际利率的变动可能与名义收益率的变动并不完全相关。此外，这两个市场可以用来推断通胀预期。隐含通货膨胀率可以用名义收益率减去实际收益率来衡量。</p>
+<h3><b>4、信用</b>利差<b>风险</b></h3>
+<p><b>信用利差风险</b>(Credit spread risk)是指期限匹配的信用敏感债券和无风险债券的收益率走势可能不同的风险。信用利差是对违约损失的一种补偿，或许还加上反映投资者<span>风险厌恶情绪</span>的风险溢价。</p>
+<p>通过投资对信用敏感的债券，如公司、机构和抵押贷款支持证券(MBS)，并在适当的期限内做空美国国债，可以建立信用价差头寸。这种类型的头寸受益于稳定或收缩的信贷息差，但损失于息差的扩大。然而，由于信贷息差不可能变为负值，它们的分布是不对称的。当息差较紧时，大幅波动意味着息差增加而不是减少。因此，信用价差的头寸可能会遭受巨大损失。</p>
+<p>与<span>无风险利率</span>的期限结构一样，信用利差也有期限结构。对于信用良好的公司来说，这一比例向上倾斜，反映出短期内违约的可能性较低，但长期来看不可避免地存在更大的不确定性。从长期来看，信贷往往会恶化，这就解释了为什么较长期限的信贷息差会扩大。</p>
+<p>⭐ <b>例9.12  </b>During 2002, an Argentinean pension fund with 80% of its assets in dollar denominated debt lost more than 40% of its value. Which of the following reasons could explain
+                                                                            all of the 40% loss?</p>
+<ul>
+<li>a. The assets were invested in a diversified portfolio of AAA firms in the United States.</li>
+<li>b. The assets invested in local currency in Argentina lost all of their value,while the value of the dollar-denominated assets stayed constant.</li>
+<li>c. The dollar-denominated assets were invested in U.S. Treasury debt, but the fund had bought credit protection on sovereign debt from Argentina.</li>
+<li>d. The fund had invested 80% of its funds in dollar-denominated sovereign debt from Argentina.</li>
+</ul>
+<p>解析：选 d 。阿根廷拖欠本国货币和美元的债务，一个多样化的投资组合不可能损失这么多，因此 a 错误。这些基金80%投资于美元计价的资产，即便是本地货币部分全部消失，也无法解释该投资组合损失40%的原因，所以 b 是错误的，如果该基金购买了信用保护，就不会损失这么多，所以 c 错误。该基金肯定对阿根廷有信贷敞口，所以 d 正确。</p>
+<p>⭐ <b>例9.13  </b>Which of the following would not cause an upward-sloping yield curve?</p>
+<ul>
+<li>a. An investor preference for short-term instruments</li>
+<li>b. An expected decline in interest rates</li>
+<li>c. An improving credit risk outlook</li>
+<li>d. An expected increase in the inflation rate</li>
+</ul>
+<p>解析：选 b 。向上倾斜的收益率曲线可以解释为对短期期限的偏好，这需要更高的长期收益率，不选 a 。向上倾斜的收益率曲线也可以解释为更高的利率或更高的通胀预期，不选 d 。改善信贷条件将降低累积违约概率，从而使期限结构趋于平坦，不选 c 。只有预期的利率下降才不会导致收益率曲线向上倾斜，故选 b。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

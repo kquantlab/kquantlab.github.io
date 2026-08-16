@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C23 信用衍生品和结构性产品 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C23 信用衍生品和结构性产品">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C23 信用衍生品和结构性产品</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、引言</h2>
+<h3>1、市场规模</h3>
+<p>据估计，从1996年到2007年，<span>信用衍生品</span>市场的名义总值已从约400亿美元增长到超过62万亿美元，目前所有这些衍生品都在<b><span>场外交易市场</span></b>(OTC)进行交易。目前全球国内<span>公司债券市场</span>的规模约为7万亿美元。包括政府、金融和国际债券在内，这一市场的总规模达到了90万亿美元。</p>
+<p>然而，与通常的场外交易市场一样，这一增长中只有一小部分代表了信用风险的净经济交换。惠誉评级(Fitch Ratings)最近的一项调查估计，总风险敞口与净风险敞口之比为50，意味着净风险敞口约为1.2万亿美元。总风险敞口非常高，因为交易商的做法是不取消现有交易，而只是增加具有抵消特征的新交易。然而，这种做法造成了文书工作的积压，并增加了操作风险和<span>交易对手风险</span>。</p>
+<p>因此，该行业开始实施<b><span>投资组合压缩</span></b>(portfolio compression)，这是一个在不改变投资组合风险参数的情况下减少信贷投资组合中项目的总体规模和数量的过程。仅2008年一年，就有价值30万亿美元的合同被取消，导致当年名义金额首次下降。到2009年底，信用衍生品市场已经回到了30万亿美元。</p>
+<h3>2、风险交换市场</h3>
+<p>信用衍生品之所以增长如此之快，是因为它们提供了一种有效的信用风险交换机制。尽管现代银行业建立在一个明智的观念之上，即<span>贷款组合</span>的风险低于单个贷款，但银行仍然倾向于过于集中于地理或工业部门。这是因为它们的比较优势是“关系银行业务(relationship banking)”，通常仅限于银行最了解的客户。到目前为止，由于二级贷款市场有限，银行很难摆脱这种
+                                            <span>信贷风险</span>敞口。此外，借款人可能不希望看到他们的银行将<span>贷款出售</span>给另一方，即使是出于多样化的原因。信用衍生品解决了这一困境，它允许银行将贷款保留在账面上，并通过信用衍生品购买保护。</p>
+<p>事实上，信用衍生品并不是全新的。<b><span>债券保险</span></b>(Bond insurance)是债券发行人与担保人(银行或保险公司)之间签订的合同，如果发行人未能及时足额付款，担保人将提供额外支付。<b><span>信用证</span></b>(letter of credit)是银行在主信用证未能履行其义务时向第三方提供付款的保证。公司债券的<b>赎回权</b>(call
+                                            feature)包括对无风险利率和信用利差的选择权。实际上，如果其信用评级提高，借款人也可以收回债券。在更基本的层面上，<b>公司债券</b>(corporate bond)的多头头寸相当于无风险(即无违约)债券的多头头寸加上<span>信用违约互换</span>(CDS)的空头头寸。</p>
+<h3>3、信用衍生品的种类</h3>
+<p>信用衍生品是允许在交易对手之间交换信用风险的场外交易合约。它们可以按以下方式分类：</p>
+<ul>
+<li><span>基础信用</span>：可以是单个实体（单名）或一组实体（多名）</li>
+<li>行使条件：可以是信用事件（如违约或评级下调，或<span>信用利差</span>扩大）</li>
+<li><span>收益函数</span>：可以是一个固定的金额，或一个具有线性或非线性收益的可变金额</li>
+</ul>
+<p>信用衍生品市场包括普通的<span>信用违约掉期</span>、总回报掉期、信用利差远期和<span>期权</span>。这些工具是双边场外交易合约。它们也出现在信用结构性产品中。最常见的工具是<span>CDS合约</span>。</p>
+<hr/>
+<h2>二、信用违约互换</h2>
+<h3>1、定义</h3>
+<p>在<b>信用违约互换</b>(CDS, credit default swap)合约中，保护买方向保护卖方支付溢价，以换取信用事件发生时的支付。<b>保险费</b>(premium payment)可以一次性支付，也可以定期支付。<b>或有支付</b>(contingent payment)是由基础信用的信用事件(CE)触发的。因此，这些合约代表了最纯粹的信用衍生品形式，因为结算支付只发生在违约模式(DM)下。CDS的过程整理如下：</p>
+<ul>
+<li>保护买方 → 保护卖方：定期支付</li>
+<li>保护买方 ← 保护卖方：或有支付</li>
+<li>参考资产：债券</li>
+</ul>
+<p>这些合约实际上是期权，而不是互换 。与常规期权的主要区别在于，期权的成本是分期支付的，而不是预先支付。如果预先支付了<span>期权费</span>，这些合约就被称为违约看跌期权(default put options)。每年的支付被称为<b>CDS价差</b>(CDS spread)。</p>
+<p>例如，保护买方（称之为A）对XYZ发行的名义价值1亿美元的10年期债券进行了一年期信用违约互换。互换需要每年支付50个基点。债券被称为参考信用资产(reference credit asset)。年初，A向保护卖方支付50万美元。假设在年底，XYZ公司违约了这只债券，现在的交易价格是面值的40%。然后，交易对手必须支付6000万美元给A。如果A在其投资组合中持有该债券，CDS提供了防止违约造成信用损失的保护。</p>
+<p>大多数CDS合约以年差价报价，按季度支付。然而，陷入困境的公司可以预先进行交易。例如，2008年9月17日，<span>华盛顿互惠银行</span>的报价为44点。这意味着购买1亿美元保险的人必须先支付4400万美元，再加上每年500个基点的利差。WaMu在9月27日发生了一起信用事件，触发了CDS合约的支付。</p>
+<p>违约掉期嵌入许多金融产品中:投资高风险(信用敏感)债券相当于投资无风险债券加上出售信用违约掉期。例如，风险债券以90美元的价格出售，并承诺在一年内支付100美元。<span>无风险债券</span>售价95美元。购买风险债券相当于以95美元的价格购买无风险债券，然后卖出现在价值5美元的信用违约掉期。前期费用是一样的，90美元。如果公司违约，最终的收益是一样的。</p>
+<p>注意，<b>持有<span>可违约债券</span>的多头头寸在经济上，相当于持有无违约债券的多头头寸，加上持有同一基础信贷的CDS空头头寸</b>。</p>
+<h3>2、交割</h3>
+<p>信贷事件必须有精确的定义。理想情况下，对信贷事件的解释不应存在不确定性。否则，信用衍生品交易可能产生法律风险。违约支付反映了<span>信用事件</span>发生时参考资产持有人的损失。定义Q为每单位名义支付的价值。这可以采取多种形式。</p>
+<ul>
+<li><b>现金结算</b>(Cash settlement)，或支付等于<span>行权价</span>减去相关债券的现行市场价值</li>
+<li><b><span>实物交割</span></b>(Physical delivery)违约债务，以换取固定的付款</li>
+<li><b>一次性付款</b>(lump sum)，或根据预先商定的回收率支付固定金额。例如，如果发生信用事件，则将回收率设置为40%，从而导致支付60%的名义费用。</li>
+</ul>
+<p>因此，信用违约互换的收益是：</p>
+<blockquote><span>Payment = Notional × Q× I(CE)</span> </blockquote>
+<p>如果信用事件已经发生，则指标函数 <span>I(CE)</span> 为1，否则为零。</p>
+<p>互换价差反映了违约的概率和违约造成的损失，这两者都是未知的。与通常的CDS合约略有不同的是<b>二元信用违约互换</b>(binary credit default swap)，它在信用事件发生时支付固定金额 <span>Q= 1</span> 。这两种合约可以结合起来，得出市场暗示的回收率<span>估计值</span>。</p>
+<p>在实物结算中，合约通常定义了可以交割的债券清单。这些债券可以以不同的价格交易，但都必须按面值进行交换。自然，保险的购买者会选择最便宜的债券，这就产生了<b>交割期权</b>(delivery option)。</p>
+<p>然而，CDS市场的增长导致了一些情况，即未偿还的名义CDS远远超过某一特定债务人发行的债券的可用供应。现金结算可以通过<b>拍卖</b>(auction)进行，拍卖确定回收率。例如，与<span>雷曼兄弟</span>控股公司(Lehman Brothers Holdings)相关的CDS合约的最终价格是在2008年10月10日确定的，回收率为8.625美分。这意味着信用保护的卖方必须支付票面价值的91.375%，这是一个出乎意料的高比例。考虑到估计有4000亿美元的未偿CDS合约，一些人担心结算过程将对金融市场造成重大破坏。事实上，处理大部分交易的美国存管信托与清算公司(DTCC,
+                                                        Depository Trust &amp; Clearing Corporation)报告称，拍卖后只有52亿美元需要转手。这是因为净值大幅减少了4000亿美元的总风险敞口。事实上，除以估计的毛净比50，净风险敞口只有80亿美元。此外，信用保护的卖方已经不得不提供抵押品。因此，CDS市场成功地处理了一次重大违约。</p>
+<h3>3、大爆炸协定</h3>
+<p>国际互换和衍生品协会(<span>ISDA</span>)是一个<span>贸易组织</span>，对标准北美公司CDS合约(俗称SNAC)进行了重大调整，自2009年4月8日起生效。这些变化被称为<b><span>大爆炸协议</span></b>(Big
+                                                        Bang Protocol)。</p>
+<p>其目标是使新合约更加标准化，从而更具可替代性（即更容易转售）、透明度和流动性。更大的标准化可以通过固定年度息票支付来实现。这使得拥有相同基础信用和到期日的多头和空头头寸可以完美抵消，使<span>净额结算</span>更容易。未来，所有投资级和投机级合约的固定价差分别为100个基点和500个基点。与此同时，合约现在可以用预付点数进行交易。这些先期点和息票的组合总是可以转换成等值的CDS价差，使初始合约价值等于零。此外，SNAC合约交易时不将重组作为适用的信用事件。</p>
+<p>大爆炸协议还引入了以下变化：</p>
+<ul>
+<li>它采用<b>拍卖模式</b>(auction model)作为违约结算机制。</li>
+<li>它设立了<b><span>信用衍生工具</span>确定委员会</b>(Credit Derivatives Determination Committees)，以确定信用事件是否已经发生。</li>
+<li>它对期限相同的合同的信用事项和继承事项采用统一的回顾期限。</li>
+</ul>
+<p>2009年6月，ISDA宣布改变欧洲和新兴市场CDS的市场惯例，现在必须有四种息票(25、100、500和1000个基点)。欧洲CDS继续将重组纳入潜在的信用事件。</p>
+<h3>4、定价</h3>
+<p>CDS合约可以通过考虑合约双方现金流的现值来定价。定义 <span>PV_t</span> 为时刻 <span>t</span> 支付的1美元的现值。假设违约发生在年底。从现在到第 <span>t</span> 年的边际违约率为 <span>k_t = S_{t−1}dt</span> ，其中 <span>S_t</span>                                                            为到第t年年底的生存概率， <span>d_t</span> 为第t年违约的边际概率。生存概率与累积违约概率 <span>C_t = k_1 + k_2 +···+k_t = 1−S_t</span>                                                            相关联。</p>
+<p>下表的左边描述了年度违约概率。这代表了最初评级为BBB的信用的典型市场报价。市场暗示的5年累计违约率为15.43%。根据 <span>C_T = 1 − (1 − d)^T</span> ，得到年平均违约率 <span>d</span> 为3.30%。然后给出了假设无风险利率为6%的贴现因子。</p>
+<figure><img src="https://pic4.zhimg.com/v2-e19519ff4a59c93775dab1f5656b7c2d_1440w.jpg" width="1704"/></figure>
+<p>查看付款情况。违约时，保护买方收到的是面值减去回收率 <span>f</span> （这里假设为40%）。每年发生的概率是 <span>k_t</span> 。假设100美元，第一年预期支付的PV为
+                                                            <span>k_1(1 - f)</span> × 100× <span>PV_1</span> = 2.640%(1 - 0.40) × 100× 0.9434 = 1.494。五年的合约加起来是7.733美元。</p>
+<p>作为交换，保险买方必须每年支付与5的价差挂钩的款项，以百分比确定。在违约的情况下，付款必须拖欠，直到违约时间，然后停止。第一年，期望支付的PV是s$100 × <span>S_0 </span> × <span>PV_1</span>                                                            = (s/100)$100 × 1.000 × 0.9434 = s0.943。这里 <span>S_0</span> = 1.000，因为假设违约发生在年底我们肯定会支付第一笔款项。第二年，这是s$100 × <span>S_1</span> × <span>PV_2</span> = (s/100)$100 × 0.9736 × 0.8900 = s0.867。五年的总和是s3.986美元。</p>
+<p>差价的公允值是将CDS合约的初始值设置为零的数字。得到：</p>
+<blockquote><span>\displaystyle V = (PV \ Payoff) − s(PV \ Spread) = \sum_{t=1}^T k_t (1-f) PV_t - s\sum_{t=1}^T S_{t-1} PV_t</span> </blockquote>
+<p>在这种情况下，公平的CDS价差解为0 = 7.733−s3.986，得到s = 1.94%，价差是用百分比定义的。请注意，这非常接近基于年平均违约率乘以给定违约损失的近似值，即3.30% ×(1−0.40)= 1.98%。</p>
+<p>上述公式也可用于为未偿CDS合约定价。例如，假设合约的价差为1.50%，上表中的概率和利率代表当前的市场状况。CDS的价值为V = 7.733−1.50 × 3.986 = 1.753美元。这对CDS买家来说是一笔利润，因为目前的价差大于锁定价值。此外，也可用于计算合约的价差持续时间。作为近似，我们可以将市场价差kt(1−f)向上冲击1bp，从而获得ΣPVt = 4.21bp的增益。这表示(负)价差持续时间为4.21年，略低于合同的到期日。</p>
+<p>注意，用于为CDS合约定价的违约概率必须是风险中性(RN)概率，而不是真实世界的概率。这些RN概率π可以从债券价格和CDS价格推断出来。例如，假设观察到五年期CDS价差报价为1.50%。使用简化方法，得到π = 1.50%/(1−0.40)= 2.50%。为了更精确，可以将表中的过程反过来，使用1年期、2年期、3年期、4年期和5年期CDS合约的市场报价来推导所有期限的RN违约概率。</p>
+<p>从交易对手风险中提取出来，CDS价差应该大致等于同一债务人发行的公司债券的收益率与同一期限的<span>无风险收益率</span>之间的差额。如果CDS价差明显低于这一价差，投资者可以通过购买公司债券、通过做空国债对冲纯利率风险和购买CDS合约来获得套利利润。</p>
+<p>注意，<b>CDS互换利差应大致等于同一债务人发行的公司债券的收益率减去无风险收益率。</b></p>
+<p>不过，一般来说，CDS息差和现金收益率息差之间的基数略为正。在某种程度上，这受到需求和供应因素的影响，包括套利资本的可用性。由于投资者只能通过购买CDS合约来做空信贷，这就推高了利差。此外，在其他条件相同的情况下，由于有交割期权，基点应该更宽，这使得购买信用保护更具吸引力，因为买家做多交割期权。相反，<span>交易对手信用风险</span>应该降低基础，因为如果信用事件被触发，可能存在无法获得偿付的风险。</p>
+<h3>5、交易对手风险</h3>
+<p>注意，进入信用互换并不能完全消除信用风险。相反，保护买方减少了对参考信贷Y的敞口，但对CDS卖方承担了新的信贷敞口。当基础信用违约风险与交易对手违约风险之间的相关性较低时，保护将是有效的。只是为了确保，合同可能涉及担保卖方的抵押品。</p>
+<p>与期权一样，这些工具是<b>无基金的</b>(unfunded)，这意味着每一方都要负责支付(即保费和结算金额)，而无需求助于其他资产。相比之下，在<b>有基金</b>(funded)工具中，保护卖方支付的款项可用于解决任何潜在的信用事件。在后一种情况下，保护买方不承担交易对手风险。</p>
+<p>下表说明了交易对手对BBB信用的CDS定价的影响。如果交易对手没有违约，CDS价差应为194个基点。价差取决于交易对手的违约风险以及与参考信用的相关性。在表中最坏的情况下，交易对手的BBB评级和相关性为0.8，保护效果较差，CDS价差仅为134bp。</p>
+<div>
+<pre><code>          对手方信用评级
+Cor   AAA   AA    A     BBB
+0.0   194   194   194   194
+0.2   191   190   189   186
+0.4   187   185   181   175
+0.6   182   178   171   159
+0.8   177   171   157   134</code></pre>
+</div>
+<p><br/></p>
+<p><br/></p>
+<p>⭐ <b>例23.1</b> If an investor holds a five-year IBM bond, it will give a return very close to the return of the following position</p>
+<ul>
+<li>a. A five-year IBM credit default swap on which the investor pays fixed and receives a payment in the event of default</li>
+<li>b. A five-year IBM credit default swap on which the investor receives fixed and makes a payment in the event of default</li>
+<li>c. A five-year U.S. Treasury bond plus a five-year IBM credit default swap on which the investor pays fixed and receives a payment in the event of default</li>
+<li>d. A five-year U.S. Treasury bond plus a five-year IBM credit default swap on which the investor receives fixed and makes a payment in the event of default</li>
+</ul>
+<p>解析：选 d 。长期公司债券头寸相当于长期美国国债头寸加上短期CDS头寸。</p>
+<p>⭐ <b>例23.2</b> A six-year CDS on a AA-rated issuer is offered at 150bp with semiannual payments while the yield on a six-year annual coupon bond of this issuer is 8%. There is no
+                                                                            counterparty risk on the CDS. The annualized LIBOR rate paid every six months is 4.6% for all maturities. Which strategy would exploit the arbitrage opportunity? How much would
+                                                                            your return exceed LIBOR?</p>
+<ul>
+<li>a. Buy the bond and the CDS with a risk-free gain of 1.9%.</li>
+<li>b. Buy the bond and the CDS with a risk-free gain of 0.32%.</li>
+<li>c. Short the bond and sell CDS protection with a risk-free gain of 4.97%.</li>
+<li>d. There is no arbitrage opportunity as any apparent risk-free profit is necessarily compensation for being exposed to the credit risk of the issuer.</li>
+</ul>
+<p>解析：选 a 。由于LIBOR持平，固定息票收益率也为4.6%，这就产生了800 - 460 = 340基点的利差。通过购买CDS做多债券和做空信贷的年利润为340 - 150 = 190基点。</p>
+<p>⭐ <b>例23.3</b> Bank A makes a USD 10 million five-year loan and wants to offset the credit exposure to the obligor. A five-year credit default swap (CDS) with the loan as the reference
+                                                                            asset trades on the market at a swap premium of 50 basis points paid quarterly. In order to hedge its credit exposure, bank A</p>
+<ul>
+<li>a. Sells the five-year CDS and receives a quarterly payment of USD 50,000.</li>
+<li>b. Buys the five-year CDS and makes a quarterly payment of USD 12,500.</li>
+<li>c. Buys the five-year CDS and receives a quarterly payment of USD 12,500.</li>
+<li>d. Sells the five-year CDS and makes a quarterly payment of USD 50,000.</li>
+</ul>
+<p>解析：选 b 。银行应该购买互换以防止违约。季度付款为 $10M × 0.50%/4 = $12,500。</p>
+<p>⭐ <b>例23.4</b> The table shows the bid-ask quotes by UBS for CDS spreads for companies A, B, and C. CSFB has excessive credit exposure to company C and wants to reduce it through
+                                                                            the CDS market.</p>
+<div>
+<pre><code>    1 Year   3 Years   5 Years
+A   15/25    21/32     27/36
+B   43/60    72/101    112/152
+C   71/84    93/113    141/170</code></pre>
+</div>
+<p>Since the farthest maturity of its exposure to C is three years, CSFB buys a USD 200 million three-year protection on C from UBS. In order to make its purchase of this protection
+                                                                            cheaper, based on its views on companies A and B, CSFB decides to sell USD 300 million five-year protection on company A and to sell USD 100 million one-year protection on company
+                                                                            B to UBS.What is the net annual premium payment made by CSFB to UBS in the first year?</p>
+<ul>
+<li>a. USD 1.02 million</li>
+<li>b. USD 0.18 million</li>
+<li>c. USD 0.58 million</li>
+<li>d. USD 0.62 million</li>
+</ul>
+<p>解析：选 a 。付款金额为200 × 113 - 300 × 27 - 100 × 43，折合成$1.02 M。</p>
+<p>⭐ <b>例23.5</b> When an institution has sold exposure to another institution (i.e., purchased protection) in a CDS, it has exchanged the risk of default on the underlying asset for
+                                                                            which of the following?</p>
+<ul>
+<li>a. Default risk of the counterparty</li>
+<li>b. Default risk of a credit exposure identified by the counterparty</li>
+<li>c. Joint risk of default by the counterparty and of the credit exposure identified by the counterparty</li>
+<li>d. Joint risk of default by the counterparty and the underlying asset</li>
+</ul>
+<p>解析：选 d 。保护买方面临交易对手和基础信用的共同违约风险。如果只有一方违约，就没有信用风险。</p>
+<p>⭐ <b>例23.6</b> Bank A has exposure to USD 100 million of debt issued by company <a href="https://link.zhihu.com/?target=http%3A//r.bank/">R.Bank</a>                                                                            A enters into a credit default swap transaction with bank B to hedge its debt exposure to company R. Bank B would fully compensate bank A if company R defaults in exchange for
+                                                                            a premium. Assume that the defaults of bank A, bank B, and company R are independent and that their default probabilities are 0.3%, 0.5%, and 3.6%, respectively. What is the probability
+                                                                            that bank A will suffer a credit loss in its exposure to company R?</p>
+<ul>
+<li>a. 4.1%</li>
+<li>b. 3.6%</li>
+<li>c. 0.0108%</li>
+<li>d. 0.0180%</li>
+</ul>
+<p>解析：选 d 。要发生损失，B银行和R公司都必须违约。B和R违约的联合概率是0.5%乘以3.6%，得到0.018%。</p>
+<p>⭐ <b>例23.7</b> You enter into a credit default swap with bank B that settles based on the performance of company C. Assuming that bank B and company C have the same initial credit
+                                                                            rating and everything else remains the same, what is the impact on the value of your credit default swap if bank B buys company C?</p>
+<ul>
+<li>a. The credit default swap value increases.</li>
+<li>b. The credit default swap value remains the same.</li>
+<li>c. The credit default swap value decreases.</li>
+<li>d. It is impossible to determine based in the information provided.</li>
+</ul>
+<p>解析：选 c 。如果B银行收购C公司，B和C两个实体将同时违约。违约相关性的增加使得CDS合约的价值降低。公允CDS价差随着相关性的增加而减小。鉴于现有的CDS合约有一个固定的价差，这一事件应该会降低未偿合约的价值。</p>
+<hr/>
+<h2>三、其他合同</h2>
+<h3>1、CDS变体</h3>
+<p>信用违约互换也可以发行在多名上。例如，<b>第一篮子到违约互换</b>(first-of-basket-to-default swap)使保护买方有权从一篮子选定的证券中交付一种且仅一种违约证券。因为保护买方有更多的选择，也就是说，违约可以发生在一篮子信贷中，而不仅仅是一个参考信贷，这种类型的保护将比单一的信用互换更昂贵，其他条件相同。保护的价格还取决于信用事件之间的相关性。相关性越低，交换成本就越高。相反，相关性越高，互换利率越低。为了说明这一点，考虑完全相关的极端情况。在这种情况下，所有基础信贷同时违约，而这种一篮子互换相当于常规的单名CDS。</p>
+<p>对于<b>第N次违约互换</b>(Nth-to-default swap)，在基础投资组合中出现N次违约后触发支付，而不是在此之前。当N较大时，当默认相关性高时，保护成本就会高，使得N名更有可能同时违约。</p>
+<p><b>CDS指数</b>(CDS indices)被广泛用于跟踪这个市场的表现。iTraxx指数涵盖了欧洲和亚洲信贷市场上流动性最强的公司。CDX指数涵盖北美和新兴市场。例如，CDX.NA.IG指数由125个在北美注册的投资级实体组成。CDX.NA.HY指数涵盖了100家非投资级(高收益)借款人。CDX。新兴市场指数涵盖来自新兴市场的借款人。这些指数每6个月重新平衡一次。由于这些合约流动性很强，
+                                                                                <span>买卖价差</span>很小，因此它们为买卖全市场或行业信用风险提供了一种简便的方式。这些指数也有可交易的部分，使用CDO方法。</p>
+<p>CDS指数的交易价差很小，甚至比单名合约的价差还要小。例如，假设交易商对5年期CDX.NA.IG的报价为201/203。一名<span>交易员</span>希望在该指数的125家公司中，每家公司获得8万美元的保护，名义上总计为$10 million。总成本为0.0203 × $10,000,000 =
+                                                                                $203,000【在实际操作中，支付模式更为复杂，息票固定，初始价格取决于报价价差】。如果一家公司违约，买方会收到通常的CDS付款，然后名义金额减少$80,000。</p>
+<h3>2、总回报互换</h3>
+<p><b>总回报互换</b>(TRS, Total Return Swaps)是一种合同，其中一方（称为保护买方）支付与参考资产总回报相关的一系列付款。作为交换，保护卖方根据参考利率支付一系列款项，如等值<span>国债发行</span>的收益率（或LIBOR）加上利差。如果资产价格下跌，保护买方收到交易对手的付款；如果价格上涨，另一个方向的付款到期。</p>
+<ul>
+<li>保护买方 → 保护卖方：与参考资产挂钩的付款</li>
+<li>保护买方 ← 保护卖方：与参考利率挂钩的付款</li>
+<li>参考资产：债券</li>
+</ul>
+<p>这种类型的互换与标的资产的市场价值变化挂钩，并在按盯市(MTM)的框架中提供对信用风险的保护。对于保护买方而言，TRS在不出售标的资产的情况下消除了标的资产的所有经济风险。与CDS不同，TRS涉及信用风险和市场风险，后者反映的是纯粹的利率风险。</p>
+<p>例如，假设一家银行(称之为银行a)以10%的固定利率向XYZ公司提供了1亿美元的贷款。银行可以通过与交易对手B签订TRS协议来对冲其风险敞口，根据该协议，银行承诺支付贷款利息加上贷款市场价值的变化，以换取LIBOR加50bp。如果贷款的市场价值下降，与参考资产挂钩的支付将变为负值，为银行提供对冲。假设LIBOR目前为9%，一年后，贷款价值从1亿美元降至9,500万美元。A银行的净负债是以下的和：</p>
+<ul>
+<li>流出10% × 100美元= 1000万美元，用于支付贷款利息</li>
+<li>流入9.5% × 100美元= 950万美元，作为参考付款</li>
+<li>流出(95 - 100)/ 100% × 100美元= - 500万美元，表示贷款价值的变动</li>
+</ul>
+<p>合计净收入为- 10 + 9.5(- 5)= 450万美元。银行A可以通过TRS的收益来抵消这笔贷款经济价值的变化。</p>
+<h3>3、信用利差远期和期权</h3>
+<p>这些工具是衍生品，其价值与风险债券和无风险债券之间的基础信用利差挂钩。</p>
+<p>在<b>信用价差<span>远期合约</span></b>(credit spread forward contract)中，买方收到到期时的信用价差与约定价差（如果为正值）之间的差额。相反，如果差额为负，则付款。现金支付公式的一个例子是：</p>
+<blockquote><span>Payment = (S − F) ×MD × Notional</span> </blockquote>
+<p>其中MD是修正久期，S是普遍的价差(prevailing spread)，F是商定的价差(agreed-upon spread)。这可以用价格来表示：</p>
+<blockquote><span>Payment = [P(y + F, τ) − P(y + S, τ)] × Notional</span> </blockquote>
+<p>其中 <span>y</span> 是等价国债的<span>到期收益率</span>， <span>P(y + S, t)</span>                                                                                是到期前 <span>t</span> 年证券的现值，以 <span>y</span> 加上利差折现，以百分比表示。注意，如果 <span>S &gt; F</span> ，则支付将与前面的表达式一样为正。</p>
+<p>在<b>信用价差期权合约</b>(credit spread option contract)中，买方支付一笔溢价，以换取在预定期限内将价差增加的权利交给期权卖方：</p>
+<blockquote><span>Payment = Max(S − K, 0) ×MD× Notional</span> </blockquote>
+<p>其中 <span>K</span> 是预定的价差(predefined spread)。期权的购买者购买信用保护，或者在债券价值下跌时将其出售给卖方的权利。支付公式也可以直接用价格来表示。</p>
+<p>例如，信用利差期权的名义金额为1亿美元，期限为一年。基础证券是XYZ公司发行的8%的10年期债券。目前与10年期美国国债的息差为150个基点。期权是欧洲式的，执行幅度为160个基点。假设到期日，<span>国债收益率</span>从6.5%上升到6%，信贷息差扩大到180个基点。息票8%的九年期半年期债券以y
+                                                                                + S = 6 + 1.8 = 7.8%折现的价格是101.276美元。同一债券在y + K = 6 + 1.6 = 7.6%时的折现价格是102.574美元。使用名义金额，支出为(102.574−101.276)/100 × 100,000,000美元= 1,297,237美元。</p>
+<p>⭐ <b>例23.8</b> Sylvia, a portfolio manager, established a Yankee bond portfolio. However,she wants to hedge the credit and interest rate risk of her portfolio. Which of the following
+                                                                                derivatives will best fit Sylvia’s need?</p>
+<ul>
+<li>a. A total return swap</li>
+<li>b. A credit default swap</li>
+<li>c. A credit spread option</li>
+<li>d. A currency swap</li>
+</ul>
+<p>解析：选 a 。TRS将提供针对利率和信用风险的保护，因为它与债券投资组合价值挂钩。CDS或信用价差期权仅针对信用风险提供保护。洋基债券没有货币风险，反正是以美元计价的。</p>
+<p>⭐ <b>例23.9</b> Helman Bank has made a loan of USD 300 million at 6.5% per annum.Helman enters into a total return swap under which it will pay the interest on the loan plus the
+                                                                                change in the marked-to-market value of the loan,and in exchange Helman will receive LIBOR + 50 basis points. Settlement payments are made semiannually. What is the cash flow
+                                                                                for Helman on the first settlement date if the mark-to-market value of the loan falls by 2% and LIBOR is 4%?</p>
+<ul>
+<li>a. Net inflow of USD 9.0 million</li>
+<li>b. Net inflow of USD 12.0 million</li>
+<li>c. Net outflow of USD 9.0 million</li>
+<li>d. Net outflow of USD 12.0 million</li>
+</ul>
+<p>解析：选 c 。注意，这是半年一次的付款，因此所有年息利率必须除以2。Helman支付300(6.5%/2 + 2%)。作为回报，它得到300(4.5%/2)。净流入 = 300(5.25% ~ 2.25%) = 300(3%) = 9.0。</p>
+<hr/>
+<h2>四、结构性产品</h2>
+<h3>1、创建结构化产品</h3>
+<p><b>结构性产品</b>(Structured products)通常可以定义为为满足投资者或借款人的特定需求而创建的工具，这些需求是传统金融工具无法满足的。一个典型的例子是散户对投资的需求，既能参与股市的升值，又能保存资本。产品的收益概况可以通过现有或有时是新工具的组合来复制。例如，在这种情况下，收益可以通过投资无风险债券来复制，名义上等于保证资本，加上看涨期权的多头头寸，要么通过直接投资期权组合，要么通过动态交易间接复制。这种工具是一种<b>保本票据</b>(principal-protected
+                                                                                note)，可以与各种市场挂钩，包括股票、货币和商品。</p>
+<p>近年来，<span>信贷结构</span>性产品市场大幅扩张。信用衍生品的出现使一系列创新产品成为可能，这些产品的收益与信用事件挂钩。</p>
+<h3>2、CLN</h3>
+<p><b><span>信用联结票据</span></b>(CLN, Credit-linked notes)是一种结合了信用衍生品和常规债券的结构性证券。在CLN中，保护的买方通过中间债券发行实体将信用风险转移给投资者。这个实体可以是买方本身，也可以是特殊目的载体(SPV)。</p>
+<p>第一种情况的一个例子是一家在新兴国家有敞口的银行。该银行发行了一张带有墨西哥信用违约互换内嵌空头头寸的票据。票据是银行资产负债表上的一项负债。投资者获得高票面利率，但如果墨西哥拖欠债务，投资者将损失部分本金。这种结构实现了在墨西哥违约时减少<span>银行风险</span>敞口的目标。在这种情况下，由于票据是银行的负债，投资者面临墨西哥或银行违约的风险。</p>
+<figure><img src="https://pic2.zhimg.com/v2-fd064bfb7466ebd2df0deb93163a1a97_1440w.jpg" width="1440"/>
+<figcaption>CLN</figcaption>
+</figure>
+<p>SPV结构的示例如上图。在这种情况下，投资者的初始资金被置于最高评级的投资中，支付伦敦<span>银行间同业拆借利率</span>(LIBOR)和日元差价。SPV持有信用违约互换(CDS)的空头头寸，以获得每年额外的X bp收益。每年支付给投资者的是LIBOR + Y + x。为了获得更高的收益率，如果发生违约事件，投资者必须愿意损失部分本金。</p>
+<p>相对于常规投资，比如墨西哥政府发行的票据，如果CDS利差大于债券收益率利差，这种结构可能会带来更高的收益率。这种结构对那些不能直接投资衍生品的投资者也很有吸引力。</p>
+<h3>3、CDO</h3>
+<p><span>金融工程</span>在很大程度上是重新包装金融工具，使其更受投资者欢迎，并在此过程中创造价值。20世纪80年代，<b><span>抵押担保证券</span></b>(CMO, collateralized mortgage
+                                                                                        obligations)通过将<span>抵押贷款支持证券</span>的现金流重新打包成不同特征的<b>部分</b>(tranches)，将抵押贷款支持证券推向了大众。<b>抵押债务证券</b>(CDO, collateralized debt obligations)也是如此，这是一种由债务池支持的证券。<b>抵押债券证券</b>(CBO,
+                                                                                        Collateralized bond obligations)和<b>抵押贷款证券</b>(CLO, collateralized loan obligations)分别由债券和贷款支持。下图展示了典型的CDO结构。</p>
+<figure><img src="https://pic3.zhimg.com/v2-242a284f8d1232e19d6aa11ba3d47f78_1440w.jpg" width="1612"/>
+<figcaption>CDO结构</figcaption>
+</figure>
+<p>第一步是将一系列公司债放入一个特殊目的载体(SPV)。假设我们总共有10亿美元，对100个实体的风险敞口为1000万美元。然后，SPV发行多个部分，具有指定的瀑布结构，或优先支付各个部分。分级分为高级、夹层和次级或权益。在最简单的结构中，特殊目的机构是一个理想的被动实体。它根据明确的规则重新分配现金流。没有必要采取其他管理措施。</p>
+<p>在这个例子中，80%的<span>资本结构</span>分配给了A级，按照穆迪的评级，A级的信用评级最高，为Aaa。例如，它支付LIBOR + 45个基点。其他部分的优先级和评级较低。这些夹层(mezzanine)部分通常被评为A、Baa、Ba或B(使用<span>标准普尔</span>的评级，为A、BBB、BB、B)。例如，C部分将吸收3%至10%的损失。这些数字分别被称为<b>附着点</b>(attachment
+                                                                                        point)和<b>分离点</b>(detachment point)。</p>
+<p>底部是没有评级的股权部分。由于杠杆作用，如果没有违约，股权部分的回报可能非常高。作为交换，这将面临投资组合中第一美元损失的风险。特别惯例适用于股权交易。投资者首先支付名义金额，在这种情况下是3000万美元。作为交换，这个保护卖方会收到一个点差，称为运行点差，以及一笔预付费用。这一费用以百分比计算，投资级CDO的费用通常在40%左右。在这种情况下，投资者将获得40%
+                                                                                            × 30美元= 1200万美元的预付款，以及500个基点的运行价差。</p>
+<p>累计亏损2,000万美元将使名义股本部分减少至3,000 - 2,000 = 1,000万美元。运行价差则适用于新的1,000万美元的名义价差。对于损失达4 500万美元的部分，第一部分被抵销，剩余的损失为$45 - $30 = $15 million。C阶段的投资者只能获得7000 - 1500 = 5500万美元的回报。因此，高级类别的评级提升是通过对现金流进行优先排序来实现的。评级机构已经开发出内部模型，根据违约导致的亏损概率对优先级债券进行评级。</p>
+<p>从本质上讲，这些是组合<span>信用风险模型</span>。风险管理人员根据基础信贷的违约概率、它们在违约情况下的损失以及它们的违约相关性，构建投资组合中总损失的分布。然后，较低级别的宽度定义了高级级别的违约概率。在这些参数中，平均违约相关性非常重要。较低的违约相关性导致更多样化或更紧密的分布。对于初级部分的固定宽度，这使得投资组合损失将初级部分抹去的可能性更小，从而使高级部分更安全。相反，如果所有相关债券同时违约，损失可能非常大，更有可能影响到优先级债券。事实上，在信贷危机期间，由于抵押贷款同时违约的发生率较高，许多基于抵押贷款债务的高级结构遭受了意想不到的损失。</p>
+<p>注意，<b>持有CDO高级部分的多头头寸，就等于做空违约之间的平均相关性。较低的相关性意味着更多元化的投资组合，这使得许多债券同时违约并达到优先级的可能性更小</b>。</p>
+<p>无论发生什么转变，其结果都必须遵守一些基本的守恒定律。对于标的证券和衍生证券，除交易成本外，我们必须在每个时间点拥有相同的现金流量。因此，这意味着：</p>
+<ol>
+<li>相同的总市场价值</li>
+<li>利率和违约风险相同的风险状况</li>
+</ol>
+<p>最终包的加权期限必须等于基础证券的加权期限。按市场价值平均计算的预期违约率必须相同。因此，如果某些部分的风险较低，其他部分就必须承担更大的风险。与CMO一样，CDO的结构使得大多数部分的风险低于抵押品。不可避免的是，<b>剩余</b>(residual)的部分风险更大。这有时被称为“有毒废物(toxic waste)”。然而，如果剩余部分足够便宜，一些投资者应该愿意购买。通常情况下，发起CDO的机构会保留最次要的股权部分，以说服投资者相信资产池的质量。信贷投资者已经发展出复杂的交易策略，包括做多和做空这些资本结构的不同部分。</p>
+<p>对于相关交易，以一个价值10亿美元的合成CDO为例，其中有100个名(name)，每个名的价值1000万美元。假设股权部分是3,000万美元，这代表了前3%的损失。为简单起见，假设所有的溢价都以净现值计算，并且没有回收。投资者因承担股权风险而预先获得1500万美元的报酬，因此该部分最严重的净损失为1500万美元。然后，投资者通过购买同样100个名字的CDS来对冲，每个名的名义价格为300万美元。差价的现值是2%，也就是300
+                                                                                                    × 2% = 600万美元。如果没有违约，本金将被返还，净收益为15 - 6 = 900万美元。如果所有100个名字都违约，该头寸损失权益本金并获得CDS支付，即(15 - 30)- 6 + 3 = 2.79亿美元。当然，这是非常不可能的。我们需要探索其他可能造成损失的情况。如果只有三个名违约，股权部分就会被抹去。然后，投资者执行3份CDS合约，并解除剩余的97份不再需要的CDS对冲。最坏的情况是，假设CDS息差收窄，这些合约以480万美元的价格卖出。这意味着净亏损为(15
+                                                                                                    - 30美元)- 6美元+ (3 × 3美元)+ 4.8美元= - 720万美元。</p>
+<p>⭐ <b>例23.10</b> A CDO consisting of three tranches has an underlying portfolio of n corporate bonds with a total principal of USD N million. Tranche 1
+                                                                                                        has 10% of N and absorbs the first 10% of the default losses. Tranche 2 has 20% of N and absorbs the next 20% of default losses. The final Tranche
+                                                                                                        3 has 70% of N and absorbs the residual default loss. Which of the following statements is/are true?</p>
+<ol>
+<li>I. Tranche 2 has the highest yield.</li>
+<li>II. Tranche 1 is usually called “toxic waste.”</li>
+<li>III. Tranche 3 would typically be rated as AAA by S&amp;P.</li>
+<li>IV. Tranche 3 has the lowest yield.</li>
+</ol>
+<ul>
+<li>a. I only</li>
+<li>b. IV only</li>
+<li>c. II, III, and IV only</li>
+<li>d. II and IV only</li>
+</ul>
+<p>解析：选 c 。股权部分，即第1部分，必须具有最高的收益率，有时被称为“有毒废物”，因为它具有最高的风险。相反，第3部分将拥有最高的信用评级和最低的收益率。</p>
+<p>⭐ <b>例23.11</b> A collateralized bond obligation (CBO) consists of several tranches of notes from a repackaging of corporate bonds, ranging from equity
+                                                                                                        to super-senior.Which of the following is generally true of these structures?</p>
+<ul>
+<li>a. The total yield of all the CBO tranches is slightly less than the underlying repackaged bonds to allow the issuer to recover their fees/costs/profits.</li>
+<li>b. The super-senior tranche has expected loss rate higher than the junior tranche.</li>
+<li>c. The super-senior tranche is typically rated below AAA and sold to bond investors.</li>
+<li>d. The equity tranche does not absorb the first losses of the structure.</li>
+</ul>
+<p>解析：选 a 。在没有交易成本或费用的情况下，标的投资组合的收益率应等于不同部分收益率的加权平均值。然而，考虑到成本，CBO收益率将略低。否则，超优先级在所有级别中具有最高的信用评级和最低的损失率，并吸收结构上的最后损失。</p>
+<p>⭐ <b>例23.12</b> An investor has sold default protection on the most senior tranche of a CDO.If the default correlation decreases unexpectedly, assuming
+                                                                                                        everything else is unchanged, the investor’s position will</p>
+<ul>
+<li>a. Gain value since the probability of exercising the protection falls.</li>
+<li>b. Lose value, since the investor’s protection will gain value.</li>
+<li>c. Neither gain nor lose value since only expected default losses matter and correlation does not affect expected default losses.</li>
+<li>d. It depends on the pricing model used and the market conditions.</li>
+</ul>
+<p>解析：选 a 。优先级部分的值取决于默认相关性。如果这一比率下降，损失的分配将更加分散，或者更紧密，这将降低损失抹去较低部分的可能性。因此，优先级债券的价值上升。出售违约保护相当于做多优先级债券，在这种情况下会创造收益。</p>
+<p>⭐ <b>例23.13</b> A three-year credit-linked note (CLN) with underlying company Z has a LIBOR + 60bp semiannual coupon. The face value of the CLN is USD100.
+                                                                                                        LIBOR is 5% for all maturities. The current three-year CDS spread for company Z is 90bp. The fair value of the CLN is closest to</p>
+<ul>
+<li>a. USD 100.00</li>
+<li>b. USD 111.05</li>
+<li>c. USD 101.65</li>
+<li>d. USD 99.19</li>
+</ul>
+<p>解析：选 d 。由于当前的CDS价差大于券息，CLN必须以折扣价出售。唯一的解是d。更准确地说，我们可以使用价差久期，它是三年内现值因子的总和。假设一个平坦的期限结构，PV = 0.952 + 0.907 + 0.864 = 2.72年的总和。乘以(90−60)= 30bp，下跌0.81%，即99.19美元。</p>
+<p>⭐ <b>例23.14</b> A fixed-income investor is considering investing in an asset-backed security (ABS) that has the following structure.</p>
+<ol>
+<li>Senior tranche：USD 250 million</li>
+<li>Junior tranche：USD 100 million</li>
+<li>Subordinated tranche A：USD 60 million</li>
+<li>Subordinated tranche B：USD 30 million</li>
+<li>Total：USD 440 million</li>
+</ol>
+<p>If the assets in the pool are worth USD 450 million, what amount of losses will cause the investor to begin to lose money if he invested in the senior
+                                                                                                            tranche?</p>
+<ul>
+<li>a. USD 200 million</li>
+<li>b. USD 190 million</li>
+<li>c. USD 100 million</li>
+<li>d. USD 90 million</li>
+</ul>
+<p>解析：选 a 。这是较低部分价值的总和，也就是1.9亿美元加上<span>超额抵押</span>，也就是1000万美元。</p>
+<hr/>
+<h2>五、CDO市场</h2>
+<h3>1、资产负债表和套利CDO</h3>
+<p>从2004年到2006年，CDO市场每年都翻一番，2006年的新发行规模超过5200亿美元。然而，由于信贷危机的影响，债券发行量急剧下降。CDO交易通常按目的分类，分为资产负债表或套利。<b>资产负债表CDO</b>(balance sheet CDO)的主要目标是将贷款移出商业银行的资产负债表，以降低监管资本要求。</p>
+<p>相比之下，<b>套利CDO</b>(arbitrage CDO)旨在捕捉基础证券投资组合与高评级覆盖部分投资组合之间的价差。由于分散效应，优先级债券应该是相对安全的，因此它们比伦敦银行同业拆借利率的息差很小。然后，套利利润进入股票部分(但也进入管理和投行费用)。</p>
+<p>高级债券似乎对投资者也有吸引力。一般来说，AA级企业借款人支付LIBOR。更高的信贷支付利率低于伦敦银行同业拆借利率。然而，典型的AAA级高级CDO支付的利率高于伦敦银行同业拆借利率。这解释了为什么投资者被吸引到这个市场，盲目相信信用评级。一些评论人士怀疑，这是一种真正的套利，还是涉及某种模式风险。到目前为止，很明显，信用评级机构使用的模型存在缺陷。</p>
+<h3>2、现金流和合成CDO</h3>
+<p>信用风险转移可以通过现金流或合成结构来实现。下图的示例来自BBA Credit Derivatives Report 2006，是典型的传统或资金支持的<b>现金流CDO</b>(cash-flow CDO)。</p>
+<div>
+<pre><code>                 百分比
+机构类型    买方  卖方  净
+银行        59    44    +15
+保险        6     17    -11
+<span>对冲基金</span>    28    32    -4
+其他        7     7     0
+总计        100   100   0</code></pre>
+</div>
+<p>实物资产被出售给特殊目的机构，而相关现金流被用来偿还已发行票据。</p>
+<p>相比之下，<b>合成CDO</b>(synthetic CDO)的信用风险敞口是通过信用违约互换实现的。我们知道，可违约债券的多头头寸相当于无违约债券的多头头寸加上CDS的空头头寸。合成CDO通过以下方式创造更高的收益率：首先，为无违约证券(即美国国债)提供资金或进行初始投资；其次，出售一组CDS以复制现金流CDO。</p>
+<p>合成CDO有几个优势：</p>
+<ol>
+<li>它们比现金流CDO更容易管理。如果其中一个基础信贷破产，现金流<span>特殊目的公司</span>的管理层必须参与<span>破产程序</span>。有了现金结算的CDS空头头寸，SPV就没有必要介入破产程序。</li>
+<li>这个问题不需要全部资金。在<b>全资本结构CDO</b>(full capital structure CDO)中，发行票据的名义总额等于基础投资组合的名义总额。所以，资金是充足的。</li>
+</ol>
+<p>相比之下，<b>单级CDO</b>(single-tranche CDO)是一种<b>定制</b>(bespoke)交易，由银行和投资者商定交易条款，包括规模、信用评级和基础信用。实际上，银行持有剩余的资本结构，而不是放置它们。</p>
+<p>以1000万美元的a +级债券为例，其票面利率为6个月LIBOR + 111bp，参考投资组合为10亿美元，包括100家北美投资级实体。附着点(attachment point)是5%。分离点(detachment point)是6%。只要参考投资组合的累计亏损保持在5%以下，投资者将获得承诺的付款。超过这个数字，投资者将不得不承担损失。例如，如果投资组合的累计美元损失达到5200万美元，或总额的5.2%，投资者将损失(5.2
+                                                                                                                        - 5.0)/(6.0 - 5.0)= 20%的资本，在这种情况下是200万美元。然后，息票适用于减少的名义金额。银行可以在没有全额融资的情况下将这种结构出售给投资者。</p>
+<h3>3、现金流和市场价值CDO</h3>
+<p>在现金流CDO的情况下，支付给投资者的款项完全来自抵押品现金流。相比之下，对于<b>市值型CDO</b>(market-value CDO)，付款来自抵押品现金流以及抵押品的销售。如果抵押品的市场价值低于某一水平，对权益部分的支付就会暂停。这为投资组合经理创造了更多的灵活性。</p>
+<p>信用评级机构使用<b>过度抵押比率</b>(OC, overcollateralization ratios)来分析信用结构的质量。这个比率衡量的是抵押品能够覆盖特殊目的机构负债的倍数。对于市值型CDO，定义V为资产的市场价值，D为负债的面值。然后将OC比率定义为<b>OC = V / D</b>。这一比例必须足够高，以确保对债务有足够的覆盖。</p>
+<p>或者，从顶部开始，累积部分的票面价值必须低于资产的市场价值乘以<b>预支率</b>(advance rate)。在我们的CDO例子中，第一部分的名义价值是8亿美元。这个数额必须低于资产价值，比如10亿美元乘以85%的预支率。因为$800 &lt; $850，结构中的第一部分通过了测试。对于前两批，预支率是95%，测试给出$800
+                                                                                                                            + $100 &lt; $950，所以这也通过了测试。未能通过过度担保测试的结构面临降级的风险。这种失败可以通过出售部分资产、偿还部分债务或发行更多股票来解决。</p>
+<p>对于现金流CDO，比率使用总资产的面值作为分子。另一个比率，<b>利率覆盖率</b>(IC, interest rate coverage ratio)，也被用来评估信贷结构的质量。其计算方法为抵押品收到的利息支付总额除以每一级和更高一级的利息负债。</p>
+<h3>4、静态和托管CDO</h3>
+<p>最后，CDO在资产池管理方面存在差异。</p>
+<ul>
+<li><b>静态CDO</b>(static CDO)：资产池基本上是固定的</li>
+<li><b>托管CDO</b>(managed CDO)：投资组合经理可以主动交易相关资产</li>
+<ul>
+<li>具有主动管理的所有常见优点和缺点</li>
+<li>优点：能够解除信贷质量下降的资产，购买被低估的证券，以及出售被高估的证券</li>
+<li>缺点：投资者既面临信用风险，也面临管理不善的风险。此外还要支付管理费</li>
+</ul>
+</ul>
+<h3>5、其他产品</h3>
+<p>随着债务抵押债券市场的扩大，新产品不断涌现。例如，CDO可以投资于CDO部分，而不是单个信贷。这是一个<b>CDO平方</b>(CDO-squared)结构。这种结构的主要好处是更大程度的多样性。一个典型的单层CDO涉及50到100个企业信贷。一个CDO平方有5到10个单层CDO，因此有250到1000个名字。甚至有人谈到了一种进一步的结构，称为CDO立方(CDO-cubed)。</p>
+<p>市场现在还交易<b>资产支持证券信用违约互换</b>(ABCDS)。最常见的是，这些资产由房屋净值和商业地产贷款支持。过去，很难做空这类资产支持证券。购买ABCDS相当于获得保护，或做空该证券。这为实施相对价值交易或对冲这类风险开辟了新的可能性。由于标准化的ISDA文件以及包含20种房屋净值证券的基准指数<b>ABX指数</b>(ABX
+                                                                                                                                    index)的建立，该市场得到了迅速发展。</p>
+<p>ABCDS是一种复杂的工具。如果标的公司遭受信用事件，公司CDS就会进行支付。相比之下，对于资产支持证券，发行的特殊目的机构不会破产，但资产池中的个别贷款可能出现违约。此外，名义金额不是固定的，而是随着时间的推移，随着贷款本金的偿还而摊销。这些ABCDS类似于<b>CDO的CDS</b>，后者是CDO部分的信用违约掉期，通常是优先级的。这些工具为做空市场提供了一种有效的方式。例如，安排现金CDO的交易商可以购买CDS来对冲其风险敞口。</p>
+<p>最近的另一项创新是<b>固定比例债务义务</b>(CPDO, constant proportional debt obligation)。CPDO为iTraxx欧洲CDS指数等企业信贷组合提供保护。交易是高杠杆和动态调整的，摆脱了随着时间的推移而恶化的信贷，并随着价差的变化而改变杠杆。这创造了一个评级为AAA的结构，却要支付LIBOR
+                                                                                                                                        + 200个基点的利息。在信贷息差稳定或下降的良好环境下，这些新工具看起来非常有吸引力。然而，对于风险管理者来说，由于它们的动态性，它们的风险概况很难评估。信贷危机给许多CPDO造成了相当大的损失，其中一些已经违约。</p>
+<p>⭐ <b>例23.15</b> In a synthetic CDO,</p>
+<ul>
+<li>a. The SPV gains credit exposure by buying securities.</li>
+<li>b. The SPV gains credit exposure by selling credit default swaps.</li>
+<li>c. The SPV gains credit exposure by buying credit default swaps.</li>
+<li>d. The SPV gains credit exposure by selling risk-free bonds.</li>
+</ul>
+<p>解析：选 b 。SPV可以购买信用敏感债券，也可以出售违约互换。</p>
+<p>⭐ <b>例23.16</b> A standard synthetic CDO references a portfolio of 10 corporate names.Assume the following. The
+                                                                                                                                                total reference notional is X, and the term is Y years. The reference notional per individual reference credit
+                                                                                                                                                name is X/10.The default correlations between the individual credit names are all equal to one. The single-name
+                                                                                                                                                CDS spread for each individual name is 100bp, for a term of Y years. The assumed recovery rate on default for
+                                                                                                                                                all individual reference credits is zero in all cases. The synthetic CDO comprises two tranches, a50% junior
+                                                                                                                                                tranche priced at a spread J , and a 50% senior tranche priced at spread S. All else constant, if the default
+                                                                                                                                                correlations between the individual reference credit names are reduced from 1.0 to 0.7, what is the effect
+                                                                                                                                                on the relationship between the junior tranche spread J and the senior tranche spread S?</p>
+<ul>
+<li>a. The relationship remains the same.</li>
+<li>b. S increases relative to J .</li>
+<li>c. J increases relative to S.</li>
+<li>d. The effect cannot be determined given the data supplied.</li>
+</ul>
+<p>解析：选 c。如果相关性为1，则所有名称将同时违约，并且初级和高级部分将受到同等影响。因此它们的价差应该是100个基点，与抵押品的价差相同。在相关性较低的情况下，损失将首先由次级债券吸收。因此，次级债券的息差应该更高，而高级债券的息差则较低。</p>
+<p>⭐ <b>例23.17</b> A bank is considering buying (i.e., selling protection on) an AAA-rated super-senior tranche [10%−11%]
+                                                                                                                                                of a synthetic collateralized debt obligation(CDO) referencing an investment-grade portfolio. The pricing of
+                                                                                                                                                the tranche assumes a fixed recovery of 40% for all names. All else being equal,which one of the following
+                                                                                                                                                four changes will make the principal invested more risky?</p>
+<ul>
+<li>a. An increase in subordination of 1% (i.e., investing in the [11%−12%] tranche)</li>
+<li>b. An increase in the tranche thickness from 1% to 3% (i.e., investing in the [10%−13%] tranche)</li>
+<li>c. Using a recovery rate assumption of 50%</li>
+<li>d. An increase in default correlation between names in the portfolio</li>
+</ul>
+<p>解析：选 d。增加次级债券将降低优先级债券的风险，因为其下面有一个更厚的层来吸收损失。增加这部分资产的规模将降低其被抹去的可能性，因此风险也会降低。默认相关性的增加将增加风险。在极限情况下，如果所有资产同时违约，所有部分都将蒙受损失。</p>
+<p>⭐ <b>例23.18</b> Consider the following homogeneous reference portfolio in a synthetic CDO:number of reference
+                                                                                                                                                    entities, 100; CDS spread, s = 150bp; recovery rate f = 50%. Assume that defaults are independent. On a
+                                                                                                                                                    single name the annual default probability is constant over five years and obeys the relation:s = (1 −
+                                                                                                                                                    f )PD. What is the expected number of defaulting entities over the next five years, and which of the following
+                                                                                                                                                    tranches would be entirely wiped out (lose 100% of the principal invested) by the expected number of defaulting
+                                                                                                                                                    entities?</p>
+<ul>
+<li>a. There would likely be 14 defaults and a [3%–14%] tranche would be wiped out.</li>
+<li>b. There would likely be 3 defaults and a [0%–1%] tranche would be wiped out.</li>
+<li>c. There would likely be 7 defaults and a [2%–3%] tranche would be wiped out.</li>
+<li>d. There would likely be 14 defaults and a [6%–7%] tranche would be wiped out.</li>
+</ul>
+<p>解析：选 d。年边际PD为d = 1.5%/(1−0.50)= 3.00%。因此5年累计PD为d + S1*d + S2*d + S3*d + S4*d = 3%(1 + 0.970 + 0.941 + 0.913
+                                                                                                                                                        + 0.885) = 14.1%，其中生存率为S1 =(1−3%)= 0.970,S2 = S1(1−3%)= 0.941，以此类推。因此，预期的默认数量是100 × 14.1%，即14。在采收率为50%的情况下，
+                                                                                                                                                        <span>预期损失</span>为名义损失的7%。所以，所有7%以下的部分都被抹去了。</p>
+<hr/>
+<h2>六、讨论</h2>
+<h3>1、风险管理工具</h3>
+<p>信用衍生品市场的快速增长就是它们有用性的最好证明。这些工具是卓越的风险管理工具，允许风险转移。银行是信用保护的净买家，这是对其贷款业务的一种对冲。这有助于解释，尽管发生了大型企业(世通和安然)和主权债务违约(阿根廷)，银行为何安然度过了2001年的经济衰退。这些银行敞口中的大部分已被出售。另一边是保险公司，它们是信用保护的净卖家。这类似于销售保险。</p>
+<h3>2、争论</h3>
+<p>结构性产品在全球范围内分散了风险，当次级抵押贷款支持的资产开始出现问题时，就产生了<span>传染效应</span>。此外，美国国际集团(AIG)等保险公司最终出售了过多的保险。由于其规模，AIG的破产可能会引发系统性风险。</p>
+<p>然而，信用违约互换等标准信用衍生品有很多好处。与现金债券市场不同，在2007年和2008年期间，这个市场一直保持着相当的流动性。CDS市场创造的交易价格为外部观察者提供了有关信贷成本的有用信息。换句话说，它们提供
+                                                                                                                                                            <span>价格发现</span>。CDS合约还提高了交易效率，因为它们的交易成本低于现金市场。</p>
+<p>不利的一面是，由于交易处理中的积压，这个市场的增长带来了操作风险。监管机构已敦促该行业改善运营基础设施，包括提高贸易处理的<span>自动化</span>程度。</p>
+<p>此外，在雷曼破产之后，交易对手风险已成为一个问题。雷曼兄弟是CDS市场的主要参与者。这就解释了为什么要推动建立一个中央清算所。正如CLS银行的情况一样，这将允许合同的<span>多边净额结算</span>，并通常降低交易对手风险。这也将使交易更加透明，对一些合约来说，流动性更强。</p>
+<p>信用衍生品还引入了一种新的风险因素，即法律风险。违约情况下，双方不得就交易条件达成协议。即使交易得到充分确认，各方有时也会就信贷事件的定义发生争执。这种分歧发生在俄罗斯违约以及引人注目的
+                                                                                                                                                                        <span>债务重组</span>和分拆期间。ISDA确认协议的广泛使用有助于解决这种不确定性。</p>
+<p>总体而言，信用违约互换可能会继续蓬勃发展，因为它们为金融市场参与者提供了许多好处。相比之下，复杂信贷证券化的未来则更加扑朔迷离。这个市场是从监管套利演变而来的，即试图通过证券化来消除贷款信用风险，从而突破资本要求。最近的信贷危机揭示了证券化过程中的严重缺陷，这一过程创造了复杂的工具。评估这些复杂的结构需要复杂的投资组合信用风险模型。事实上，许多此类结构的亏损是2007年开始的信贷危机的导火索。</p>
+<h3>3、监管变化</h3>
+<p>信贷危机导致了重大的监管变革。在美国，2010年7月颁布的《多德-弗兰克华尔街改革和消费者保护法案》(Dodd-Frank Wall Street Reform
+                                                                                                                                                                                    and Consumer Protection Act)将给衍生品市场带来根本性变化。</p>
+<p><span>多德-弗兰克法案</span>将<b>基于证券的掉期</b>(SBS)的监管权力交给了美国证券交易委员会(SEC)。这些掉期基于股票、债券或基于证券的指数，包括单名CDS和CDX合约等。其他
+                                                                                                                                                                                    <span>掉期交易</span>现在属于<span>商品期货交易</span>委员会(CFTC)的管辖范围。货币衍生品可能不受影响。</p>
+<p>该法案对最活跃的<span>场外衍生品</span>市场参与者、互换交易商(SD)和主要互换参与者(MSP)提出了新的要求。对于非金融终端用户，存在狭窄的豁免。</p>
+<p>CFTC和SEC有权决定哪些场外交易受这些新规则的约束，在这种情况下，SDs和MSP需要</p>
+<ul>
+<li>(1)通过交易所设施执行掉期交易</li>
+<li>(2)通过清算机构清算这些交易。这就产生了新的报告、资本和保证金要求</li>
+</ul>
+<p>通过<b>中央对手方</b>(CCP, central counterparties)进行清算一直是降低场外衍生品市场系统性风险水平的监管努力的关键部分。这将降低交易对手风险，提高透明度，提高标准化水平，并鼓励更多地使用抵押品。作为一项额外激励措施，商业银行监管机构已提议降低银行通过CCP进行交易的资本金要求。</p>
+<p>事实上，这个行业已经在这个领域取得了很大的进步。例如，伦敦伦敦结算所(LCH)运营的清算服务SwapClear。Clearnet已被广泛用于清算利率掉期。此外，洲际交易所(ICE)和
+                                                                                                                                                                                            <span>芝加哥商品交易所</span>集团(CME Group)现在为客户提供信用衍生品清算服务。尽管如此，许多产品目前还没有清算服务，包括利率掉期、股权掉期和结构性信贷产品。</p>
+<p>CCP允许相同合约的自动净额结算，提供头寸的每日估值，并要求公布保证金。此外，它们使报告变得更加容易，这将使监管机构能够更加清楚地了解具有系统重要性的金融机构是否建立了大量头寸。</p>
+<p>然而，将所有场外交易合约转移到中央结算银行会带来其他困难。交易对手风险并没有完全消除，而是集中在CCP身上。因此，对它们而言，审慎管理风险变得至关重要。CCP必须能够以不超过交易商公布的保证金加上其对清算商担保基金的贡献的成本，退出违约交易商的头寸。这需要合适的
+                                                                                                                                                                                                        <span>估值模型</span>、充足的利润率以及<span>流动性市场</span>。但愿，随着监管机构最终确定新金融秩序的规则，这些权衡将得到认可。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

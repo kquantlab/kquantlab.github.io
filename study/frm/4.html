@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C04 蒙特卡罗 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C04 蒙特卡罗">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C04 蒙特卡罗</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、单变量模拟</h2>
+<h3><b>1、模拟马尔可夫过程</b></h3>
+<p><span>有效市场</span>中，金融价格呈现出<span>随机游走</span>模式。价格遵循<b>马尔可夫过程</b>(Markov process)，这是一个独立于其过去历史的特殊<span>随机过程</span>。未来价格的整个分布仅依赖于当前价格，过去的历史无关紧要。</p>
+<p><b>维纳过程</b>(Wiener process)描述了变量 <span>\Delta z</span> 的变化在区间 <span>\Delta t</span> 上测量，其均值变化是零，<span>方差</span>与
+                                    <span>\Delta t</span> 成正比，写做【 <span>\Delta z \sim N(0, \Delta t)</span> 】。如果 <span>\epsilon</span> 是标准正态变量 <span>N(0,1)</span> ，则可以写成 <span>\Delta z = \epsilon \sqrt{\Delta t} </span>                                    。增量 <span> \Delta z</span> 在时间上是独立的。</p>
+<p><b><span>广义维纳过程</span></b>(Generalized Wiener process)描述了一个由维纳过程构建的变量 <span>\Delta x</span> ，具有一个恒定的单位时间趋势 <span>a</span> 和<span>波动性</span> <span>b</span> ，写做【 <span>\Delta x = a \Delta t + b \Delta z </span>】
+                                        。特殊地，<b>鞅</b>(<span>martingale</span>)是一个零漂移的随机过程，即 <span>a = 0</span> ，使得 <span>E(\Delta x) = 0</span>                                        。鞅的未来值的期望等于当前值，可以写做 <span>E(x_T) = x_0</span> 。</p>
+<p><b>伊藤过程</b>(Ito process)描述了一个广义维纳过程，其趋势和波动取决于潜在变量的当前值和时间，写做 <span>\Delta x = a(x, t) \Delta t + b(x, t)  \Delta z </span>                                        。这是一个<span>马尔可夫过程</span>，因为分布只取决于<span>随机变量</span> <span>x</span> 的当前值以及时间 <span>t</span>                                        。此外，伊藤过程具有<span>正态分布</span>。</p>
+<h3><b>2、<span>几何布朗运动</span></b></h3>
+<p>伊藤过程的特例是<b>几何布朗运动</b>(Geometric Brownian Motion, GBM)，将变量 <span>S</span> 描述为：</p>
+<blockquote><span>\Delta S = \mu S\Delta t + \sigma S \Delta z</span> </blockquote>
+<p>这个过程是几何的，因为趋势和波动性项与 <span>S</span> 的当前值成正比。股票价格通常就是这样，其回报率似乎比原始回报率 <span>\Delta S</span> 更稳定。几何布朗运动也被用于货币。因为
+                                        <span>\Delta S/S</span> 仅代表资本增值，从<span>股息</span>支付中提取出来， <span>\mu</span> 代表资产的预期总回报率减去收入支付率或<span>股息率</span>。</p>
+<p>几何布朗运动模型特别重要，因为它是<span>布莱克-斯科尔斯公式</span>的基础过程。这种分布的关键特征是波动性与 <span>S</span> 成正比，这确保了股票价格将保持正。当股价下跌时，其方差就会减少，这使得它不太可能经历大幅下跌，从而将价格推至负值。由于该模型的极限为
+                                        <span>dS/S = dln(S)</span> 的正态分布， <span>S</span> 服从<b><span>对数正态分布</span></b>(lognormal distribution)。</p>
+<p>几何布朗运动意味着，在 <span>T - t = \tau</span> 区间内，结束价格的<span>对数分布</span>为：</p>
+<blockquote><span>ln(S_T) = ln(S_t)  + (\mu - \frac{\sigma^2}{2})\tau + \sigma \sqrt{\tau} \epsilon</span> </blockquote>
+<p>其中 <span>\epsilon</span> 是标准正态变量。</p>
+<p>对数正态分布是否比正态分布好得多取决于所考虑的区间。如果区间只有一天，对数<span>正态假设</span>和正态假设的选择并不重要。考虑到典型的波动性，股价在一天之内跌至零以下的可能性非常小。然而，如果区间以年为单位衡量，这两种假设确实会导致不同的结果。对数正态分布更现实，因为它可以防止价格变为负值。</p>
+<p>在模拟中，这个过程是用小的步骤近似的平均值和方差的正态分布：</p>
+<blockquote><span>\frac{\Delta S}{S} \sim N(\mu \Delta t, \sigma^2 \Delta t)</span> </blockquote>
+<p>为了模拟 <span>S</span> 的未来价格路径，从当前价格 <span>S_t</span> 开始，生成一个独立的标准<span>正态变量</span>序列 <span>\epsilon</span> 。接下来的价格 <span>S_{t+1}</span> 和 <span>S_{t+2}</span>：</p>
+<blockquote><span>S_{t+1} =  S_t (1 + \mu \Delta t + \epsilon_1\sigma  \sqrt{\Delta t})</span> ， <span>S_{t+2} =  S_{t+1} (1 + \mu \Delta t + \epsilon_2\sigma  \sqrt{\Delta t})</span> </blockquote>
+<p>直到到达目标区间，此时价格 <span>S_{t+n }= S_T</span> 的分布应该接近对数正态。</p>
+<p>虽然这个模型对股票价格建模非常有用，但它有缺点。价格增量假设为正态分布。在实践中，我们观察到大多数金融资产的价格变化通常比正态分布有更宽的尾部。<span>回报率</span>也可能经历变化的方差。随着时间间隔 <span>\Delta t</span> 的缩小，波动性也会缩小。这意味着大的不连续不可能在短时间内发生。在现实中，一些资产会经历离散的跳跃，比如大宗商品或破产公司发行的证券。在这种情况下，应改变随机过程以适应这些观测结果。</p>
+<p>⭐ <b>例4.1</b> Suppose you simulate the price path of stock HHF using a geometric Brownian motion model with drift <span>\mu</span> = 0, volatility <span>\sigma</span> = 0.14, and time step <span>\Delta t </span> = 0.01. Let <span>S_t</span>                                            be the price of the stock at time t. If <span>S_0</span> = 100, and the first two simulated (randomly selected) standard normal variables are <span>\epsilon_1</span> = 0.263 and <span>\epsilon_2</span> = −0.475, what is the simulated stock price after the second
+                                            step?</p>
+<ul>
+<li>a. 96.79</li>
+<li>b. 99.79</li>
+<li>c. 99.97</li>
+<li>d. 99.70</li>
+</ul>
+<p>解析：选 d 。根据：</p>
+<blockquote><span>S_{t+1} =  S_t (1 + \mu \Delta t + \epsilon_1\sigma  \sqrt{\Delta t})</span> ， <span>S_{t+2} =  S_{t+1} (1 + \mu \Delta t + \epsilon_2\sigma  \sqrt{\Delta t})</span> </blockquote>
+<p>其中 <span>\mu </span> = 0，<span>\sigma \sqrt{\Delta t} </span> = 0.14×0.01^0.5 = 0.014。代入有
+                                                <span>S_{t+2} </span> = (1 + 0.014 × 0.263)(1 + 0.014×−0.475) = 0.997。</p>
+<p>⭐ <b>例4.2</b> In the geometric Brown motion process for a variable S,</p>
+<ul>
+<li>I. S is normally <span>distributed</span>.</li>
+<li>II. dln(S) is normally distributed.</li>
+<li>III. dS/S is normally distributed.</li>
+<li>IV. S is lognormally distributed.<br/></li>
+<li>a. I only</li>
+<li>b. II, III, and IV</li>
+<li>c. IV only</li>
+<li>d. III and IV</li>
+</ul>
+<p>解析：选 b 。dS/S和dln(S)均为正态分布。因此S是对数正态分布。</p>
+<p>⭐ <b>例4.3</b> Consider that a stock price S that follows a geometric Brownian motion dS = aSdt + bSdz, with b strictly positive. Which of the following statements is false?</p>
+<ul>
+<li>a. If the drift a is positive, the price one year from now will be above today’s price.</li>
+<li>b. The instantaneous rate of return on the stock follows a normal distribution.</li>
+<li>c. The stock price S follows a lognormal distribution.</li>
+<li>d. This model does not impose mean reversion.</li>
+</ul>
+<p>解析：选 a 。预期价格高于今天的价格，但不是世界上所有国家的价格都肯定这样。</p>
+<h3><b>3、模拟收益率</b></h3>
+<p>几何布朗运动过程被广泛用于股票价格和货币。然而，固定收益产品则是另一回事。债券价格显示了面值的长期回归，面值代表了到期时本金的偿还（假设没有违约）。这种过程与GBM过程不一致，几何布朗运动过程没有显示这样的<span>均值回归</span>。债券价格的波动性也以一种可预测的方式变化，因为债券的存期将缩减至零。同样，大宗商品也经常显示均值回归。</p>
+<p>利率的动态变化可以表示为：</p>
+<blockquote><span>\Delta r_ t = \kappa(\theta − r_t)\Delta t + \sigma r_t^{\gamma} 	\Delta z_t</span> </blockquote>
+<p>—— 其中 Vasicek 模型中 <span>\gamma = 0</span>，对数正态模型中 <span>\gamma = 1</span>，CIR 模型中 <span>\gamma = 0.5</span>。</p>
+<p>其中， <span>	\Delta z_t</span> 是一般的<span>维纳过程</span>。这里假设 <span>0 ≤ \kappa &lt;1</span>                                                ， <span>\theta ≥ 0</span> ， <span> \sigma ≥ 0</span> 。由于<span>收益率</span>只有一个随机变量，因此该模型称为<b><span>单因素模型</span></b>(one-factor
+                                                model)。</p>
+<p>这个马尔可夫过程有许多有趣的特征。首先，它显示了对长期 <span>\theta</span> 值的平均回归。参数 <span>\kappa</span> 决定均值回归的速度。当前利率较高，即
+                                                <span>r_t &gt; \theta</span> 时，该模型产生 <span>\kappa (\theta - r_t)</span> 向 <span>\theta</span>                                                    的负漂移。相反，当前低利率会导致 <span>\theta</span> 正向漂移。</p>
+<p>第二个特性是波动性过程，该模型包括 <span>\gamma = 0</span> 时的 <b>Vasicek 模型</b>。收益率的变化是正态分布的，因为 <span>\Delta r</span>                                                是 <span>\Delta z</span> 的<span>线性函数</span>， <span>\Delta z</span> 本身也是正态的。Vasicek
+                                                模型特别方便，因为它为许多固定收益产品提供了封闭的解决方案。然而，当初始利率从一个较低的值开始时，它可能会导致<span>负利率</span>。这是因为，与几何布朗运动不同，速率变化的波动性并不取决于水平。</p>
+<p>当 <span>\gamma = 1</span> 时，是<b>对数正态模型</b>(lognormal model)。忽略这一趋势，可得：</p>
+<blockquote><span>\Delta r _t = \sigma r_t \Delta z_t</span> ， <span>\frac{\Delta r _t}{r_t} =  \sigma \Delta z_t</span> </blockquote>
+<p>这意味着收益率 <span>dr/r</span> 的变化率具有固定的方差。因此，与<span>几何布朗运动模型</span>一样，较小的收益率导致较小的波动，这使得收益率不太可能降至零以下。当初始收益率接近于零时，该模型比常规模型更合适。</p>
+<p>当 <span>\gamma = 0.5</span> 时，是 <b>CIR 模型</b>(Cox, Ingersoll, and Ross)，<span>\gamma = 0.5</span>                                                与数据吻合良好。</p>
+<p>这类模型被称为<b>均衡模型</b>(equilibrium models)。从对经济变量的一些假设开始，并暗示<span>短期利率</span> <span>r</span> 的一个过程。这些模型生成一个预测的期限结构，其形状取决于模型参数和初始短期利率。模型的问题在于不够灵活，不能很好地适应目前的期限结构。</p>
+<p>相比之下，无套利模型被设计成与今天的期限结构一致。在这类模型中，期限结构是参数估计的输入。这种类型最早的模型是 <b>Ho-Lee 模型</b>：</p>
+<blockquote><span>\Delta r_t = \theta(t) \Delta t + \sigma\Delta z_t</span>，Ho-Lee</blockquote>
+<p>其中 <span>\theta(t)</span> 是所选择的时间函数，以使模型符合初始期限结构。扩展到在 <b>Hull-White 模型</b>中纳入均值回归：</p>
+<blockquote><span>\Delta r_t = [\theta(t)-ar_t] \Delta t + \sigma\Delta z_t</span>，Hull-White</blockquote>
+<p>最后，<b>HJM 模型</b>(Heath、Jarrow and Morton)更进一步假设波动性是时间的函数：</p>
+<blockquote><span>\Delta r_t = [\theta(t)-ar_t] \Delta t + \sigma(t)\Delta z_t</span> ，HJM</blockquote>
+<p>这些无套利模型的缺点是，在不同日期估计的参数之间没有任何一致性。函数 <span>\theta(t)</span> 可能每一天都不同，这是不合逻辑的。无套利模型对<span>异常值</span>，即用于拟合期限结构的债券价格中的数据错误，也更为敏感。</p>
+<h3><b>4、<span>二叉树</span></b></h3>
+<p>模拟(Simulations)在模拟风险因素的不确定性方面非常有用，特别是在众多的风险因素。然而，用离散树来描述价格的不确定性也是有用的。当价格可以采取两步之一时，这棵树被称为<b>二叉树</b>(binomial)。</p>
+<p>二叉树模型是几何布朗运动的一个离散等价。将观测区间 <span>T</span> 细分为 <span>n</span> 个区间， <span>\Delta t = T/n</span> 。在每个节点，价格要么以 <span>p</span> 的概率上升，要么以 <span>1-p</span>                                                        的概率下降。可以写做：</p>
+<blockquote><span>u = e^{\sigma \sqrt{\Delta t}}</span> ， <span>d = \frac{1}{u}</span>                                                        ， <span>p = \frac{e^{\mu \Delta t} - d}{u-d}</span> </blockquote>
+<p>可以推导得：</p>
+<blockquote><span>E[\frac{S_1}{S_0}] = e^{\mu \Delta t}</span> </blockquote>
+<p>随着步数的增加， <span>S_T</span> 的离散分布收敛于对数正态分布。</p>
+<p>⭐ <b>例4.4</b> The Vasicek model defines a risk-neutral process for r that is dr = a(b−r)dt + σdz, where a, b, and σ are constant, and r represents the rate of interest. From this equation we can conclude
+                                                        that the model is a</p>
+<ul>
+<li>a. Monte Carlo type model</li>
+<li>b. Single-factor term-structure model</li>
+<li>c. Two-factor term-structure model</li>
+<li>d. Decision tree model</li>
+</ul>
+<p>解析：选 b 。这个模型假设固定收益市场只有一个风险来源，是单因素的期限<span>结构模型</span>。</p>
+<p>⭐ <b>例4.5 </b>The term a(b− r) in the previous question represents which term?</p>
+<ul>
+<li>a. Gamma</li>
+<li>b. Stochastic</li>
+<li>c. Reversion</li>
+<li>d. Vega</li>
+</ul>
+<p>解析：选 c 。这代表了均值回归(mean reversion)的预期收益。</p>
+<p>⭐ <b>例4.6  </b>Which group of term-structure models do the Ho-Lee, Hull-White, and Heath-Jarrow-Morton models belong to?</p>
+<ul>
+<li>a. No-arbitrage models</li>
+<li>b. Two-factor models</li>
+<li>c. Lognormal models</li>
+<li>d. Deterministic models</li>
+</ul>
+<p>解析：选 a 。这些是期限结构的无套利模型，实现为单因素或双因素模型。</p>
+<p>⭐ <b>例4.7  </b>A plausible stochastic process for the short-term rate is often considered to be one where the rate is pulled back to some long-run average level. Which one of the following term-structure
+                                                        models does not include this characteristic?</p>
+<ul>
+<li>a. The Vasicek model</li>
+<li>b. The Ho-Lee model</li>
+<li>c. The Hull-White model</li>
+<li>d. The Cox-Ingersoll-Ross model</li>
+</ul>
+<p>解析：选 b 。Vasicek模型和CIR模型都是具有均值回归的单因素均衡模型。Hull-White 模型是一个具有均值回归的无套利模型。Ho-Lee 模型是一个早期的无套利模型，没有均值回归。</p>
+<hr/>
+<h2>二、实现模拟</h2>
+<h3><b>1、模拟 VAR </b></h3>
+<p>蒙特卡罗(Monte Carlo, MC)风险管理方法的实施步骤如下：</p>
+<ul>
+<li>步骤1：对风险因素价格 <span>S</span> ，即其分布和参数，从现值 <span>S_t</span> 开始，选择一个随机过程。</li>
+<li>步骤2：生成伪随机变量，代表目标观测区间 <span>S_T</span> 的风险因素。</li>
+<li>步骤3：计算投资组合在观测区间上的价值 <span>F_T(S_T)</span> 。</li>
+<li>步骤4：尽可能多地重复步骤2和步骤3。重复次数为 <span>K</span> 。</li>
+</ul>
+<p>这些步骤创建了一个分布 <span>F^1_T, . . . , F^K_T</span> ，可以排序得到VAR。测量第 <span>c</span> <span>分位数</span> <span>Q(F_T, c)</span> 和平均值 <span>Ave(F_T)</span> 。如果VAR被定义为在目标日期对期望值的偏差，有：</p>
+<blockquote><span>VAR(c) = Ave(F_T) − Q(F_T, c)</span> </blockquote>
+<h3><b>2、模拟衍生品</b></h3>
+<p>若只关注贴现到当前的目标日期的期望值，有：</p>
+<blockquote><span>F_t = e^{−r (T−t)} Ave(F_T)</span> </blockquote>
+<p>因此衍生品估值关注的是贴现中心的分布，而VAR关注的是目标日期的分位数。</p>
+<p><span>蒙特卡罗模拟</span>长期以来一直被用于为衍生品定价。可以通过假设基础资产以<span>无风险利率</span> <span>r</span> （假设没有收入支付）增长来为衍生品定价，这被称为<b>风险中性方法</b>(risk-neutral
+                                                            approach)。</p>
+<p>相反，<span>风险度量</span>处理实际分布，有时称为<b>物理分布</b>(physical distributions)。为了测量VAR，风险经理必须使用以20%作为实际预期收益 <span>\mu</span> 来模拟资产增长。因此，风险管理使用物理分布，而定价方法使用风险中性分布。</p>
+<p>模拟方法并不适用于所有类型的期权。这些方法假设，<span>衍生工具</span>在到期日的价值可以仅作为期末价格 <span>S_T</span> 的函数定价，或许还可以作为样本路径的函数定价。这就是<span>亚式期权</span>的情况，其收益是样本路径上的平均价格的函数。这样的期权被称为<b><span>路径依赖</span></b>(
+                                                            <span>path-dependent</span>)的。</p>
+<p>模拟方法不足以为美式<span>期权定价</span>，因为这种期权可以在早期执行。然而，最优的执行决策是复杂的，因为它应该考虑到期权的未来价值。常规的模拟方法无法做到这一点，因为它们只考虑当前和过去的信息。相反，评估美式期权需要一个<b>反向递归</b>(backward recursion)，例如使用二叉树。该方法检查是否应该执行该选项，从末尾开始，并按时间反向计算直到开始。</p>
+<h3><b>3、准确性</b></h3>
+<p>对于<b>抽样<span>变异性</span></b>(sampling variability)的影响，除非 <span>K</span> 非常大，否则 <span>S_T</span> 的经验分布将只是真实分布的一个近似。蒙特卡罗模拟的统计数据会有一些自然变化。由于蒙特卡罗模拟是独立绘图，统计的<span>标准误差</span>与 <span>\sqrt{K}</span>                                                                        成反比。更多的模拟会提高精度，但速度较慢。例如，从 <span>K = 10</span> 到 <span>K = 1000</span> 的精度增加了10倍，但是对于相同的10倍，需要从
+                                                                        <span>K = 1000</span> 到 <span>K = 100000</span> 。</p>
+<p>与定价相比，风险管理的准确性问题更糟糕，因为分位数的估计精度低于平均值。对于VAR测量，精度也是选定的<span>置信水平</span>的函数。较高的置信水平产生较少的左尾观测，因此会产生更不精确的VAR测量。使用1000次重复的99% VAR应该预期在左尾只有10个观察值，这不是一个很大的数字。VAR估计是由第10和第11个排序的数字推导出来的。相比之下，95%的VAR是从第15个和第51个排序的数字开始测量的，这更精确。此外，估计分位数的精度取决于分布的形状。相对于对称分布，空头期权头寸具有负偏度，左尾较长。因此，在左尾部的观察结果将更加分散，使得更精确地估计VAR变得更加困难。</p>
+<p>加快<span>收敛速度</span>的方法有很多：</p>
+<p>(1) <b><span>对偶变量</span>技术</b>(Antithetic variable technique)：使用了两次相同的随机序列，从 <span>t</span> 到 <span>T</span> ，取原始序列并改变它们所有值的符号。这将在不运行两倍数量的模拟的情况下，在最终的 <span>F_T</span> 分布中创建两倍数量的点。</p>
+<p>(2) <b>控制变量技术</b>(Control variate technique)。当类似的期权具有<span>解析解</span>时，这种技术被用于树的期权定价。假设 <span>f_E</span> 是一个具有解析解的欧式期权。通过这棵树可以得到美式期权和欧式期权的价值，
+                                                                            <span>F_A</span> 和 <span>F_E</span> 。然后我们假设 <span>F_A</span> 中的误差与 <span>F_E</span> 中的误差是相同的，这是已知的。调整后的值为 <span>F_A−(F_E−f_E)</span>                                                                            。</p>
+<p>(3) <b>拟随机序列</b>(Quasi-random sequences)，也称为准蒙特卡罗(quasi Monte Carlo, QMC)，创建的绘图不是独立的，而是设计来更均匀地填充<span>样本空间</span>。仿真结果表明，准蒙特卡罗方法比蒙特卡罗方法收敛速度快。对于固定数量的重复
+                                                                            <span>K</span> ，准蒙特卡罗值平均上会更接近真实值。</p>
+<p>传统蒙特卡罗的优点是，提供了一个标准误差，这个误差是 <span>1/\sqrt{K}</span> 的量级，因为绘制是独立的。因此知道估计值与真实值的距离，这在决定重复次数时很有用。相比之下，准蒙特卡罗方法没有给出精度的测量。</p>
+<p>⭐ <b>例4.8  </b>Which one of the following statements about Monte Carlo simulation is false?</p>
+<ul>
+<li>a. Monte Carlo simulation can be used with a lognormal distribution.</li>
+<li>b. Monte Carlo simulation can generate distributions for portfolios that contain only linear positions.</li>
+<li>c. One drawback of Monte Carlo simulation is that it is computationally very intensive.</li>
+<li>d. Assuming the underlying process is normal, the standard error resulting from Monte Carlo simulation is inversely related to the square root of the number of trials.</li>
+</ul>
+<p>解析：选 b 。蒙特卡罗模拟考虑了期权。第一步是模拟风险因素的过程。第二步为期权定价，它考虑了<span>非线性</span>因素。所以“只有线性头寸”的说法是不对的。</p>
+<p>⭐ <b>例4.9  </b>A risk manager has been requested to provide some indication of the accuracy of a Monte Carlo simulation. Using 1,000 replications of a normally distributed variable
+                                                                            S, the relative error in the one-day 99% VAR is 5%. Under these conditions,</p>
+<ul>
+<li>a. Using 1,000 replications of a long option position on S should create a larger relative error.</li>
+<li>b. Using 10,000 replications should create a larger relative error.</li>
+<li>c. Using another set of 1,000 replications will create an exact measure of 5.0% for relative error.</li>
+<li>d. Using 1,000 replications of a short option position on S should create a larger relative error.</li>
+</ul>
+<p>解析：选 d 。空头期权头寸的左尾较长，这使得精确估计左尾分位数变得更加困难，d 的说法正确。独立绘图的精度随 <span>\sqrt{K}</span> 而增加，因此增加重复次数应该会缩小标准误差。</p>
+<p>⭐ <b>例4.10  </b>The measurement error in VAR, due to sampling variation, should be greater with</p>
+<ul>
+<li>a. More observations and a high confidence level (e.g., 99%)</li>
+<li>b. Fewer observations and a high confidence level</li>
+<li>c. More observations and a low confidence level (e.g., 95%)</li>
+<li>d. Fewer observations and a low confidence level</li>
+</ul>
+<p>解析：选 b 。<u>采样的可变性随着观测量的减少、置信度的提高而增加</u>。对于观测量，可以参考<span>样本均值</span>精度的公式，它与数据点个数的<span>平方根</span>成反比。对于置信度，较高的置信度涉及较少的对左尾部的观察，VAR是从左尾部计算的。</p>
+<hr/>
+<h2>三、多重风险来源</h2>
+<p>对于更一般的情况，定义 <span>N</span> 为风险因素的数量。如果因子 <span>S_j</span> 独立，则可以对每个变量独立进行随机化。几何布朗运动模型有：</p>
+<blockquote><span>\Delta S_{j,t} = S_{j,t-1} \mu_j \Delta t + S_{j,t-1} \sigma_j \epsilon_{j,t} \sqrt{\Delta t}</span> </blockquote>
+<p>其中标准正态变量 <span>\epsilon</span> 在时间上是独立的，因子 <span>j = 1,…,N</span>                                                                                。然而，风险因素是相互关联的。首先绘制一组<span>自变量</span> <span>\eta</span> ，然后将它们转换成相关变量 <span>\epsilon</span> 。当只有两个因素时，写做：</p>
+<blockquote><span>\epsilon_1 = \eta_1</span> ，<br/><span>\epsilon_2 = \rho \eta_1 + (1 - \rho^2)^{1/2} \eta_2</span> </blockquote>
+<p>这里的 <span>\rho</span> 是变量 <span>\epsilon</span> 之间的<span>相关系数</span>。因为
+                                                                                <span>\eta</span> 有单位方差且不相关，可证：</p>
+<blockquote><span>V(\epsilon_2) = 1</span> ， <span>Cov(\epsilon_1, \epsilon_2) = \rho</span> </blockquote>
+<p>定义 <span>\epsilon</span> 为变量的向量，则 <span>\epsilon</span> <span>协方差矩阵</span>为
+                                                                                <span>V(\epsilon) = R</span> 。这个协方差矩阵，即均方偏差(squared deviations from the mean)的期望，也可以写成 <span>V(\epsilon) = E(\epsilon  \epsilon')</span> ，其中 <span>E(\epsilon) = 0</span>                                                                                。</p>
+<h3><b>1、</b>乔列斯基因子分解</h3>
+<p>显示相关结构的 <span>\epsilon</span> 的 <span>N</span> 个联合值 <span>V(\epsilon) = E(\epsilon  \epsilon') = R</span> 。因为矩阵 <span>R</span>                                                                                是一个对称实矩阵，它可以分解成它所谓的乔列斯基因子【 <span>R = TT'</span>】 ，其中 <span>T</span>                                                                                是一个右上方为零的下<span>三角矩阵</span>，在对角线上方。这被称为<b>乔列斯基因子分解</b>(Cholesky factorization)。</p>
+<p>首先生成一个独立的向量 <span>\eta</span>，其协方差矩阵为 <span>V(\eta) = I</span> ，其中
+                                                                                <span>I</span> 为<span>单位矩阵</span>。然后构造变换后的变量【 <span>\epsilon = T \eta</span> 】，可证协方差矩阵为
+                                                                                    <span>V(\epsilon) = R</span>。这种转换产生具有所需相关性的 <span>\epsilon</span> 。</p>
+<p>对于两个变量的情况。<span>关联矩阵</span>可分解为其乔列斯基因子，可以得到之前表达的矩阵形式：</p>
+<blockquote><span> \begin{bmatrix} \epsilon_1 \\ \epsilon_2  \end{bmatrix} = \begin{bmatrix} 1 &amp; 0 \\ \rho &amp; (1 - \rho^2)^{1/2} \end{bmatrix} \begin{bmatrix}  \eta_1 \\ \eta_2   \end{bmatrix}</span> </blockquote>
+<p>当关联矩阵中隐含的<span>独立因子</span>个数小于 <span>N</span> 时，分解将失败。</p>
+<h3><b>2、<span>维数灾难</span></b></h3>
+<p>现代风险管理是关于衡量大型投资组合的风险，通常暴露于大量风险因素。计算的数量随着因子 <span>N</span> 的数量呈<span>几何级数</span>增长。协方差矩阵的维数为 <span>N(N+ 1)/2</span> 。</p>
+<p>风险经理应该简化风险因素的数量，丢弃那些对投资组合的风险贡献不大的因素。基于完整变量集的模拟将非常耗时。模拟的艺术是设计简洁的实验，代表危险因素的变化幅度。</p>
+<p>这可以通过对风险因素和投资组合策略的经济分析来实现，或者对协方差矩阵进行统计分解。一种广泛使用的方法是<b><span>主成分分析</span></b>(principal component analysis, PCA)，它发现具有最大解释能力的危险因素的<span>线性组合</span>。这种类型的分析以用来降低风险空间的维度。</p>
+<p>⭐ <b>例4.11  </b>Let <span>N</span> be a <span>1 × n</span> vector of independent
+                                                                                draws from a standard normal distribution, and let <span>V</span> be a covariance matrix of market time-series data. Then, if
+                                                                                <span>L</span> is a diagonal matrix of the eigenvalues of <span>V</span> ,
+                                                                                <span>E</span> is a matrix of the eigenvectors of <span>V</span> , and <span>C'C</span>                                                                                    is the Cholesky factorization of <span>V</span> , which of the following would generate a normally distributed random vector
+                                                                                    with mean zero and covariance matrix <span>V</span> to be used in a Monte Carlo simulation?</p>
+<ul>
+<li>a. <span>NC'CN'</span> </li>
+<li>b. <span>NC'</span> </li>
+<li>c. <span>E'LE</span> </li>
+<li>d. Cannot be determined from data given</li>
+</ul>
+<p>解析：选 b 。 <span>N</span> 为<span>独立同分布</span>随机变量 <span>\eta</span>                                                                                        和 <span>C'C = TT'</span> 的向量。变换后的变量是 <span>T\eta</span>                                                                                        ，或 <span>C'N</span> ，或其转置。</p>
+<p>⭐ <b>例4.12  </b>Consider a stock that pays no dividends, has a volatility of 25% pa, and has an expected return of 13% pa. The current stock price is <span>S_0</span> = $30. This implies the model <span>S_{t+1} = S_t(1 + 0.13\Delta t + 0.25\sqrt{\Delta t} \epsilon)</span>                                                                                        , where <span>\epsilon</span> is a standard normal random variable. To implement this simulation, you generate
+                                                                                        a path of the stock price by starting at <span>t = 0</span> , generating a sample for <span>\epsilon</span> , updating the stock price according to the model, incrementing <span>t </span>                                                                                        by 1, and repeating this process until the end of the horizon is reached. Which of the following strategies for generating a sample for <span>\epsilon</span> will implement this simulation properly?</p>
+<ul>
+<li>a. Generate a sample for <span>\epsilon</span> by using the inverse of the standard normal cumulative distribution
+                                                                                            of a sample value drawn from a uniform distribution between 0 and 1.</li>
+<li>b. Generate a sample for <span>\epsilon</span> by sampling from a normal distribution with mean 0.13 and standard
+                                                                                            deviation 0.25.</li>
+<li>c. Generate a sample for <span>\epsilon</span> by using the inverse of the standard normal cumulative distribution
+                                                                                            of a sample value drawn from a uniform distribution between 0 and 1. Use Cholesky decomposition to correlate this sample with the sample from the previous time
+                                                                                            interval.</li>
+<li>d. Generate a sample for <span>\epsilon</span> by sampling from a normal distribution with mean 0.13 and standard
+                                                                                            deviation 0.25. Use Cholesky decomposition to correlate this sample with the sample from the previous time interval.</li>
+</ul>
+<p>解析：选 a 。变量 <span>\epsilon</span> 应具有<span>标准正态分布</span>，即均值为零，单位标准差。 <span>\epsilon</span> 随后被转换为所需的平均值和标准差。这里没有应用 Cholesky 分解，因为随机变量序列没有<span>序列相关性</span>。</p>
+<p>⭐ <b>例4.13  </b>Continuing with the previous question, you have implemented the simulation process discussed earlier using a time interval <span>\Delta t</span> = 0.001, and you are analyzing the following stock price path generated by your implementation.</p>
+<table>
+<tbody>
+<tr>
+<th>t</th>
+<th>S_{t-1}</th>
+<th>ε</th>
+<th>ΔS</th>
+</tr>
+<tr>
+<td>0</td>
+<td>30.00</td>
+<td>0.0930</td>
+<td>0.03</td>
+</tr>
+<tr>
+<td>1</td>
+<td>30.03</td>
+<td>0.8493</td>
+<td>0.21</td>
+</tr>
+<tr>
+<td>2</td>
+<td>30.23</td>
+<td>0.9617</td>
+<td>0.23</td>
+</tr>
+<tr>
+<td>3</td>
+<td>30.47</td>
+<td>0.2460</td>
+<td>0.06</td>
+</tr>
+<tr>
+<td>4</td>
+<td>30.53</td>
+<td>0.4769</td>
+<td>0.12</td>
+</tr>
+<tr>
+<td>5</td>
+<td>30.65</td>
+<td>0.7141</td>
+<td>0.18</td>
+</tr>
+</tbody>
+</table>
+<p>Given this sample, which of the following simulation steps most likely contains an error?</p>
+<ul>
+<li>a. Calculation to update the stock price</li>
+<li>b. Generation of random sample value for <span>\epsilon</span> </li>
+<li>c. Calculation of the change in stock price during each period</li>
+<li>d. None of the above</li>
+</ul>
+<p>解析：选 b 。随机变量 <span>\epsilon</span> 应该是一个标准的正态分布，这意味着它应该有负值也有正值，平均值应该接近于零。但这里不是这样的。这可能是一个统一变量。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

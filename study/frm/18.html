@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM2级：C18 抵押担保证券风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM2级：C18 抵押担保证券风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM2级：C18 抵押担保证券风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、<span>提前偿付风险</span></h2>
+<p>在开始本章之前，建议回顾以下章节：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/413001834">C06 债券基础</a>：久期与凸性部分</li>
+</ul>
+<h3>1、<span>抵押贷款年金</span></h3>
+<ul>
+<li>本文采用<code>\displaystyle</code>排版 </li>
+</ul>
+<p>与<span>固定收益证券</span>一样，抵押<span>贷款定价</span>的第一步是列出预期的现金流。抵押贷款的结构可以固定、可以浮动。假设每个月都有固定付款 <span>C_t</span> 。<span>价格收益率</span>关系为：</p>
+<blockquote><span>\displaystyle P = \sum_{t=1}^T \frac{C_t}{(1+y)^t}</span> </blockquote>
+<p>考虑一个典型的30年期<span>固定利率</span>抵押贷款，本金为$100,000，<span>年收益率</span>为6%。月供 C = $600。最初，其中500美元用于支付利息，即<span>I_t </span> = (6%/12)
+                                        × 100,000美元，其余 <span>P_t = C−I_t </span> = 100美元用于支付本金。在次月初，本金减少到99,900美元，这降低了下一个利息支付，增加了定期的本金支付。到最后，年金支付的大部分用于偿还本金。</p>
+<p>尽管这种债券的期限是 T = 30年，一个更好的衡量标准是<b>平均寿命</b>(AL, average life)，它考虑到了本金偿还的时间分布：</p>
+<blockquote><span>\displaystyle AL = \frac{1}{P} \sum_{t=1}^T tP_t</span> </blockquote>
+<p>在本例中，AL = 19.3年。久期同时考虑本金和利息的支付，在本例中为D= 10.8年。这也反映了债券价格对收益率变动的敏感性。这些度量比AL = 30、D= 14.0的子弹式债券要低得多。</p>
+<p>在处理抵押贷款池时，其特征由加权平均期限(WAM)、加权平均息票(WAC)和加权平均寿命(WAL)来描述。</p>
+<h3>2、提前偿还速度</h3>
+<p>但是，即使是固定付款，现金流也不确定，因为房主有可能提前偿还本金。对于借方来说，这代表了一种期权的<span>多头头寸</span>。对贷款人来说，这是一个空头头寸。</p>
+<p>在某些情况下，这些提前还款是随机的，例如当房主由于工作或家庭条件的变化而出售房屋时。在其他情况下，提前支付更容易预测。当利率下降时，提前还款增加，因为房主可以以较低的成本进行<span>再融资</span>。因此，这类似于<span>可赎回债券</span>，后者在<span>公司债券市场</span>中很常见，
+                                        <span>借款人</span>可以选择在固定的时间点以固定的价格收回其债券。（有些债券也是可卖回的，这意味着投资者可以选择将债券放回借款人。在这种情况下，投资者反而做多了期权。）</p>
+<p>一般来说，这些因素会影响抵押贷款再融资模式：</p>
+<ul>
+<li><span>抵押贷款利率</span>和当前利率之间的<span>利差</span>：如果当前抵押贷款利率相对于房主支付的利率下降，借款人就有动力以较低的利率再融资。因此，<span>息差</span>的扩大增加了提前支付。就像可赎回债券一样，如果能节省大量成本，再融资的好处就更大。</li>
+<li><span>贷款期限</span>：在抵押贷款刚刚发放后，提前还款率通常较低，可能是因为借款涉及<span>固定成本</span>。提前支付会随着时间的推移逐渐增加，直到达到稳定或成熟的水平。这种效果被称为<b><span>时效处理</span></b>(seasoning)。</li>
+<li>再融资激励：再融资的成本越小，房主就越有可能经常进行再融资。</li>
+<li>以前的利率路径：如果过去利率一直很高，但最近有所下降，则更有可能发生再融资。在这种情况下，过去的提前支付一直很低，但应该会大幅上升。相比之下，如果利率很低，但这种情况已经持续了一段时间，大部分本金将已经被预付。这种<span>路径依赖</span>通常被称为<b>耗尽</b>(burnout)。</li>
+<li>抵押贷款利率水平：较低的利率可以增加支付能力和周转。</li>
+<li>经济活动：在经济环境中，更多的工人更换工作地点会产生更大的工作流动率，这更有可能导致提前支付。</li>
+<li>季节性影响：春季通常有更多的购房，导致初秋提前还款增加。</li>
+</ul>
+<p><span>提前还款率</span>概括为所谓的有<b>条件提前还款率</b>(CPR)，以年为单位表示。使用调整，这个数字可以转换为一个月数字，称为<b>单月死亡率</b>(SMM)：</p>
+<blockquote><span>(1 - SMM)^{12} = (1 - CPR)</span> </blockquote>
+<p>例如，如果每年CPR = 6%，那么每月提前支付本金的比例为SMM = 1−(1−0.06)^(1/12) = 0.005143，即每月0.514%。对于每月初始余额(BMB)为BMB = $50,525和<span>定期本金</span>(SP)支付SP = $67的贷款，提前还款将为0.005143 ×($50,525 - $67) = $260。为了给抵押贷款定价，投资组合经理应该描述在债券剩余期限内预计提前支付的时间表。这取决于前面描述的所有因素。</p>
+<p>提前支付可以相对于一个行业标准来描述，称为<b>公共证券协会</b>(PSA)提前支付模型。PSA模型假设第一个月的CPR为0.2%，在接下来的30个月里每月上升0.2%，直到6%。即：</p>
+<blockquote><span>CPR = \min [6\% × (t/30), 6\%]</span> </blockquote>
+<figure><img src="https://pic3.zhimg.com/v2-c104414eb5bda972d0f4d352aaa21374_1440w.jpg" width="1740"/>
+<figcaption>三种预付模式</figcaption>
+</figure>
+<p>这种模式在上图中被描述为100%PSA速度。按照惯例，预付模式表示为PSA速度的百分比。例如，165%的PSA表示速度较快，70%的PSA表示速度较慢。以20个月前以150%PSA速度发行的抵押贷款为例。PSA速度为Min[6% ×(20/30), 6%] = 0.04。应用150因子，有CPR = 150% × 0.04 = 0.06。这意味着SMM = 0.514%。</p>
+<figure><img src="https://picx.zhimg.com/v2-3ead0c8839cf3422074b194b3686a5c5_1440w.jpg" width="1856"/>
+<figcaption>不同PSA速度的现金流</figcaption>
+</figure>
+<p>下一步是基于提前还款速度模式预测现金流。上图显示了面值为100万美元、利率为6%的30年期贷款的现金流模式。横线“无预付”表示固定年金支付$6,000，无任何提前支付。“100% PSA”线描述了现金流的增加模式，在30个月内达到峰值，随后下降。这一点与CPR稳定在6%相对应。这种模式在“165% PSA”线上更为明显，该线假设提前还款速度更快。提前支付会导致以后更低的支付，这就解释了为什么100%的PSA线最初高于70%的线，然后随着本金的偿还速度更快而降低。</p>
+<p>⭐ <b>例18.1</b> MBSs are a class of <span>securities</span> where the underlying is a pool of mortgages. In addition to the credit risk of a borrower defaulting on the loan, mortgages also
+                                            have prepayment risk because the borrower has the option to repay the loan early (at any time) usually due to favorable interest rate changes.From an investor’s point of view, a mortgage-backed security is equivalent
+                                            to holding a long position in a nonrepayable mortgage pool and which of the following?</p>
+<ul>
+<li>a. A long American call option on the underlying</li>
+<li>b. A short American call option on the underlying</li>
+<li>c. A short European put option on the underlying</li>
+<li>d. A long American put option on the underlying</li>
+</ul>
+<p>解析：选 b 。类似于美式<span>看涨期权</span>，因为如果收益率下降或价格上涨，借款人可以在任何时候偿还。</p>
+<p>⭐ <b>例18.2</b> Suppose the annual conditional prepayment rate (CPR) for a mortgagebacked security is 6%. What is the corresponding single monthly mortality(SMM) rate?</p>
+<ul>
+<li>a. 0.514%</li>
+<li>b. 0.334%</li>
+<li>c. 0.5%</li>
+<li>d. 1.355%</li>
+</ul>
+<p>解析：选 a 。(1 − 6%) = (1 − SMM)^12，解得SMM = 0.51%</p>
+<h3>3、衡量提前还款风险</h3>
+<p>有了对现金流的预测，现在可以将这些现金流折现为当前价值。下一步是风险的测量，这是从这些值的变化中获得的。与其他固定收益工具一样，抵押贷款也受到<span>市场风险</span>的影响，这是由于利率的波动，而<span>信贷风险</span>则是由于房主违约。抵押贷款还存在提前还款风险，即本金将提前偿还的风险。</p>
+<figure><img src="https://pic4.zhimg.com/v2-91f89f14cb9d58bcf821b5a6fe9465b1_1440w.jpg" width="1832"/>
+<figcaption>抵押贷款的负凸性</figcaption>
+</figure>
+<p>如上图所示，考虑8%的抵押贷款：</p>
+<ul>
+<li>如果利率降至6%，房主会理性地提前还款以进行再融资，因为6%的利率比8%的利率便宜。因为贷款的平均期限缩短了，这就叫<b>做<span>收缩风险</span></b>(contraction risk)。</li>
+<li>如果利率上升到10%，房主将不太可能提前再融资，提前还款将放缓。因为贷款的平均期限延长了，这就叫做<b><span>延期风险</span></b>(extension risk)。</li>
+</ul>
+<p>在点A处产生了负凸性，这反映了抵押<span>贷款投资</span>者做空期权的事实。在点B，利率非常高，房主不太可能提前再融资。因此，期权几乎毫无价值，抵押贷款就像普通债券一样，具有通常的正凸性。这种不断变化的现金流模式使得标准的久期指标不可靠，应该使用有效久期和<span>有效凸性</span>计算。有效久期和有效凸性基于抵押贷款的三个收益率值的估计价格，对利率的变化如何影响提前支付做出适当的假设。</p>
+<p>有效久期为：</p>
+<blockquote><span>\displaystyle D^E = \frac{P(y_0-\Delta y) - P(y_0+\Delta y) }{2 P_0 \Delta y}</span> </blockquote>
+<p>有效凸性为：</p>
+<blockquote><span>\displaystyle C^E = \frac{P(y_0-\Delta y) -2P_0 + P(y_0+\Delta y)}{P_0 (\Delta y)^2} </span> </blockquote>
+<p>下表给出了一个示例。</p>
+<div>
+<pre><code>     初始          不变的PSA         变化的PSA
+利率 7.50%     +25bp    -25bp    +25bp    -25bp
+PSA            165 PSA  165 PSA  150 PSA  200 PSA
+价格 100.125   98.75    101.50   98.7188  101.3438
+久期                5.49年            5.24年
+凸性                  0                -299</code></pre>
+</div>
+<p>在每种情况下，都考虑25个bp的上升和下降。在不变的PSA中，假定PSA速度恒定在165 PSA。在变化的PSA中，假设如果速率下降，PSA速度更高，如果速率增加，PSA速度更低。</p>
+<ul>
+<li>当利率下降时，抵押贷款价值上升但略低于恒定的PSA速度。反映收缩风险</li>
+<li>当利率上升时，抵押贷款价值比提前还款速度不变时下降多。反映延期风险</li>
+</ul>
+<p>在第一个“不变”面板中，有效久期为5.49年，凸性接近于零。在第二个“变化”面板中，有效久期为5.24年，凸性为负，与预期一致，且相当大。</p>
+<p>注意，<b>抵押贷款投资具有负凸性，这反映了授予房主提前还款期权的空头头寸。在利率上升时产生扩张风险，在利率下降时产生收缩风险</b>。</p>
+<p>抵押贷款的期权特性提高了它们的收益率。为了确定证券是否代表良好的价值，投资组合经理需要对期权成分建模。最常用的方法是<b><span>期权调整价差</span></b>(OAS, option-adjusted spread)。</p>
+<p><b>静态息差</b>(SS, static spread)是MBS收益率与具有相同加权平均寿命的<span>国库券</span>收益率之间的差值。一个更好的衡量方法是<b>零息差</b>(ZS, zero spread)，是一个固定的息差加上零<span>息票利率</span>，预计现金流的贴现值等于当前价格：</p>
+<blockquote><span>\displaystyle P = \sum_{t=1}^T \frac{C_t}{(1+R_t + ZS)^t}</span> </blockquote>
+<p>OAS方法包括对各种利率情景和提前支付进行模拟，以确定期权成本。OAS = 零息差 − 期权成本。代表了该工具的廉价程度。在同一风险等级内，交易OAS较高的证券比其他证券更可取。</p>
+<p>随着时间的推移，OAS比价差更稳定，因为后者受到期权成分的影响。这就解释了为什么在市场反弹期间(即长期<span>国债收益率</span>下降时)，当前息票抵押贷款的收益率差经常扩大。这些抵押贷款更有可能提前预付，这使得它们不那么有吸引力。他们的期权成本增加，推高了收益率差。此外，当<span>利率波动</span>率增加时，期权成本也会增加，从而推高零价差。</p>
+<p>⭐ <b>例18.3</b> How would you describe the typical price behavior of a low-premium mortgage pass-through security?</p>
+<ul>
+<li>a. It is similar to a U.S. Treasury bond.</li>
+<li>b. It is similar to a plain-vanilla corporate bond.</li>
+<li>c. When interest rates fall, its price increase would exceed that of a comparable-duration U.S. Treasury bond.</li>
+<li>d. When interest rates fall, its price increase would lag that of a comparableduration U.S. Treasury bond.</li>
+</ul>
+<p>解析：选 d 。MBS不同于普通债券、国库券或公司债券，因为它们具有负凸性。当利率下降时，房主会提前还款，这意味着价格的升值幅度小于同等期限的普通债券。</p>
+<p>⭐ <b>例18.4</b> What bond type does the following price-yield curve represent and at which yield level is convexity equal to zero?</p>
+<figure><img src="https://pic1.zhimg.com/v2-1cf5bde1c32b13dd95a54c82f3001884_1440w.jpg" width="818"/></figure>
+<ul>
+<li>a. Puttable bond with convexity close to zero at Y2.</li>
+<li>b. Puttable bond with convexity close to zero at Y1 and Y3.</li>
+<li>c. Callable bond with convexity close to zero at Y2.</li>
+<li>d. Callable bond with convexity close to zero at Y1 and Y3.</li>
+</ul>
+<p>解析：选 c 。是可赎回债券，因为如果利率下降，价格就会受到限制，这反映出借款人将收回债券的事实。在Y1凸性为负；在Y2接近于0。</p>
+<p>⭐ <b>例18.5</b> You are analyzing two comparable (same credit rating, maturity, liquidity,rate) U.S. callable corporate bonds. The following data is available for the nominal spread over the U.S.
+                                                                Treasury yield curve and Z spread and optionadjusted spread (OAS) relative to the U.S. Treasury spot curve:</p>
+<div>
+<pre><code>                 X   Y
+Nominal spread  145 130
+Z spread        120 115
+OAS             100 105</code></pre>
+</div>
+<p>The nominal spread on the comparable option-free bonds in the market is 100 basis points. Which of the following statements is correct?</p>
+<ul>
+<li>a. X only is undervalued.</li>
+<li>b. Y only is undervalued.</li>
+<li>c. X and Y both are undervalued.</li>
+<li>d. Neither X nor Y is undervalued.</li>
+</ul>
+<p>解析：选 b 。名义利差和Z利差不考虑看涨期权。比较应该集中在OAS上，Y的OAS更高，也高于无期权债券的100bp。</p>
+<hr/>
+<h2>二、<span>资产证券化</span></h2>
+<h3>1、证券化的原理</h3>
+<p>抵押贷款的一个问题是它们是不可交易的。在过去，它们由储蓄和贷款等金融机构发起和持有。然而，这种安排将风险集中在一个可能无法有效对冲风险的行业。此外，它还限制了可以流入抵押贷款的资金量。<b><span>抵押贷款支持证券</span></b>(MBS)的诞生就是为了解决这个问题。MBS是一种可交易证券，代表抵押贷款池的索取权，是<b>证券化(</b>Securitization)的一个例子，证券化是指将资产集中起来，发行代表资产池利益的证券的过程。这些资产是由<b>发起人</b>(originator)或<b><span>发行人</span></b>(issuer)创建的。</p>
+<p>证券化过程的第一步是创建一个新的法律实体，称为<b><span>特殊目的载体</span></b>(SPV, special-purpose vehicle)或<b><span>特殊目的实体</span></b>(SPE, special-purpose entity)。发起人然后将一组资产集中起来，卖给SPV。下一步，SPV发行由
+                                                                <span>金融资产</span>支持的可交易债权或证券。下图描述了一个基本的证券化结构。</p>
+<figure><img src="https://pic3.zhimg.com/v2-4a5e2c05a9f242bb751841403315966c_1440w.jpg" width="1234"/>
+<figcaption>证券化过程</figcaption>
+</figure>
+<p>这种结构的一个主要优势是它保护资产支持证券(ABS)投资者免受发起人的信用风险。然而，这需要将资产干净利落地出售给SPV。否则，发起者的<span>债权人</span>可能会试图在<span>破产程序</span>中扣押SPV的资产。其他的好处是，集中投资提供了多种资产的现成多样化。</p>
+<p>银行不再是所有人的主要资本提供者，银行的<b>去中介化</b>(disintermediation)推动了证券化的发展。当银行充当<span>金融中介机构</span>时，它们筹集资金(在资产负债表上记为负债)，用于发放贷款(记为资产)。通过证券化，资产和负债都从资产负债表中删除，需要更少的权益资本来运作。如果证券化能够使发起人持有的权益资本按比例减少，则可以减轻监管资本负担。例如，如果抵押贷款的资本要求过高，银行将受益于将抵押贷款剥离为证券，因为其所需的资本将大幅下降。</p>
+<p>对于发起人来说，证券化创造了额外的资金来源。证券化也可以用来管理银行的风险状况。如果证券化资产的风险与银行其他资产相同，即使银行规模缩小，银行的相对风险也不会改变。相比之下，如果抵押品的风险远远高于其他资产，银行就会通过证券化降低其风险。</p>
+<p>所有类型的资产都可以包含在资产支持体系中，包括抵押贷款、汽车贷款、学生贷款、信用卡应收账款、应收账款和债务。这些资产被称为<b>抵押品</b>(collateral)。一般来说，收取抵押品的款项需要持续的服务活动。这是由<b>服务代理</b>(servicing agent)完成的。通常，发起人也提供服务，以换取服务费。</p>
+<p>资产的现金流减去服务费用，通过SPV流向证券持有人。当证券化的结构是传递时，有一类债券，所有投资者在现金流中获得相同比例的利益。当SPV发行不同类别的证券时，这些债券被称为<b>分级</b>(tranches)。此外，还可以创建<span>衍生工具</span>来交换ABS部分的债权。</p>
+<p>到目前为止，我们已经研究了表外证券化。另一类是表内证券化，称为<b><span>担保债券</span></b>(covered bonds)。在这种结构中，银行发放贷款，并发行以这些贷款为担保的证券，这些证券保存在银行的账簿上。这种结构类似于有担保的公司债券，但在许多欧洲大陆法系国家有更强的法律保护。另一个区别是，在抵押贷款违约的情况下，投资者对银行有追索权。实际上，银行为信用风险提供了担保。</p>
+<p>在MBS证券化的情况下，抵押品包括住宅或商业抵押贷款。它们分别被称为人民币债券和CMBS。他们的基本现金流模式始于年金，即房主每月支付固定的本金和利息。因此，这些现金流的净现值受到利率风险、提前还款风险和违约风险的影响。</p>
+<p>然而，在实践中，大多数抵押贷款支持证券都有针对信用风险的第三方担保。例如，由美国政府赞助的<span>房利美</span>(Fannie Mae)发行的抵押贷款支持证券，即使原始借款人违约，也能保证全额支付利息和本金。在这种情况下，<b>政府支持企业</b>(GSE, government-sponsored
+                                                                                    enterprise)是<b>抵押保险公司</b>(mortgage insurer)。这种抵押贷款传递有时被称为<b>参与证书</b>(participation certificates)。</p>
+<p>相比之下，自有抵押贷款支持证券面临信用风险，并可能获得<span>信用评级</span>。基础抵押贷款的信用风险可以使用借款人信用度的衡量标准进行评估，如<b>FICO信用评分</b>(FICO credit score)。其他因素包括贷款与房屋价值的比率，借款人债务与收入或资产的比率，以及贷款中提供的文件。信用等级最低的贷款，通常FICO分数低于640，被称为<b><span>次级贷款</span></b>(subprime)。在优质贷款和次级贷款之间，Alt-A贷款包含非标准特征，但借款人的信用等级为A级。</p>
+<h3>2、证券化的问题</h3>
+<p>始于2007年的<span>金融危机</span>凸显了证券化过程的严重缺陷。证券化使银行能够将资产移出资产负债表，释放资本，并将风险分散给许多不同的投资者。从理论上讲，这是实实在在的好处。在实践中，<b>贷款并证券化</b>(OTD, originate-to-distribute)的失败导致了信贷危机。这种模式在许多关键方面都失败了，包括承销、信用评级和投资者尽职调查。</p>
+<p>在传统的银行模式中，银行或储蓄机构承保抵押贷款，并将其保留在资产负债表上。这就产生了仔细筛选贷款并密切监控贷款质量的动机。相反，当一笔贷款被证券化时，发起者就不太会担心贷款的质量，因为它的收入取决于发行的数量。毕竟，损失由另一方承担。这导致了<span>不良贷款</span>的大量增加，尤其是次级贷款，这些贷款被打包成证券，很快就变成了不良贷款。这是一个<b><span>道德风险</span></b>(moral
+                                                                                        hazard)问题，一家机构的行为与完全暴露于风险之下的行为不同。</p>
+<p>另一个问题是，当银行决定将贷款证券化是因为有关借款人的负面信息，而不是为了分散投资或减轻资本负担时。这就造成了证券化贷款中对低质量贷款的系统性偏向。为了保护自己，资产支持证券的投资者可以要求<span>发行银行</span>保留部分贷款风险，但这并不总是足够的。由于<b>信息不对称</b>(asymmetric
+                                                                                            information)，这是一个<b><span>逆向选择</span></b>(adverse selection)问题。在<span>二级市场</span>出售贷款的借款人的股价表现低于其他公司。（另一种解释是，贷款被出售的借款人不受银行监管的约束，进行了次优投资。）</p>
+<p>此外，这些贷款大多以复杂的证券化结构告终。投资者盲目地依赖于信用评级，而这些评级后来被证明是不准确的，因为信用评级机构没有对基础信贷进行足够深入的分析。由于资产证券化如此容易，住宅部门的贷款总额上升，创造了额外的住房需求，可能会使房价进一步远离其基本价值。</p>
+<p>证券化过程也反过来困扰着最初的银行，其中许多银行已经创建了独立的实体，投资于资产支持证券。<b>结构性投资工具</b>(SIV, structured investment vehicles)就是这样一个例子，它基本上是虚拟银行，投资于资产支持证券，并利用<span>短期债务</span>为自己融资。在信贷危机期间，这些债务的投资者开始担心这些结构性投资工具的解决能力，并拒绝将其投资展期。因此，结构性投资工具严重暴露在流动性风险之下。这迫使许多银行将它们赞助的失败SIV的资产重新吸收到资产负债表上，要求它们在一个特别不利的环境中筹集额外的股本。结果，证券化未能提供预期的资本缓解。</p>
+<p>最后，当证券化市场冻结时，许多银行和贷款发放机构都被积压的贷款<b>储藏</b>(warehoused)了，这些贷款被认为是暂时的。随着房地产市场暴跌，许多贷款变成坏账，这些银行在本应是临时持有的资产上蒙受了巨大损失。</p>
+<p>⭐ <b>例18.6</b> Many observers have blamed the originate-to-distribute model of banks for having aggravated or even caused the credit crisis. Which of the following
+                                                                                                    statements about the performance of the originate-to-distribute model of banks during the credit crisis is incorrect?</p>
+<ul>
+<li>a. The originate-to-distribute model failed across all loan types equally.</li>
+<li>b. Mortgage originators made large losses during the crisis and many went bankrupt.</li>
+<li>c. Warehouse risk was a major cause of losses for originators of subprime mortgages.</li>
+<li>d. The originate-to-distribute model can reduce systemic risk by having fewer risks located in banks, but a surprise during the crisis was the extent to
+                                                                                                        which banks had kept risks.</li>
+</ul>
+<p>解析：选 a 。抵押贷款的问题，特别是次级贷款，比其他类型的债务要大得多。否则，表述b和c是正确的。由于仓库风险，发起者损失了资金，这涉及到在贷款被证券化之前将其保留在资产负债表上。当这些贷款价值下降时，就会造成损失。</p>
+<hr/>
+<h2>三、分级</h2>
+<h3>1、概念</h3>
+<p>抵押贷款支持证券面临提前<span>支付风险</span>，这导致了负凸性。这一特点对那些想要固定收益证券的投资者没有吸引力，他们想要固定收益证券有可预测的支付，这样他们就可以匹配自己的负债。作为回应，开发了基于MBS的具有更吸引人特征的证券类别，即<b>抵押<span>贷款担保</span>债务</b>(CMO)，这是一种新的证券，可以将MBS池的现金流重新定向到各个部分。</p>
+<figure><img src="https://pic4.zhimg.com/v2-565c20d8cdae60bb53714f2ae71f906f_1440w.jpg" width="1304"/>
+<figcaption>分级(Tranching)</figcaption>
+</figure>
+<p>上图说明了分级过程。来自MBS池的现金流进入SPV，SPV发行具有不同特征的不同债权，称为分级。第一部分的现金流比最初的现金流更可预测。然后，不确定性被推到其他部分。从MBS池开始，创造出更适合投资者需求的证券。注意，现金流和风险是完全保留的，它们只是在部分之间重新分配。无论发生什么变化，所产生的组合必须遵守基础证券和所产生的组合的基本
+                                                                                                        <span>守恒定律</span>。</p>
+<p>每一个时间点必须有相同的现金流流入和流出SPV。因此必拥有相同的<span>市场价值</span>和相同的风险配置。分级投资组合的加权久期和凸性之和必须等于原始久期和凸性。如果分级A的凸性低于标的证券，那么其他分级的凸性肯定更高。类似的结构也适用于<b>抵押债券债务</b>(CBO)、<b>抵押贷款债务</b>(CLO)、<b>抵押债务债务</b>(CDO)，它们分别是由债券、贷款或债务（债券和贷款）支持的可交易债券，这些结构重新安排了信用风险。</p>
+<p>注意，<b>分级交易重新安排了基础证券的总现金流、总价值和总风险。在任何时候，这些分级的总现金流、价值和风险必与抵押品的现金流、价值和风险相等。如果某些分级的风险低于抵押品，那么其他分级的风险肯定更高。</b></p>
+<p>⭐ <b>例18.7</b> A CLO is generally</p>
+<ul>
+<li>a. A set of loans that can be traded individually in the market</li>
+<li>b. A pass-through</li>
+<li>c. A set of bonds backed by a loan portfolio</li>
+<li>d. None of the above</li>
+</ul>
+<p>解析：选 c 。与CMO一样，CLO代表一组由抵押品支持的可交易证券，在这种情况下是<span>贷款组合</span>。</p>
+<p>⭐ <b>例18.8</b> When evaluating asset-backed securitization issues, which of following would be least important during the investor’s analysis process?</p>
+<ul>
+<li>a. The liability concentration levels of the asset originator</li>
+<li>b. The structure of the underlying securitization transaction</li>
+<li>c. The quality of the loan servicer for the underlying assets in the transaction</li>
+<li>d. The quality of the underlying assets within the securitization structure</li>
+</ul>
+<p>解析：选 a 。发起人破产不会对SPV产生影响，因此发起人的财务状况是最不重要的因素。所有其他因素在评估证券化时都很重要。</p>
+<h3>2、逆浮动</h3>
+<p>为了说明分级的概念，考虑一个简单的例子，其中有一个分成利率风险的两级结构。抵押品包括定期的五年期、票面利率6%的1亿美元票据。分为：</p>
+<ul>
+<li>浮动利率票据(FRN)，以5,000万美元的名义支付LIBOR</li>
+<li><b>逆浮动</b>(inverse floater)，以5,000万美元的名义支付12%的LIBOR</li>
+</ul>
+<p>因为逆浮动债券的券息 <span>C_{IF}</span> 不能低于零，这就对浮动债券的息票 <span>C_F</span>                                                                                                            施加了另一个条件。公式是：</p>
+<ul>
+<li><span>C_{F}</span> = Min(LIBOR, 12%) </li>
+<li><span>C_{IF}</span> = Max(12% − LIBOR, 0)</li>
+</ul>
+<p>我们验证流出的现金流与流入的现金流相加。对于每一次券息支付（以百万为单位），有：</p>
+<ul>
+<li>$50 × LIBOR + $50 × (12% − LIBOR) = $100 × 6% = $6</li>
+</ul>
+<p>所以这是一个完美的匹配。到期时，两倍5000万美元的支付总额加起来是1亿美元，所以这也是一样的。</p>
+<p>还可以将原始结构的风险分解为两个组成部分的风险。假设一个平坦的期限结构，假设原来的五年期债券的久期是D= 4.5年。投资组合的<span>美元久期</span>为：</p>
+<ul>
+<li>$50,000,000 × <span>D_F </span> + $50,000,000 × <span> D_{IF}</span>                                                                                                                = $100,000,000 × D</li>
+</ul>
+<p>在重置之前，浮动的久期接近于零 <span>D_F</span> = 0。因此，逆浮动债券的久期为 <span>D_{IF}</span>                                                                                                            = ($100,000,000 / $50,000,000) × D= 2 × D，即9年，是原始票据久期的两倍。逆浮动债券的久期远远大于其到期期限。这说明了久期是一种利率敏感性度量。当现金流不确定时，久期不一定与到期日有关。直观地说，第一分级的浮动具有零风险，因此所有的风险必须被吸收到第二分级，以保持投资组合的总风险。</p>
+<p>这种分析可以很容易地扩展到具有更大杠杆的逆浮动。假设息票与两倍LIBOR挂钩，例如18%-2 × LIBOR。本金必须以 <span>x</span> 的比例分配给浮动投资者，以100 -
+                                                                                                            <span>x</span> 的比例分配给反向浮动投资者，这样才能保留息票支付。设置：</p>
+<ul>
+<li>x × LIBOR + (100 − x) × (18% − 2 × LIBOR) = $6</li>
+<li>[x − 2(100 − x)] × LIBOR + (100 − x) × 18% = $6</li>
+</ul>
+<p>由于LIBOR会随着时间而变化，因此只有在括号之间的期限始终为零的情况下才能满足这一要求。这意味着3x - 200 = 0，或 x = 6667万美元。因此，名义资产的三分之二必须分配给浮动资产，三分之一分配给逆浮动。逆浮动现在的久期是原始票据的三倍。</p>
+<p>⭐ <b>例18.9</b> Suppose that the coupon and the modified duration of a 10-year bond priced to par are 6.0% and 7.5, respectively. What is the
+                                                                                                                    approximate modified duration of a 10-year inverse floater priced to par with a coupon of 18% −2 × LIBOR?</p>
+<ul>
+<li>a. 7.5</li>
+<li>b. 15.0</li>
+<li>c. 22.5</li>
+<li>d. 0.0</li>
+</ul>
+<p>解析：选 c 。将<span>固定利率债券</span>分为三分之二的FRN和三分之一的逆浮动。这将确保逆浮动支付与两倍LIBOR相关。因此，逆浮动的久期是<span>债券久期</span>的三倍。</p>
+<p>⭐ <b>例18.10</b> With LIBOR at 4%, a manager wants to increase the duration of his portfolio.Which of the following securities should he acquire
+                                                                                                                    to increase the duration of his portfolio the most?</p>
+<ul>
+<li>a. A 10-year reverse floater that pays 8% − LIBOR, payable annually</li>
+<li>b. A 10-year reverse floater that pays 12% − 2 × LIBOR, payable annually</li>
+<li>c. A 10-year floater that pays LIBOR, payable annually</li>
+<li>d. A 10-year fixed-rate bond carrying a coupon of 4% payable annually</li>
+</ul>
+<p>解析：选 b 。浮动的久期大约为零。10年期普通债券的期限约为9年。第一个逆浮动(答案A)的久期约为2 × 9 = 18年，第二个(答案B)的久期约为3 × 9 = 27年。</p>
+<p>⭐ <b>例18.11</b> Which of the following statements most accurately reflects characteristics of a reverse floater (with no options attached)?</p>
+<ul>
+<li>a. A portfolio of reverse floaters carries a marginally higher duration risk than a portfolio of similar-maturity normal floaters.</li>
+<li>b. A holder of a reverse floater can synthetically convert the position into a fixed-rate bond by receiving floating and paying fixed
+                                                                                                                            on an interest rate swap.</li>
+<li>c. A reverse floater hedges against rising benchmark yields.</li>
+<li>d. A reverse floater’s price changes by as much as that in a similar-maturity fixed-rate bond for a given change in yield.</li>
+</ul>
+<p>解析：选 b 。逆浮动的久期高于FRN，后者接近于零，甚至高于相同期限的固定日期债券。所以答案A和D是错的。当收益率上升时，它会赔钱，所以C是错误的。逆浮动相当于固定利率债券的多头头寸加上收到固定、支付浮动互换。因此B是正确的。</p>
+<h3>3、CMO</h3>
+<p>当抵押品由抵押贷款组成时，CMO可以通过将本金优先支付到不同的部分来定义。这被定义为<b>顺序支付分级</b>(sequential pay tranches)。例如，分级A将首先获得整个基础抵押贷款的本金。这增加了分级A现金流的确定性，从而对一些投资者更具吸引力。当然，这是对他人的损害。在支付给分级A的本金用完后，分级B将收到基础MBS的所有本金，其他分级也是如此。</p>
+<p>提前还款风险可以通过<b>计划摊销类别</b>(PAC, planned amortization class)进一步降到最低。然后，所有提前支付风险都转移到CMO结构中的其他债券，称为<b>支持债券</b>(support bonds)。PAC债券提供一个固定的赎回时间表，只要抵押品的提前支付保持在特定的PSA范围内，比如100到250
+                                                                                                                        PSA，称为<b>PAC上限</b>(PAC collar)。当建立结构时，本金支付被设定为生命周期中每个月这两个<span>极端值</span>的最小支付。随着时间的推移，这确保了更稳定的支付模式。</p>
+<p>另一种流行的结构是IO/PO结构。这就把MBS分成了两个部分。<b>只付息</b>(IO)部分只接受基础MBS的利息支付。<b>只付本</b>(PO)部分只接受本金支付。与以前一样，IO和PO的市场价值必须与MBS的市场价值完全相加。下图描述了IO和PO的
+                                                                                                                            <span>价格行为</span>，这两个部分的垂直相加总是等于MBS的值。</p>
+<figure><img src="https://pic4.zhimg.com/v2-3845c5e6d0a754825f4d723a583cdeed_1440w.jpg" width="1768"/>
+<figcaption>从MBS创建IO/PO结构</figcaption>
+</figure>
+<p>为了分析PO，需要注意的是，所有本金支付的总和是恒定的（因为没有违约风险）。只是时间不确定。相比之下，所有利息支付的总和取决于本金支付的时间。较晚的本金支付会产生更大的利息支付总额。</p>
+<p>如果利率下降，本金将提前支付，这反映了收缩风险。由于本金提前支付，<span>贴现率</span>降低，PO的价值应该大幅升值。相反，更快的提前支付意味着在MBS的生命周期内支付更少的利息，这对IO是不利的。IO应该贬值。相反，如果利率上升，提前支付将放缓，这反映了延期风险。因为本金支付的时间较晚，贴现率增加，PO应该会失去价值。然而，较慢的提前支付意味着在MBS的生命周期内支付更多的利息，这对IO有利。IO在价值上升值，直到较高的贴现率效应占主导地位。因此，IO是久期为负的看涨证券。图中显示IO线的斜率为正，表示久期为负。</p>
+<p>⭐ <b>例18.12</b> Which of the following mortgage-backed securities has a negative duration?</p>
+<ul>
+<li>a. Interest-only (IO) strips</li>
+<li>b. Inverse floaters</li>
+<li>c. Mortgage pass-throughs</li>
+<li>d. Principal-only (PO) strips</li>
+</ul>
+<p>解析：选 a 。IO的价值随着利率的上升而增加，因为在这种情况下，提前支付的抵押贷款会减少。提前还款越少，支付的利息就越多，这就增加了IO的价值。</p>
+<p>⭐ <b>例18.13</b> As the chief risk officer (CRO) of a firm specializing in MBSs, you have been asked to explain how interest-only
+                                                                                                                                        (IO) strips and principal-only (PO) strips would react if interest rates change. Which of the following is true?</p>
+<ul>
+<li>a. When interest rates fall, both PO and IO strips will increase in value.</li>
+<li>b. When interest rates fall, POs will increase in value, IOs decrease in value.</li>
+<li>c. When interest rates rise, POs will increase in value, IOs decrease in value.</li>
+<li>d. When interest rates rise, both PO and IO strips will increase in value.</li>
+</ul>
+<p>解析：选 b 。PO的久期为正，IO为负。因此，它们对利率下降的反应方向相反。</p>
+<p>⭐ <b>例18.14</b> Which of following statements about mortgage-backed securities is incorrect?</p>
+<ul>
+<li>a. An MBS price is more sensitive to yield curve twists than are zero-coupon bonds.</li>
+<li>b. When the yield is higher than the coupon rate of an MBS, the MBS behaves similarly to corporate bonds as interest
+                                                                                                                                            rates change.</li>
+<li>c. As yield volatility increases, the value of an MBS grows, too.</li>
+<li>d. Due to changes in prepayment rates, mortgages and MBSs exhibit negative convexity; that is, when interest rates
+                                                                                                                                            decrease, prepayments increase.</li>
+</ul>
+<p>解析：选 c 。随着收益率波动率的增加，期权成本上升，收益率也上升，这意味着价格的下降。表述d是正确的，因为MBS具有负凸性。表述b是正确的，因为高收益率意味着较低的提前还款率，这使得MBS类似于普通债券。</p>
+<p>⭐ <b>例18.15</b> George Smith is an analyst in the risk management department and he is reviewing a pool of mortgages. Prepayment
+                                                                                                                                        risk introduces complexity to the valuation of mortgages. Which of the following factors are generally considered to
+                                                                                                                                        affect prepayment risk for a mortgage?</p>
+<ol>
+<li>I. Changes to interest rates</li>
+<li>II. Age of the mortgage</li>
+<li>III. Season of the year</li>
+<li>IV. Age of the home</li>
+<li>V. Amount of principal outstanding</li>
+</ol>
+<ul>
+<li>a. I, II, and V</li>
+<li>b. I, II, III, and V</li>
+<li>c. I, II, IV, and V</li>
+<li>d. III and IV</li>
+</ul>
+<p>解析：选 b 。所有因素都会影响提前还款风险，除了房屋的使用年限。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

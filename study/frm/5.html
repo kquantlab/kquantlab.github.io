@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C05 风险因子建模 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C05 风险因子建模">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C05 风险因子建模</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>引言</h2>
+<p>大多数金融时间序列的特征是比<span>正态分布</span>更肥的尾部。有充足证据表明，风险以一种可预测的方式变化。这种现象被称为<b><span>波动聚类</span></b>(volatility clustering)，也可以解释肥尾现象的出现。极端的观测结果可以从高波动性时期得出。这可能导致肥尾出现时，合并期间的低和高波动性。</p>
+<h2>一、聚合</h2>
+<h3><b>1、衡量回报率</b></h3>
+<p>现货价格的相对变化率为：</p>
+<blockquote><span>r_t = \frac{P_{t} - P_{t-1}}{P_{t-1}} </span> </blockquote>
+<p>构造价格比的对数：</p>
+<blockquote><span>R_t = ln[\frac{P_{t} }{P_{t-1}}] </span> </blockquote>
+<p>二者的关系为：</p>
+<blockquote><span>R_t =ln(1 + r_t)</span> </blockquote>
+<p>对于日常数据， <span>R_t</span> 和 <span>r_t</span> 之间通常没有什么区别。</p>
+<p>变量 <span>r_t</span> 序列是否可以看作是独立的观测值。独立观测有一个很好的性质，即其联合分布为边际分布的乘积，大大简化了分析。有充分的经济理由相信，金融价格的变化率是接近独立的。</p>
+<p><b>有效市场</b>(efficient markets)假说假设当前价格传达了有关资产的所有相关信息。如果是这样，资产价格的任何变化都必须是由于新闻（不可能预测的事件）。这意味着价格的变化是不可预测的，因此满足对独立随机变量的定义。这个假设也被称为<b>随机游走</b>(random walk)理论，意味着回报的条件分布只依赖于当前的价格，而不依赖于以前的价格历史。如果是这样，技术分析肯定是徒劳的。技术分析师试图根据过去的价格模式来预测价格走势。此外，如果回报的分布随时间是常数，则称变量是<b><span>独立同分布</span></b>(independent
+                                        and identically distributed, i.i.d.)的。</p>
+<h3><b>2、时间聚合</b></h3>
+<p>通常需要将参数从一个给定的观测区间转换到另一个观测区间。例如，有每日回报的数据，从中计算每日波动率，希望将其扩展到每月波动率。这是一个<b>时间聚合</b>(time aggregation)问题。</p>
+<p>当使用价格比率的对数时，回报可以很容易地聚合，因为乘积的对数是单个项的对数之和。例如，在两个时期内，价格运动可以描述为每天价格运动的总和：</p>
+<blockquote><span>R_{t,2} =R_{t-1} + R_{t}</span> </blockquote>
+<p>可以进一步得到期望和方差为：</p>
+<blockquote><span>E(R_{t,2}) = E(R_{t-1}) + E(R_t)</span> ，<br/> <span>V(R_{t,2}) = V(R_{t-1}) + V(R_t) + 2Cov(R_{t-1}, R_t)</span> </blockquote>
+<p>若收益是不相关的，即<span>协方差</span>项为零，并且在不同的日子里有相同的分布，则：</p>
+<blockquote><span>E(R_{t,2}) =  2E(R_t)</span> ， <span>V(R_{t,2}) =  2V(R_t)</span> </blockquote>
+<p>更一般地，定义 <span>T</span> 为周期数。多期预期收益和波动率为：</p>
+<blockquote><span>\mu_T = \mu T</span> ， <span>\sigma_T =\sigma \sqrt{T}</span> </blockquote>
+<p><b>当连续收益不相关时，波动性随时间的平方根随着观测区间的扩展而增加</b>。</p>
+<p>假设分布在加法下是稳定的，在一个时期或多个时期内保持不变，这是正态分布的情况。如果是这样，可以使用相同的乘数 <span>\alpha</span> ，对应于1期和 <span>t</span> 期回报的选定置信水平。多期VAR为：</p>
+<blockquote><span>VAR_T = \alpha (\sigma \sqrt{T})W = VAR_1  \sqrt{T}</span> </blockquote>
+<p>在以下条件下，时间规则的平方根适用于参数VAR：</p>
+<p>(1) 每个时期的分布是相同的，在预期收益和风险方面都没有可预测的时间变化；<br/>(2) 每个时期的回报是不相关的；<br/>(3) 分布对于1期或t期是相同的，或者在加法下是稳定的，例如正态分布。</p>
+<p>如果回报不独立，或许能够描述长期风险。例如，当回报率遵循一阶自回归过程时：</p>
+<blockquote><span>R_t = \rho R_{t−1} + u_t</span> </blockquote>
+<p>则两天收益的方差可以证明得到：</p>
+<blockquote><span>V[R_t + R_{t-1}] = \sigma^2 × 2[1 + \rho]</span> </blockquote>
+<p>此时，可得：</p>
+<blockquote><span>VAR_2=\alpha(\sigma\sqrt{2(1+\rho)})W=VAR_1\sqrt{2(1+\rho)}</span> </blockquote>
+<p>因为考虑的是同一变量在时间序列中的相关性， <span>\rho</span> 被称为<b><span>自相关系数</span></b>(autocorrelation coefficient)或<b>序列自相关系数</b>(serial autocorrelation
+                                                    coefficient)。</p>
+<p>若 <span>\rho &gt; 0</span> ，在一个方向上的运动很可能后面跟着另一个方向的运动，这意味着市场显示出<b>趋势</b>(trends)或<b>动量</b>(momentum)，长期波动性的增长速度比通常的时间规则的平方根要快。</p>
+<p>相反，若 <span>\rho &lt; 0</span> ，则一个方向的移动可能以后发生逆转，这是<b><span>均值回归</span></b>(mean reversion)的一个例子，长期波动性的增长速度比通常的时间规则平方根的增长速度要慢。</p>
+<p><b>⭐ 例5.1  </b>Consider a portfolio with a one-day VAR of $1 million. Assume that the market is trending with an autocorrelation of 0.1. Under this scenario, what would you expect the two-day VAR to be?</p>
+<ul>
+<li>a. $2 million</li>
+<li>b. $1.414 million</li>
+<li>c. $1.483 million</li>
+<li>d. $1.449 million</li>
+</ul>
+<p>解析：选 c 。根据 <span>VAR_2=VAR_1\sqrt{2(1+\rho)}</span> 可知 VAR2 = 1×(2 + 0.2)^0.5 = 1.483</p>
+<p>⭐<b> 例5.2</b> A fundamental assumption of the random walk hypothesis of market returns is that returns from one time period to the next are statistically independent. This assumption implies</p>
+<ul>
+<li>a. Returns from one time period to the next can never be equal.</li>
+<li>b. Returns from one time period to the next are uncorrelated.</li>
+<li>c. Knowledge of the returns from one time period does not help in predicting returns from the next time period.</li>
+<li>d. Both b. and c. are true.</li>
+</ul>
+<p>解析：选 d 。有效市场意味着未来回报的分配并不依赖于过去的回报。因此，回报率不能相互关联。两个连续的回报率可能偶然相等。</p>
+<p>⭐<b> 例5.3  </b>Consider a stock with daily returns that follow a random walk. The annualized volatility is 34%. Estimate the weekly volatility of this stock assuming that the year has 52 weeks.</p>
+<ul>
+<li>a. 6.80%</li>
+<li>b. 5.83%</li>
+<li>c. 4.85%</li>
+<li>d. 4.71%</li>
+</ul>
+<p>解析：选 d 。 对于随机游走，周波动率为 34% × 1 / 52^0.5 = 4.71%</p>
+<p>⭐<b> 例5.4  </b>Assume we calculate a one-week VAR for a natural gas position by rescaling the daily VAR using the square root of time rule. Let us now assume that we determine the true gas price process
+                                                        to be mean reverting and recalculate the VAR. Which of the following statements is true?</p>
+<ul>
+<li>a. The recalculated VAR will be less than the original VAR.</li>
+<li>b. The recalculated VAR will be equal to the original VAR.</li>
+<li>c. The recalculated VAR will be greater than the original VAR.</li>
+<li>d. There is no necessary relationship between the recalculated VAR and the original VAR.</li>
+</ul>
+<p>解析：选 a 。在均值回归中，波动性的增长速度比时间的平方根要慢。</p>
+<h3><b>3、组合聚合</b></h3>
+<p>考虑一个包含 <span>N</span> 股投资的股权投资组合。定义每一股持有的数量为 <span>q_i</span> ，单位价格为 <span>S_i</span> 。 <span>t</span> 时刻的投资组合价值表示为：</p>
+<blockquote><span>W_t = \sum_{i=1}^{N} q_i S_{i,t}</span> </blockquote>
+<p>分配给资产 <span>i</span> 的权重为：</p>
+<blockquote><span>w_{i,t} = \frac{q_i S_{i,t}}{W_t }</span> </blockquote>
+<p>使用权重可以排除净投资为零( <span>W_t = 0</span> )的情况，比如一些衍生品头寸。如果允许卖空，可以有正权重和负权重，或者如果投资组合可以杠杆化，权重可以大于1。</p>
+<p>下一个时期，投资组合的价值是：</p>
+<blockquote><span>W_{t+1} = \sum_{i=1}^{N} q_i S_{i,t+1}</span> </blockquote>
+<p>总回报为：</p>
+<blockquote><span>W_{t+1} - W_t = \sum_{i=1}^{N} q_i (S_{i,t+1} - S_{i,t})</span> </blockquote>
+<p>回报率为：</p>
+<blockquote><span>\frac{W_{t+1} - W_t }{ W_t }  =  \sum_{i=1}^{N}   \frac{q_i S_{i,t}}{W_t } \frac{(S_{i,t+1} - S_{i,t})}{ S_{i,t} }  </span> <br/><br/> <span>= \sum_{i=1}^{N}   w_{i,t}\frac{(S_{i,t+1} - S_{i,t})}{ S_{i,t} } </span> </blockquote>
+<p>投资组合收益率是资产收益率的线性组合：</p>
+<blockquote><span>r_{p, t+1} = \sum_{i=1}^{N} w_{i,t} r_{i,t+1}</span> </blockquote>
+<p>总回报为：</p>
+<blockquote><span>W_{t+1} - W_t = [ \sum_{i=1}^{N} w_{i,t} r_{i,t+1} ] W_t</span> </blockquote>
+<p>如果个体收益也是正态分布，则具有正态分布。</p>
+<p>或者用货币来表示各自的头寸：</p>
+<blockquote><span>x_{i,t }= w_{i,t }W_t = q_i S_{i,t }</span> </blockquote>
+<p>总回报为：</p>
+<blockquote><span>W_{t+1} - W_t = [ \sum_{i=1}^{N} x_{i,t} r_{i,t+1} ] </span> </blockquote>
+<p>投资组合收益的方差是：</p>
+<blockquote><span>V[W_{t+1} −W_t] = x'Σ x</span> </blockquote>
+<p>因为投资组合遵循正态分布，完全由其预期收益和方差来描述。则投资组合VAR为：</p>
+<blockquote><span>VAR = \alpha \sqrt{x'Σ x}</span> </blockquote>
+<p>其中 <span>\alpha</span> 取决于置信度和选定的密度函数。</p>
+<p>⭐<b> 例5.5  </b>Consider a portfolio with 40% invested in asset X and 60% invested in asset Y. The mean and variance of return on X are 0 and 25 respectively.The mean and variance of return on Y are 1
+                                                        and 121 respectively. The correlation coefficient between X and Y is 0.3. What is the nearest value for portfolio volatility?</p>
+<ul>
+<li>a. 9.51</li>
+<li>b. 8.60</li>
+<li>c. 13.38</li>
+<li>d. 7.45</li>
+</ul>
+<p>解析：选 d 。 <span>\sigma_p^2</span> = (0.4)^2×25 + (0.6)^2×121 + 2(0.4)(0.6)0.3×(25×121)^0.5 = 55.48。因此，波动率为开方后的结果，55.48^0.5 = 7.45。</p>
+<blockquote><span>\sigma_P^2=w_1^2\sigma_1^2+2\rho w_1w_2\sigma_1\sigma_2+w_2^2\sigma_2^2</span> </blockquote>
+<hr/>
+<h2>二、三种分布的比较</h2>
+<h3><b>1、正态分布</b></h3>
+<p>正态分布（<span>高斯分布</span>）通常是对资产回报建模的首选。这种分布在统计学中起着特殊的作用，因为它易于处理，并且在加法下是稳定的，这意味着一个联合正态变量的组合本身就是正态的。它还通过<span>中心极限定理</span>提供了独立随机变量平均值的极限分布。</p>
+<p>正态分布为许多随机变量的分布提供了粗略的一阶近似，包括货币价格变化率、股票价格变化率、债券价格变化率、收益率变化率和商品价格变化率。这些都出现了许多小的移动和很少出现大的移动。这为中心权重更大的分布提供了理论依据，如钟形正态分布。然而可能不适用于衡量尾部风险。</p>
+<h3><b>2、</b><span>对数正态分布</span></h3>
+<p>定义随机变量是新的价格 <span>P_1</span> ，给定当前价格 <span>P_0</span> 。定义 <span>r = (P_1−P_0)/P_0</span> 作为价格的收益率，假设这个随机变量是从正态分布中得到的，可表示为：</p>
+<blockquote><span>r ∼ \Phi(\mu, \sigma)</span> </blockquote>
+<p>对于价格，有 <span>P_1 =P_0(1 + r)</span> ，其分布为：</p>
+<blockquote><span>P_1 ∼ P_0 +\Phi(P_0\mu, P_0\sigma)</span> </blockquote>
+<p>在这种情况下，正态分布甚至在理论上都不正确。股票价格不可能低于零。同样，大宗商品价格和收益率也不可能变为负值。这就是为什么流行对数正态分布：</p>
+<blockquote><span>R=ln(P_1/P_0) ∼ \Phi(\mu, \sigma)</span> </blockquote>
+<p>通过取对数，价格表示为 <span>P_1 = P_0 e^R</span> ，恒大于0。对数正态是向右偏的。</p>
+<p>正态分布和对数正态分布之间的差异是由波动率参数的大小驱动的。这个参数的小值意味着分布实际上是相同的。这种情况可能发生在资产风险不是很大的时候，也就是年波动率很小的时候，也可能发生在观测区间非常短的时候。在这种情况下，价格变为负值的可能性很小。</p>
+<p>即，<b>对于短期或低波动率，正态分布和对数正态分布非常相似。</b></p>
+<h3><b>3、</b><span>肥尾分布</span></h3>
+<p><b>每个金融市场每年都会经历一或多次的每日价格变动，变动幅度为4个及以上的标准差。在任何一年，通常至少有一个市场的日波动大于10个标准差</b>。其中包括的原因可能有：（1）真实分布的尾部更厚，例如学生 t 分布；（2）观察结果来自混合的分布，例如风险一高一低两个正态的混合；（3）分布是非平稳的。</p>
+<hr/>
+<h2>三、风险的时变</h2>
+<p>当风险因素从具有时变波动性的分布中提取时，肥尾也会发生。为了实际起见，这种时间变化必须具有一定的可预测性。</p>
+<h3><b>1、移动平均</b></h3>
+<p>假设传统方差的估计值为：</p>
+<blockquote><span>\sigma_t^2 = \frac{1}{T}\sum_{i=1}^{T} r_{t-i}^2</span> </blockquote>
+<p>过去每个观测的权重是 <span>w_i = 1/T</span> 。如果更近期的观察结果对第二天更有意义，那么数据的利用不够好。</p>
+<h3><b>2、GARCH</b></h3>
+<p><b>广义自回归条件异方差</b>(GARCH)模型是波动性<b>聚类</b>(clustering)的一个实用模型，假设在时间t的收益有一个特定的分布（如正态分布），如：</p>
+<blockquote><span>r_t ∼ \Phi(\mu_t, \sigma_t)</span> </blockquote>
+<p><span>\sigma</span> 是按时间编码的。将<b>条件方差</b>(conditional variance)定义为基于当前信息的条件方差。这可能与无条件方差不同，<b>无条件方差</b>(unconditional variance)对整个样本是一样的。因此，平均方差是无条件的，而时变方差是有条件的。条件波动率模型成功地预测了风险。一般的假设是条件回报有一个正态分布，尽管这可以扩展到其他分布，如学生
+                                                            t 分布。</p>
+<p><span>GARCH模型</span>假设条件方差依赖于最新的创新和先前的条件方差。将 <span>h_t = \sigma_t^2</span> 定义为条件方差，使用到 <span>t-1</span> 的信息，将 <span>r_{t-1}</span> 定义为前一天的回报，也称为创新(innovation)。这类模型中最简单的是GARCH(1,1)过程：</p>
+<blockquote><span>h_t = \alpha_0 + \alpha_1r_{t-1}^2 + \beta h_{t−1}</span> </blockquote>
+<p>涉及到创新的滞后和之前预测的滞后。 <span>\beta</span> 项允许方差的持久性，这是数据的现实特征。这里忽略了平均值 <span>\mu_t</span> ，如果视界较短，平均值
+                                                            <span>\mu_t</span> 通常较小。一般地， <span>GARCH(p, q)</span> 模型在历史收益上有 <span>p</span> 个滞后项，在以前的方差上有 <span>q</span> 个滞后项。</p>
+<p>通过设置 <span>E[r_{t-1}^2 ]= h_t = h_{t−1} = h</span> ，可以找到平均无条件方差：</p>
+<blockquote><span>h = \frac{\alpha_0}{1 - \alpha_1 - \beta}</span> </blockquote>
+<p>当 <span>\gamma = \alpha_1 + \beta &lt; 1</span> 时，该模型是平稳的。 <span>\gamma</span>                                                            也称为<b>持久性</b>(persistence)，定义了方差冲击恢复到其长期值的速度。<span>\gamma</span> 越大，恢复到其长期值的所需时间越长。</p>
+<p>GARCH参数采用<b>极大似然法</b>(maximum likelihood)对参数进行估计，涉及到对观测结果的可能性进行数值优化。通常，残差 <span>\epsilon_t = r_t / \sqrt{h_t}</span> 被假定为具有正态分布并且是独立的。对于每个观测，密度是：</p>
+<blockquote><span>f (r_t|\alpha_0, \alpha_1, \beta) =\frac{1}{\sqrt{2 \pi h_t}} exp[-\frac{1}{2h_t}(r_t - \mu_t)^2]</span> </blockquote>
+<p>如果有 <span>T</span> 个观测值，它们的联合密度是每个时间周期 <span>T</span> 的密度的乘积。然后<span>似然函数</span>依赖于三个GARCH参数，再次忽略平均值。优化过程使似然函数的对数最大化：</p>
+<blockquote><span>max:F (\alpha_0, \alpha_1, \beta|r) = \sum_{t=1}^{T} ln f(r_t|h_t)  = \sum_{t=1}^{T}  [ln\frac{1}{\sqrt{2 \pi h_t}} - \frac{r_t^2}{2h_t} ]</span> </blockquote>
+<p>其中 <span>f</span> 是正态密度函数。优化递归执行，从 <span>h_0</span> 开始，递归计算 <span>h_1</span> 到 <span>h_T</span> 。然后计算似然函数，并让优化收敛到一个最大值。最后，GARCH过程可以外推到未来，这就形成了一个波动率期限结构。第二天预测为：</p>
+<blockquote><span>E_{t−1}(r^ 2_{t+1}) = \alpha_0 + \alpha_1E_{t−1}(r^2 _t ) + \beta h_t = \alpha_0 + \alpha_1h_t + \beta h_t = \alpha_0 + \beta h_t</span> </blockquote>
+<p>再过一天，预测为：</p>
+<blockquote><span>E_{t−1}(r^ 2_{t+2})  = \alpha_0 + \alpha_1E_{t−1}(r^2_{t+1} ) +  \beta E_{t−1}(h_{t+1}) = \alpha_0 + (\alpha_1+\beta)E_{t−1}(r^2_{t+1} )</span> <br/><br/><span>E_{t−1}(r^ 2_{t+2})  = \alpha_0 + \gamma (\alpha_0 + \gamma h_t)</span> </blockquote>
+<p>一般地：</p>
+<blockquote><span>E_{t−1}(r^ 2_{t+n})  = \alpha_0 (1 + \gamma +  \gamma^2 + ... +  \gamma^{n-1} )+  \gamma^{n} h_t</span> </blockquote>
+<p>当条件方差偏离起始值时，它会以 <span>\alpha_1+\beta</span> 的速度缓慢地恢复到长期值</p>
+<p>当风险是时变的时候，用于外推收益的时间规则的平方根并不适用。如果方差的初始值大于长期平均值，那么简单地将一天的方差外推到一个更长的观测区间将会夸大平均方差。相反，从较低的值开始并应用时间规则的平方根将会低估风险。</p>
+<p>因此，<b>当风险时变时，用时间规则的平方根将单日收益缩放到更长的期限通常是不合适的</b>。</p>
+<p>⭐<b> 例5.6  </b>Suppose <span>\sigma^2_t </span> is the estimated variance at time <span>t</span>                                                                    and <span>u_t</span> is the realized return at <span>t</span> . Which of the following
+                                                                    GARCH(1,1) models will take the longest time to revert to its mean?</p>
+<ul>
+<li>a. <span>\sigma^2_t </span> = 0.04 + 0.02 <span>u^2_{t−1}</span> + 0.92
+                                                                        <span>\sigma^2_{t−1}</span> </li>
+<li>b. <span>\sigma^2_t </span> = 0.02 + 0.04 <span>u^2_{t−1}</span> + 0.94
+                                                                        <span>\sigma^2_{t−1}</span></li>
+<li>c. <span>\sigma^2_t </span> = 0.03 + 0.02 <span>u^2_{t−1}</span> + 0.95
+                                                                        <span>\sigma^2_{t−1}</span></li>
+<li>d. <span>\sigma^2_t </span> = 0.03 + 0.03 <span>u^2_{t−1}</span> + 0.93
+                                                                        <span>\sigma^2_{t−1}</span></li>
+</ul>
+<p>解析：选 b 。持久性 <span> \alpha_1 + \beta </span> 分别为0.94、0.98、0.97、0.96。因此，具有最高持久性的模型将花费最长的时间恢复到均值。</p>
+<p>⭐<b> 例5.7  </b>Assume you are using a GARCH model to forecast volatility that you use to calculate the one-day VAR. If volatility is mean reverting, what can you say about the T-day VAR?</p>
+<ul>
+<li>a. It is less than the <span>\sqrt{T}</span> × one-day VAR.</li>
+<li>b. It is equal to <span>\sqrt{T}</span> × one-day VAR.</li>
+<li>c. It is greater than the <span>\sqrt{T}</span> × one-day VAR.</li>
+<li>d. It could be greater or less than the <span>\sqrt{T}</span> × one-day VAR.</li>
+</ul>
+<p>解析：选 d 。如果初始波动率等于长期波动率，那么 <span>T</span> 日VAR可以用时间规则的平方根来计算，假设是正态分布。如果初始波动率较高，那么 <span>T</span>                                                                    日VAR值应该小于 <span>\sqrt{T}</span> ×单日VAR值，反之，如果初始波动率较低，那么 <span>T</span> 日VAR值应该大于长期值。然而，题干并没有指明起点。</p>
+<p>⭐<b> 例5.8  </b>A risk manager estimates daily variance <span>h_t</span> using a GARCH model on daily returns <span>r_t</span> : <span>h_t = \alpha_0 + \alpha_1r^2_{t−1}+ \beta h_{t−1}</span>                                                                    , with <span>\alpha_0</span> = 0.005, <span>\alpha_1</span> = 0.04, <span>\beta</span> = 0.94. The long-run annualized volatility is approximately</p>
+<ul>
+<li>a. 13.54%</li>
+<li>b. 7.94%</li>
+<li>c. 72.72%</li>
+<li>d. 25.00%</li>
+</ul>
+<p>解析：选 b 。根据以下公式可得：h = 0.005/(1 - 0.04 - 0.94) = 0.25。</p>
+<blockquote><span>h = \frac{\alpha_0}{1 - \alpha_1 - \beta}</span> </blockquote>
+<p>取平方根，得到每日波动性为0.5。 乘以252^0.5，得到年化波动率为7.937%。</p>
+<p>⭐<b> 例5.9  </b>Which of the following statements is incorrect regarding the volatility term structure predicted by a GARCH(1,1) model: <span>\sigma^2_t  = \omega + \alpha u^2_{t−1}+\beta \sigma^2_{t−1}</span>                                                                        ,where <span>\alpha+\beta &lt; 1</span> ?</p>
+<ul>
+<li>a. When the current volatility estimate is below the long-run average volatility, this GARCH model estimates an upward-sloping volatility term structure.</li>
+<li>b. When the current volatility estimate is above the long-run average volatility, this GARCH model estimates a downward-sloping volatility term structure.</li>
+<li>c. Assuming the long-run estimated variance remains unchanged as the GARCH parameters <span>\alpha</span> and <span>\beta</span> increase, the volatility term structure predicted by this GARCH model reverts to the long-run estimated variance more slowly.</li>
+<li>d. Assuming the long-run estimated variance remains unchanged as the GARCH parameters <span>\alpha</span> and <span>\beta</span> increase, the volatility term structure predicted by this GARCH model reverts to the long-run estimated variance faster.</li>
+</ul>
+<p>解析：选 d 。GARCH模型在条件波动率中具有均值回归。当 <span>\sigma_t</span> 低于长期平均水平时，波动性结构上升。更高的持续性 <span>\alpha + \beta</span>                                                                        意味着均值回归更慢。</p>
+<h3><b>3、EWMA</b></h3>
+<p>RiskMetrics方法是GARCH过程的一个具体案例，使用起来特别方便。方差采用<b>指数加权移动平均</b>(exponentially weighted moving average, EWMA)预测：</p>
+<blockquote><span>h_t = \lambda h_{t−1} + (1 −\lambda)r^2_{t−1}</span> </blockquote>
+<p>参数 <span>\lambda (0 &lt; \lambda &lt; 1)</span> 也称为<b>衰减因子</b>(decay factor)。它决定了先前观测值的相对权重。EWMA模型对过去的观测值的权重呈几何递减，对最近的观测值赋予更大的重要性。递归替换后得：</p>
+<blockquote><span>h_t = (1 −\lambda)[r^2_{t−1}+ \lambda r^2_{t−2}+ \lambda^2 r^2_{t−3}+· · ·]</span> </blockquote>
+<p>因此，权重以几何或指数的速度递减。 <span>\lambda</span> 越低，旧的观测结果就越容易被遗忘。该模型是GARCH过程的一种特殊情况，其中 <span>\alpha_0 = 0</span>                                                                            ， <span>\alpha_1 + \beta = 1</span> 。因此，该模型具有永久持久性。</p>
+<p>相比之下，移动平均(MA)模型有一个固定的观测区间，区间内的权重相等，但其他情况为零。具有较短观测区间的MA模型给予近期观测更大的权重。因此对当前事件的反应更灵敏，也更不稳定。</p>
+<p>⭐<b> 例5.10  </b>A bank uses the exponentially weighted moving average (EWMA) technique with <span>\lambda</span> of 0.9 to model
+                                                                            the daily volatility of a security. The current estimate of the daily volatility is 1.5%. The closing price of the security is USD 20 yesterday and USD 18 today. Using continuously
+                                                                            compounded returns, what is the updated estimate of the volatility?</p>
+<ul>
+<li>a. 3.62%</li>
+<li>b. 1.31%</li>
+<li>c. 2.96%</li>
+<li>d. 5.44%</li>
+</ul>
+<p>解析：选 a 。对数回报率为 ln(18/20) = −10.54%. 新的方差预测为 h = 0.90 × (1.5^2) + (1 - 0.90) × 10.54^2 = 0.001313 然后再开平方根得到 3.62%.</p>
+<p>⭐<b> 例5.11 </b> Using a daily RiskMetrics EWMA model with a decay factor <span>\lambda </span> = 0.95 to develop a forecast of
+                                                                            the conditional variance, which weight will be applied to the return that is four days old?</p>
+<ul>
+<li>a. 0.000</li>
+<li>b. 0.043</li>
+<li>c. 0.048</li>
+<li>d. 0.950</li>
+</ul>
+<p>解析：选 b 。最后一天的权重为(1- 0.95)= 0.050。前一天的值是0.05×0.95，四天前的值是0.05×0.95^3 = 0.04287。</p>
+<p>⭐<b> 例5.12  </b>Until January 1999 the historical volatility for the Brazilian real versus the U.S. dollar had been very small for several years. On January 13, Brazil abandoned the
+                                                                            defense of the currency peg. Using the data from the close of business on January 13, which of the following methods for calculating volatility would have shown the greatest jump
+                                                                            in measured historical volatility?</p>
+<ul>
+<li>a. 250-day equal weight</li>
+<li>b. Exponentially weighted with a daily decay factor of 0.94</li>
+<li>c. 60-day equal weight</li>
+<li>d. All of the above</li>
+</ul>
+<p>解析：选 b 。EWMA模型对最新观测值的权重为0.06，高于60日MA权重(1/60)= 0.0167，也高于250日MA权重(1/250) = 0.004。</p>
+<p>⭐<b> 例5.13   </b>Which of the following four statements on models for estimating volatility is incorrect?</p>
+<ul>
+<li>a. In the EWMA model, some positive weight is assigned to the long-run average variance rate.</li>
+<li>b. In the EWMA model, the weights assigned to observations decrease exponentially as the observations become older.</li>
+<li>c. In the GARCH(1,1) model, a positive weight is estimated for the longrun average variance rate.</li>
+<li>d. In the GARCH(1,1) model, the weights estimated for observations decrease exponentially as the observations become older.</li>
+</ul>
+<p>解析：选 a 。GARCH模型具有有限的无条件方差。由于 <span>\alpha_1 + \beta = 1</span> ，EWMA模型的长期平均方差式没有定义的。在这两个模型中，权值随时间呈指数下降。</p>
+<p>⭐<b> 例5.14 </b> Assume that an asset’s daily return is normally distributed with zero mean. Suppose you have historical return data, <span>u_1, u_2, . . . , u_m</span>                                                                            and that you want to use the maximum likelihood method to estimate the parameters of a EWMA volatility model. To do this, you define <span> v_i = \sigma^2_i </span>                                                                            as the variance estimated by the EWMA model on day <span>i</span> , so that the likelihood that these m observations occurred is
+                                                                            given by:</p>
+<blockquote><span>\prod_{ i=1}^{m}  [\frac{1}{\sqrt{2\pi v_i}} exp[−\frac{u_i^2}{2v_i}]]</span> </blockquote>
+<p>To maximize the likelihood that these m observations occurred, you must:</p>
+<ul>
+<li>a. Find the value of that minimizes: <span>\sum_{ i=1}^{m}  [-ln(v_i)-\frac{u_i^2}{2v_i}]</span> </li>
+<li>b. Find the value of that maximizes: <span>\sum_{ i=1}^{m}  [-ln(v_i)-\frac{u_i^2}{2v_i}]</span> </li>
+<li>c. Find the value of that minimizes: <span>-mln(v_i)-\sum_{ i=1}^{m}  \frac{u_i^2}{2v_i}</span> </li>
+<li>d. Find the value of that maximizes: <span>-mln(v_i)-\sum_{ i=1}^{m}  \frac{u_i^2}{2v_i}</span> </li>
+</ul>
+<p>解析：选 b 。最优参数必须使似然函数最大化。否则，对数似然函数就是乘积的对数，也就是对数的和。这就得到一个常数 <span>\sum_{ i=1}^{m}  [-ln(v_i)-\frac{u_i^2}{2v_i}]</span>                                                                            ，第一项没有办法超出求和范围，因为它取决于 <span>i</span> 。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

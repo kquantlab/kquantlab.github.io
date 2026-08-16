@@ -1,0 +1,34 @@
+.learning-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.learning-panel,
+.learning-panel[data-library="freqtrade"] {
+  display: flex;
+  flex-direction: column;
+  grid-row: auto;
+  min-width: 0;
+}
+
+.learning-items {
+  flex: 1;
+  align-content: start;
+  grid-auto-rows: minmax(58px, auto);
+}
+
+.learning-item {
+  min-height: 58px;
+  height: 100%;
+  line-height: 1.45;
+}
+
+.show-all {
+  margin-top: 16px;
+}
+
+@media (max-width: 980px) {
+  .learning-columns {
+    grid-template-columns: 1fr;
+  }
+}

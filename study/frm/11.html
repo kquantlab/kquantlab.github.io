@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C11 权益等市场 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C11 权益等市场">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C11 权益等市场</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>一、权益</h2>
+<h3><b>1、权益的分类</b></h3>
+<p><b>普通股</b>(Common stocks)，也叫<b>权益</b>(equities)，是代表公司所有权的<span>证券</span>。债券优先于股票。一旦公司破产，他们对公司的资产有优先索求权。因此，股票代表公司在偿还债券、贷款和其他<span>合同义务</span>后的<b><span>剩余索取权</span></b>(residual
+                                    claims)。<span>普通股</span>的另一个重要特征是其<b><span>有限责任</span></b>(limited liability)，这意味着大多数股东可能损失的是他们的原始投资。这与非法人企业的所有者不同，<span>非法人企业</span>的债权人有权要求所有者的
+                                    <span>个人资产</span>。</p>
+<p><b><span>优先股</span></b>(Preferred stocks)不同于普通股，因为它们承诺支付特定的股息流，就像一个<span>永续债券</span>。然而，与债券不同的是，不支付这些<span>股息</span>并不会导致违约。相反，公司必须在优先股<span>股利</span>支付完之前暂停向普通股持有者发放股利。换句话说，优先股次于债券，但优先于普通股。对于<b><span>累积优先股</span>股息</b>(cumulative
+                                    preferred dividends)，所有当期和先前推迟的股利必须在普通股股利支付之前支付。优先股通常没有投票权。</p>
+<p>与支付利息不同，优先股的股息不是可免税的支出。然而，优先股具有抵销性的税收优势。获得优先股股利的企业只需缴纳30%的所得税，因此所得税负担大大减轻。结果，大多数优先股由公司持有。优先股的市值远低于普通股。交易量也低得多。</p>
+<h3><b>2、权益估值</b></h3>
+<p>考虑一个简单的例子，公司在未来一年支付股息 <span>D</span> ，其增长率为恒定的 <span>g</span> 。我们忽略最终的<span>权益价值</span>，并以恒定的比率
+                                    <span>r</span> 折现。公司的价值 <span>P</span> 可以使用<span>净现值</span>公式来评估，即得到<span>戈登增长模型</span>(Gordon growth model)：</p>
+<blockquote><span>P = \frac{D}{r-g}</span> </blockquote>
+<p>但股息的增长率是不确定的，此外，也不清楚所需的<span>贴现率</span>应该是多少。更糟糕的是，一些公司干脆不支付任何股息，而是通过股价增值来创造价值。尽管如此，这个估值公式表明，权益价格的巨大变化可能来自于贴现率或股息增长率的微小变化，从而解释了权益的巨大波动。更普遍地说，股权的价值取决于基础的业务基本面以及资本结构中<span>杠杆</span>或债务的数量。</p>
+<h3><b>3、权益风险</b></h3>
+<p><b><span>权益风险</span></b>(Equity risk)产生于<span>股票价格</span>的潜在变动。我们可以有效地将股票投资组合的总风险分解为市场风险和股票特有风险。将<span>波动性</span>作为衡量风险的单一指标，<span>股票指数</span>每年的波动性通常在12%至20%之间。</p>
+<p>多样化程度较低的市场通常波动性较大。<b><span>集中度</span></b>(Concentration)指的是指数中所占比例由于最大的股票。例如，在<span>芬兰</span>，该指数的一半只代表一家公司，即诺基亚，这使得该指数比其他情况下更不稳定。</p>
+<h2><b>二、权益衍生品</b></h2>
+<h3><b>1、<span>股票指数期货</span>合约</b></h3>
+<p>股票指数衍生品合约因其对冲一般<span>股票市场</span>风险的能力而被广泛使用。活跃的合约包括<span>股指期货</span>及其期权以及<span>指数互换</span>。</p>
+<p><b>股票指数期货</b>(Stock index futures)是最活跃的股票指数衍生品合约，在世界各地交易。事实上，与名义金额相对应的成交量有时比同一市场实物股票的交易总额还要大。这些合约的成功可以解释为它们在<span>风险管理</span>方面的多功能性。股指期货让投资者能够有效地管理自己对大盘走势的风险敞口。投机者可以很容易地对期货的上行或下行方向进行押注。
+                                            <span>套期保值者</span>还发现，期货提供了一种具有成本效益的方法来防范价格风险。</p>
+<p>也许最活跃的合约是<span>芝加哥商品交易所</span>(现在的CME Group)的<span>标准普尔500期货</span>合约。合约的名义价值被定义为指数水平的250美元。这些合同是用现金结算的。它们不涉及标的股票在到期日的交割。在估值方面，期货合约的定价是根据通常的<b>付现自运</b>(cash-and-carry)关系：</p>
+<blockquote><span>F_te^{-r \tau}= S_te^{-y\tau}</span> </blockquote>
+<p>其中 <span>y</span> 是单位时间的<span>股息收益率</span>。这里假设股息收益率是预先知道的，并在连续的基础上支付，这是一个很好的近似。由于指数中有大量公司，股息将在季度内合理均匀地分配。</p>
+<p>为了检验期货合约是否公允，我们需要现货价格S = 1469.25，<span>短期利率</span>r = 5.3%，到期天数为76(截至3月16日)。利率并不是连续复合的。现值因子是 <span>PV($1) = 1/(1 + r\tau)</span>                                                = 1/(1 + 5.3%(76/365)) = 0.9891。同样，股息流的现值是 <span>1/(1 + y \tau )</span> = 1/(1 + 0.94%(76/365)) = 0.9980。那么公允价格是：</p>
+<blockquote><span>F = [S/(1 + y \tau)] (1 + r\tau) </span> = [1,469.25 × 0.9980]/0.9891 = 1,482.6</blockquote>
+<p>这与F = 1484.2的结算价值相当接近。这种差异可能是因为报价没有同时测量。因为收益率小于利率，所以远期价格大于现货价格。</p>
+<p>下图显示了在芝加哥商业交易所交易的标普500股指期货合约的期货价格和现货价格的<span>收敛性</span>。注意两个主要特性。首先，<u>期货价格总是高于现货价格</u>。然而，随着合约到期，<u>差额将缩为零</u>。其次，两种价格之间的相关性非常高，反映付现自运关系。</p>
+<figure><img src="https://picx.zhimg.com/v2-7f4fef30b3f1dfe0082e196064bdfefb_1440w.jpg" width="1639"/></figure>
+<p>由于金融机构从事股票指数套利，我们预计付现自运关系将保持得非常好。1987年10月19日的股市崩盘是一个明显的例外。股市单日跌幅超过20%。然而，由于<span>现货市场</span>的执行延迟，期货价格全天都比现货价格更与时俱进。其结果是，标普股指期货的价值与潜在的<span>现金市场</span>相比非常便宜。但是，由于市场混乱，套利交易很难进行。</p>
+<p>其次，<b>权益互换</b>(equity swaps)是一种协议，将与<span>股市指数</span>回报率挂钩的现金流交换为固定或<span>浮动利率</span>。举个例子，互换每六个月提供<span>标准普尔500指数</span>的回报，以支付LIBOR和利差。互换的定价通常会使其初始价值为零。权益互换可以被视为
+                                                <span>远期合约</span>的投资组合，就像利率互换一样。例如，<span>投资经理</span>利用这些互换来获取新兴股市的敞口，而无需投资于该市场本身。在某些情况下，这些互换也可以用来规避对外国投资的限制。</p>
+<p>⭐ <b>Q11.1 </b>Suppose the price for a six-month S&amp;P index futures contract is 552.3. If the risk-free interest rate is 7.5% per year and the dividend yield on the stock index is 4.2% per year, and
+                                                        the market is complete and there is no arbitrage, what is the price of the index today?</p>
+<ul>
+<li>a. 543.26</li>
+<li>b. 552.11</li>
+<li>c. 555.78</li>
+<li>d. 560.02</li>
+</ul>
+<p>解析：选 a 。通过付现自运(cash-and-carry)关系式 <span>F_te^{-r \tau}= S_te^{-y\tau}</span> ， 求解S。可得S = 552.3 × exp(−7.5/200)/exp(−4.2/200)
+                                                        = 543.26。</p>
+<p>⭐ <b>Q11.2 </b>A stock index is valued at USD 750 and pays a continuous dividend at the rate of 2% per annum. The six-month futures contract on that index is trading at USD 757. The risk-free rate is
+                                                        3.50% continuously compounded. There are no transaction costs or taxes. Is the futures contract priced so that there is an arbitrage opportunity? If yes, which of the following numbers comes closest
+                                                        to the arbitrage profit you could realize by taking a position in one futures contract?</p>
+<ul>
+<li>a. $4.18</li>
+<li>b. $1.35</li>
+<li>c. $12.60</li>
+<li>d. There is no arbitrage opportunity.</li>
+</ul>
+<p>解析：选 b 。公允远期价格为 <span>F = Se^{-y\tau} /e^{-r\tau}</span> = 750exp(−0.02 × 6/12)/exp(−0.035 × 6/12) = 750 × 0.9905/0.9827 = 755.65。实际价格为757.00。因此以低价买入，以远期价格卖出，可获利1.35。</p>
+<h3><b>2、单</b>一<b>股票合约</b></h3>
+<p>与单一股票挂钩的衍生品合约也被广泛使用。其中包括期货、期权以及<span>差价合约</span>。</p>
+<p>在2000年底，美国通过了立法，授权在<b>单一股票期货</b>(single stock futures)交易，这是对个别股票的期货合约。这样的合约已经在欧洲和其他地方进行交易。在美国，<span>电子交易</span>始于2002年11月，现在在芝加哥交易所的合资企业OneChicago进行。</p>
+<p>每份合约规定有义务购买或出售100股标的股票。结算通常涉及<span>实物交割</span>，也就是标的股票的交换。相对于交易标的股票，单股期货有很多优势。由于其低保证金要求(一般为<span>现金价值</span>的20%)，可以更有效地建立头寸。相比之下，股票的利润率更高。此外，卖空还消除了与股票贷款过程相关的成本和效率低下。除了实物结算，这些合约的
+                                                            <span>交易方式</span>就像股票指数期货。</p>
+<p><b>差价合约</b>(CFDs, Contracts for differences)是一种其收益与标的股票价值挂钩的合约。价差合约最初于上世纪90年代初在伦敦开发，在很大程度上是为了避免昂贵的<span>印花税</span>。印花税是英国对涉及股票实物交易的交易征收的一种税。与期货一样，价差合约也有保证金要求。收益与股票价格的变化和融资费用挂钩。股息被传递给多头CFD头寸。价差合约没有到期日，只要满足保证金要求，就可以在需要时展期。差价合约在场外由经纪人或
+                                                            <span>做市商</span>进行交易。</p>
+<h3><b>3、权益期权</b></h3>
+<p>期权可以以个股、股票指数或股指期货进行交易。例如，在美国，股票<span>期权交易</span>在芝加哥期权交易所(CBOE)进行。每一个期权都允许买入或卖出100股。和解涉及实物交付。</p>
+<p>交易期权是典型的美式风格，因此它们的估值应该包括早期行使的可能性。然而，在实践中，它们的价值与欧洲期权没有太大差别，后者可以用<span>布莱克-斯科尔斯模型</span>(Black-Scholes model)定价。当股票不支付股息时，价值是相同的。为了更精确，我们可以使用<span>二叉树</span>之类的数字模型来考虑股息支付。</p>
+<p>美国最活跃的指数期权是在芝加哥期权交易所交易的标普100和标普500指数期权。前者是美式的，后者是欧式的。这些期权以现金结算，因为交割一篮子100或500只标的股票太复杂了。每份合约的价格是指数价值的100倍。欧洲股票指数期权的定价可以使用布莱克-斯科尔斯公式。最后，标准普尔500指数期货的期权也很受欢迎。这些期权赋予投资者以固定价格买进期货多头或空头头寸的权利。</p>
+<h2><b>三、</b>货币</h2>
+<h3><b>1、</b>货币概览</h3>
+<p>外汇或<span>货币市场</span>(forex, foreign exchange, currency markets)有巨大的交易活动。这种交易活动使债券或股票市场相形见绌。相比之下，<span>纽约证券交易所</span>(NYSE)的日交易量约为800亿美元。尽管这些交易的最大份额是在交易商之间或与其他金融机构之间，但与其他非金融机构之间的交易量仍然相当大，每天5490亿美元。</p>
+<p><b>现货交易</b>(Spot transactions)是指两种货币的交换，一旦实际可行，通常在两个工作日内进行结算。它们约占交易量的35%。其他交易是直接远期合约和<span>外汇互换</span>。<b>直接远期合约</b>(Outright forward contracts)是指在未来某一天兑换两种货币的协议，约占整个市场的12%。<b>外汇互换</b>(Forex
+                                                                swaps)涉及两种交易，一种是特定日期的货币交换，另一种是稍后日期的逆转交易，占整个市场的53%。请注意，外汇互换通常属于短期性质，不应与长期货币掉期混淆，后者涉及较长期的支付流。</p>
+<p>除了这些合约，市场还包括场外外汇期权(OTC forex options)和交易所交易衍生品(exchange-traded derivatives)。最活跃的货币期货在芝加哥商品交易所进行交易，并以实物交割方式结算。芝加哥商品交易所还进行货币期货期权交易。</p>
+<p>货币通常以<b>欧式报价</b>(European terms)，即以每美元兑换的外币为单位。例如，日元兑美元的汇率是120日元。两个值得注意的例外是英镑和欧元，这两种货币都是以美元为单位的<b>美式报价</b>(American terms)的。</p>
+<p>⭐ <b>Q11.3 </b>The current spot CHF/USD rate is 1.3680 CHF. The three-month USD interest rate is 1.05%, and the three-month Swiss interest rate is 0.35%, both continuously compounded and
+                                                                    per annum. A currency trader notices that the three-month forward price is USD 0.7350. In order to arbitrage, the trader should</p>
+<ul>
+<li>a. Borrow CHF, buy USD spot, go long Swiss franc forward</li>
+<li>b. Borrow CHF, sell Swiss franc spot, go short Swiss franc forward</li>
+<li>c. Borrow USD, buy Swiss franc spot, go short Swiss franc forward</li>
+<li>d. Borrow USD, sell USD spot, go long Swiss franc forward</li>
+</ul>
+<p>解析：选 c 。为了一致性，将即期汇率换算成美元，S = 0.7310。CHF利率低于美元利率，所以CHF以远期溢价(forward premium)卖出。公允远期价格为 <span>F=S*exp((r–r^*)τ)</span> = 0.7310*exp((0.0105
+                                                                    − 0.0035)*0.25) = 0.7323。因为它小于交易商所观察到的价格0.7350，以较高的远期价格卖出，借入美元，买入CHF现货，然后投资CHF。到期时，将CHF的投资变现，以满足美元的远期销售(forward sale)，偿还贷款，并获利。</p>
+<h3>2、货币风险</h3>
+<p><b>货币风险</b>(Currency risk)产生于汇率价值的潜在变动。货币风险出现在以下环境中。</p>
+<p>在<b>纯货币浮动</b>(pure currency float)中，一种货币的外部价值可以在市场力量的推动下<span>自由浮动</span>、贬值或升值。美元/欧元汇率就是一个例子。在这些情况下，货币波动通常在每年6%到10%之间。这比股票的波动性小得多。</p>
+<p>在<b>固定<span>货币体系</span></b>(fixed currency system)中，一种货币的外部价值是固定的（或与另一种货币挂钩的）。港元就是一个例子，它与美元的汇率是固定的。然而，这并不意味着没有风险，因为<b>平价</b>(parity value)可能会重新调整，即贬值或重估。因此，它们面临着<b>贬值风险</b>(devaluation
+                                                                    risk)。</p>
+<p>在<b>变化<span>汇率制度</span></b>(change in currency regime)中，以前固定的货币变得灵活，反之亦然。例如，在2001年之前，<span>阿根廷比索</span>对美元的汇率是固定的，此后就开始浮动。体制的改变也可以降低货币风险，就像欧元的情况一样。</p>
+<p>⭐ <b>Q11.4 </b>Bonumeur SA is a French company that produces strollers for children and is specialized in strollers for twins and triplets for the EU market. The company buys the wheels of
+                                                                    the strollers on the U.S. market. Invoices are paid in USD. What is Bonumeur’s currency risk and how can the company hedge its exposure?</p>
+<ul>
+<li>a. EUR depreciating against USD; selling EUR against buying USD forward</li>
+<li>b. EUR depreciating against USD; selling USD against buying EUR forward</li>
+<li>c. EUR appreciating against USD; selling EUR against buying USD forward</li>
+<li>d. EUR appreciating against USD; selling USD against buying EUR forward</li>
+</ul>
+<p>解析：选 a 。由于该公司的收入以欧元计价，而部分成本以美元计价，因此如果美元升值，公司将受到冲击。风险在于欧元对<span>美元贬值</span>(EUR against the USD)。可以通过购买美元远期来对冲，锁定欧元支付，即使美元升值也不会受到影响。</p>
+<h2>四、货币衍生品</h2>
+<h3>1、<span>货币互换</span></h3>
+<p><span>外汇市场</span>提供全方位的金融工具，包括期货、远期和期权。这些衍生品可以根据标准<span>估值模型</span>定价，将收入支付指定为由外国利率定义的连续流动。例如，对于货币远期，远期和现货价格之间高度相关，在到期时相互收敛。由于货币互换的重要性，人们对其进行了更详细的研究。货币互换是双方根据预先安排的公式交换不同货币的现金流的协议。</p>
+<p>考虑两家交易对手，公司A和公司B，它们可以在10年内以美元或日元筹集资金，以目前100日元/美元的汇率筹集1亿美元或100亿日元。公司A想要筹集美元，公司B想要筹集日元。下表显示了借款费用：</p>
+<table>
+<tbody>
+<tr>
+<th>公司</th>
+<th>日元</th>
+<th>美元</th>
+</tr>
+<tr>
+<td>A</td>
+<td>5.00%</td>
+<td>9.50%</td>
+</tr>
+<tr>
+<td>B</td>
+<td>6.50%</td>
+<td>10.00%</td>
+</tr>
+</tbody>
+</table>
+<p>这个例子与利率互换的例子类似，只是利率现在以不同的<span>货币计价</span>。A公司在这两个市场具有<b>绝对优势</b>，因为它可以以比B公司更低的系统利率筹集资金。但是，B公司在筹集美元方面具有<b>相对优势</b>，因为B公司筹集美元的成本只比A公司高出0.50%，而日元的成本差为1.50%。相反，A公司在日元升值方面具有
+                                                                            <span>比较优势</span>。</p>
+<p>这为互惠互利的交换提供了基础。如果两家机构直接在其最终期望的市场发行基金，则总成本分别为9.50% (A)和6.50%(B)，合计为16.00%。相比之下，各有比较优势的融资总成本分别为5.00%(对于A)和10.00%(对于B)，总共为15.00%。双方从<span>掉期交易</span>中获得的收益是16.00−15.00
+                                                                            = 1.00%。下表描述的交换在双方之间平等地分配利益。</p>
+<table>
+<tbody>
+<tr>
+<th>公司A的互换操作</th>
+<th>日元</th>
+<th>美元</th>
+</tr>
+<tr>
+<td>发行债券<br/>进入互换</td>
+<td>支付日元5.00%<br/>收到日元5.00%</td>
+<td>-<br/>支付美元9.00%</td>
+</tr>
+<tr>
+<td>净<br/>直接成本</td>
+<td></td>
+<td>支付美元9.00%<br/>支付美元9.50%</td>
+</tr>
+<tr>
+<td>节省</td>
+<td></td>
+<td>0.5%</td>
+</tr>
+</tbody>
+</table>
+<table>
+<tbody>
+<tr>
+<th>公司B的互换操作</th>
+<th>美元</th>
+<th>美元</th>
+</tr>
+<tr>
+<td>发行债券<br/>进入互换</td>
+<td>支付美元10.00%<br/>收到美元9.00%</td>
+<td>-<br/>支付日元5.00%</td>
+</tr>
+<tr>
+<td>净<br/>直接成本</td>
+<td></td>
+<td>支付日元6.00%<br/>支付日元6.50%</td>
+</tr>
+<tr>
+<td>节省</td>
+<td></td>
+<td>0.5%</td>
+</tr>
+</tbody>
+</table>
+<p>公司A以5.00%的利率发行日元债券，然后进入互换，承诺支付9.00%的美元，换取5.00%的日元支付。其有效融资成本为9.00%，比直接成本低50个基点。类似地，公司B以10.00%的利率发行美元债券，然后进入互换，用5.00%的日元换取9.00%的美元。如果我们把1.00%的美元融资成本和5.00%的日元融资成本的差额相加，那么有效融资成本就是6.00%，比直接成本少50个基点。双方都从互换中受益。</p>
+<p>虽然利率互换的付款通常是净额支付的，因为它们使用的是同一种货币，但货币互换的情况并非如此。全额利息用不同的货币支付。此外，在启动和终止时，有不同货币的本金交换。例如，假设每年支付，公司A将获得5.00%的名义100亿美元，这是5亿美元的交换条件，9.00%的名义1亿美元，即每年900万美元。</p>
+<h3>2、互换定价</h3>
+<p>现在考虑一下公司A的互换价格，这涉及到以9.00%的美元换取5.00%的日元。与利率互换一样，我们可以使用两种方法中的任何一种来为互换定价，即利用两种债券价格之间的差值，或者评估一系列远期合约的价值。</p>
+<p>这一互换相当于持有5%固定利率的10年期日圆计价债券的多头头寸，以及持有9%的10年期美元计价债券的空头头寸。互换的价值是长期日元债券减去美元债券。定义 <span>S</span> 为日元的美元价格， <span>P</span> 和 <span>P^*</span> 分别为美元和日元债券，有：</p>
+<blockquote><span>V = S($/¥)P^∗(¥) − P($)</span> </blockquote>
+<p>一般来说，债券价值可以写成 <span>P(c, r, F)</span> ，其中券息为 <span>c</span> ，收益率为
+                                                                                <span>r</span> ，面值为 <span>F</span> 。互换最初价值为：</p>
+<blockquote>V = <span>P^∗</span> (5%,5%, ¥10,000) / 100 − P(9%,9%, $100) = 10000 / 100 - 100 = 0</blockquote>
+<p>因此，互换的初始值为零，假设两国的期限结构一致，且没有信用风险。</p>
+<p>我们可以确定在三种条件下，这种货币互换将处于价内状态：</p>
+<ul>
+<li>(1)如果日元 <span>S</span> 升值，或</li>
+<li>(2)如果日元利率 <span>r^*</span> 下降，或</li>
+<li>(3)如果美元利率 <span>r</span> 上升。</li>
+</ul>
+<p>因此，<span>互换交易</span>受到三个风险因素的影响：即期利率和两种利率。后者的风险敞口是由等值<span>债券久期</span>决定的。</p>
+<p>即，<b>接收外汇互换的头寸，相当于外汇债券的多头头寸被美元债券的空头头寸所抵消</b>。</p>
+<p>该互换也可以作为一系列远期合约进行估价。回想一下，对一日元的远期合约的估价是由：</p>
+<blockquote><span>V_i = (F_i − K)exp(−r_i \tau_i )</span> </blockquote>
+<p>使用连续<span>复利计算</span>。这里， <span>r_i</span> 是美元利率， <span>F_i</span>                                                                                是远期利率(以美元/日元计算)。 <span>K</span> 是<span>锁定汇率</span>(locked-in rate of exchange)，定义为该期限内美元对日元支付的比率。将此扩展到多种到期日，互换的价值是：</p>
+<blockquote><span>V = \sum_{i} n_i (F_i − K)exp(−r_i \tau_i )</span> </blockquote>
+<p>其中 <span>n_i F_i</span> 是按远期<span>利率转换</span>的日元支付的美元价值，另一个术语， <span>n_iK</span> 是交换中的美元支付。</p>
+<p>下表比较了三年互换与年度付款的两种办法。现在<span>市场利率</span>已经发生了变化，美国收益率为8%，日元收益率为4%。我们假定按年复利计算。现货汇率从100美元兑1美元上升到95美元兑1美元，反映出美元贬值（或日元升值）。</p>
+<table>
+<tbody>
+<tr>
+<th></th>
+<th><span>名义本金</span></th>
+<th>合约利率</th>
+<th>市场利率</th>
+</tr>
+<tr>
+<th>美元</th>
+<td>$100</td>
+<td>9%</td>
+<td>8%</td>
+</tr>
+<tr>
+<th>日元</th>
+<td>¥10,000</td>
+<td>5%</td>
+<td>4%</td>
+</tr>
+<tr>
+<th>汇率</th>
+<td></td>
+<td>100¥/$</td>
+<td>95¥/$</td>
+</tr>
+</tbody>
+</table>
+<p>下表显示了两种债券的估值差异。首先，将每种货币的现金流以新的收益率折现。这样，美元债券的P = 102.58美元，日元债券的P = 10277.51美元。将后者以新的即期汇率95换算，得到108.18美元。该互换目前的价值为108.18美元102.58美元，即V = 561万美元。互换的升值主要是由日元升值推动的。</p>
+<table>
+<tbody>
+<tr>
+<th>年</th>
+<th>美元支付</th>
+<th>PV($1)</th>
+<th>PV(CF)</th>
+<th>日元支付</th>
+<th>PV(¥1)</th>
+<th>PV(CF)</th>
+</tr>
+<tr>
+<th>1</th>
+<td>9</td>
+<td>0.9259</td>
+<td>8.333</td>
+<td>500</td>
+<td>0.9615</td>
+<td>480.769</td>
+</tr>
+<tr>
+<th>2</th>
+<td>9</td>
+<td>0.8573</td>
+<td>7.716</td>
+<td>500</td>
+<td>0.9246</td>
+<td>462.278</td>
+</tr>
+<tr>
+<th>3</th>
+<td>109</td>
+<td>0.7938</td>
+<td>86.528</td>
+<td>10,500</td>
+<td>0.889</td>
+<td>9,334.46</td>
+</tr>
+<tr>
+<th>总计</th>
+<td></td>
+<td></td>
+<td>$102.58</td>
+<td></td>
+<td></td>
+<td>¥10,277.51</td>
+</tr>
+<tr>
+<th>互换($)</th>
+<td></td>
+<td></td>
+<td>−$102.58</td>
+<td></td>
+<td></td>
+<td>$108.18</td>
+</tr>
+<tr>
+<th>价值</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>$5.61</td>
+</tr>
+</tbody>
+</table>
+<p>下表显示了如何通过一系列远期合约来评估互换。首先，计算这三个期限的远期利率。例如，按<span>利率平价</span>计算，一年期利率为95(1 + 4%)/(1 + 8%)= 91.48 /美元。接下来，将每个日元接受按照远期汇率转换成美元，例如，一年内的5亿美元，即547万美元。这笔款项抵销了900万美元的付款，因为计划现金流出净额为353万美元。将计划的现金流折现并加起来，得到V
+                                                                                    = 561万美元，完全等于使用另一种方法算出的价值。</p>
+<table>
+<tbody>
+<tr>
+<th>年</th>
+<th>远期利率(¥/$)</th>
+<th>日元接收(¥)</th>
+<th>日元接收($)</th>
+<th>美元支付($)</th>
+<th>CF差额($)</th>
+<th>PV(CF)($)</th>
+</tr>
+<tr>
+<th>1</th>
+<td>91.48</td>
+<td>500</td>
+<td>5.47</td>
+<td>−9.00</td>
+<td>−3.534</td>
+<td>−3.273</td>
+</tr>
+<tr>
+<th>2</th>
+<td>88.09</td>
+<td>500</td>
+<td>5.68</td>
+<td>−9.00</td>
+<td>−3.324</td>
+<td>−2.850</td>
+</tr>
+<tr>
+<th>3</th>
+<td>84.83</td>
+<td>10,500</td>
+<td>123.78</td>
+<td>−109.00</td>
+<td>14.776</td>
+<td>11.73</td>
+</tr>
+<tr>
+<th>价值</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>$5.61</td>
+</tr>
+</tbody>
+</table>
+<p> ⭐ <b>Q11.5 </b>Which of the following statements is correct when comparing the differences between an interest rate swap and a currency swap?</p>
+<ul>
+<li>a. At maturity, the counterparties to interest rate swaps and the counterparties to currency swaps both exchange the principal of the swap.</li>
+<li>b. At maturity, the counterparties to interest rate swaps do not exchange the principal, but the counterparties to currency swaps exchange the value difference in principal
+                                                                                        determined by prevailing exchange rates.</li>
+<li>c. At maturity, the counterparties to interest rate swaps do not exchange the principal, and counterparties to currency swaps do exchange the principal.</li>
+<li>d. Counterparties to interest rate swaps are exposed to more counterparty credit risk due to the magnifying effect of currency, interest rate, and settlement risk embedded
+                                                                                        within the transaction.</li>
+</ul>
+<p>解析：选 c 。因为货币互换的本金是不同的货币，所以需要进行交换。相比之下，利率互换的本金是同一种货币，不进行交换。</p>
+<p>⭐ <b>Q11.6 </b>You have entered into a currency swap in which you receive 4%pa in yen and pay 6%pa in dollars once a year. The principals are 1,000 million yen and 10 million
+                                                                                    dollars. The swap will last for another two years, and the current exchange rate is 115 yen/$. The annualized spot rates (with continuous compounding) are 2.00% and 2.50%
+                                                                                    in yen for one- and two- year maturities, and 4.50% and 4.75% in dollars. What is the value of the swap to you in million dollars?</p>
+<ul>
+<li>a. −1.270</li>
+<li>b. −0.447</li>
+<li>c. 0.447</li>
+<li>d. 1.270</li>
+</ul>
+<p>解析：选 a 。下表描述了两种货币支付的净现值。 </p>
+<table>
+<tbody>
+<tr>
+<th>年</th>
+<th>日元利率</th>
+<th>日元CF</th>
+<th>日元NPV</th>
+<th>美元利率</th>
+<th>美元CF</th>
+<th>美元NPV</th>
+</tr>
+<tr>
+<th>1</th>
+<td>2.00%</td>
+<td>4</td>
+<td>3.92</td>
+<td>4.50%</td>
+<td>6</td>
+<td>5.74</td>
+</tr>
+<tr>
+<th>2</th>
+<td>2.50%</td>
+<td>104</td>
+<td>98.93</td>
+<td>4.75%</td>
+<td>106</td>
+<td>96.39</td>
+</tr>
+<tr>
+<th>总计</th>
+<td></td>
+<td></td>
+<td>102.85</td>
+<td></td>
+<td></td>
+<td>102.13</td>
+</tr>
+</tbody>
+</table>
+<p>货币互换的价值为，日元债券多头头寸的美元价值，减去美元债券的头寸，表达为(1/115)1,000(102.85/100) − 10(102.13/100) = $8.943 − $10.213 = −$1.270。</p>
+<p>⭐ <b>Q11.7 </b>Your company is expecting a major export order from a London-based client. The receivables under the contract are to be billed in GBP, while your reporting
+                                                                                    currency is USD. Since the order is a large sum, your company does not want to bear the exchange risk and wishes to hedge it using derivatives. To minimize the cost of
+                                                                                    hedging, which of the following is the most suitable contract?</p>
+<ul>
+<li>a. A chooser option for GBP/USD pair</li>
+<li>b. A currency swap where you pay fixed in USD and receive floating in GBP</li>
+<li>c. A barrier put option to sell GBP against USD</li>
+<li>d. An Asian call option on GBP against USD</li>
+</ul>
+<p>解析：选 c 。b项，交叉货币互换(cross-currency swap)是不合适的，因为没有支付流，只有一个支付。此外，本题想要支付英镑，而不是收到它。d项，<span>亚式期权</span>通常很便宜，但这应该是看跌期权，而不是<span>看涨期权</span>。选项a和c中，选择期权(chooser
+                                                                                    option)的价格更高，因为它涉及看涨期权和看跌期权。</p>
+<h2>五、大宗商品</h2>
+<p>大宗商品通常在交易所交易。合同包括现货、期货和期货期权。还有一个长期大宗商品互换的场外交易市场，在这个市场中，付款与固定或浮动汇率下的大宗商品价格挂钩。大宗商品合同可以分为：</p>
+<ul>
+<li><b>农产品</b>(Agricultural products)：包括谷物和油籽(玉米、小麦、大豆)，食品和纤维(可可、咖啡、糖、橙汁)</li>
+<li><b>畜牧和肉类</b>(Livestock and meat)：牛、猪</li>
+<li><b>基本金属</b>(Base metals)：铝(aluminum)、铜(copper)、镍(nickel)、锌(zinc)</li>
+<li><b><span>贵金属</span></b>(Precious metals)：金、银、铂(platinum)</li>
+<li><b>能源产品</b>(Energy products)：天然气，取暖油，无铅汽油(unleaded gasoline)，原油(crude oil)</li>
+<li><b>气候衍生品</b>(Weather derivatives)：温度、飓风(hurricanes)、雪</li>
+<li><b>环保产品</b>(Environmental products)：二氧化碳津贴(CO2 allowances)</li>
+</ul>
+<p><b>标准普尔GSCI</b>指数，前身是高盛<span>商品指数</span>(Goldman Sachs Commodity Index)，是一个广泛的商品价格表现的生产加权指数，由24个流动性强的交易所交易期货合约组成。截至2009年12月，该指数包含70%的能源产品、8%的工业金属、3%的贵金属、14%的农产品和4%的牲畜产品。芝加哥商品交易所集团交易标准普尔GSCI指数的期货和期权合约。</p>
+<p>在过去几年中，已发展了活跃的<b>电力产品</b>(electricity products)市场，在特定地点交付的电力期货市场，例如加利福尼亚/俄勒冈边境(COB)、帕洛维德(Palo Verde)等等。随着电价放松管制，这些市场迅速发展，从而导致电价更加多变。</p>
+<p>最近，场外交易市场和交易所推出了<b>气候衍生品</b>，其股息与气温或降水挂钩。例如，在芝加哥商品交易所，合同支付是基于一个日历月的学位日指数(Degree Day Index)。这个指数衡量日气温与平均气温相差的程度。这些合同允许用户在收入受到极端天气负面影响的情况下进行对冲。市场不断开发新产品。</p>
+<p>这类商品市场允许参与者交换风险。例如，农民可以在未来某一天以固定价格出售他们的作物，以确保自己不受作物价格变化的影响。同样，消费者可以以固定价格购买这些作物。</p>
+<h2>六、大宗商品衍生品</h2>
+<h3>1、定价</h3>
+<p>大宗商品与<span>金融资产</span>有两个显著的不同：它们昂贵，甚至不可能存储，它们可能产生无法直接衡量的利益流。</p>
+<p>第一个维度涉及商品实物库存的成本。对于大多数金融工具来说，这一成本可以忽略不计。对于大宗商品来说，这个成本可能很高，比如电，不容易储存。</p>
+<p>第二个维度涉及持有实物大宗商品的好处。例如，一家生产铜管的公司受益于其生产过程中消耗的铜库存。这种流动也被称为持有人的<b><span>便利收益率</span></b>(convenience yield)。对于金融资产来说，这一流动将是投资者的货币收入支付。当像黄金这样的资产可以借出以获取利润时，收益率代表的是<b>租赁率</b>(lease
+                                                                                        rate)，这是短期借贷黄金的回报。</p>
+<p>考虑第一个因素，只考虑<span>存储成本</span>。付现自运关系应进行如下修改。我们比较两个头寸。首先，购买大宗商品现货，并预先支付存储成本的现值PV(C)。在第二种情况下，签订<span>远期合同</span>，用远期价格的现值进行投资。由于这两个头寸在到期时是相同的，它们必须具有相同的初始值：</p>
+<blockquote><span>F_te^{−r\tau} = S_t + PV(C)</span> </blockquote>
+<p>其中 <span>e^{−r\tau}</span> 是现值因子。如果每单位时间产生的存储成本定义为 <span>c</span>                                                                                            ，可以写作：</p>
+<blockquote><span>F_te^{−r\tau} = S_te^{c\tau}</span> </blockquote>
+<p>由于这些成本，远期汇率应该比即期汇率大得多，因为远期合约的持有者不仅可以从货币的时间价值中获益，还可以从避免存储成本中获益。</p>
+<p>便利收益率可以表示为每单位时间 <span>y</span> ， <span>y</span> 代表持有该商品的净收益，但不包括储存成本。
+                                                                                            <span>期货商品</span>的价格应表示为：</p>
+<blockquote><span>F_te^{−r\tau} = S_te^{-y\tau}</span> </blockquote>
+<p>其中 <span>e^{−y\tau}</span> 是现实因子(actualization factor)，反映现金和期货市场的供求状况，可推导出：</p>
+<blockquote><span>y = r - \frac{1}{\tau} ln (F/S)</span> </blockquote>
+<p>y的变化是很大的。若y小于0，则意味着一个负的便利收益，或储存成本。这个收益率取决于合约的期限。</p>
+<p>下图是<span>原油期货</span>价格的期限结构，比较了原油现货和期货价格。原油现货价格和期货价格之间的基础差异很大。市场从现货溢价(S &gt; F)转向期货溢价(S &lt; F)。</p>
+<figure><img src="https://pica.zhimg.com/v2-3e86344e14a11ce934ee6b8e97da2fc4_1440w.jpg" width="1459"/></figure>
+<p>1997年12月，期限结构相对平缓。在1998年12月，期限结构变得强烈向上倾斜。当期货价格相对于现货价格溢价时，市场就被称为<b>期货溢价</b>(contango)。这意味着便利收益率小于利率，即 <span>y &lt; r</span>                                                                                            。相反，1999年12月的期限结构呈下降趋势。当远期价格相对现货价格有折扣时，市场就被称为<b>现货溢价</b>(backwardation, inverted)。这意味着便利收益大于利率，即 <span>y &gt; r</span>                                                                                            。换句话说，较高的便利收益会抬高现货市场的价格，因为对这种商品的即时消费需求很大。</p>
+<p>即，<b>如果现货价格低于远期价格，市场就是期货溢价。当便利收益低于利率时就会发生这种情况。如果现货价格高于远期价格，市场就会出现现货溢价。这种情况发生在当前对这种商品有很高的需求时，这意味着较高的便利收益</b>。</p>
+<p>期货价格一般随期限的延长而上涨，反映了货币的时间价值、储存成本和低便利收益。例如，玉米价格处于期货溢价。不过，也存在一些不正常现象，反映出预期中的供需失衡。例如，糖存在现货溢价。另外，由于汽车驾驶的增加，汽油期货价格在夏季也有上涨的趋势。取暖油的情况则相反，在冬季，由于取暖需求的增加，价格会上涨。农产品也有很强的季节性。相比之下，黄金的期货价格是随着时间单调上升的，因为黄金是一种完全可储存的商品。</p>
+<p>⭐ <b>Q11.8 </b>If the lease rate of commodity A is less than the risk-free rate, what is the market structure of commodity A?</p>
+<ul>
+<li>a. Backwardation</li>
+<li>b. Contango</li>
+<li>c. Flat</li>
+<li>d. Inversion</li>
+</ul>
+<p>解析：选 b 。如果租赁利率为零，期货价格大于现货价格，即期货溢价(contango)。</p>
+<h3>2、期货和预期现货价格</h3>
+<p>今天的期货价格是否能够最好地预测未来的现货价格？如果是，它满足期望假设，可以写成</p>
+<blockquote><span>F_t = E_t[S_T]</span> </blockquote>
+<p>这种关系可能存在的原因如下。假设一年期石油期货价格为F = 20.47美元。如果市场预测1年后的油价将达到25美元，那么在价格便宜的F = 20.47美元的情况下做多期货合约就可以获得利润。等了一年，然后以20.47美元的价格购买石油，再以25美元的高价出售。换句话说，偏离这一关系意味着<b>投机性利润</b>(speculative
+                                                                                                profits)。</p>
+<p>当然，这些利润并非没有风险。因此，它们可能代表着对风险的某种补偿。例如，如果市场被那些想通过出售石油期货来对冲风险的生产商所主导，F值就会低于预期。因此，期货价格和预期现货价格之间的关系可能是复杂的。</p>
+<p>对于现金与期货之间容易套利的金融资产，期货或远期利率完全由付现自运关系（即资产的利率和收益）决定。然而，对大宗商品而言，套利可能没那么容易。因此，期货价格可能会通过这个便利的收益率因素偏离付现自运关系。这样的价格可能反映了对未来现货价格的预期，以及投机和对冲压力。</p>
+<p><b>期货溢价</b>(contango)是指期货价格相对于现货价格存在溢价。通常，溢价的大小应该受到套利机会的限制。如果这个价格太大了，<span>交易员</span>可以在现货中购买商品，将其储存起来，同时以较高的远期价格将其卖出，以便在未来交付。但在2008年12月，一年期石油合约的溢价达到了每桶13美元的历史高点。这可以用信贷紧缩来解释，信贷紧缩使石油交易商无法获得贷款来为石油储存提供资金。</p>
+<p>在现货溢价(backwardation)的情况下，随着合约临近到期，期货价格趋于上涨。在这种情况下，只要价格波动不太大，<b>滚转策略</b>(roll-over strategy)应该是有利可图的。这包括购买一份长期合约，等待，然后以更高的价格出售，以换取购买更便宜的长期合约。</p>
+<p>这种策略类似于在<span>收益率曲线</span>向上倾斜时的<b><span>骑乘收益率曲线</span></b>(riding the yield curve)。这包括购买<span>长期债券</span>，并等待收益率随着时间的推移而下降。如果收益率曲线的形状没有发生太大的变化，这将从债券价格升值中产生资本收益。由于价格与收益的负关系，收益率曲线为正的斜率相当于债券价格的现货溢价。</p>
+<p>美国 <b>Metallgesellschaft</b> 的子公司 Metallgesellschaft Refining &amp; Marketing (MGRM)，已在场外市场上向客户长期销售大量石油。通过滚动西德克萨斯中质油(WTI)原油期货的多头头寸来对冲这些风险。只要市场处于现货溢价状态，这种做法就能赚钱。然而，当市场转为期货溢价时，随着期限的临近，这些多头头寸开始亏损。此外，这些仓位如此之大，导致市场对MGRM不利。这些损失造成了现金流或流动性问题。MGRM最终清算了这些头寸，这导致了13亿美元的实际损失。</p>
+<p>类似的问题也困扰着<span>对冲基金</span> <b>Amaranth</b>，该基金因对天然气期货押注失误而损失了66亿美元。2006年9月，天然气价格大幅下跌。此外，冬季和夏季的价格差距大幅缩小。由于头寸的规模巨大，这导致了巨额损失，当基金试图清算这些合约时，损失进一步加剧。</p>
+<p>⭐ <b>Q11.9 </b>On January 1, a risk manager observes that the one-year continuously compounded interest rate is 5% and the storage cost of a commodity
+                                                                                                            product A is USD 0.05 per quarter (payable at each quarter end). The manager further observes the following forward prices for product A: March,
+                                                                                                            5.35; June, 5.90; September, 5.30; December, 5.22. Given the following explanation of supply and demand for this product, how would you best describe
+                                                                                                            its forward price curve from June to December?</p>
+<ul>
+<li>a. Backwardation as the supply of product A is expected to decline after summer</li>
+<li>b. Contango as the supply of product A is expected to decline after summer</li>
+<li>c. Contango as there is excess demand for product A in early summer</li>
+<li>d. Backwardation as there is excess demand for product A in early summer</li>
+</ul>
+<p>解析：选 d 。从6月到12月，价格下跌，这是现货溢价(backwardation)。由于过度需求推动价格上涨，6月份的价格畸高。</p>
+<p>⭐ <b>Q11.10 </b>Continuing with the previous question, what is the annualized rate of return earned on a cash-and-carry trade entered into in March
+                                                                                                                and closed out in June?</p>
+<ul>
+<li>a. 9.8%</li>
+<li>b. 8.9%</li>
+<li>c. 39.1%</li>
+<li>d. 35.7%</li>
+</ul>
+<p>解析：选 d 。这个交易现在做多三月合约、做空六月合约。实际上，这意味着拿到货物并持有3个月，直到6月份转售。在5.35的基础上，最终的支付是5.90 − 0.05。这使得<span>年化收益率</span>r = 4ln(5.85/5.35)
+                                                                                                                = 35.7%。</p>
+<p>⭐ <b>Q11.11 </b>In late 1993, MGRM reported losses of about $1.3 billion in connection with the implementation of a hedging strategy in the oil
+                                                                                                                futures market. In 1992, the company had begun a new strategy to sell petroleum to independent retailers at fixed prices above the prevailing
+                                                                                                                market price for periods of up to10 years. At the same time, MGRM implemented a hedging strategy using a large number of short-term derivative
+                                                                                                                contracts such as swaps and futures on crude oil. This led to a timing (maturity) mismatch between the short-term hedges and the long-term
+                                                                                                                liability. Unfortunately, the company suffered significant losses with its hedging strategy when oil market conditions abruptly changed to:</p>
+<ul>
+<li>a. Contango, which occurs when the futures price is above the spot price</li>
+<li>b. Contango, which occurs when the futures price is below the spot price</li>
+<li>c. Normal backwardation, which occurs when the futures price is above the spot price</li>
+<li>d. Normal backwardation, which occurs when the futures price is below the spot price</li>
+</ul>
+<p>解析：选 a 。MGRM在短期期货市场购买石油，作为对长期销售的对冲。由于进入期货溢价(contango)，多头<span>期货头寸</span>亏损。期货溢价指现货价格低于长期价格。</p>
+<h3>3、大宗商品风险</h3>
+<p><b>大宗商品风险</b>(Commodity risk)产生于商品价格价值的潜在变动。2006年，贵金属和基本金属的年波动性在20%到30%之间，高于股市。相比之下，能源产品的波动性要大得多，在20%到70%之间波动。这是因为能源产品比金属更不易储存，因此更容易受到供求变化的影响。期限较长的期货价格波动较小。这种波动率下降的期限结构在能源产品上更为明显，而在基本金属上则不那么明显。</p>
+<p>在相关性方面，与金融合约相比，期货价格的变动与现货价格的相关性要小得多。因此，期货合约代表了一个单独的风险因素。此外，能源产品不同期限之间的相关性低于金属产品。这就解释了为什么能源交易需要具有多种风险因素的<span>风险度量</span>系统，包括期限、等级和地点。</p>
+<p>⭐ <b>Q11.12 </b>Assume the risk-free rate is 5% per annum, the cost of storing oil for a year is 1% per annum, the convenience yield for owning
+                                                                                                                    oil for a year is 2% per annum, and the current price of oil is USD 50 per barrel. All rates are continuously compounded. What is the forward
+                                                                                                                    price of oil in a year?</p>
+<ul>
+<li>a. USD 49.01</li>
+<li>b. USD 52.04</li>
+<li>c. USD 47.56</li>
+<li>d. USD 49.50</li>
+</ul>
+<p>解析：选 b 。由 <span>Se^{-y\tau}=Fe^{-r\tau}</span> ，可得 <span>F=Sexp\left(-\left(y-c\right)\tau+r\tau\right)</span> = 50exp(−(0.02
+                                                                                                                        −0.01) + 0.05) = 52.04.</p>
+<p>⭐ <b>Q11.13 </b>Imagine a stack-and-roll hedge of monthly commodity deliveries that you continue for the next five years. Assume the hedge
+                                                                                                                        ratio is adjusted to take into account the mistiming of cash flows but is not adjusted for the basis risk of the hedge. In which of
+                                                                                                                        the following situations is your calendar basis risk likely to be greatest?</p>
+<ul>
+<li>a. Stack-and-roll in the front month in oil futures</li>
+<li>b. Stack-and-roll in the 12-month contract in natural gas futures</li>
+<li>c. Stack-and-roll in the three-year contract in gold futures</li>
+<li>d. All three situations will have the same basis risk.</li>
+</ul>
+<p>解析：选 a 。c项，就黄金而言，远期利率与现货利率密切相关，因此基差风险很低。对于<span>石油和天然气</span>，期货价格的短期结构有很大的变动。使用即期月(front month)，有最大的基差风险。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

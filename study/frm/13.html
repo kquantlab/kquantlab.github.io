@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRM1级：C13 线性风险 | KQuantLab</title>
+  <meta name="description" content="KQuantLab FRM 风险管理学习资料：FRM1级：C13 线性风险">
+  <link rel="icon" href="../../logo.png">
+  <link rel="apple-touch-icon" href="../../logo.png">
+  <style>:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7f3;color:#1f2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:17px;line-height:1.85}.kql-article-nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px max(16px,calc((100% - 900px)/2));background:rgba(244,247,243,.96);border-bottom:1px solid #dce6df;font-size:14px;font-weight:600;backdrop-filter:blur(8px)}.kql-article-nav a{display:flex;align-items:center;gap:9px;color:#0c5633;text-decoration:none}.kql-article-nav img{width:28px;height:28px;object-fit:contain;border-radius:7px}.reader{width:min(100% - 40px,860px);margin:28px auto 72px;padding:48px 58px 72px;background:#fff;border:1px solid #dce6df;border-radius:22px;box-shadow:0 18px 48px rgba(22,55,40,.07)}h1{margin:0 0 42px;color:#10251c;font-size:clamp(28px,4vw,42px);line-height:1.28;letter-spacing:-.025em}h2,h3,h4{color:#10251c;line-height:1.45;margin:2em 0 .75em}p{margin:1em 0}a{color:#087443;text-decoration:none}a:hover{text-decoration:underline}img{display:block;max-width:100%;height:auto;margin:28px auto;border-radius:8px}figure{margin:30px 0}figcaption{color:#66756e;text-align:center;font-size:14px}blockquote{margin:1.5em 0;padding:.25em 1.1em;border-left:4px solid #65d6a0;color:#4d5f56;background:#f4f8f5}pre{overflow:auto;padding:16px;border-radius:8px;background:#f3f6f4;font-size:14px;line-height:1.55}code{font-family:Consolas,"SFMono-Regular",monospace}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:8px 12px;border:1px solid #d5dfd9}hr{margin:38px 0;border:0;border-top:1px solid #dce6df}.ztext-math,.MathJax,.katex{overflow-x:auto;overflow-y:hidden}.source-note{margin-top:48px;padding-top:20px;border-top:1px solid #dce6df;color:#68776f;font-size:14px}@media(max-width:700px){body{font-size:16px}.kql-article-nav{padding:9px 12px;font-size:12px}.reader{width:100%;margin:0;padding:34px 18px 60px;border:0;border-radius:0;box-shadow:none}}@media print{body{background:#fff}.kql-article-nav{display:none}.reader{width:100%;margin:0;padding:0;border:0;box-shadow:none}a{color:inherit}}</style>
+</head>
+<body>
+  <nav class="kql-article-nav"><a href="../../learning.html"><img src="../../logo.png" alt="KQuantLab">返回 Learning</a><a href="../../disclaimer.html">免责声明 / Disclaimer</a></nav>
+  <main class="reader"><article><h1>FRM1级：C13 线性风险</h1><div class="RichText ztext Post-RichText css-4ti5lv" options="[object Object]"><h2>前情回顾</h2>
+<h2>引言</h2>
+<p>本章讨论市场风险的主动管理。风险管理的一个重要方面是<b>对冲</b>，是指持有降低投资组合风险的头寸。</p>
+<p>期货市场已经发展了<span>对冲技术</span>，例如，农民利用金融工具来对冲其产品的价格风险。在这种情况下，目标是在期货合同中找到最优头寸，使总投资组合的波动性最小化。这个投资组合包括两个头寸，一个是受风险因素影响的固定存货，另一个是对冲工具。对冲工具的价值是线性相关的潜在风险因子，包括期货、远期和互换。</p>
+<p>对冲会产生<b>对冲滑动</b>(hedge slippage)，或<b><span>基差风险</span></b>(basis risk)。当对冲工具的收益变化不能完全抵消存货头寸价值的变化时，就会产生基差风险。当基差风险远低于直接价格风险时，对冲是有效的。</p>
+<h2>一、单一对冲</h2>
+<h3>1、期货对冲</h3>
+<p>假设一个美国出口商预期在7个月内收到1.25亿日元。这就定义了基本的头寸，它可以被视为一个<span>预期库存</span>(anticipated inventory)。完美的对冲是签订一个为期7个月的场外远期合约(OTC)，这种OTC合同是不方便的。相反，转向交易所交易期货合约，这种合约可以很容易地买卖。</p>
+<p><span>芝加哥商品交易所</span>(现在的CME Group)列出了面值为1250万日元、将在9个月内到期的日元合约。出口商发出一份卖出10份合同的订单，并打算在7个月后逆转头寸，而此时合同还有2个月到期 <span>{}^{【注】}</span> 。因为卖出的金额与标的相同，这被称为<b>单一对冲</b>(unitary
+                                    hedge)。</p>
+<p>【注：在实践中，如果长期合同的流动性不足，出口商可以使用附近的合同，并在到期前将其滚转到下一个合同。当有多个风险暴露时，这种做法被称为<b>叠式对冲</b>(stack hedge)。另一种类型的对冲是<b>条式对冲</b>(strip hedge)，它包括用许多不同的合约来对冲风险敞口。虽然对冲具有优越的流动性，但它也比条式对冲承担更大的基面风险。对冲者必须决定，为了获得更大的<span>流动性</span>，对冲是否值得付出额外的基差风险。】</p>
+<p>在这种情况下，对冲将保持在原地，直到对冲区间结束。更一般地可以区分静态对冲和<span>动态对冲</span>，<b>静态对冲</b>(static hedging)是指在对冲期限内增持并保留头寸，<b>动态对冲</b>(dynamic hedging)是指不断地将投资组合再平衡到一定期限内。动态对冲与期权相关，在<a href="https://zhuanlan.zhihu.com/p/416165185">第14章</a>讨论。</p>
+<p>下表描述了合同的初始和最终条件：</p>
+<table>
+<tbody>
+<tr>
+<th>项目</th>
+<th>初始时</th>
+<th>退出时</th>
+<th>损益</th>
+</tr>
+<tr>
+<th>市场数据：</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>到期(月)</th>
+<td>9</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<th>美元利率</th>
+<td>6%</td>
+<td>6%</td>
+<td></td>
+</tr>
+<tr>
+<th><span>日元利率</span></th>
+<td>5%</td>
+<td>2%</td>
+<td></td>
+</tr>
+<tr>
+<th>即期($/¥)</th>
+<td>¥125.00</td>
+<td>¥150.00</td>
+<td></td>
+</tr>
+<tr>
+<th>期货($/¥)</th>
+<td>¥124.07</td>
+<td>¥149.00</td>
+<td></td>
+</tr>
+<tr>
+<th>合同数据：</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>即期($/¥)</th>
+<td>0.008</td>
+<td>0.006667</td>
+<td>-$166,667</td>
+</tr>
+<tr>
+<th>期货($/¥)</th>
+<td>0.00806</td>
+<td>0.006711</td>
+<td>$168,621</td>
+</tr>
+<tr>
+<th>基差($/¥)</th>
+<td>-0.00006</td>
+<td>-0.000045</td>
+<td>$1,954</td>
+</tr>
+</tbody>
+</table>
+<p>在每个日期，期货价格由<span>利率平价</span>决定。假设日元大幅贬值，或者美元从125美元上升到150美元。这导致了预期现金头寸125,000,000 * (0.006667 - 0.00800)= 166,667美元的损失。然而，这一损失被期货收益所抵消，即(-10)*12500,000*(0.006711 - 0.00806)= 168,621美元。净收益为1954美元。总的来说，出口商得到了对冲。</p>
+<p>这个例子表明，<span>期货套期保值</span>可以相当有效地消除风险因素中波动的影响。定义 <span>Q</span> 为交易的日元数量， <span>S</span> 和 <span>F</span> 作为<span>即期利率</span>和期货利率，在初始时间用1作为指数，在退出时间用2作为指数。未对冲交易的损益为：</p>
+<blockquote><span>Q[S_2 − S_1]</span> </blockquote>
+<p>根据单一对冲，总利润为：</p>
+<blockquote><span>Q[(S_2 − S_1)] − Q[(F_2 − F_1)] = Q[(S_2 − F_2) − (S_1 − F_1)] = Q[b_2 − b_1]</span> </blockquote>
+<p>其中 <span>b = S-F</span> 是<b>基差</b>(basis)。利润只取决于基差上的移动。因此，对冲的作用是将价格风险转化为基差风险。一个卖空对冲头寸被称为做多基差(long the basis)，因为它受益于基差的增加。</p>
+<p>即，<b>做空<span>对冲头寸</span>就是做多基差</b>。<b>当基差扩大或加强时，它会受益。这是因为该头寸做空了对冲工具，当基差扩大时，该工具的价值相对于现货价格就会下降</b>。</p>
+<p>这种情况下，基差风险是最小的。首先，现金和期货对应同一资产。其次，付现自运(cash-and-carry)关系在货币方面保持得非常好。第三，退出时剩余的期限相当短。然而，情况并非总是如此。</p>
+<h3>2、基差风险</h3>
+<p>当期货合约的特征与标的头寸的特征不同时，就会产生<b>基差风险</b>(Basis risk)。期货合约按照特定等级进行标准化，比如在<span>纽约商品交易所</span>(NYMEX)交易的<span>西德克萨斯中质油</span>(WTI)。这定义了合同可交付的原油等级。然而，对冲者可能持有不同等级的仓位，而这些仓位可能与WTI并不完全相关。因此，基差风险是指在对冲过程中，现金期货价差是否扩大或缩小的不确定性。然而，如果基差的变动由现货市场的变动主导，对冲是有效的。</p>
+<p>大多数大宗商品的基差风险不可避免。有组织的交易所努力在其上市合约中创造足够的交易和流动性，这需要标准化。投机者还有助于增加交易量，提供市场流动性。因此，在流动性和基差风险之间存在一种权衡。</p>
+<p><b><span>交叉对冲</span></b>(cross-hedging)的基差风险更高，交叉对冲涉及对一种完全不同于现金头寸的资产或商品使用期货。例如，一个美国出口商如果要收到挪威克朗(NK, Norwegian kroner)的付款，可以使用美元/欧元汇率期货合约进行对冲。相对于美元，欧元和挪威克朗应该表现类似，但仍存在一些基差风险。</p>
+<p>当标的头寸和期货对应同一资产时，基差风险最低。即便如此，由于期限不同，一些基差风险仍然存在。正如我们在日元对冲例子中看到的，期货合约的到期时间是9个月而不是7个月。因此，期货的清算价格是不确定的。</p>
+<p>下图描述了使用<span>国债期货</span>进行对冲的各种时间组成部分。第一个组成部分是标的债券的期限，比如20年。第二个组成部分是期货到期时间，比如九个月。第三个因素是对冲期，比如7个月。当对冲期限与期货到期时间不匹配时，就会出现基差风险。</p>
+<figure><img src="https://pic4.zhimg.com/v2-c7005b2748657e2c9c3abb154a8894d5_1440w.jpg" width="1812"/></figure>
+<p>⭐ <b>Q13.1 </b>Under which scenario is basis risk likely to exist?</p>
+<ul>
+<li>a. A hedge (which was initially matched to the maturity of the underlying) is lifted before expiration.</li>
+<li>b. The correlation of the underlying and the hedge vehicle is less than one and their volatilities are unequal.</li>
+<li>c. The underlying instrument and the hedge vehicle are dissimilar.</li>
+<li>d. All of the above are correct.</li>
+</ul>
+<p>解析：选 d 。如果现金价值的变动和被对冲头寸不能完全相互抵消，就会发生基差风险。如果工具不同或相关性不统一，就会发生这种情况。即使是类似的工具，如果对冲在标的到期前解除，也存在一定的基差风险。</p>
+<p>⭐ <b>Q13.2 </b>Mary has IBM stock and will sell it two months from now at a specified date in the middle of the month. Mary would like to hedge the price of risk of IBM stock. How could she best hedge the IBM
+                                                stock without incurring basis risk?</p>
+<ul>
+<li>a. Short a two-month forward contract on IBM stock</li>
+<li>b. Short a three-month futures contract on IBM stock</li>
+<li>c. Short a two-month forward contract on the S&amp;P 500 index</li>
+<li>d. Answers a. and b. are correct.</li>
+</ul>
+<p>解析：选 a 。当对冲工具的到期日与对冲期相吻合(即两个月)，且当对冲工具暴露于相同的风险因素(即IBM)时，基差风险最小。</p>
+<p>⭐ <b>Q13.3 </b>Which of the following statements is/are true with respect to basis risk?</p>
+<ul>
+<li>I. Basis risk arises in cross-hedging strategies, but there is no basis risk when the underlying asset and hedge asset are identical.</li>
+<li>II. A short hedge position benefits from unexpected strengthening of basis.</li>
+<li>III. A long hedge position benefits from unexpected strengthening of basis.</li>
+<li>a. I and II</li>
+<li>b. I and III</li>
+<li>c. II only</li>
+<li>d. III only</li>
+</ul>
+<p>解析：选 c 。如果期限不同会产生基差风险，所以I不正确。做空对冲头寸是做多基差，这意味着当基差加强时，它将受益，因为这意味着期货价格相对于现货价格下跌，从而产生利润。</p>
+<p>⭐ <b>Q13.4 </b>Which of the following trades contain mainly basis risk?</p>
+<ul>
+<li>I. Long 1,000 lots Nov 07 ICE Brent Oil contracts and short 1,000 lots Nov 07 NYMEX WTI Crude Oil contracts</li>
+<li>II. Long 1,000 lots Nov 07 ICE Brent Oil contracts and long 2,000 lots Nov 07 ICE Brent Oil at-the-money put</li>
+<li>III. Long 1,000 lots Nov 07 ICE Brent Oil contracts and short 1,000 lots Dec 07 ICE Brent Oil contracts</li>
+<li>IV. Long 1,000 lots Nov 07 ICE Brent Oil contracts and short 1,000 lots Dec 07 NYMEX WTI Crude Oil contracts</li>
+<li>a. II and IV only</li>
+<li>b. I and III only</li>
+<li>c. I, III, and IV only</li>
+<li>d. III and IV only</li>
+</ul>
+<p>解析：选 c 。主要是多头和空头头寸的基差风险，或者是不同的月份或合约。头寸II是做多两个相同的合约，因此没有基差风险（但有很大的方向风险(directional risk)）。</p>
+<h2>二、最优对冲</h2>
+<p>前一节给出了单一对冲的例子，其中在两个市场中交易的数量是相同的。一般来说，这是不合适的。我们需要决定交易多少对冲工具。</p>
+<p>考虑一位投资组合经理拥有一份精心挑选的公司债券清单，这些公司债券的表现应该优于基准。然而，这位经理希望在未来三个月里避免利率上升。在这种情况下，卖掉整个投资组合然后再买回来的代价太大了。相反，<span>基金经理</span>可以利用衍生品合约(例如国债期货)来实施临时对冲。</p>
+<p>这里，我们注意到唯一的风险是<b>价格风险</b>(price risk)，因为库存的数量是已知的。然而，情况并非总是如此。例如，农民对他们作物的价格和规模都不确定。如果是这样的话，对冲问题就复杂得多了，因为它涉及到对冲收入，这涉及到分析需求和供应状况。</p>
+<h3>1、<span>最优对冲比率</span></h3>
+<p>定义 <span>\Delta S</span> 为库存的美元价值变化， <span>\Delta F</span> 为一份期货合约的美元价值变化。存货，或被对冲的头寸，可以是现有的或<b>预期的</b>(anticipatory)，也就是说，在未来获得很大程度的确定性。经理担心库存
+                                                <span>\Delta S</span> 的价值可能会有变动。如果经理做多 <span>N</span> 个期货合约，投资组合价值的总变化是：</p>
+<blockquote><span>\Delta V = \Delta S + N \Delta F</span> </blockquote>
+<p>人们应该设法找到将风险降低到最低水平的对冲。总利润的方差等于：</p>
+<blockquote><span>\sigma_{\Delta V}^2 = \sigma_{\Delta S}^2 + N^2\sigma_{\Delta F}^2 + 2N \sigma_{\Delta S, \Delta F}</span> </blockquote>
+<p>当试图稳定美元价值时，波动率最初是用美元表示的，而不是回报率。对 <span>N</span> 求导得：</p>
+<blockquote><span>\displaystyle \frac{∂ \sigma_{\Delta V}^2 }{∂ N} = 2 N\sigma_{\Delta F}^2 + 2N \sigma_{\Delta S, \Delta F}</span> </blockquote>
+<p>为简单起见，将下标中的 <span>\Delta</span> 去掉。设上式为0，求解 <span>N</span> ，得到：</p>
+<blockquote><span>\displaystyle N^∗ = - \frac{ \sigma_{\Delta S, \Delta F}}{\sigma_{\Delta F}^2}  =  - \frac{ \sigma_{S F}}{\sigma_{ F}^2}  = -\rho_{SF} \frac{ \sigma_{S}}{\sigma_{ F}} </span> </blockquote>
+<p>其中 <span>\rho_{SF}</span> 是期货和现货价格变化之间的<span>协方差</span>。 <span>N^∗</span> 是<b>最小方差套期保值比</b>(minimum
+                                                variance hedge ratio)。在实践中，经常会混淆组合价值和单位价格的定义。这里的 <span>S</span> 由件数（股票、债券、<span>蒲式耳</span>、加仑）乘以单位价格（股票价格、债券价格、小麦价格、燃料价格）组成。</p>
+<p>有时处理单位价格和用单位价格的变化率来表示波动是比较容易的，因为单位价格是没有单位的。定义数量 <span>Q</span> 和单位价格 <span>s</span> ，我们有 <span>S = Qs</span> 。同样，一份期货合约的名义金额是 <span>F = Q_f f</span> ，可以得到：</p>
+<blockquote><span> \sigma_{\Delta S} = Q  \sigma(\Delta S) = Qs(\Delta s/s)</span> <br/><br/> <span> \sigma_{\Delta F} = Q_f  \sigma(\Delta f) = Q_f f\sigma (\Delta f/f)</span> <br/><br/> <span>\sigma_{\Delta S, \Delta F} = \rho_{sf} [Qs\sigma (\Delta s / s)] [Q_f f\sigma (\Delta f/f)]</span> </blockquote>
+<p>代入前式，化简可得：</p>
+<blockquote><span>\displaystyle N^∗ = -\beta_{sf}* \frac{Q*s}{Q_f* f} </span> </blockquote>
+<p><span>\beta_{sf} </span> 是<span>\Delta s/s</span>对 <span>\Delta f/f</span>                                                回归的系数。 <span> \frac{Q*s}{Q_f* f} </span> 代表现金头寸和期货合约规模的调整因子。</p>
+<p>最佳数量 <span>N^∗</span> 可以由<span>\Delta s/s</span>对 <span>\Delta f/f</span>的斜率系数推导出来：</p>
+<blockquote><span>\displaystyle \frac{\Delta s}{s} = \alpha + \beta_{sf} \frac{\Delta f}{f} + \epsilon</span>                                                （※）<br/><br/> <span>\displaystyle \beta_{sf}  = \frac{\sigma_{sf}}{\sigma_{f}^2} = \rho_{sf}  \frac{\sigma_{s}}{\sigma_{f}}</span> </blockquote>
+<p>因此，<b>最佳对冲比率</b>(best hedge)是从存货价值变化对套期工具价值变化的回归中获得的。</p>
+<p>即，<b>最优对冲比率是由对冲工具的现金价值变化对回报变化的回归的贝塔系数的负值给出的。</b></p>
+<p>在最优情况下，可以得到：</p>
+<blockquote><span>\displaystyle \sigma_{ V}^{*2} = \sigma_{ S}^2 -\frac{\sigma_{SF}^2}{\sigma_{F}^2}</span> </blockquote>
+<p>我们可以通过减少原始投资组合的方差来衡量最优对冲比率的质量：</p>
+<blockquote><span>\displaystyle R^2 = \frac{\sigma_{S}^2-\sigma_{V}^{*2}}{\sigma_{S}^2}</span> </blockquote>
+<p>联立二式，得到 <span>R^2 =  \rho_{SF} ^2</span> ，即<span>决定系数</span>，或者是<span>回归方程</span>（※） 中由自变量
+                                                    <span>\Delta f/f</span> 解释的 <span>\Delta s/s</span> 中的方差百分比，给出对冲的<b>有效性</b>(effectiveness)，由方差消除的比例来衡量。也可以用
+                                                    <span>R^2</span> 表示被对冲头寸的波动率：</p>
+<blockquote><span>\sigma_{ V}^{*} = \sigma_{ S} \sqrt{1- R^2}</span> </blockquote>
+<p>这表明，当 <span>R^2 = 1</span> 时，回归拟合完美，得到的投资组合风险为零。在这种情况下，投资组合没有基风险。然而，如果 <span>R^2</span> 很低，对冲就没有效果。</p>
+<h3>2、例子</h3>
+<p>一家航空公司知道，它需要在三个月内购买1万吨航空燃油(heating oil)。它希望利用期货合约来防止价格上涨。该公司可以利用在纽交所交易的燃油期货合约进行对冲。一份合同的概念是42000加仑。由于没有航空燃油期货合约，风险经理希望检测燃油是否能提供有效的对冲。目前的航空燃油价格为277美元/吨。燃油期货价格为每加仑0.6903美元。3个月燃油价格变化率标准差为21.17%，期货价格变化率标准差为18.59%，
+                                                            <span>相关系数</span>为0.8243。</p>
+<p>计算：</p>
+<ul>
+<li>① 以美元计算的未对冲燃料成本的名义和标准偏差</li>
+<li>② 买入/卖出期货合约的最优数量，四舍五入到最接近的整数</li>
+<li>③ 以美元计算的对冲燃料成本的标准差</li>
+</ul>
+<p>解答：</p>
+<p>① 该头寸名义上是 <span>Qs</span> = $2,770,000。以美元计算的标准差是：<br/> <span>\sigma (\Delta s/s)sQ</span>                                                            = 0.2117 × $277 × 10,000 = $586,409<br/>作为参考，一份期货合约的价格为：<br/> <span>\sigma (\Delta f/ f ) f Q_f </span> = 0.1859 × $0.6903
+                                                            × 42,000 = $5,389.72<br/>其中期货名义上是 <span>f Q_f</span> = $0.6903 × 42,000 = $28,992.60</p>
+<p>② 现金状况与付款或负债相对应。因此，该公司将不得不购买期货作为保护。<br/>首先计算贝塔为 <span>\beta_{sf}</span> = 0.8243(0.2117/0.1859) = 0.9387。<br/>对应的协方差项为 <span>\sigma_{sf}</span> = 0.8243 × 0.2117 × 0.1859 = 0.03244。<br/>调整名义，得到 <span>\sigma_{SF}</span> =
+                                                            0.03244 × $2,770,000 × $28,993 = 2,605,268,452。<br/>则最优<span>套期保值比率</span>为：</p>
+<blockquote><span>\displaystyle N^∗ = \beta_{sf}* \frac{Q*s}{Q_f* f}  = 0.9387 * \frac{10,000 × $277}{42,000 × $0.69} = 89.7</span> </blockquote>
+<p>或者舍入后的90个合同。</p>
+<p>③ 为了求解对冲头寸的风险，需要用</p>
+<blockquote><span>\displaystyle \sigma_{ V}^{*2} = \sigma_{ S}^2 -\frac{\sigma_{SF}^2}{\sigma_{F}^2}</span> </blockquote>
+<p>求解。<br/>未对冲头寸的波动性是 <span>\sigma_S</span> = $586,409。被对冲头寸的方差为：<br/>V(hedged) = 586,409^2 - (2,605,268,452/5,390)^2 = 110,222,250,414</p>
+<p>取平方根，对冲头寸的波动率为 <span>\sigma_{ V}^{*} </span> = $331,997。因此，对冲将风险从586,409美元降低到331,997美元。计算R2，我们发现1减去被套期和未套期方差的比率是(1−110,222,250,414/343,875,515,281)=
+                                                            67.95%。这正好是相关系数的平方，0.8243^2 = 0.6795，即对冲的有效性。</p>
+<p>下图显示了被套期头寸的风险与合约数目之间的关系。在没有对冲的情况下，波动性为586,409美元。随着N的增加，风险降低，当N = 90份合同时，风险达到最小值。该图还表明，二次关系是相对平坦的范围内的值，围绕最小值。选择80到100份合同对总风险的影响很小。考虑到风险的大幅降低，风险经理可以选择实施对冲。</p>
+<figure><img src="https://pic2.zhimg.com/v2-281265872d3ecefb18b07ed3e2475a1b_1440w.jpg" width="1494"/></figure>
+<h3>3、流动性问题</h3>
+<p>虽然期货对冲可以成功地降低市场风险，但它也会产生其他风险。期货合约每日按市价计价。因此，它们可能涉及大量现金流入或流出。现金流出尤其会造成流动性问题，尤其是当它们无法被基础头寸的现金流入所抵消时。</p>
+<p>⭐ <b>Q13.5 </b>If two securities have the same volatility and a correlation equal to −0.5, their minimum variance hedge ratio is</p>
+<ul>
+<li>a. 1:1</li>
+<li>b. 2:1</li>
+<li>c. 4:1</li>
+<li>d. 16:1</li>
+</ul>
+<p>解析：选 b 。设<i>x</i>为第二种相对于第一种证券的投资金额（或对冲比率）。方差与 <span>1+x^2+2x\rho</span> 成比例。求导取0，得到 <span>x=\ -\rho=\ 0.5</span>                                                            。因此，一种证券的数量是另一种的两倍。或，对冲比率是 <span>N^\ast=-\rho\sigma_S/\sigma_F</span> ，给定为0.5，因此b项的值是唯一与0.5或它的倒数一致的。</p>
+<p>⭐ <b>Q13.6 </b>A firm is going to buy 10,000 barrels of West Texas Intermediate Crude Oil. It plans to hedge the purchase using the Brent Crude Oil futures contract. The correlation between the spot
+                                                            and futures prices is 0.72. The volatility of the spot price is 0.35 per year. The volatility of the Brent Crude Oil futures price is 0.27 per year. What is the hedge ratio for the firm?</p>
+<ul>
+<li>a. 0.9333</li>
+<li>b. 0.5554</li>
+<li>c. 0.8198</li>
+<li>d. 1.2099</li>
+</ul>
+<p>解析：选 a 。最优对冲比率为 <span>\rho\sigma_s/\sigma_f</span> = 0.72 0.35/0.27 = 0.933.</p>
+<p>⭐ <b>Q13.7 </b>XYZ Co. is a gold producer and will sell 10,000 ounces of gold in three months at the prevailing market price at that time. The standard deviation of the change in the price of gold
+                                                            over a three-month period is 3.6%. In order to hedge its price exposure, XYZ Co. decides to use gold futures to hedge. The contract size of each gold futures contract is 10 ounces. The standard
+                                                            deviation of the gold futures price is 4.2%. The correlation between quarterly changes in the futures price and the spot price of gold is 0.86. To hedge its price exposure, how many futures contracts
+                                                            should XYZ Co. go long or short?</p>
+<ul>
+<li>a. Short 632 contracts</li>
+<li>b. Short 737 contracts</li>
+<li>c. Long 632 contracts</li>
+<li>d. Long 737 contracts</li>
+</ul>
+<p>解析：选 b 。如果黄金价格下跌，XYZ将损失，应该做空期货来对冲。最优对冲比率为 <span>\rho\sigma_s/\sigma_f</span> = 0.86 × 3.6/4.2 = 0.737。考虑到仓位的大小，要卖出的合约数量是0.737 ×10,000/10
+                                                            = 737。</p>
+<h2>三、最优对冲的应用</h2>
+<p>这里提出的线性框架是完全一般的。现在专门针对两种重要的情况，持续期和贝塔对冲。第一种适用于债券市场，第二种适用于股票市场。</p>
+<h3>1、久期对冲</h3>
+<p><b>修正久期 </b><span>D^*</span> 可以被看作是相对变化的价格暴露在收益的运动，写作：</p>
+<blockquote><span>\Delta  P = (−D^∗P)\Delta y</span> </blockquote>
+<p>其中美元久期为 <span>D^∗P</span> 。假设久期模型成立，这意味着收益变化 <span>\Delta y</span> 不依赖于期限，可以重写现金和期货头寸的表达式：</p>
+<blockquote><span>\Delta S = (−D^*_SS)\Delta y </span> <br/><br/> <span>\Delta F = (−D^*_FF)\Delta y </span> </blockquote>
+<p>其中 <span>D^*_S</span> 和 <span>D^*_F</span> 分别为 <span>S</span>                                                                和 <span>F</span> 的修正久期。注意，这些关系应该是完美的，没有误差项。方差和协方差是：</p>
+<blockquote><span>\sigma_S^2 = (D^*_SS)^2 \sigma^2 \Delta y</span> <br/><br/> <span>\sigma_F^2 = (D^*_FF)^2 \sigma^2 \Delta y</span> <br/><br/> <span>\sigma_{SF} = (D^*_FF)(D^*_SS)  \sigma^2 \Delta y</span> </blockquote>
+<p>进一步得到最优对冲比率的表达：</p>
+<blockquote><span>\displaystyle N^∗ = - \frac{D^*_SS}{D^*_FF} </span> </blockquote>
+<p>或者，这可以推导如下。将总投资组合收益记为：</p>
+<blockquote><span>\Delta V = \Delta  S + N\Delta  F =  −[(D^∗_SS) + N(D^∗_F F )] × \Delta y</span> </blockquote>
+<p>当净敞口 <span>[(D^∗_SS) + N(D^∗_F F )] </span> 为零时， <span>\Delta V </span>                                                                为零。换句话说，最优的对冲比率就是减去现金的美元久期相对于对冲的美元久期的比率。这个比率也可以用一个基点的美元价值(DVBP)来表示，即：</p>
+<blockquote><span>\displaystyle N^∗ = - \frac{DVBP_S}{DVBP_F} </span> </blockquote>
+<p>更一般地，可以使用 <span>N</span> 作为工具来修改投资组合的总久期。如果我们有 <span>D_V</span> 的目标久期，这可以通过设定 <span>[(D^∗_SS) + N(D^∗_F F )]  = D^∗_VV</span> 来实现，即：</p>
+<blockquote><span>\displaystyle N = - \frac{D^∗_VV - D^*_SS}{D^*_FF} </span> </blockquote>
+<p>即，<b>最优久期对冲是由头寸的美元久期与对冲工具的美元久期之比给出的。</b></p>
+<p>例子：<span>欧洲美元期货</span>对冲【欧洲美元期货参见<a href="https://zhuanlan.zhihu.com/p/416164524">第10章</a>】</p>
+<p>2月2日，一家公司的财务主管希望对7月17日发行的500万美元商业票据进行对冲，该票据期限为180天，预计将获得452万美元的收益。9月份的欧洲美元期货合约价格为92美元，名义金额为100万美元。</p>
+<p>计算：</p>
+<ul>
+<li>① 期货合约当前的美元价值</li>
+<li>② 为获得最佳保护而买进/卖出的合约数量</li>
+</ul>
+<p>解答：</p>
+<p>① 当前的美元价格是$10,000[100 - 0.25(100 - 92)]= $98万。注意，期货的久期总是三个月(90天)，因为合同是指三个月的LIBOR。</p>
+<p>② 如果利率上升，借贷成本就会上升。我们需要用收益来抵消，或者在期货中做空。</p>
+<p>最优数量为：</p>
+<blockquote><span>\displaystyle N^∗ = - \frac{D^*_SS}{D^*_FF} = - \frac{180 × $4,520,000}{90 × $980,000} = -9.2</span> </blockquote>
+<p>四舍五入后的9个合约。请注意，该期货的DVBP约为0.25 * $1,000,000 * 0.01% = $25。在本例中，要对冲的头寸的DVBP为226美元。除以25美元，对冲率是9。</p>
+<p>⭐ <b>Q13.8 </b>What assumptions does a duration-based hedging scheme make about the way in which interest rates move?</p>
+<ul>
+<li>a. All interest rates change by the same amount.</li>
+<li>b. A small parallel shift occurs in the yield curve.</li>
+<li>c. Any parallel shift occurs in the term structure.</li>
+<li>d. Interest rates' movements are highly correlated.</li>
+</ul>
+<p>解析：选 b 。完整的假设是，收益率曲线的移动是平行(parallel)且微小(small)的。a和c项相同，但是没有考虑到移动的幅度。d项的叙述应该把highly换位perfectly，并且加上small moves的表述。</p>
+<p>⭐ <b>Q13.9 </b>If all spot interest rates are increased by one basis point, a value of a portfolio of swaps will increase by $1,100. How many Eurodollar futures contracts are needed to hedge
+                                                                the portfolio?</p>
+<ul>
+<li>a. 44</li>
+<li>b. 22</li>
+<li>c. 11</li>
+<li>d. 1,100</li>
+</ul>
+<p>解析：选 a 。投资组合的DVBP为$1,100. 欧洲美元的期货价格是$25，因此比率为44。</p>
+<p>⭐ <b>Q13.10 </b>On June 2, a fund manager with USD 10 million invested in government bonds is concerned that interest rates will be highly volatile over the next three months. The manager decides
+                                                                to use the September Treasury bond futures contract to hedge the portfolio. The current futures price is USD 95.0625. Each contract is for the delivery of USD 100,000 face value of bonds.
+                                                                The duration of the manager’s bond portfolio in three months will be 7.8 years. The cheapest-to-deliver (CTD) bond in the Treasury bond futures contract is expected to have a duration of
+                                                                8.4 years at maturity of the contract. At the maturity of the Treasury bond futures contract, the duration of the underlying benchmark Treasury bond is nine years. What position should the
+                                                                fund manager undertake to mitigate his interest rate risk exposure?</p>
+<ul>
+<li>a. Short 94 contracts</li>
+<li>b. Short 98 contracts</li>
+<li>c. Short 105 contracts</li>
+<li>d. Short 113 contracts</li>
+</ul>
+<p>解析：选 b 。做空合约的数量为 <span>N^\ast=-\left(D_S^\ast S\right)/\left(D_F^\ast F\right)</span> = −(7.8
+                                                                × 10,000,000) / (8.4 × (95.0625) × 1,000) = −97.7，约等于98。注意，期货的相关久期为CTD的久期，其他数字则无关紧要。</p>
+<p>⭐ <b>Q13.11 </b>Albert Henri is the fixed income manager of a large Canadian pension fund. The present value of the pension fund’s portfolio of assets is CAD 4 billion while the expected present
+                                                                value of the fund’s liabilities is CAD 5 billion. The respective modified durations are 8.254 and 6.825 years. The fund currently has an actuarial deficit (assets &lt; liabilities) and Albert
+                                                                must avoid widening this gap. There are currently two scenarios for the yield curve: The first scenario is an upward shift of 25bp, with the second scenario a downward shift of 25bp. The
+                                                                most liquid interest rate futures contract has a present value of CAD 68,336 and a duration of 2.1468 years. Analyzing both scenarios separately, what should Albert Henri do to avoid widening
+                                                                the pension fund gap? Choose the best option.</p>
+<p><b>      First Scenario </b> <b>Second Scenario</b></p>
+<ul>
+<li>a. Do nothing. Buy 7,559 contracts</li>
+<li>b. Do nothing. Sell 7,559 contracts.</li>
+<li>c. Buy 7,559 contracts. Do nothing.</li>
+<li>d. Do nothing. Do nothing.</li>
+</ul>
+<p>解析：选 a 。首先计算资产和负债的久期，分别为 4,000 × 8.254 = 33,016 和 5,000 × 6.825 = 34,125。由于负债的DD大于资产的DD，利率的下降将使负债的增加大于资产的增加，从而导致赤字的恶化。需要买入利率期货来抵消。合同的数量是 (34,125 − 33,016)/(68,336 × 2.1468/1,000,000) = 7,559。</p>
+<h3>2、贝塔对冲</h3>
+<p>现在使用股指期货进行股票对冲。贝塔，系统风险，可以被看作是一种衡量投资组合的收益率 <span>i</span> 受市场收益率 <span>m</span> 波动影响的指标：</p>
+<blockquote><span>R_{it} = \alpha_i + \beta_i R_{mt} + \epsilon_{it}</span> </blockquote>
+<p>其中 <span>\beta</span> 代表系统风险， <span>\alpha</span> 代表截距（不是风险来源，因此为风险管理目的而忽略），
+                                                                        <span>\epsilon</span> 代表残差成分，它与市场无关。忽略残差和截距，得到：</p>
+<blockquote><span>(\Delta S/S) ≈ \beta (\Delta M/M) </span> </blockquote>
+<p>现在，假设我们手头有一份<span>股票指数期货</span>合约，它的beta值为1， <span>(\Delta F/F) = \beta (\Delta M/M) </span>                                                                        。对于期权，用净delta代替beta，得到 <span>(\Delta C) = \delta (\Delta M)</span> 。在<span>债券久期</span>的情况下，可以把总投资组合收益写成：</p>
+<blockquote><span>\Delta V = \Delta S + N\Delta F = [(\beta S) + NF] × (\Delta M/M)</span> </blockquote>
+<p>做空合同的最佳数量是：</p>
+<blockquote><span>\displaystyle N^* = -\frac{\beta S}{F}</span> </blockquote>
+<p>因此，<b>股票指数期货的最优对冲是由现金头寸的beta乘以其价值除以期货合约的名义值给出的</b>。</p>
+<h3>3、一般考虑</h3>
+<p>对冲的质量取决于市场模型 <span>R_{it} = \alpha_i + \beta_i R_{mt} + \epsilon_{it}</span> 中剩余风险的大小。对于大的投资组合，这种近似可能是好的，因为剩余的风险分散了。相反，用股票指数期货来对冲某只股票可能会带来糟糕的结果。</p>
+<p>例如，一支典型的美国股票与<span>标准普尔500指数</span>的相关性是0.50。对于行业指数来说，通常是0.75。利用回归有效性 <span>\sigma_{ V}^{*} = \sigma_{ S} \sqrt{1- R^2}</span>                                                                            ，发现，被对冲组合的波动率仍然约为 (1 - 0.5^2)^0.5 = 87% 的典型股票的未对冲波动率以及一个典型行业的约66%的未对冲波动率。因此，用一般市场对冲对股票组合(行业指数)进行对冲更有效。</p>
+<p>如果对冲的目的是降低波动性，那么对冲不仅可以消除下行风险，还可以消除任何上行潜力。套期保值的目的是为了降低风险，而不是为了盈利，所以这是一把双刃剑。对冲是否有益，应在风险与回报权衡的背景下加以考察。</p>
+<p>⭐ <b>Q13.12 </b>You have a portfolio of USD 5 million to be hedged using index futures. The correlation coefficient between the portfolio and futures being used is0.65. The standard
+                                                                                deviation of the portfolio is 7% and that of the hedging instrument is 6%. The futures price of the index futures is USD 1,500 and one contract size is 100 futures. Among
+                                                                                the following positions, which one reduces risk the most?</p>
+<ul>
+<li>a. Long 33 futures contracts</li>
+<li>b. Short 33 futures contracts</li>
+<li>c. Long 25 futures contracts</li>
+<li>d. Short 25 futures contracts</li>
+</ul>
+<p>解析：选 d 。为了对冲，应该卖出指数期货，以便在投资组合贬值时创造利润。组合beta为0.65 × (7%/6%) = 0.758，合约数量为 <span>N^\ast=-\beta S/F</span> = −(0.758
+                                                                                × 5,000,000)/(1,500 × 100) = −25.3，约等于25。</p>
+<p>⭐ <b>Q13.13 </b>The current value of the S&amp;P 500 index is 1,457, and each S&amp;P futures contract is for delivery of 250 times the index. A long-only equity portfolio with
+                                                                                market value of USD 300,100,000 has a beta of 1.1. To reduce the portfolio beta to 0.75, how many S&amp;P futures contracts should you sell?</p>
+<ul>
+<li>a. 288 contracts</li>
+<li>b. 618 contracts</li>
+<li>c. 906 contracts</li>
+<li>d. 574 contracts</li>
+</ul>
+<p>解析：选 a 。这和前面的问题一样，但对冲是片面的（将1.10更改为0.75）。因此， <span>N^\ast=-\beta S/F</span> = −(1.10 − 0.75)300,100,000/(1,457 ×
+                                                                                250) = −288.3。</p>
+<h2>继续学习</h2>
+<p>（完）</p>
+</div><p class="source-note">学习整理用途。内容仅供教育与研究参考，不构成投资建议。</p></article></main>
+</body>
+</html>

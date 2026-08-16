@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SOL 日线 EMA40 + 100日突破策略审计 | KQuantLab</title>
+  <meta name="description" content="SOL 日线 EMA40 与 100 日突破策略的分钟执行回测、严格 Funding 和 Mark Price 审计，以及风险与数据限制。">
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles.css?v=20260809-1">
+</head>
+<body>
+<nav class="nav"><div class="wrap nav-inner"><a class="brand" href="index.html"><img class="brand-logo" src="logo.png" alt="KQuantLab logo" width="34" height="34" style="width:34px;height:34px;max-width:34px;max-height:34px;object-fit:contain;display:block">KQuantLab</a><button class="menu" aria-label="打开菜单" aria-expanded="false">菜单</button><div class="nav-links"><a href="index.html">首页</a><a href="projects.html">Projects</a><a class="active" href="analysis.html">Analysis</a><a href="execution.html">Execution</a><a href="learning.html">Learning</a><a href="about.html">About</a></div></div></nav>
+<main class="wrap research-page">
+  <section class="page-hero research-hero">
+    <div class="eyebrow">Crypto · Strategy Audit · 2026-08-09</div>
+    <h1>SOL 日线 EMA40 + 100日突破：12.78倍与严格审计</h1>
+    <p>低频双向趋势策略研究记录。普通版本使用已完成日线生成信号，再以一分钟数据执行；严格版本进一步加入 Funding、Mark Price、维持保证金和强平缓冲检查。</p>
+    <div class="research-verdict"><strong>当前结论</strong><span>可保留为 SOL 趋势研究基准，但不能把 12 倍历史结果直接当作实盘预期。严格最大回撤超过 50%，且早期 Mark Price 与 Funding 覆盖仍不完整。</span></div>
+  </section>
+  <section class="research-metrics" aria-label="核心指标">
+    <div><span>普通分钟回测</span><strong>12.78倍</strong><small>$10,000 → $127,760.59</small></div>
+    <div><span>严格审计</span><strong>12.13倍</strong><small>$10,000 → $121,286.52</small></div>
+    <div class="negative"><span>严格最大回撤</span><strong>-53.78%</strong><small>峰值约 13.86 倍</small></div>
+    <div><span>交易结果</span><strong>7胜 / 1负</strong><small>8 笔，胜率 87.5%</small></div>
+  </section>
+  <section class="section research-layout">
+    <article class="research-body prose">
+      <h2>策略逻辑</h2>
+      <ol>
+        <li><strong>趋势过滤：</strong>日线 EMA40，并要求过去 4 日斜率方向与交易方向一致。</li>
+        <li><strong>入场：</strong>突破过去 100 日高点做多，跌破过去 100 日低点做空；突破强度至少为 0.3 ATR。</li>
+        <li><strong>执行：</strong>只使用收完的 UTC 日线，下一交易日第一根可用的一分钟收盘价成交，避免日线未来数据。</li>
+        <li><strong>仓位：</strong>固定 1.50 倍有效杠杆；每个趋势状态最多交易一次。</li>
+        <li><strong>退出：</strong>初始止损 25%；盈利达到 10% 后锁定 2%；达到 6 ATR 后启用 4 ATR 移动止损。</li>
+      </ol>
+      <h2>普通回测与严格审计</h2>
+      <div class="table-wrap"><table><thead><tr><th>项目</th><th>普通分钟回测</th><th>严格审计</th></tr></thead><tbody>
+        <tr><td>数据区间</td><td>2021-12-28 16:01 至 2026-08-01 08:33 UTC</td><td>审计至 2026-08-01 23:59 UTC</td></tr>
+        <tr><td>最终资金 / 倍数</td><td>$127,760.59 / 12.78倍</td><td>$121,286.52 / 12.13倍</td></tr>
+        <tr><td>峰值 / 最大回撤</td><td>14.60倍 / -49.43%</td><td>13.86倍 / -53.78%</td></tr>
+        <tr><td>交易 / 胜负</td><td>8 笔 / 7胜1负</td><td>8 笔 / 7胜1负</td></tr>
+        <tr><td>手续费与滑点</td><td>Taker 0.055%，每边滑点 0.02%</td><td>相同</td></tr>
+        <tr><td>Funding</td><td>未完整纳入</td><td>合计 -$10,106.75</td></tr>
+        <tr><td>强平检查</td><td>简化</td><td>MMR 0.5%，0 次强平，最低缓冲 39.18%</td></tr>
+      </tbody></table></div>
+      <p>严格版本最终资金减少约 $6,474，最大回撤恶化约 4.35 个百分点。差异主要来自 Funding、Mark Price 强平路径和更严格的持仓估值，而不是入场规则改变。</p>
+      <h2>收益高度集中</h2>
+      <div class="table-wrap"><table><thead><tr><th>方向与期间</th><th>严格净收益</th><th>交易回报</th><th>说明</th></tr></thead><tbody>
+        <tr><td>SHORT · 2022-05-10 → 2022-12-13</td><td>+$11,707.23</td><td>+117.07%</td><td>早期 Funding/Mark 覆盖不足</td></tr>
+        <tr><td>LONG · 2023-10-24 → 2024-01-03</td><td>+$60,528.26</td><td>+278.84%</td><td>最大贡献交易</td></tr>
+        <tr><td>SHORT · 2025-02-25 → 2025-03-01</td><td>-$5,948.11</td><td>-6.74%</td><td>唯一亏损交易</td></tr>
+        <tr><td>SHORT · 2026-02-01 → 2026-06-15</td><td>+$35,388.41</td><td>+41.20%</td><td>第二大贡献交易</td></tr>
+      </tbody></table></div>
+      <p>2023–2024 多单与 2026 空单合计贡献约 $95,917，约占严格净利润的 86%。这符合趋势策略依赖少数大行情的特征，也表示结果对漏单、滑点和趋势是否重现非常敏感。2024 年与 2025 年分别约为 -3.12% 和 -2.65%，收益并非每年稳定出现。</p>
+      <h2>数据与实盘限制</h2>
+      <ul>
+        <li>这是分钟级执行模拟，不是逐笔成交或交易所撮合复现，无法证明与实盘 98% 精确一致。</li>
+        <li>严格审计仍有 652 个持仓 Funding 事件、312,978 个持仓 Mark 分钟缺失，缺失时使用代理价格。</li>
+        <li>2022 年仓位主要依靠成交价代理且 Funding 不完整；较完整的严格覆盖从 2022-12-28 才开始。</li>
+        <li>数据尾部有 926 个交易数据结束后的代理执行分钟，不能把尾部估值当作真实可成交证明。</li>
+        <li>固定 1.50 倍全账户暴露仍产生超过 50% 的历史回撤；实盘还会遇到延迟、止损穿价、费率和交易所规则变化。</li>
+      </ul>
+      <div class="research-decision"><strong>研究决定</strong><p>冻结 EMA40 + 100 日突破规则，保留为 SOL 样本内基准。下一步不再按 SOL 净利润微调，而是补齐 Mark Price 与 Funding，做延迟和滑点压力测试，并在 BTC、ETH、DOGE 及未调参币种盲测。通过后再小资金前瞻模拟，不能直接以 1.50 倍全仓上线。</p></div>
+      <h2>可以从这次回测学到什么</h2>
+      <ul>
+        <li>高倍最终收益不等于稳定盈利；该策略真正依赖极少数长趋势。</li>
+        <li>加入 Funding 与强平路径后，收益下降、回撤上升，成本和保证金模型会实质改变结论。</li>
+        <li>7 胜 1 负不代表风险低；持仓期间的权益回撤比交易胜率更重要。</li>
+        <li>只有冻结规则后的跨币种、样本外和前瞻成交证据，才能判断它是可重复规律还是 SOL 历史特例。</li>
+      </ul>
+    </article>
+    <aside class="research-aside">
+      <div class="aside-card"><span>研究状态</span><strong>保留研究基准</strong><p>结果有吸引力，但尚未通过完整实盘审查。</p></div>
+      <div class="aside-card"><span>策略类型</span><strong>双向低频 CTA 趋势</strong><p>Daily EMA40 · 100D Breakout</p></div>
+      <div class="aside-card"><span>仓位结构</span><strong>1.50倍固定暴露</strong><p>不是 ATR 风险平价，也不是逐级加仓。</p></div>
+      <div class="aside-card"><span>证据等级</span><strong>分钟回测 + 严格审计</strong><p>仍缺完整 Mark/Funding 与前瞻成交验证。</p></div>
+    </aside>
+  </section>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><span>© 2026 KQuantLab · Research only</span><div class="footer-links"><a href="analysis.html">返回 Analysis</a><a href="disclaimer.html">免责声明 / Disclaimer</a></div></div></footer>
+<script src="site.js"></script>
+</body>
+</html>
